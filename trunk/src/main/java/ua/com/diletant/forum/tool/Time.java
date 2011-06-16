@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 package ua.com.diletant.forum.tool;
+import static ua.com.diletant.forum.tool.PHP.*;
 
 /**
  * 

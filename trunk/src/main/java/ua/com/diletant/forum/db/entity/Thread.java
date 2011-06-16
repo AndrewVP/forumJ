@@ -15,8 +15,10 @@
  */
 package ua.com.diletant.forum.db.entity;
 
+import static ua.com.diletant.forum.tool.PHP.*;
 import java.sql.*;
 
+import ua.com.diletant.forum.exception.InvalidKeyException;
 import ua.com.diletant.forum.tool.*;
 
 /**
@@ -27,124 +29,109 @@ public class Thread{
 
    /**
     * Локализация
-    * @var LocaleString
     */
    private LocaleString locale;
-   
+
    /**
     * Тип прикрепления
-    * @var 
     */
    private int str_dock;
-   
+
    /**
     * Заголовок
-    * @var 
     */
    private String str_head;
-   
+
    /**
     * Автор
-    * @var 
     */
    private String str_nick;
-   
+
    /**
     * Время открытия
-    * @var 
     */
    private String str_reg;
-   
+
    /**
     * id ветки
-    * @var 
     */
    private String str_id;
-   
+
    /**
     * время последнего поста
-    * @var 
     */
    private String str_lpt;
-   
+
    /**
     * id Автора последнего поста
-    * @var 
     */
    private String str_lpus;
-   
+
    /**
     * Ник автора последнего поста
-    * @var 
     */
    private String str_lpn;
-   
+
    /**
     * Количество постов в ветке
-    * @var 
     */
    private int str_pcount;
-   
+
    /**
     * Количество просмотров участников
-    * @var 
     */
    private String str_snid;
-   
+
    /**
     * Количество просмотров полное
-    * @var 
     */
    private String str_snall;
-   
+
    /**
     * Id последнего поста в ветке
-    * @var 
     */
    private Long idLastPost;
-   
+
    /**
     * Тип ветки
-    * @var 
     */
    private int str_type;
-   
+
    /**
     * Папка
-    * @var 
     */
    private String str_folder;
-   
+
    /**
     * Дизайн
-    * @var 
     */
    private int disain;
-   
+
    /**
     * Авторизван ли посетитель
-    * @var 
     */
    private boolean login;
-   
+
    /**
     * Количество постов на странице
-    * @var 
     */
    private int pt;
-   
+
    /**
     * Текущая страница
-    * @var 
     */
    private int pg;
-   
+
    /**
     * номер позиции
-    * @var 
     */
    private int i;
-   
+
+   /**
+    * Текущий пользователь
+    */
+   private User currentUser = null;
+
    /**
     * Возвращает авторизван ли посетитель
     *
@@ -153,7 +140,8 @@ public class Thread{
    private boolean isLogin(){
       return this.login;
    }
-   
+
+
    /**
     * Конструктор
     *
@@ -161,7 +149,7 @@ public class Thread{
     * @param LocaleString $locale
     * @throws SQLException 
     */
-   public Thread(ResultSet arrFetch, LocaleString locale, int disain, boolean isLogin, int pg, int pt, int i) throws SQLException{
+   public Thread(ResultSet arrFetch, LocaleString locale, int disain, boolean isLogin, int pg, int pt, int i, User currentUser) throws SQLException{
       // Присваиваем локализованные сообщения
       this.locale = locale;
       //
@@ -203,7 +191,7 @@ public class Thread{
       //
       this.i = i;
    }
-   
+
    public String toString(){
       String result = "";
       if (this.disain == 1) { 
@@ -233,77 +221,84 @@ public class Thread{
       // Добавляем смайлики
       str_head = Diletant.fd_head(str_head);
       // Опрос? Добавляем "метку"
-      if (this.str_type==1 || this.str_type==2) str_head="<b>" +this.locale.getString("mess9")+ "</b> " +str_head;
-      // Подписываем прикрепленные
-      switch (this.str_dock){
+      try {
+         if (this.str_type==1 || this.str_type==2){
+            str_head="<b>" +this.locale.getString("mess9")+ "</b> " +str_head;
+         }
+         // Подписываем прикрепленные
+         switch (this.str_dock){
          case 10:
-              result+="<font class=trforum><b>" +this.locale.getString("mess7")+ " </b><a href='tema.php?id=" +this.str_id+ "'>" +str_head+ "</a></font>";
-              break;
+            result+="<font class=trforum><b>" +this.locale.getString("mess7")+ " </b><a href='tema.php?id=" +this.str_id+ "'>" +str_head+ "</a></font>";
+            break;
          case 5:
-              result+="<font class=trforum><b>" +this.locale.getString("mess8")+ " </b><a href='tema.php?id=" +this.str_id+ "'>" +str_head+ "</a></font>";
-              break;
+            result+="<font class=trforum><b>" +this.locale.getString("mess8")+ " </b><a href='tema.php?id=" +this.str_id+ "'>" +str_head+ "</a></font>";
+            break;
          case 3:
-              result+="<font class=trforum><b>" +this.locale.getString("mess163")+ " </b><a href='tema.php?id=" +this.str_id+ "'>" +str_head+ "</a></font>";
-              break;
+            result+="<font class=trforum><b>" +this.locale.getString("mess163")+ " </b><a href='tema.php?id=" +this.str_id+ "'>" +str_head+ "</a></font>";
+            break;
          case 0:
-              result+="<font class=trforum><a href='tema.php?id=" +this.str_id+ "'>" +str_head+ "</a></font>";
-              break;
+            result+="<font class=trforum><a href='tema.php?id=" +this.str_id+ "'>" +str_head+ "</a></font>";
+            break;
          }
-      // Cсылки на страницы в ветке
-      if (this.str_pcount+1>this.pt) {
-         result+="<br><font size=1>" +this.locale.getString("mess10")+ ":&nbsp";
-         int k1=0;
-         int k2=0;
-         for (int k=1; k<=ceil((this.str_pcount+1)/this.pt); k++) {
-            k1=k1+1;
-            if (k1==10){
-               result+="<a href='tema.php?page=" +k+ "&id=" +this.str_id+ "'>" +k+ "</a>";
-               if (k<>ceil((this.str_pcount+1)/this.pt)) result+=",&nbsp;&nbsp;";
-               k1=0;
-               k2=k2+1;
+         // Cсылки на страницы в ветке
+         if (this.str_pcount+1>this.pt) {
+            result+="<br><font size=1>" +this.locale.getString("mess10")+ ":&nbsp";
+            int k1=0;
+            int k2=0;
+            for (int k=1; k<=ceil((this.str_pcount+1)/this.pt); k++) {
+               k1=k1+1;
+               if (k1==10){
+                  result+="<a href='tema.php?page=" +k+ "&id=" +this.str_id+ "'>" +k+ "</a>";
+                  if (k != ceil((this.str_pcount+1)/this.pt)) result+=",&nbsp;&nbsp;";
+                  k1=0;
+                  k2=k2+1;
+               }
+               if (k==1){
+                  result+="<a href='tema.php?page=" +k+ "&id=" +this.str_id+ "'>" +k+ "</a>,&nbsp;&nbsp;";
+               }
+               if ((ceil((this.str_pcount+1)/this.pt)-k2*10)< 10 && (k-k2*10) != 0 && k!=1){
+                  result+="<a href='tema.php?page=" +k+ "&id=" +this.str_id+ "'>" +k+ "</a>";
+                  if (k != ceil((this.str_pcount+1)/this.pt)) result+=",&nbsp;&nbsp;";
+               }
+
             }
-            if (k==1){
-               result+="<a href='tema.php?page=" +k+ "&id=" +this.str_id+ "'>" +k+ "</a>,&nbsp;&nbsp;";
-            }
-            if ((ceil((this.str_pcount+1)/this.pt)-k2*10)< 10 && (k-k2*10) != 0 && k!=1){
-               result+="<a href='tema.php?page=" +k+ "&id=" +this.str_id+ "'>" +k+ "</a>";
-               if (k<>ceil((this.str_pcount+1)/this.pt)) result+=",&nbsp;&nbsp;";
-            }
-            
+            result+="</font>";
          }
-         result+="</font>";
-      }
-      result+="</p></td>";
-      // Количество постов
-      result+="<td width='20' align='center' valign='middle'><span class='mnuforum' style='{color: purple}'>" +this.str_pcount;
-      result+="</span><span id='posts" +this.str_id+ "' class='mnuforum' style='{color: red}'>&nbsp</span></td>";
-      // кол-во просмотров
-      result+="<td width='80' align='center' valign='middle'>";
-      // Количество просмотров участников
-      result+="<div class='mnuforum'><font size='1' color='green'>" + this.str_snid + "</font><br>";
-      // Количество просмотров всего
-      result+="<font size='1' color='purple'>" + this.str_snall + "</font></div></td>";
-      // Автор
-      result+="<td width='120' align='center' valign='middle'><div class='trforum'><font size='1'>" +htmlspecialchars(this.str_nick)+ "</font></div>";
-      // Время создания
-      result+="</td>";
-      // Автор последнего поста
-      result+="<td width='120' align=center><div class='mnuforum'><font size='1'>" +htmlspecialchars(this.str_lpn)+ "</font></div>";
-      // Время последнего поста
-      result+="<div class='mnuforum'><a href='tema.php?id=" + this.str_id + "&end=1#end' rel='nofollow'><font size='1'>" + substr(this.str_lpt, 0, 5) + "&nbsp;" + substr(this.str_lpt, 6, 5) + "</font></a></div>";
-      result+="</td>";
-      // Папка
-      result+="<td align='center' valign='middle'>";
-      result+="<div class='mnuforum'><font size='1'>" +this.str_folder+ "</font></div>";
-      result+="</td>";
-      // Флажок (только для зарегистрированых)
-      if (this.isLogin()){
+         result+="</p></td>";
+         // Количество постов
+         result+="<td width='20' align='center' valign='middle'><span class='mnuforum' style='{color: purple}'>" +this.str_pcount;
+         result+="</span><span id='posts" +this.str_id+ "' class='mnuforum' style='{color: red}'>&nbsp</span></td>";
+         // кол-во просмотров
+         result+="<td width='80' align='center' valign='middle'>";
+         // Количество просмотров участников
+         result+="<div class='mnuforum'><font size='1' color='green'>" + this.str_snid + "</font><br>";
+         // Количество просмотров всего
+         result+="<font size='1' color='purple'>" + this.str_snall + "</font></div></td>";
+         // Автор
+         result+="<td width='120' align='center' valign='middle'><div class='trforum'><font size='1'>" +htmlspecialchars(this.str_nick)+ "</font></div>";
+         // Время создания
+         result+="</td>";
+         // Автор последнего поста
+         result+="<td width='120' align=center><div class='mnuforum'><font size='1'>" +htmlspecialchars(this.str_lpn)+ "</font></div>";
+         // Время последнего поста
+         result+="<div class='mnuforum'><a href='tema.php?id=" + this.str_id + "&end=1#end' rel='nofollow'><font size='1'>" + substr(this.str_lpt, 0, 5) + "&nbsp;" + substr(this.str_lpt, 6, 5) + "</font></a></div>";
+         result+="</td>";
+         // Папка
          result+="<td align='center' valign='middle'>";
-         result+="<input type='checkbox' id='ch" +this.i+ "' name='" +this.i+ "' value='" +this.str_id+ "'>";
+         result+="<div class='mnuforum'><font size='1'>" +this.str_folder+ "</font></div>";
          result+="</td>";
-         result+="<td style='padding:0px 5px 0px 5px' align='right'>";
-         result+="<a href='delone.php?id=" +this.str_id+ "&usr=" +$_SESSION['idu']+ "&page=" +this.pg+ "'><img border='0' src='picts/del1.gif'></a>";
-         result+="</td>";
+         // Флажок (только для зарегистрированых)
+         if (this.isLogin()){
+            result+="<td align='center' valign='middle'>";
+            result+="<input type='checkbox' id='ch" +this.i+ "' name='" +this.i+ "' value='" +this.str_id+ "'>";
+            result+="</td>";
+            result+="<td style='padding:0px 5px 0px 5px' align='right'>";
+            result+="<a href='delone.php?id=" +this.str_id+ "&usr=" +String.valueOf(currentUser.getId())+ "&page=" +this.pg+ "'><img border='0' src='picts/del1.gif'></a>";
+            result+="</td>";
+         }
+      } catch (InvalidKeyException e) {
+         // TODO Доделать!
+         e.printStackTrace();
       }
       return result;
    }

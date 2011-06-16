@@ -1,5 +1,5 @@
 /*
- * Copyright Andrew V. Pogrebnyak
+ * Copyright &&rew V. Pogrebnyak
  * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -10,17 +10,19 @@
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
+ * See the License for the specific language governing permissions &&
  * limitations under the License.
  */
 package ua.com.diletant.forum.tool;
 
+import static ua.com.diletant.forum.tool.PHP.*;
+
 /**
  * Diletant custom php functions 
- * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
+ * @author <a href="mailto:an.pogrebnyak@gmail.com">&&rew V. Pogrebnyak</a>
  */
 public class Diletant {
-   
+
    public static String fd_head(String result){
       result=PHP.str_replace("[span class='found']", "<span class='found'>", result); 
       result=PHP.str_replace("[/span]", "</span>", result); 
@@ -126,77 +128,503 @@ public class Diletant {
       tmptxt=PHP.str_replace(":[laie_44]","<img border='0' src='smiles/laie_44.gif'>",tmptxt);
       tmptxt=PHP.str_replace(":[laie_48]","<img border='0' src='smiles/laie_48.gif'>",tmptxt);
       tmptxt=PHP.str_replace(";)","<img border='0' src='smiles/wink3.gif'>",tmptxt);
-      
+
       return tmptxt;
    }   
 
    public static String fd_cenz(String result) {
+      //TODO Доделать
       // маты 
-//      
-//   /*хуй*/
-//      $pt[0]="/([а-яА-ЯiIіІєЄїЇ]*[а-пс-фц-яА-ПС-ФЦ-ЯiIіІєЄїЇ][а-яА-ЯiIіІєЄїЇ][хХxX]+[yYуУ]+[eEеЕяЯИийЙ]+[а-яА-ЯiIіІєЄїЇ]*)/";
-//      $pt[1]="/([а-яА-ЯiIіІєЄїЇ]*[рРХх][б-тф-яБ-ТФ-ЯiIіІєЄїЇ][хХxX]+[yYуУ]+[eEеЕяЯИийЙ]+[а-яА-ЯiIіІєЄїЇ]*)/";
-//      $pt[2]="/(\b[а-яА-ЯiIіІєЄїЇ][хХxX]+[yYуУ]+[eEеЕяЯИийЙ]+[а-яА-ЯiIіІєЄїЇ]*)/";
-//      $pt[3]="/(\b[хХxX]+[yYуУ]+[eEеЕяЯИийЙ]+[а-яА-ЯiIіІєЄїЇ]*)/"; 
-//   /*отсос*/   
-//      $pt[4]="/(\b[OoОо0]+[Тт]+[CcСс]+[OoОо0]+[CcСс]+[а-яА-ЯiIіІєЄїЇ]*)/";
-//   /*ебал*/   
-//      $pt[5]="/([а-яА-ЯiIіІєЄїЇ]*[а-км-яА-КМ-ЯiIіІєЄїЇ][ЇїЁёЕе]+[Бб6]+[AaАаOoОо0]+[НнНlL]+[а-яА-ЯiIіІєЄїЇ]*)/";
-//      $pt[6]="/([а-яА-ЯiIіІєЄїЇ]*[а-км-яА-ГЕ-КМ-ЯiIіІєЄїЇ][ЇїЁёЕе]+[Бб6]+[AaАа]+[Лл]+[а-яА-ЯiIіІєЄїЇ]*)/";
-//      $pt[7]="/(\b[ЇїЁёЕе]+[Бб6]+[AaАа]+[Лл]+[а-яА-ЯiIіІєЄїЇ]*)/";
-//   /*ебись*/   
-//      $pt[8]="/([а-яА-ЯiIіІєЄїЇ]*[ЁёЕе]+[Бб6]+[Ии]+[CcСс]+[Ьь]+[а-яА-ЯiIіІєЄїЇ]*)/";     
-//   /*кацап*/   
-//      $pt[9]="/([а-яА-ЯiIіІєЄїЇ]*[KkКк]+[AaАаOoОо]+[Цц]+[AaАа]+[Ппn]+[а-яА-ЯiIіІєЄїЇ]*)/";
-//   /*хохол*/   
-//      $pt[10]="/([а-яА-ЯiIіІєЄїЇ]*[хХxX]+[aAаАOoОо0]+[хХxX]+[OoОо0]*[ЛлlL]+[а-яА-ЯiIіІєЄїЇ]*)/";
-//      $pt[30]="/(\b[хХxXhH]+[kKкК]+[аАaAоОoO0]+[-.]+[а-яА-Яa-zA-Z0-9їЇіІєЄ]*)/";
-//      $pt[31]="/(\b[kKкК]+[аАaAоОoO0]+[kKкК]+[-]+[лЛlL]+[а-яА-Яa-zA-Z0-9їЇіІєЄ]*)/";
-//      
-//   /*майданут*/
-//      $pt[11]="/([а-яА-ЯiIіІєЄїЇ]*[MМм]+[AaАа]+[ИийЙ]+[ДдdD]+[AaАа]+[HНн]+[яЯyYуУ]+[Тт]+[а-яА-ЯiIіІєЄїЇ]*)/";
-//   /*пизд*/   
-//      $pt[12]="/([а-яА-ЯiIіІєЄїЇ]*[Пп]+[IiІіИийЙ]+[ЗзzZ]+[ДдdD]+[a-zA-Zа-яА-ЯiIіІєЄїЇ]*)/";
-//   /*залуп*/   
-//      $pt[13]="/([а-яА-ЯiIіІєЄїЇ]*[Зз]+[AaАа]+[ЛлlL]+[УуYy]+[Пп]+[а-яА-ЯiIіІєЄїЇ]*)/";
-//   /*уебок*/   
-//      $pt[14]="/(\b[уУyYuU]?[ЁёЕеEe]+[Бб6]+[OoОо0]?[KkКкТтT]+[а-яА-ЯiIіІєЄїЇ]*)/";
-////      $pt[14]="/(\b[а-цш-яА-ЦШ-ЯiIіІєЄїЇ]*[а-км-о-цш-яА-КМ-О-ЦШ-ЯiIіІєЄїЇ][ЁёЕе]+[Бб6]+[OoОо0]+[KkКкТтT]+[а-яА-ЯiIіІєЄїЇ]*)/";
-////      $pt[14]="/(\b[а-цш-яА-ЦШ-ЯiIіІєЄїЇ]*[ЁёЕе]+[Бб6]+[OoОо0]+[KkКкТтT]+[а-яА-ЯiIіІєЄїЇ]*)/";
-//   /*ебищ*/   
-//      $pt[15]="/(\b[а-цш-яА-ЦШ-ЯiIіІєЄїЇ]*[ЁёЕе]+[Бб6]+[иИ]+[шШщЩ]+[а-яА-ЯiIіІєЄїЇ]*)/";
-//   /*пидор*/   
-//      $pt[16]="/([а-яА-ЯiIіІєЄїЇ]*[Пп]+[іІИийЙ]+[ДдdD]+[ЕеEeОоOo0AaАа]+[PpРр]+[а-яА-ЯiIіІєЄїЇ]*)/";
-//   /*блядь*/   
-////      $pt[17]="/([а-яА-ЯiIіІєЄїЇ]*[Бб6]+[Ии]*[ЛлlL]+[Яя]+[ДдdD]+[а-яА-ЯiIіІєЄїЇ]*)/";
-//      $pt[29]="/(\b[Бб6]+[Ии]*[ЛлlL]+[Яя]+[а-яА-ЯiIіІєЄїЇ]*)/";
-//      
-////      $pt[17]="/([а-яА-ЯiIіІєЄїЇ]*[СсCc]+[Пп]+[ЕеEe]+[PpРр]+[МмM]+[а-яА-ЯiIіІєЄїЇ]*)/";
-//   /*клитор*/   
-//      $pt[18]="/([а-яА-ЯiIіІєЄїЇ]*[KkКк]+[ЛлlL]+[Ии]+[Тт]+[ОоOo0]+[PpРр]+[а-яА-ЯiIіІєЄїЇ]*)/";
-//   /*ебут*/   
-//      $pt[19]="/([а-яА-ЯiIіІєЄїЇ]*[а-яА-ЯiIіІєЄїЇ][а-пс-яА-ПС-ЯiIіІєЄїЇ][ЁёЕе]+[Бб6]+[yYуУ]+[Тт][^Тт])/";
-//      $pt[20]="/([а-яА-ЯiIіІєЄїЇ]*[а-вд-яА-ВД-ЯiIіІєЄїЇ][Рр][ЁёЕе]+[Бб6]+[yYуУ]+[Тт][^Тт])/";
-//      $pt[21]="/(\b[а-яА-ЯiIіІєЄїЇ][ЁёЕе]+[Бб6]+[yYуУ]+[Тт][^Тт])/";
-//      $pt[22]="/(\b[ЁёЕе]+[Бб6]+[yYуУ]+[Тт][^Тт])/";
-//   /*жид*/
-//      $pt[23]="/(\b[жЖ]+[.,-_ ;:\"'`~!@#$%^&*()]?[1iIіІиИыЫuU]+[.,-_ ;:\"'`~!@#$%^&*()]?[дДdDgG] )/";
-//      $pt[24]="/(\b[жЖ]+[.,-_ ;:\"'`~!@#$%^&*()]?[1iIіІиИыЫuU]+[.,-_ ;:\"'`~!@#$%^&*()]?[дДdDgG]+[.,-_ ;:\"'`~!@#$%^&*()]?[а-яА-Яa-zA-Z0-9їЇіІєЄ] )/";
-//      $pt[25]="/(\b[жЖ]+[.,-_;:\"'`~!@#$%^&*()]?[1iIіІиИыЫuU]+[.,-_ ;:\"'`~!@#$%^&*()]?[дДdDgG]+[.,-_ ;:\"'`~!@#$%^&*()]?[а-ил-яА-ИЛ-Яa-zA-Z0-9їЇіІєЄ][а-яА-Яa-zA-Z0-9їЇіІєЄ]+)/";
-//      $pt[26]="/([а-нп-яА-ЕЗ-НП-Яa-zA-Z0-9їЇіІєЄ]+[жЖ]+[.,-_;:\"'`~!@#$%^&*()]?[iIіІиИыЫuU]+[.,-_;:\"'`~!@#$%^&*()]?[дДdD]+[.,-_ ;:\"'`~!@#$%^&*()]?[а-яА-Яa-zA-Z0-9їЇіІєЄ]*)/";
-//      $pt[27]="/(\b[жЖ]+[уУ]+[дДdD]+[а-яА-Яa-zA-Z0-9їЇіІєЄ]*)/";
-//      $pt[28]="/(\]\|\[+[iIіІиИыЫ]+[дДdD]+[а-яА-Яa-zA-Z0-9їЇіІєЄ]*)/";
-//      
-//      
-//      if (strpos(" ".$_SERVER['PHP_SELF'], "index.php")){
-//         $rp="<font color=red>***</font>";  
-//      }    
-//      else{
-//         $rp="<font color=red><a title='\\1'>***</a></font>";  
-//      }
-////      $rp="\\1";
-//      
-//      $_result=preg_replace($pt, $rp, $_result);
+      //      
+      //   /*хуй*/
+      //      $pt[0]="/([а-яА-ЯiIіІєЄїЇ]*[а-пс-фц-яА-ПС-ФЦ-ЯiIіІєЄїЇ][а-яА-ЯiIіІєЄїЇ][хХxX]+[yYуУ]+[eEеЕяЯИийЙ]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      //      $pt[1]="/([а-яА-ЯiIіІєЄїЇ]*[рРХх][б-тф-яБ-ТФ-ЯiIіІєЄїЇ][хХxX]+[yYуУ]+[eEеЕяЯИийЙ]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      //      $pt[2]="/(\b[а-яА-ЯiIіІєЄїЇ][хХxX]+[yYуУ]+[eEеЕяЯИийЙ]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      //      $pt[3]="/(\b[хХxX]+[yYуУ]+[eEеЕяЯИийЙ]+[а-яА-ЯiIіІєЄїЇ]*)/"; 
+      //   /*отсос*/   
+      //      $pt[4]="/(\b[OoОо0]+[Тт]+[CcСс]+[OoОо0]+[CcСс]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      //   /*ебал*/   
+      //      $pt[5]="/([а-яА-ЯiIіІєЄїЇ]*[а-км-яА-КМ-ЯiIіІєЄїЇ][ЇїЁёЕе]+[Бб6]+[AaАаOoОо0]+[НнНlL]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      //      $pt[6]="/([а-яА-ЯiIіІєЄїЇ]*[а-км-яА-ГЕ-КМ-ЯiIіІєЄїЇ][ЇїЁёЕе]+[Бб6]+[AaАа]+[Лл]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      //      $pt[7]="/(\b[ЇїЁёЕе]+[Бб6]+[AaАа]+[Лл]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      //   /*ебись*/   
+      //      $pt[8]="/([а-яА-ЯiIіІєЄїЇ]*[ЁёЕе]+[Бб6]+[Ии]+[CcСс]+[Ьь]+[а-яА-ЯiIіІєЄїЇ]*)/";     
+      //   /*кацап*/   
+      //      $pt[9]="/([а-яА-ЯiIіІєЄїЇ]*[KkКк]+[AaАаOoОо]+[Цц]+[AaАа]+[Ппn]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      //   /*хохол*/   
+      //      $pt[10]="/([а-яА-ЯiIіІєЄїЇ]*[хХxX]+[aAаАOoОо0]+[хХxX]+[OoОо0]*[ЛлlL]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      //      $pt[30]="/(\b[хХxXhH]+[kKкК]+[аАaAоОoO0]+[-.]+[а-яА-Яa-zA-Z0-9їЇіІєЄ]*)/";
+      //      $pt[31]="/(\b[kKкК]+[аАaAоОoO0]+[kKкК]+[-]+[лЛlL]+[а-яА-Яa-zA-Z0-9їЇіІєЄ]*)/";
+      //      
+      //   /*майданут*/
+      //      $pt[11]="/([а-яА-ЯiIіІєЄїЇ]*[MМм]+[AaАа]+[ИийЙ]+[ДдdD]+[AaАа]+[HНн]+[яЯyYуУ]+[Тт]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      //   /*пизд*/   
+      //      $pt[12]="/([а-яА-ЯiIіІєЄїЇ]*[Пп]+[IiІіИийЙ]+[ЗзzZ]+[ДдdD]+[a-zA-Zа-яА-ЯiIіІєЄїЇ]*)/";
+      //   /*залуп*/   
+      //      $pt[13]="/([а-яА-ЯiIіІєЄїЇ]*[Зз]+[AaАа]+[ЛлlL]+[УуYy]+[Пп]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      //   /*уебок*/   
+      //      $pt[14]="/(\b[уУyYuU]?[ЁёЕеEe]+[Бб6]+[OoОо0]?[KkКкТтT]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      ////      $pt[14]="/(\b[а-цш-яА-ЦШ-ЯiIіІєЄїЇ]*[а-км-о-цш-яА-КМ-О-ЦШ-ЯiIіІєЄїЇ][ЁёЕе]+[Бб6]+[OoОо0]+[KkКкТтT]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      ////      $pt[14]="/(\b[а-цш-яА-ЦШ-ЯiIіІєЄїЇ]*[ЁёЕе]+[Бб6]+[OoОо0]+[KkКкТтT]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      //   /*ебищ*/   
+      //      $pt[15]="/(\b[а-цш-яА-ЦШ-ЯiIіІєЄїЇ]*[ЁёЕе]+[Бб6]+[иИ]+[шШщЩ]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      //   /*пидор*/   
+      //      $pt[16]="/([а-яА-ЯiIіІєЄїЇ]*[Пп]+[іІИийЙ]+[ДдdD]+[ЕеEeОоOo0AaАа]+[PpРр]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      //   /*блядь*/   
+      ////      $pt[17]="/([а-яА-ЯiIіІєЄїЇ]*[Бб6]+[Ии]*[ЛлlL]+[Яя]+[ДдdD]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      //      $pt[29]="/(\b[Бб6]+[Ии]*[ЛлlL]+[Яя]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      //      
+      ////      $pt[17]="/([а-яА-ЯiIіІєЄїЇ]*[СсCc]+[Пп]+[ЕеEe]+[PpРр]+[МмM]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      //   /*клитор*/   
+      //      $pt[18]="/([а-яА-ЯiIіІєЄїЇ]*[KkКк]+[ЛлlL]+[Ии]+[Тт]+[ОоOo0]+[PpРр]+[а-яА-ЯiIіІєЄїЇ]*)/";
+      //   /*ебут*/   
+      //      $pt[19]="/([а-яА-ЯiIіІєЄїЇ]*[а-яА-ЯiIіІєЄїЇ][а-пс-яА-ПС-ЯiIіІєЄїЇ][ЁёЕе]+[Бб6]+[yYуУ]+[Тт][^Тт])/";
+      //      $pt[20]="/([а-яА-ЯiIіІєЄїЇ]*[а-вд-яА-ВД-ЯiIіІєЄїЇ][Рр][ЁёЕе]+[Бб6]+[yYуУ]+[Тт][^Тт])/";
+      //      $pt[21]="/(\b[а-яА-ЯiIіІєЄїЇ][ЁёЕе]+[Бб6]+[yYуУ]+[Тт][^Тт])/";
+      //      $pt[22]="/(\b[ЁёЕе]+[Бб6]+[yYуУ]+[Тт][^Тт])/";
+      //   /*жид*/
+      //      $pt[23]="/(\b[жЖ]+[.,-_ ;:\"'`~!@#$%^&*()]?[1iIіІиИыЫuU]+[.,-_ ;:\"'`~!@#$%^&*()]?[дДdDgG] )/";
+      //      $pt[24]="/(\b[жЖ]+[.,-_ ;:\"'`~!@#$%^&*()]?[1iIіІиИыЫuU]+[.,-_ ;:\"'`~!@#$%^&*()]?[дДdDgG]+[.,-_ ;:\"'`~!@#$%^&*()]?[а-яА-Яa-zA-Z0-9їЇіІєЄ] )/";
+      //      $pt[25]="/(\b[жЖ]+[.,-_;:\"'`~!@#$%^&*()]?[1iIіІиИыЫuU]+[.,-_ ;:\"'`~!@#$%^&*()]?[дДdDgG]+[.,-_ ;:\"'`~!@#$%^&*()]?[а-ил-яА-ИЛ-Яa-zA-Z0-9їЇіІєЄ][а-яА-Яa-zA-Z0-9їЇіІєЄ]+)/";
+      //      $pt[26]="/([а-нп-яА-ЕЗ-НП-Яa-zA-Z0-9їЇіІєЄ]+[жЖ]+[.,-_;:\"'`~!@#$%^&*()]?[iIіІиИыЫuU]+[.,-_;:\"'`~!@#$%^&*()]?[дДdD]+[.,-_ ;:\"'`~!@#$%^&*()]?[а-яА-Яa-zA-Z0-9їЇіІєЄ]*)/";
+      //      $pt[27]="/(\b[жЖ]+[уУ]+[дДdD]+[а-яА-Яa-zA-Z0-9їЇіІєЄ]*)/";
+      //      $pt[28]="/(\]\|\[+[iIіІиИыЫ]+[дДdD]+[а-яА-Яa-zA-Z0-9їЇіІєЄ]*)/";
+      //      
+      //      
+      //      if (strpos(" " + $_SERVER['PHP_SELF'], "index.php")){
+      //         $rp="<font color=red>***</font>";  
+      //      }    
+      //      else{
+      //         $rp="<font color=red><a title='\\1'>***</a></font>";  
+      //      }
+      ////      $rp="\\1";
+      //      
+      //      $_result=preg_replace($pt, $rp, $_result);
       return result;
    }
+
+   public static String fd_body(String result) {
+      result=fd_bbcode(result);
+      result=fd_smiles(result);
+      result=fd_cenz(result);
+      return result;
+   }
+   
+   public static String fd_bbcode(String $str_body) {
+      int $fstoccq = 0;
+      int $lastoccq = 0;
+      int $fstoccq1 = 0;
+      int $fstocc = 0;
+      String $postbody=stripslashes(nl2br(htmlspecialchars($str_body)));
+      $postbody=str_replace("[span class='found']", "<span class='found'>", $postbody); 
+      $postbody=str_replace("[/span]", "</span>", $postbody); 
+      // [b] [/b] <b> </b>
+      String $result="";
+      int $lastocc=0;
+      int $sndocc=1;
+      while($sndocc > 0)
+      {
+         $fstocc=strpos($postbody, "[b]", $lastocc);
+         $sndocc=strpos($postbody, "[/b]", $fstocc);
+         if(($fstocc > 0 && $sndocc > 0 && $lastocc > 0) || ($fstocc >= 0 && $sndocc > 0 && $lastocc== 0))
+         {
+            $result += substr($postbody, $lastocc, $fstocc - $lastocc);
+            $result += "<b>" + substr($postbody, $fstocc + 3, $sndocc - $fstocc - 3) + "</b>";
+            $lastocc = $sndocc + 4;
+         }
+         else
+         {
+            $result +=substr($postbody, $lastocc, strlen($postbody)-$lastocc);
+            break;
+         }
+      }
+      // [i] [/i] <i> </i>
+      $postbody=$result;
+      $result="";
+      int $lastocci=0;
+      int $sndocci=1;
+      while($sndocci > 0)
+      {
+         int $fstocci=strpos($postbody, "[i]", $lastocci);
+         $sndocci=strpos($postbody, "[/i]", $fstocci);
+         if(($fstocci > 0 && $sndocci > 0 && $lastocci > 0) || ($fstocci >= 0 && $sndocci > 0 && $lastocci== 0))
+         {
+            $result += substr($postbody, $lastocci, $fstocci - $lastocci);
+            $result += "<i>" + substr($postbody, $fstocci + 3, $sndocci - $fstocci - 3) + "</i>";
+            $lastocci = $sndocci + 4;
+         }
+         else
+         {
+            $result +=substr($postbody, $lastocci, strlen($postbody)-$lastocci);
+            break;
+         }
+      }
+      // [u] [/u] <u> </u>
+      $postbody=$result;
+      $result="";
+      int $lastoccu=0;
+      int $sndoccu=1;
+      while($sndoccu > 0)
+      {
+         int $fstoccu=strpos($postbody, "[u]", $lastoccu);
+         $sndoccu=strpos($postbody, "[/u]", $fstoccu);
+         if(($fstoccu > 0 && $sndoccu > 0 && $lastoccu > 0) || ($fstoccu >= 0 && $sndoccu > 0 && $lastoccu== 0))
+         {
+            $result += substr($postbody, $lastoccu, $fstoccu - $lastoccu);
+            $result += "<u>" + substr($postbody, $fstoccu + 3, $sndoccu - $fstoccu - 3) + "</u>";
+            $lastoccu = $sndoccu + 4;
+         }
+         else
+         {
+            $result +=substr($postbody, $lastoccu, strlen($postbody)-$lastoccu);
+            break;
+         }
+      }
+      // [size=1] [/size]
+      int $sndoccq=1;
+      while ($sndoccq>0){
+         $postbody=$result;
+         $lastoccq=0;
+         $sndoccq=2;
+         $fstoccq1=1;
+         while($fstoccq1 < $sndoccq + $fstoccq1){
+            $fstoccq=strpos(" " + $postbody, "[size=1]", $lastoccq);
+            $fstoccq1=strpos(" " + $postbody, "[size=1]", $fstoccq+1);
+            $sndoccq=strpos(" " + $postbody, "[/size]", $fstoccq+1);
+            $lastoccq=$fstoccq1;
+         }
+         if ($sndoccq > 0 && $fstoccq > 0){
+            $result=substr($postbody, 0, $fstoccq-1) + "<span class='post1'>" + substr($postbody, $fstoccq+7,$sndoccq - $fstoccq - 8) + "</span>" + substr($postbody, $sndoccq+6);
+         }else{
+            break;
+         }
+      }
+      // [size=2] [/size]
+      $sndoccq=1;
+      while ($sndoccq>0){
+         $postbody=$result;
+         $lastoccq=0;
+         $sndoccq=2;
+         $fstoccq1=1;
+         while($fstoccq1 < $sndoccq + $fstoccq1){
+            $fstoccq=strpos(" " + $postbody, "[size=2]", $lastoccq);
+            $fstoccq1=strpos(" " + $postbody, "[size=2]", $fstoccq+1);
+            $sndoccq=strpos(" " + $postbody, "[/size]", $fstoccq+1);
+            $lastoccq=$fstoccq1;
+         }
+         if ($sndoccq > 0 && $fstoccq > 0){
+            $result=substr($postbody, 0, $fstoccq-1) + "<span class='post2'>" + substr($postbody, $fstoccq+7,$sndoccq - $fstoccq - 8) + "</span>" + substr($postbody, $sndoccq+6);
+         }else{
+            break;
+         }
+      }
+      // [size=3] [/size]
+      $sndoccq=1;
+      while ($sndoccq>0){
+         $postbody=$result;
+         $lastoccq=0;
+         $sndoccq=2;
+         $fstoccq1=1;
+         while($fstoccq1<$sndoccq + $fstoccq1){
+            $fstoccq=strpos(" " + $postbody, "[size=3]", $lastoccq);
+            $fstoccq1=strpos(" " + $postbody, "[size=3]", $fstoccq+1);
+            $sndoccq=strpos(" " + $postbody, "[/size]", $fstoccq+1);
+            $lastoccq=$fstoccq1;
+         }
+         if ($sndoccq > 0 && $fstoccq > 0){
+            $result=substr($postbody, 0, $fstoccq-1) + "<span class='post3'>" + substr($postbody, $fstoccq+7,$sndoccq - $fstoccq - 8) + "</span>" + substr($postbody, $sndoccq+6);
+         }
+         else{
+            break;
+         }
+      }
+      // [size=4] [/size]
+      $sndoccq=1;
+      while ($sndoccq>0){
+         $postbody=$result;
+         $lastoccq=0;
+         $sndoccq=2;
+         $fstoccq1=1;
+         while($fstoccq1<$sndoccq + $fstoccq1){
+            $fstoccq=strpos(" " + $postbody, "[size=4]", $lastoccq);
+            $fstoccq1=strpos(" " + $postbody, "[size=4]", $fstoccq+1);
+            $sndoccq=strpos(" " + $postbody, "[/size]", $fstoccq+1);
+            $lastoccq=$fstoccq1;
+         }
+         if ($sndoccq > 0 && $fstoccq > 0){
+            $result=substr($postbody, 0, $fstoccq-1) + "<span class='post4'>" + substr($postbody, $fstoccq+7,$sndoccq - $fstoccq - 8) + "</span>" + substr($postbody, $sndoccq+6);
+         }
+         else{
+            break;
+         }
+      }
+      // [size=5] [/size]
+      $sndoccq=1;
+      while ($sndoccq>0){
+         $postbody=$result;
+         $lastoccq=0;
+         $sndoccq=2;
+         $fstoccq1=1;
+         while($fstoccq1<$sndoccq + $fstoccq1){
+            $fstoccq=strpos(" " + $postbody, "[size=5]", $lastoccq);
+            $fstoccq1=strpos(" " + $postbody, "[size=5]", $fstoccq+1);
+            $sndoccq=strpos(" " + $postbody, "[/size]", $fstoccq+1);
+            $lastoccq=$fstoccq1;
+         }
+         if ($sndoccq > 0 && $fstoccq > 0){
+            $result=substr($postbody, 0, $fstoccq-1) + "<span class='post5'>" + substr($postbody, $fstoccq+7,$sndoccq - $fstoccq - 8) + "</span>" + substr($postbody, $sndoccq+6);
+         }
+         else{
+            break;
+         }
+      }
+      // [color=red] [/color]
+      $sndoccq=1;
+      while ($sndoccq>0){
+         $postbody=$result;
+         $lastoccq=0;
+         $sndoccq=2;
+         $fstoccq1=1;
+         while($fstoccq1<$sndoccq + $fstoccq1){
+            $fstoccq=strpos(" " + $postbody, "[color=red]", $lastoccq);
+            $fstoccq1=strpos(" " + $postbody, "[color=red]", $fstoccq+1);
+            $sndoccq=strpos(" " + $postbody, "[/color]", $fstoccq+1);
+            $lastoccq=$fstoccq1;
+         }
+         if ($sndoccq > 0 && $fstoccq > 0){
+            $result=substr($postbody, 0, $fstoccq-1) + "<font color='red'>" + substr($postbody, $fstoccq+10,$sndoccq - $fstoccq - 11) + "</font>" + substr($postbody, $sndoccq+7);
+         }
+         else{
+            break;
+         }
+      }
+      // [color=green] [/color]
+      $sndoccq=1;
+      while ($sndoccq>0){
+         $postbody=$result;
+         $lastoccq=0;
+         $sndoccq=2;
+         $fstoccq1=1;
+         while($fstoccq1<$sndoccq + $fstoccq1){
+            $fstoccq=strpos(" " + $postbody, "[color=green]", $lastoccq);
+            $fstoccq1=strpos(" " + $postbody, "[color=green]", $fstoccq+1);
+            $sndoccq=strpos(" " + $postbody, "[/color]", $fstoccq+1);
+            $lastoccq=$fstoccq1;
+         }
+         if ($sndoccq > 0 && $fstoccq > 0){
+            $result=substr($postbody, 0, $fstoccq-1) + "<font color='green'>" + substr($postbody, $fstoccq+12,$sndoccq - $fstoccq - 13) + "</font>" + substr($postbody, $sndoccq+7);
+         }
+         else{
+            break;
+         }
+      }
+      // [color=blue] [/color]
+      $sndoccq=1;
+      while ($sndoccq>0){
+         $postbody=$result;
+         $lastoccq=0;
+         $sndoccq=2;
+         $fstoccq1=1;
+         while($fstoccq1<$sndoccq + $fstoccq1){
+            $fstoccq=strpos(" " + $postbody, "[color=blue]", $lastoccq);
+            $fstoccq1=strpos(" " + $postbody, "[color=blue]", $fstoccq+1);
+            $sndoccq=strpos(" " + $postbody, "[/color]", $fstoccq+1);
+            $lastoccq=$fstoccq1;
+         }
+         if ($sndoccq > 0 && $fstoccq > 0){
+            $result=substr($postbody, 0, $fstoccq-1) + "<font color='blue'>" + substr($postbody, $fstoccq+11,$sndoccq - $fstoccq - 12) + "</font>" + substr($postbody, $sndoccq+7);
+         }
+         else{
+            break;
+         }
+      }
+      // [color=yellow] [/color]
+      $sndoccq=1;
+      while ($sndoccq>0){
+         $postbody=$result;
+         $lastoccq=0;
+         $sndoccq=2;
+         $fstoccq1=1;
+         while($fstoccq1<$sndoccq + $fstoccq1){
+            $fstoccq=strpos(" " + $postbody, "[color=yellow]", $lastoccq);
+            $fstoccq1=strpos(" " + $postbody, "[color=yellow]", $fstoccq+1);
+            $sndoccq=strpos(" " + $postbody, "[/color]", $fstoccq+1);
+            $lastoccq=$fstoccq1;
+         }
+         if ($sndoccq > 0 && $fstoccq > 0){
+            $result=substr($postbody, 0, $fstoccq-1) + "<font color='yellow'>" + substr($postbody, $fstoccq+13,$sndoccq - $fstoccq - 14) + "</font>" + substr($postbody, $sndoccq+7);
+         }
+         else{
+            break;
+         }
+      }
+      // [color=purple] [/color]
+      $sndoccq=1;
+      while ($sndoccq>0){
+         $postbody=$result;
+         $lastoccq=0;
+         $sndoccq=2;
+         $fstoccq1=1;
+         while($fstoccq1<$sndoccq + $fstoccq1){
+            $fstoccq=strpos(" " + $postbody, "[color=purple]", $lastoccq);
+            $fstoccq1=strpos(" " + $postbody, "[color=purple]", $fstoccq+1);
+            $sndoccq=strpos(" " + $postbody, "[/color]", $fstoccq+1);
+            $lastoccq=$fstoccq1;
+         }
+         if ($sndoccq > 0 && $fstoccq > 0){
+            $result=substr($postbody, 0, $fstoccq-1) + "<font color='purple'>" + substr($postbody, $fstoccq+13,$sndoccq - $fstoccq - 14) + "</font>" + substr($postbody, $sndoccq+7);
+         }
+         else{
+            break;
+         }
+      }
+      // [color=orange] [/color]
+      $sndoccq=1;
+      while ($sndoccq>0){
+         $postbody=$result;
+         $lastoccq=0;
+         $sndoccq=2;
+         $fstoccq1=1;
+         while($fstoccq1<$sndoccq + $fstoccq1){
+            $fstoccq=strpos(" " + $postbody, "[color=orange]", $lastoccq);
+            $fstoccq1=strpos(" " + $postbody, "[color=orange]", $fstoccq+1);
+            $sndoccq=strpos(" " + $postbody, "[/color]", $fstoccq+1);
+            $lastoccq=$fstoccq1;
+         }
+         if ($sndoccq > 0 && $fstoccq > 0){
+            $result=substr($postbody, 0, $fstoccq-1) + "<font color='orange'>" + substr($postbody, $fstoccq+13,$sndoccq - $fstoccq - 14) + "</font>" + substr($postbody, $sndoccq+7);
+         }
+         else{
+            break;
+         }
+      }
+      // [color=teal] [/color]
+      $sndoccq=1;
+      while ($sndoccq>0){
+         $postbody=$result;
+         $lastoccq=0;
+         $sndoccq=2;
+         $fstoccq1=1;
+         while($fstoccq1<$sndoccq + $fstoccq1){
+            $fstoccq=strpos(" " + $postbody, "[color=teal]", $lastoccq);
+            $fstoccq1=strpos(" " + $postbody, "[color=teal]", $fstoccq+1);
+            $sndoccq=strpos(" " + $postbody, "[/color]", $fstoccq+1);
+            $lastoccq=$fstoccq1;
+         }
+         if ($sndoccq > 0 && $fstoccq > 0){
+            $result=substr($postbody, 0, $fstoccq-1) + "<font color='teal'>" + substr($postbody, $fstoccq+11,$sndoccq - $fstoccq - 12) + "</font>" + substr($postbody, $sndoccq+7);
+         }
+         else{
+            break;
+         }
+      }
+      // [color=gray] [/color]
+      $sndoccq=1;
+      while ($sndoccq>0){
+         $postbody=$result;
+         $lastoccq=0;
+         $sndoccq=2;
+         $fstoccq1=1;
+         while($fstoccq1<$sndoccq + $fstoccq1){
+            $fstoccq=strpos(" " + $postbody, "[color=gray]", $lastoccq);
+            $fstoccq1=strpos(" " + $postbody, "[color=gray]", $fstoccq+1);
+            $sndoccq=strpos(" " + $postbody, "[/color]", $fstoccq+1);
+            $lastoccq=$fstoccq1;
+         }
+         if ($sndoccq > 0 && $fstoccq > 0){
+            $result=substr($postbody, 0, $fstoccq-1) + "<font color='gray'>" + substr($postbody, $fstoccq+11,$sndoccq - $fstoccq - 12) + "</font>" + substr($postbody, $sndoccq+7);
+         }
+         else{
+            break;
+         }
+      }
+      // [color=brown] [/color]
+      $sndoccq=1;
+      while ($sndoccq>0){
+         $postbody=$result;
+         $lastoccq=0;
+         $sndoccq=2;
+         $fstoccq1=1;
+         while($fstoccq1<$sndoccq + $fstoccq1){
+            $fstoccq=strpos(" " + $postbody, "[color=brown]", $lastoccq);
+            $fstoccq1=strpos(" " + $postbody, "[color=brown]", $fstoccq+1);
+            $sndoccq=strpos(" " + $postbody, "[/color]", $fstoccq+1);
+            $lastoccq=$fstoccq1;
+         }
+         if ($sndoccq > 0 && $fstoccq > 0){
+            $result=substr($postbody, 0, $fstoccq-1) + "<font color='brown'>" + substr($postbody, $fstoccq+12,$sndoccq - $fstoccq - 13) + "</font>" + substr($postbody, $sndoccq+7);
+         }
+         else{
+            break;
+         }
+      }
+      // [quote] [/quote]
+      $sndoccq=1;
+      while ($sndoccq>0){
+         $postbody=$result;
+         $lastoccq=0;
+         $sndoccq=2;
+         $fstoccq1=1;
+         while($fstoccq1<$sndoccq + $fstoccq1){
+            $fstoccq=strpos(" " + $postbody, "[quote]", $lastoccq);
+            $fstoccq1=strpos(" " + $postbody, "[quote]", $fstoccq+1);
+            $sndoccq=strpos(" " + $postbody, "[/quote]", $fstoccq+1);
+            $lastoccq=$fstoccq1;
+         }
+         if ($sndoccq > 0 && $fstoccq > 0){
+            $result=substr($postbody, 0, $fstoccq-1) + "<table align=\"center\" width=\"90%\"><tr><td class=tdquote><span class='quote'>" + substr($postbody, $fstoccq+6,$sndoccq - $fstoccq - 7) + " </span></td></tr></table>" + substr($postbody, $sndoccq+7);
+         }
+         else{
+            break;
+         }
+      }
+      // Гиперссылки
+      $postbody=str_replace("<br", " <br",$result) + " ";
+      int $pos=0;
+      while (strpos(" " + $postbody, "http://", $pos) > 0) {
+         int $npos=strpos(" " + $postbody, "http://", $pos)-1;
+         int $epos=strpos($postbody, " ", $npos);
+         int $slpos=strpos(" " + $postbody, "/", $npos+8);
+         if ($npos< 5 || substr($postbody, $npos-5, 5).equals("[img]")) $postbody=substr($postbody, 0, $npos) + "<a href='" + substr($postbody, $npos, $epos-$npos) + "'><span class='nick'>" + substr($postbody, $npos+7, $slpos-$npos-8) + "</span></a>" + substr($postbody, $epos);
+         $pos=$epos;
+
+      }
+      $result=$postbody;
+      // [img] [/img] (<img border='0' src=') ('>)
+      $postbody=$result;
+      $result="";
+      $lastocc=0;
+      $sndocc=1;
+      while($sndocc > 0)
+      {
+         $fstocc=strpos($postbody, "[img]", $lastocc);
+         $sndocc=strpos($postbody, "[/img]", $fstocc);
+         if(($fstocc > 0 && $sndocc > 0 && $lastocc > 0) || ($fstocc >= 0 && $sndocc > 0 && $lastocc== 0))
+         {
+            $result += substr($postbody, $lastocc, $fstocc - $lastocc);
+            $result += "<img border='0' src='" + substr($postbody, $fstocc + 5, $sndocc - $fstocc - 5) + "'>";
+            $lastocc = $sndocc + 6;
+         }
+         else
+         {
+            $result +=substr($postbody, $lastocc, strlen($postbody)-$lastocc);
+            break;
+         }
+      }
+      return $result;
+   }   
+
+   public static String fd_href(String $href_head){
+      String $postbody=str_replace("<br", " <br", $href_head) + " ";
+      int $pos=0;
+      while (strpos(" " + $postbody, "http://", $pos) > 0) {
+         int $npos=strpos(" " + $postbody, "http://", $pos)-1;
+         int $epos=strpos($postbody, " ", $npos);
+         int $slpos=strpos(" " + $postbody, "/", $npos+8);
+         if ($npos < 5 || !substr($postbody, $npos-5, 5).equals("[img]")) $postbody=substr($postbody, 0, $npos) + "<a href='" + substr($postbody, $npos, $epos-$npos) + "'><span class='nick'>" + substr($postbody, $npos+7, $slpos-$npos-8) + "</span></a>" + substr($postbody, $epos);
+         $pos=$epos;
+   
+      }
+      return $postbody;
+   }      
 }
