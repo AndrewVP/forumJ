@@ -17,7 +17,7 @@ package ua.com.diletant.forum.tool;
 
 import junit.framework.Assert;
 
-import org.junit.Test;
+import org.junit.*;
 
 /**
  * 
@@ -36,6 +36,7 @@ public class PHPTest {
    }
    
    @Test
+   @Ignore
    public void stripslashesTest(){
       String text = "\\a";
       String expect = "a";

@@ -16,6 +16,7 @@
 package ua.com.diletant.forum.tool;
 
 import static ua.com.diletant.forum.tool.PHP.*;
+import ua.com.diletant.forum.db.entity.User;
 
 /**
  * Diletant custom php functions 
@@ -209,7 +210,7 @@ public class Diletant {
       result=fd_cenz(result);
       return result;
    }
-   
+
    public static String fd_bbcode(String $str_body) {
       int $fstoccq = 0;
       int $lastoccq = 0;
@@ -623,8 +624,45 @@ public class Diletant {
          int $slpos=strpos(" " + $postbody, "/", $npos+8);
          if ($npos < 5 || !substr($postbody, $npos-5, 5).equals("[img]")) $postbody=substr($postbody, 0, $npos) + "<a href='" + substr($postbody, $npos, $epos-$npos) + "'><span class='nick'>" + substr($postbody, $npos+7, $slpos-$npos-8) + "</span></a>" + substr($postbody, $epos);
          $pos=$epos;
-   
+
       }
       return $postbody;
    }      
+   public static String fd_button(String $mess, String  $onClick, String $name, String $numb){
+      String $button="<table id='"+$name+"_table' class='bttn"+$numb+"' onclick='"+$onClick+"'>"+
+      "<tr>"+
+      "  <td class='bttn"+$numb+"LeftTop'></td>"+
+      "  <td class='bttn"+$numb+"Top'></td>"+
+      "  <td class='bttn"+$numb+"RightTop'></td>"+
+      "</tr>"+
+      "<tr>"+
+      "  <td class='bttn"+$numb+"Left'></td>"+
+      "  <td class='bttn"+$numb+"Bg'>"+$mess+"</td>"+
+      "  <td class='bttn"+$numb+"Right'></td>"+
+      "</tr>"+
+      "<tr>"+
+      "  <td class='bttn"+$numb+"LeftBtm'></td>"+
+      "  <td class='bttn"+$numb+"Btm'></td>"+
+      "  <td class='bttn"+$numb+"RightBtm'></td>"+
+      "</tr>"+
+      "</table>  ";
+      return $button;
+   }
+   public static String fd_form_add(User user) {
+      String $result="";
+      //Команда для обработки
+      $result+="<input type=hidden name='comand'>";
+      // Автор
+      $result+="<input type=hidden name='IDU' value='"+user.getId().toString()+"'>";
+      $result+="<input type=hidden name='AUT' value='"+user.getNick()+"'>";
+      // пароль автора
+      if (isset(user.getPass2())) {
+         // кука
+         $result+="<input type=hidden name='PS2' value='"+user.getPass2()+"'>";
+      }else{
+         // не кука
+         $result+="<input type=hidden name='PS1' value='"+user.getPass()+"'>";
+      }
+      return $result;
+   }
 }

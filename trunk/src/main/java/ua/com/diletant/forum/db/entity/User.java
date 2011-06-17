@@ -28,6 +28,23 @@ public class User {
    private String pass = null;
    
    private String pass2 = null;
+   
+   private boolean logined = false;
+
+   
+   /**
+    * @return the logined
+    */
+   public boolean isLogined() {
+      return logined;
+   }
+
+   /**
+    * @param logined the logined to set
+    */
+   public void setLogined(boolean logined) {
+      this.logined = logined;
+   }
 
    /**
     * @return the pass
