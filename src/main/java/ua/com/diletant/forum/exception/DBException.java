@@ -19,22 +19,16 @@ package ua.com.diletant.forum.exception;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class InvalidKeyException extends FJException {
+public class DBException extends FJException {
 
-   private static final long serialVersionUID = 6127971393401310618L;
-
-   public InvalidKeyException(String message, Throwable cause) {
+   public DBException(String message, Throwable cause) {
       super(message, cause);
    }
 
-   public InvalidKeyException(String message) {
-      super(message);
-   }
-
-   public InvalidKeyException(Throwable cause) {
+   public DBException(Throwable cause) {
       super(cause);
    }
-   
-   
+
+   private static final long serialVersionUID = -4325554039653089828L;
 
 }

@@ -151,7 +151,32 @@ public class PHP {
    }
    
    public static long round(double arg, int precision){
+      //TODO Доделать!
       Formatter formatter = new Formatter();
       return Math.round(arg);
+   }
+   
+   public static String implode(String glue, Object[] pieces){
+      String result = "";
+      for (int piecesIndex = 0; piecesIndex < pieces.length; piecesIndex++) {
+         Object object = pieces[piecesIndex];
+         result += object.toString();
+         if (piecesIndex < pieces.length -1){
+            result += glue;
+         }
+      }
+      return result;
+   }
+
+   public static String implode(String glue, List<Long> pieces){
+      String result = "";
+      for (int piecesIndex = 0; piecesIndex < pieces.size(); piecesIndex++) {
+         Object object = pieces.get(piecesIndex);
+         result += object.toString();
+         if (piecesIndex < pieces.size() -1){
+            result += glue;
+         }
+      }
+      return result;
    }
 }
