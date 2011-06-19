@@ -73,7 +73,7 @@ public class PHP {
    }
 
    public static String substr(String string, int start , int length){
-      return string.substring(start, string.length() - length + 1);
+      return string.substring(start, length);
    }
 
    public static String substr(String string, int start){

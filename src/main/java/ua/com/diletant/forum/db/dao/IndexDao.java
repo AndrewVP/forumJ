@@ -305,7 +305,9 @@ public class IndexDao extends FJDao {
                   }
                   moved+=" "+rs.getLong("title")+",";
                }
-               moved=substr(moved, 0, strlen(moved)-1)+")";
+               if (moved != null){
+                  moved=substr(moved, 0, strlen(moved)-1)+")";
+               }
                /*Собираем запросы*/
                if (isset(moved)){
                   if (isset(ignored)){
@@ -368,7 +370,7 @@ public class IndexDao extends FJDao {
          "LEFT JOIN users ON titles.auth=users.id "+
          join + 
          where + 
-         "ORDER BY "+
+         " ORDER BY "+
          "titles.dock desc, "+
          "titles.lposttime desc "+
          "LIMIT " + nfirstpost + ", " + threadCountPerPage + " ";
@@ -379,6 +381,8 @@ public class IndexDao extends FJDao {
          "titles " + where + ";";
          // Добавляем временную таблицу
          if (isset(sqlTmpJoinTable)){
+            String query = "DROP TEMPORARY TABLE IF EXISTS fdutranzit;";
+            st.executeUpdate(query);
             st.executeUpdate(sqlTmpJoinTable);
             st.executeUpdate(sqlTmpJoinTableInsert);
          }

@@ -199,7 +199,7 @@ public class FJThread{
          // Автор последнего поста
          result+="<td width='120' align=center><div class='mnuforum'><font size='1'>" +htmlspecialchars(this.lastPostNick)+ "</font></div>";
          // Время последнего поста
-         result+="<div class='mnuforum'><a href='tema.php?id=" + this.id.toString() + "&end=1#end' rel='nofollow'><font size='1'>" + substr(this.lastPostTime, 0, 5) + "&nbsp;" + substr(this.lastPostTime, 6, 5) + "</font></a></div>";
+         result+="<div class='mnuforum'><a href='tema.php?id=" + this.id.toString() + "&end=1#end' rel='nofollow'><font size='1'>" + substr(this.lastPostTime, 0, 5) + "&nbsp;" + substr(this.lastPostTime, 6, 11) + "</font></a></div>";
          result+="</td>";
          // Папка
          result+="<td align='center' valign='middle'>";

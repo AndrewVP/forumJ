@@ -29,21 +29,59 @@ public class User {
    
    private String pass2 = null;
    
-   private boolean logined = false;
-
+   private int pp = 0;
    
+   private int pt = 0;
+   
+   private int view = 0;
+   
+   /**
+    * @return the view
+    */
+   public int getView() {
+      return view;
+   }
+
+   /**
+    * @param view the view to set
+    */
+   public void setView(int view) {
+      this.view = view;
+   }
+
+   /**
+    * @return the pg
+    */
+   public int getPp() {
+      return pp;
+   }
+
+   /**
+    * @param pg the pg to set
+    */
+   public void setPp(int pp) {
+      this.pp = pp;
+   }
+
+   /**
+    * @return the pt
+    */
+   public int getPt() {
+      return pt;
+   }
+
+   /**
+    * @param pt the pt to set
+    */
+   public void setPt(int pt) {
+      this.pt = pt;
+   }
+
    /**
     * @return the logined
     */
    public boolean isLogined() {
-      return logined;
-   }
-
-   /**
-    * @param logined the logined to set
-    */
-   public void setLogined(boolean logined) {
-      this.logined = logined;
+      return id != 0;
    }
 
    /**
