@@ -1,0 +1,3 @@
+jdbc.url=jdbc:mysql://localhost:3306/diletant
+jdbc.user.name=diletant
+jdbc.user.password=qqq
