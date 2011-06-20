@@ -1,13 +1,11 @@
 package org.forumj.tool;
 
 import static org.forumj.tool.PHP.*;
-import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.util.Date;
 
 import javax.servlet.http.*;
 
-import org.forumj.db.dao.UserDao;
 import org.forumj.db.entity.User;
 import org.forumj.exception.InvalidKeyException;
 
@@ -21,57 +19,6 @@ public class FJServletTools {
       response.setHeader("Pragma", "no-cache");
    }
 
-   public static boolean cokie(HttpServletRequest request, HttpServletResponse response, String redirectLocation){
-      boolean result = true;
-      User user = (User) request.getSession().getAttribute("user");
-      Cookie[] cookies = request.getCookies();
-      Cookie iduCookie = getCookie(cookies, "idu"); 
-      Cookie userCookie = getCookie(cookies, "user"); 
-      Cookie pass2Cookie = getCookie(cookies, "pass2"); 
-      UserDao dao = new UserDao();
-      if (user == null){
-         if (userCookie != null){
-            if (pass2Cookie == null) {
-               goAwayStupidHackers(response, redirectLocation);
-               return false;
-            }else{
-               user = dao.loadUser(Long.valueOf(iduCookie.getValue()), pass2Cookie.getValue(), false);
-               if (user == null){
-                  goAwayStupidHackers(response, redirectLocation);
-                  return false;
-               }else{
-                  request.getSession().setAttribute("user", user);               
-               }
-            }
-         }
-      }
-      if (user == null){
-         request.getSession().setAttribute("user", dao.loadUser(0l));
-      }
-      return result;
-   }
-
-   public static void exit(HttpServletRequest request){
-      String exitParam = request.getParameter("exit");
-      User user = (User) request.getSession().getAttribute("user");
-      if (exitParam != null && user != null && user.getId() != 0){
-         UserDao dao = new UserDao();
-         request.getSession().setAttribute("user", dao.loadUser(0l));
-      }
-   }
-   
-
-   private static void goAwayStupidHackers(HttpServletResponse response, String redirectLocation){
-      setcookie(response, "user", "", 0, "/forum", "www.diletant.com.ua");
-      setcookie(response, "idu", "", 0, "/forum", "www.diletant.com.ua");
-      setcookie(response, "pass2", "", 0, "/forum", "www.diletant.com.ua");
-      setcookie(response, "user", "", 0, "/forum", "diletant.com.ua");
-      setcookie(response, "idu", "", 0, "/forum", "diletant.com.ua");
-      setcookie(response, "pass2", "", 0, "/forum", "diletant.com.ua");
-      response.setStatus(HttpServletResponse.SC_OK);
-      response.setHeader("Location", redirectLocation);
-   }
-   
    public static StringBuffer menu(HttpServletRequest request, User user, String $lang, LocaleString locale) throws InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       String $ref=request.getContextPath();

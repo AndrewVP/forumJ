@@ -18,7 +18,7 @@ package org.forumj.tool;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import javax.swing.text.rtf.RTFEditorKit;
+import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 
 /**
  * PHP functions 
