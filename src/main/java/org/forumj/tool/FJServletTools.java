@@ -19,27 +19,27 @@ public class FJServletTools {
       response.setHeader("Pragma", "no-cache");
    }
 
-   public static StringBuffer menu(HttpServletRequest request, User user, String $lang, LocaleString locale) throws InvalidKeyException{
+   public static StringBuffer menu(HttpServletRequest request, User user, LocaleString locale) throws InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
-      String $ref=request.getContextPath();
+      String ref=request.getContextPath();
       String query = request.getQueryString();
       if(query=="")
       {
-         $ref=$ref + "?";
+         ref=ref + "?";
       }else if(strpos(" " +query, "lang=") < 1){
-         $ref=$ref + "?" +query + "&";
+         ref=ref + "?" +query + "&";
       }else if(strpos(query, "lang=")==0){
          if(strlen(query)>7)
          {
-            $ref=$ref + "?" +substr(query, 8) + "&";
+            ref=ref + "?" +substr(query, 8) + "&";
          }else{
-            $ref=$ref + "?";
+            ref=ref + "?";
          }
       }else{
-         $ref=$ref + "?" +substr(query, 0, strpos(query, "lang=")-1) + substr(query, strpos(query, "lang=")+7) + "&";
+         ref=ref + "?" +substr(query, 0, strpos(query, "lang=")-1) + substr(query, strpos(query, "lang=")+7) + "&";
       }
-      String $ukr=$ref + "lang=ua";
-      String $rus=$ref + "lang=ru";
+      String ukr=ref + "lang=ua";
+      String rus=ref + "lang=ru";
       buffer.append("<tr>");
       buffer.append("<td>");
       buffer.append("<table class=control>");
@@ -85,12 +85,12 @@ public class FJServletTools {
          buffer.append("</td>");
          buffer.append("<td class=bg align='right'>");
          /*Укр. интерфейс*/
-         buffer.append("<a class=mnuforumSm href='" + $ukr + "' rel='nofollow'>");
+         buffer.append("<a class=mnuforumSm href='" + ukr + "' rel='nofollow'>");
          buffer.append("Українська");
          buffer.append("</a>");
          buffer.append(chr(149));
          /*Рус. интерфейс*/
-         buffer.append("<a class=mnuforumSm href='"+ $rus + "' rel='nofollow'>");
+         buffer.append("<a class=mnuforumSm href='"+ rus + "' rel='nofollow'>");
          buffer.append("Русский");
          buffer.append("</a>");
          buffer.append("</td>");
@@ -125,22 +125,22 @@ public class FJServletTools {
          /* Переписка*/
          buffer.append("<img src='picts/email.gif' border='0' class='menuImg'>");
          buffer.append("<a class=mnuforumSm href='control.php?id=2' rel='nofollow'>");
-         buffer.append(locale.getString("$_mess23"));
+         buffer.append(locale.getString("mess23"));
          buffer.append("</a>");
-         $ref=request.getContextPath() + "?" +query + "&exit=0";
+         ref=request.getContextPath() + "?" +query + "&exit=0";
          buffer.append("<img src='picts/key_delete.gif' border='0' class='menuImg'>");
-         buffer.append("<a class=mnuforumSm href='<?php  echo $ref?>' rel='nofollow'>");
+         buffer.append("<a class=mnuforumSm href='<?php  echo ref?>' rel='nofollow'>");
          buffer.append(locale.getString("mess6"));
          buffer.append("</a>");
          buffer.append("</td>");
          /* Укр. интерфейс*/
          buffer.append("<td class=bg align='right'>");
-         buffer.append("<a class=mnuforumSm href='" + $ukr + "' rel='nofollow'>");
+         buffer.append("<a class=mnuforumSm href='" + ukr + "' rel='nofollow'>");
          buffer.append("Українська");
          buffer.append("</a>");
          buffer.append(chr(149));
          /* Рус. интерфейс*/
-         buffer.append("<a class=mnuforumSm href='" + $rus + "' rel='nofollow'>");
+         buffer.append("<a class=mnuforumSm href='" + rus + "' rel='nofollow'>");
          buffer.append("Русский");
          buffer.append("</a>");
          buffer.append("</td>");
@@ -157,6 +157,64 @@ public class FJServletTools {
       buffer.append("</tr>");     
       return buffer;
    }
-   
+
+   public static StringBuffer logo(HttpServletRequest request){
+      StringBuffer buffer = new StringBuffer();
+      String ref=request.getContextPath();
+      buffer.append("<tr>");
+      buffer.append("<td width='100%'>");
+      buffer.append("<table border='0' width='100%' style='border-collapse: collapse'>");
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      buffer.append("<a href='/'><img border='0' src='" + ref + "/images/all/title.gif'></a><br>");
+      buffer.append("<a href='/' class=tbtextnread>www.Дилетант.com.ua</a>");
+      buffer.append("</td>");
+      buffer.append("<td align=center>");
+      buffer.append("<a href='http://www.donor.org.ua/index.php?module=help' target=\"_blank\" title='Украинская Открытая Ассоциация Организаций, Групп и Лиц, работающих с детьми, страдающими онкозаболеваниями'><img src='banner/donor_2.gif'></a>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("</table></td></tr>");
+      return buffer;
+   }
+
+   public static StringBuffer footer(HttpServletRequest request){
+      StringBuffer buffer = new StringBuffer();
+      String ref=request.getContextPath();
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      buffer.append("<table width='100%'>");
+      buffer.append("<tr>");
+      buffer.append("<td align=\"center\">");
+      buffer.append("<a href='http://www.donor.org.ua/index.php?module=help' target=\"_blank\" title='Украинская Открытая Ассоциация Организаций, Групп и Лиц, работающих с детьми, страдающими онкозаболеваниями'><img src='" + ref + "/banner/donor_2.gif'></a>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("</table>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("<tr>");
+      buffer.append("<td align='center' width='100%'>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      buffer.append("<table>");
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      buffer.append("<span class='copy'>");
+      buffer.append("За достоверность и правдивость опубликованой информации администрация сайта и форума ответственности не несет<br>");
+      buffer.append("<a href='http://www.diletant.com.ua'>");
+      buffer.append("www.diletant.com.ua");
+      buffer.append("</a>");
+      buffer.append("<br>");
+      buffer.append("Пишите нам:&nbsp;<a href='mailto:diletant@diletant.com.ua'>diletant@diletant.com.ua</a>");
+      buffer.append("</span>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("</table>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      return buffer;
+   }
+
 
 }

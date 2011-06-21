@@ -38,7 +38,7 @@ import org.forumj.tool.LocaleString;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet("/index.php")
+@WebServlet(urlPatterns = {"/index.php"}, name="index")
 public class Index extends HttpServlet {
 
    private static final long serialVersionUID = 1828936989822948738L;
@@ -78,9 +78,9 @@ public class Index extends HttpServlet {
          buffer.append("</style>");
          // Скрипты (флажки)
          buffer.append("<script type='text/javascript'>");
-         buffer.append("// <!--");
+         buffer.append("// <!--\n");
          buffer.append(loadResource("/js/jsmain_chek.js"));
-         buffer.append("// -.");
+         buffer.append("\n// -->");
          buffer.append("</script>");
          Long $m_xb = $dao.getMaxPostId();
          Long $m_xt = $dao.getMaxThreadId();
@@ -88,18 +88,18 @@ public class Index extends HttpServlet {
          buffer.append("// <!-- \n");
          buffer.append("var m_xb=" + $m_xb + ";");
          buffer.append("var m_xt=" + $m_xt + ";");
-         buffer.append("// -.");
+         buffer.append("\n// -->");
          buffer.append("</script>");
          buffer.append("<script type='text/javascript'>");
-         buffer.append("// <!--");
+         buffer.append("// <!--\n");
          buffer.append(loadResource("/js/indicator.js"));
-         buffer.append("// -.");
+         buffer.append("\n// -->");
          buffer.append("</script>");
          // Скрипты (submit формы интерфейсов)
          buffer.append("<script type='text/javascript'>");
-         buffer.append("// <!--");
+         buffer.append("// <!-- \n");
          buffer.append(loadResource("/js/jsview_ok.js"));
-         buffer.append("// -.");
+         buffer.append("\n// -->");
          buffer.append("</script>");
          buffer.append("<link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\">");
          buffer.append("<link rel=\"shortcut icon\" href=\"/favicon.ico\" type=\"image/x-icon\">");
@@ -114,7 +114,7 @@ public class Index extends HttpServlet {
          buffer.append("<tr><td>");
          buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          // Таблица с лого и верхним баннером
-         buffer.append(loadResource("/html/logo.html"));
+         buffer.append(logo(request));
          // соединяемся и определяем кол-во страниц
          long $nfirstpost=($pg-1)*user.getPp();
          // Интерфейс по умолчанию
@@ -138,7 +138,7 @@ public class Index extends HttpServlet {
          buffer.append("<td width='100%'>");
          buffer.append("<table id='t2' width='100%'>");
          /*Главное меню*/
-         buffer.append(menu(request, user, $defLang, $locale));
+         buffer.append(menu(request, user, $locale));
          // Интерфейс
          // Имя текущего
          if (session.getAttribute("vname") == null){
@@ -160,7 +160,7 @@ public class Index extends HttpServlet {
          buffer.append($locale.getString("mess81"));
          buffer.append("</span>");
          buffer.append("<span class=nik>");
-         buffer.append("<?echo($_SESSION['vname']);?>");
+         buffer.append(session.getAttribute("vname"));
          buffer.append("</span>");
          buffer.append("</td>");
          buffer.append("<td class=bg2 align=right>");
@@ -304,8 +304,7 @@ public class Index extends HttpServlet {
          }
          // Главные ссылки внизу страницы
          buffer.append("</table>");
-         buffer.append("<script language='javascript' type='text/javascript'>");
-         buffer.append("// <!-- \n");
+         buffer.append("<script type='text/javascript'>");
          buffer.append("if (request){");
          if($dao.getIndctrIds() == null || $dao.getIndctrIds().trim().length() == 0){
             buffer.append("var idss = '0';");
@@ -314,7 +313,6 @@ public class Index extends HttpServlet {
          }
          buffer.append("getIndicatorInfo();");
          buffer.append("}");
-         buffer.append("// -->");
          buffer.append("</script>");
          buffer.append("</td>");
          buffer.append("</tr>");
@@ -390,7 +388,7 @@ public class Index extends HttpServlet {
             buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          }
          /*Главное меню*/
-         menu(request, user, $defLang, $locale);
+         menu(request, user, $locale);
          buffer.append("</table>");
          buffer.append("</td>");
          buffer.append("</tr>");
@@ -415,7 +413,6 @@ public class Index extends HttpServlet {
          buffer.append("<font class=nick>");
          // Выводим количество гостей
          buffer.append($dao.getGuestCount());
-         // Закрываем соединение с БД
          buffer.append("</font>");
          buffer.append("</td>");
          buffer.append("</tr>");
@@ -423,7 +420,8 @@ public class Index extends HttpServlet {
          buffer.append("</td>");
          buffer.append("</tr>");
          // Баннер внизу, счетчики и копирайт.
-         buffer.append(loadResource("/html/end.html"));
+         buffer.append(footer(request));
+         buffer.append("</table></td></tr></table></td></tr></table>");
          buffer.append("</body>");
          buffer.append("</html>");
       } catch (InvalidKeyException e) {
