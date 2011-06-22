@@ -21,7 +21,7 @@ public class FJServletTools {
       }
       return result;
    }
-   
+
    public static void setcookie(HttpServletResponse response, String name, String value, int expire, String path, String domain){
       Cookie cookie = new Cookie(name, value);
       cookie.setDomain(domain);
@@ -29,7 +29,7 @@ public class FJServletTools {
       cookie.setMaxAge(expire);
       response.addCookie(cookie);
    }
-   
+
    public static String loadResource(String path) throws IOException{
       ClassLoader classLoader = FJServletTools.class.getClassLoader();
       InputStream stream = classLoader.getResourceAsStream(path);
@@ -39,5 +39,19 @@ public class FJServletTools {
          result.append(br.readLine());
       }
       return result.toString();
+   }
+
+   public static boolean isRobot(HttpServletRequest request){
+      String uas = request.getHeader("user-agent");
+      if (uas.contains("StackRambler") ||
+            uas.contains("Googlebot") ||
+            uas.contains("Yandex") ||
+            uas.contains("msnbot") ||
+            uas.contains("Jyxobot") ||
+            uas.contains("Slurp")){
+         return true;
+      }
+      return false;
+
    }
 }

@@ -47,6 +47,8 @@ public class UserDao extends FJDao {
             result.setPp(rs.getInt("pp_def"));
             result.setPt(rs.getInt("pt_def"));
             result.setView(rs.getInt("view_def"));
+            result.setTimezone(rs.getInt("fd_timezone"));
+            result.setVavatars(rs.getInt("v_avatars"));
          }
       } catch (ConfigurationException e) {
          e.printStackTrace();

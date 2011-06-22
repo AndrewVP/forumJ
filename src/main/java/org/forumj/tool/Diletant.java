@@ -21,7 +21,7 @@ import org.forumj.db.entity.User;
 
 /**
  * Diletant custom php functions 
- * @author <a href="mailto:an.pogrebnyak@gmail.com">&&rew V. Pogrebnyak</a>
+ * @author <a href="mailto:an.pogrebnyak@gmail.com'>&&rew V. Pogrebnyak</a>
  */
 public class Diletant {
 
@@ -574,7 +574,7 @@ public class Diletant {
             $lastoccq=$fstoccq1;
          }
          if ($sndoccq > 0 && $fstoccq > 0){
-            $result=substr($postbody, 0, $fstoccq-1) + "<table align=\"center\" width=\"90%\"><tr><td class=tdquote><span class='quote'>" + substr($postbody, $fstoccq+6,$sndoccq - $fstoccq - 7) + " </span></td></tr></table>" + substr($postbody, $sndoccq+7);
+            $result=substr($postbody, 0, $fstoccq-1) + "<table align=\"center\" width=\"90%\'><tr><td class=tdquote><span class='quote'>" + substr($postbody, $fstoccq+6,$sndoccq - $fstoccq - 7) + " </span></td></tr></table>" + substr($postbody, $sndoccq+7);
          }
          else{
             break;
@@ -665,5 +665,250 @@ public class Diletant {
          $result+="<input type=hidden name='PS1' value='"+user.getPass()+"'>";
       }
       return $result;
+   }
+   public static String fd_input(String name, String value, String size, String numb){
+      StringBuffer input= new StringBuffer();
+      input.append("<table id='" + name + "_table' class='input" + numb + "'>");
+      input.append("<tr>");
+      input.append("<td class='input" + numb + "LeftTop'></td>");
+      input.append("<td class='input" + numb + "Top'></td>");
+      input.append("<td class='input" + numb + "RightTop'></td>");
+      input.append("</tr>");
+      input.append("<tr>");
+      input.append("<td class='input" + numb + "Left'></td>");
+      input.append("<td class='input" + numb + "Bg'><input class='input" + numb + "' type=text name='" + name + "' size='" + size + "' value='" + value + "' maxlength='120'></td>");
+      input.append("<td class='input" + numb + "Right'></td>");
+      input.append("</tr>");
+      input.append("<tr>");
+      input.append("<td class='input" + numb + "LeftBtm'></td>");
+      input.append("<td class='input" + numb + "Btm'></td>");
+      input.append("<td class='input" + numb + "RightBtm'></td>");
+      input.append("</tr>");
+      input.append("</table>");    
+      return input.toString();
+   }
+   public static int fd_timezone_hr(int $id_timezone){
+      int result = 0;
+      switch($id_timezone) {
+         case 1:
+            // (GMT - 12:00)
+            result = -14;
+            break;
+         case 2:
+            // (GMT - 11:00)
+            result = -13;
+            break;
+         case 3:
+            // (GMT - 10:00)
+            result = -12;
+            break;
+         case 4:
+            // (GMT - 9:00)
+            result = -11;
+            break;
+         case 5:
+            // (GMT - 8:00)
+            result = -10;
+            break;
+         case 6:
+            // (GMT - 7:00)
+            result = -9;
+            break;
+         case 7:
+            // (GMT - 6:00)
+            result = -8;
+            break;
+         case 8:
+            // (GMT - 5:00)
+            result = -7;
+            break;
+         case 9:
+            // (GMT - 4:00)
+            result = -6;
+            break;
+         case 10:
+            // (GMT - 3:30)
+            result = -5;
+            break;
+         case 11:
+            // (GMT - 3:00)
+            result = -5;
+            break;
+         case 12:
+            // (GMT - 2:00)
+            result = -4;
+            break;
+         case 13:
+            // (GMT - 1:00)
+            result = -3;
+            break;
+         case 14:
+            // (GMT)
+            result = -2;
+            break;
+         case 15:
+            // (GMT + 1:00)
+            result = -1;
+            break;
+         case 16:
+            // (GMT + 2:00)
+            result = 0;
+            break;
+         case 17:
+            // (GMT + 3:00)
+            result = 1;
+            break;
+         case 18:
+            // (GMT + 3:30)
+            result = +1;
+            break;
+         case 19:
+            // (GMT + 4:00)
+            result = 2;
+            break;
+         case 20:
+            // (GMT + 4:30)
+            result = 2;
+            break;
+         case 21:
+            // (GMT + 5:00)
+            result = 3;
+            break;
+         case 22:
+            // (GMT + 5:30)
+            result = 3;
+            break;
+         case 23:
+            // (GMT + 6:00)
+            result = 4;
+            break;
+         case 24:
+            // (GMT + 7:00)
+            result = 5;
+            break;
+         case 25:
+            // (GMT + 8:00)
+            result = 6;
+            break;
+         case 26:
+            // (GMT + 9:00)
+            result = 7;
+            break;
+         case 27:
+            // (GMT + 9:30)
+            result = 7;
+            break;
+         case 28:
+            // (GMT + 10:00)
+            result = 8;
+            break;
+         case 29:
+            // (GMT + 11:00)
+            result = 9;
+            break;
+         case 30:
+            // (GMT + 12:00)
+            result = 10;
+            break;
+      }
+      return result;
+
+   }
+   public static int fd_timezone_mn(int $id_timezone){
+      int result = 0;
+      switch($id_timezone) {
+         case 10:
+            // (GMT - 3:30)
+            result = -30;
+            break;
+         case 18:
+            // (GMT + 3:30)
+            result = 30;
+            break;
+         case 20:
+            // (GMT + 4:30)
+            result = 30;
+            break;
+         case 22:
+            // (GMT + 5:30)
+            result = 30;
+            break;
+         case 27:
+            // (GMT + 9:30)
+            result = 30;
+            break;
+         default: 
+            result = 0;
+      }
+      return result;
+   }
+
+   public static StringBuffer smiles_add(String mess11){
+      StringBuffer result = new StringBuffer();
+      result.append("<table>");
+      result.append("<tr>");
+      result.append("<td id='td1'>");
+      /*Первая строчка Мальчики*/
+      result.append("<a href='#' onclick='smile(':)'); return false' rel='nofollow'>");
+      result.append("<img border='0' src='smiles/smile_.gif'>");
+      result.append("</a>");
+      result.append("<a href='#' onclick='smile(':('); return false' rel='nofollow'>");
+      result.append("<img border='0' src='smiles/sad.gif'>");
+      result.append("</a>");
+      result.append("<a href='#' onclick='smile(';)'); return false' rel='nofollow'>");
+      result.append("<img border='0' src='smiles/wink3.gif'>");
+      result.append("</a>");
+      result.append("</td>");
+      result.append("</tr>");
+      /*Вторая строчка Девочки*/
+      result.append("<tr>");
+      result.append("<td id='td2'>");
+      result.append("<a href='#' onclick='smile(':g)'); return false' rel='nofollow'><img border='0' src='smiles/girl_smile.gif'></a>"); 
+      result.append("<a href='#' onclick='smile(':g('); return false' rel='nofollow'><img border='0' src='smiles/girl_sad.gif'></a>"); 
+      result.append("</td>");
+      result.append("</tr>");
+      /*Третья строчка Остальное*/
+      result.append("<tr>");
+      result.append("<td id='td3'></td>");
+      result.append("</tr>");
+      result.append("<tr>");
+      result.append("<td align=center>");
+      /* Кнопка "Показать все"*/
+      result.append(fd_button(mess11,"viewsml();","btn1", "1"));
+      result.append("<br><br><br>");
+      result.append("</td>");
+      result.append("</tr>");
+      result.append("</table>");
+      return result;
+   }
+
+   public static StringBuffer autotags_add(){
+      StringBuffer result = new StringBuffer();
+      result.append("<img src='skin/standart/picts/b.gif' onclick='InsertTags('[b]','[/b]')' alt='Полужирный текст'>");
+      result.append("<img src='skin/standart/picts/i.gif' onclick='InsertTags('[i]','[/i]')' alt='Курсивный текст'>");
+      result.append("<img src='skin/standart/picts/u.gif' onclick='InsertTags('[u]','[/u]')' alt='Подчеркнутый текст'>");
+      result.append("&nbsp;");
+      result.append("<img src='skin/standart/picts/1.gif' onclick='InsertTags('[size=1]','[/size]')' alt='Размер шрифта 1'>");
+      result.append("<img src='skin/standart/picts/2.gif' onclick='InsertTags('[size=2]','[/size]')' alt='Размер шрифта 2'>");
+      result.append("<img src='skin/standart/picts/3.gif' onclick='InsertTags('[size=3]','[/size]')' alt='Размер шрифта 3'>");
+      result.append("<img src='skin/standart/picts/4.gif' onclick='InsertTags('[size=4]','[/size]')' alt='Размер шрифта 4'>");
+      result.append("<img src='skin/standart/picts/5.gif' onclick='InsertTags('[size=5]','[/size]')' alt='Размер шрифта 5'>");
+      result.append("&nbsp;");
+      result.append("<img src='skin/standart/picts/img.gif' onclick='InsertTags('[img]','[/img]')' alt='Вставить картинку'>");
+      result.append("<img src='skin/standart/picts/quote.gif' onclick='InsertTags('[quote]','[/quote]')' alt='Добавить рамку'>");
+      result.append("<br>");
+      result.append("<SELECT style='margin-top:1px; font:11px verdana; border: solid 1px black;' name=fcolor  onchange='javascript: InsertTags('[color=' + document.post.fcolor.options[document.post.fcolor.selectedIndex].value + ']', '[/color]'); document.post.fcolor.selectedIndex=0'>");
+      result.append("<OPTION style='color:black' value='black'>Black</OPTION>");
+      result.append("<OPTION style='color:red' value='red'>Red</OPTION>");
+      result.append("<OPTION style='color:green' value='green'>Green</OPTION>");
+      result.append("<OPTION style='color:blue' value='blue'>Blue</OPTION>");
+      result.append("<OPTION style='color:yellow' value='yellow'>Yellow</OPTION>");
+      result.append("<OPTION style='color:purple' value='purple'>Purple</OPTION>");
+      result.append("<OPTION style='color:orange' value='orange'>Orange</OPTION>");
+      result.append("<OPTION style='color:teal' value='teal'>Teal</OPTION>");
+      result.append("<OPTION style='color:brown' value='brown'>Brown</OPTION>");
+      result.append("<OPTION style='color:gray' value='gray'>Gray</OPTION>");
+      result.append("</SELECT>");
+      return result;
    }
 }

@@ -17,6 +17,7 @@ package org.forumj.db.dao;
 
 import java.sql.*;
 import java.util.*;
+import java.util.Map.Entry;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.db.entity.*;
@@ -192,10 +193,9 @@ public class TemaDao extends FJDao {
     * @param unknown_type $lastPost
     * @return unknown
     */
-   public List<Post> getPostsList(int $str_fd_timezone_hr, int $str_fd_timezone_mn, long $nfirstpost, int $count, LocaleString $locale, int $pg, boolean $lastPost){
-      int xx
+   public Map<Long, Post> getPostsList(int $str_fd_timezone_hr, int $str_fd_timezone_mn, long $nfirstpost, int $count, LocaleString $locale, int $pg, boolean $lastPost){
       String query="SELECT * FROM body WHERE body.head=" +  this.getId() + " ORDER BY body.id ASC LIMIT " + $nfirstpost + ", " +  $count;
-      List<Post> $result = new ArrayList<Post>();
+      Map<Long, Post> result = new HashMap<Long, Post>();
       boolean $isLastPost = false;
       boolean $isQuest = false;
       boolean $isAdminForvard = false;
@@ -203,115 +203,118 @@ public class TemaDao extends FJDao {
       boolean $hasIgnor = this.getArrIgnorId().size()>0;
       boolean $isFirst;
       int $nPost = 0;
-      List<Long> $bodiesId = new ArrayList<Long>();
-      List<Long> $headsId = new ArrayList<Long>();
+      Map<String, String> $bodiesId = new HashMap<String, String>();
+      Map<String, String> $headsId = new HashMap<String, String>();
       Long $lastPostId = null;
       Connection conn = null;
       Statement st = null;
-      int result = 0;
+      QuestNodeDao questDao = new QuestNodeDao();
       try {
          conn = getConnection();
          st = conn.createStatement();
          ResultSet rs = st.executeQuery(query);
-         if (rs.next()){
+         while (rs.next()){
             $isFirst = $pg == 1 && ++$nPost == 1;
             $lastPostId = rs.getLong("id");
-            Post post = new Post(idThread, idPost, locale, idWordsForms, res_ignor, has_ignor, is_found, isAdminForvard, isQuest, isUserCanAddAnswer, pg, isFirst, currentUser)
-            $result[$row['id']] = new Post($row,
-                                 $locale,
-                                 NULL,
-                                 this.arrIgnorId(),
-                                 $hasIgnor,
-                                 0,
-                                 $isAdminForvard,
-                                 $isQuest,
-                                 $isUserCanAddAnswer,
-                                 $pg,
-                                 this.connection,
-                                 $isFirst);
-            if (isset($bodiesId[$row['table_post']])){
-               $bodiesId[$row['table_post']] .= ", " + $row['id'];
-            }else{
-               $bodiesId[$row['table_post']] = $row['id'];
+            Post post = new Post(this.getId(), $lastPostId, $locale, null, getArrIgnorId(), $hasIgnor, 0, $isAdminForvard, $isQuest, $isUserCanAddAnswer, $pg, $isFirst, getUser());
+            if ($lastPost){
+               post.setLastPost();
             }
-            if (isset($headsId[$row['table_head']])){
-               $headsId[$row['table_head']] .= ", " + $row['id'];
+            result.put($lastPostId, post);
+            String tablePost = rs.getString("table_post");
+            String tablePostIds = $bodiesId.get(tablePost);
+            if (tablePostIds != null){
+               tablePostIds += ", " + $lastPostId.toString();
             }else{
-               $headsId[$row['table_head']] = $row['id'];
+               tablePostIds = $lastPostId.toString();
             }
+            $bodiesId.put(tablePost, tablePostIds);
+            String tableHead = rs.getString("table_head");
+            String tableHeadIds = $headsId.get(tableHead);
+            if (tableHeadIds != null){
+               tableHeadIds += ", " + $lastPostId.toString();
+            }else{
+               tableHeadIds = $lastPostId.toString();
+            }
+            $headsId.put(tableHead, tableHeadIds);
          }
-         if ($lastPost){
-            $result[$lastPostId].setLastPost();
-         }
-         $resultSet.__destruct();
          //Загружаем заголовки постов
-         foreach ($headsId as $table => $ids) {
-            $sqlHead = "SELECT "+
-                   + $table + " + id, "+
-                   + $table + " + ip, "+
-                   + $table + " + auth, "+
-                   + $table + " + domen, "+
-                   + $table + " + tilte, "+
-                   + $table + " + fd_post_time as post_time, "+
-                   + $table + " + nred, "+
-                   + $table + " + fd_post_edit_time as post_edit_time, "+
-                  "users.nick, "+
-                  "users.avatar, "+
-                  "users.s_avatar, "+
-                  "users.ok_avatar, "+
-                  "users.v_avatars, "+
-                  "users.h_ip, "+
-                  "users.city, "+
-                  "users.scity, "+
-                  "users.country, "+
-                  "users.scountry, "+
-                  "users.footer, "+
-                  "titles.head, "+
-                  "titles.type "+
-               "FROM "+
-                    "(" + $table + 
-                    "LEFT JOIN users ON " + $table + " + auth = users.id) "+
-                    "LEFT JOIN titles ON " + $table + " + thread_id = titles.id "+
-                  "WHERE "+
-                  + $table + " + id IN (" + $ids + ") ";
-            try{
-               $resultSetHead = this.connection.doQuery(new QueryResult($sqlHead));
-            }catch (MySQLQueryException $e){
-               this.onDatabaseError($e);
-            }
-            this.onQuery($resultSetHead);
-            while ($row = mysql_fetch_assoc($resultSetHead.getResult())){
-               $isQuest = ($row['type'] == 1 || $row['type'] == 2);
-               if ($result[$row['id']].isFirst() && $isQuest){
-                  $result[$row['id']].setQuest();
-                  $questNodes = this.getQuestNodes();
-                  $result[$row['id']].setAnswerAmount($questNodes.getNumRows());
-                  $result[$row['id']].setVoicesAmount(this.getVoicesAmount());
-                  $arrNodes = array();
-                  while ($node = mysql_fetch_assoc($questNodes.getResult())){
-                     $arrNodes[] = $node;
-                  }
-                  $result[$row['id']].setNodes($arrNodes);
-                  $result[$row['id']].setQuestion($questNodes.get('node'));
-                  $result[$row['id']].setUserVote(this.isUserVote());
+         for (Iterator<Entry<String, String>> iterator = $headsId.entrySet().iterator(); iterator.hasNext();) {
+            Entry<String, String> entry = iterator.next();
+            String $table = entry.getKey();
+            String $ids = entry.getValue();
+            String $sqlHead = "SELECT "+
+            $table + ".id, "+
+            $table + ".ip, "+
+            $table + ".auth, "+
+            $table + ".domen, "+
+            $table + ".tilte, "+
+            $table + ".fd_post_time as post_time, "+
+            $table + ".nred, "+
+            $table + ".fd_post_edit_time as post_edit_time, "+
+            "users.nick, "+
+            "users.avatar, "+
+            "users.s_avatar, "+
+            "users.ok_avatar, "+
+            "users.v_avatars, "+
+            "users.h_ip, "+
+            "users.city, "+
+            "users.scity, "+
+            "users.country, "+
+            "users.scountry, "+
+            "users.footer, "+
+            "titles.head, "+
+            "titles.type "+
+            "FROM "+
+            "(" + $table + 
+            " LEFT JOIN users ON " + $table + ".auth = users.id) "+
+            " LEFT JOIN titles ON " + $table + ".thread_id = titles.id "+
+            " WHERE " + $table + ".id IN (" + $ids + ") ";
+            rs = st.executeQuery($sqlHead);
+            while (rs.next()){
+               Long postId = rs.getLong("id");
+               int type = rs.getInt("type");
+               $isQuest = (type == 1 || type == 2);
+               Post post = result.get(postId);
+               if (post.isFirst() && $isQuest){
+                  post.setQuest();
+
+                  List<QuestNode> $questNodes = questDao.loadNodes(getId());
+                  post.setAnswerAmount($questNodes.size());
+                  post.setVoicesAmount(this.getVoicesAmount());
+                  post.setNodes($questNodes);
+                  post.setQuestion($questNodes.get(0).getNode());
+                  post.setUserVote(this.isUserVote());
                }
-               $result[$row['id']].loadHeads($row, $str_fd_timezone_hr,$str_fd_timezone_mn);
+               post.setNick(rs.getString("nick"));
+               post.setIdu(rs.getLong("auth"));
+               post.setIp(rs.getString("ip"));
+               post.setAvatar(rs.getString("avatar"));
+               post.setShowAvatar(rs.getInt("users.s_avatar") == 1);
+               post.setShowAvatarApproved(rs.getInt("ok_avatar") == 1);
+               post.setWantSeeAvatars(rs.getInt("v_avatars") == 1);
+               post.setCountry(rs.getString("country"));
+               post.setShowCountry(rs.getInt("scountry") == 1);
+               post.setPostTime(rs.getLong("post_time"), $str_fd_timezone_hr,$str_fd_timezone_mn);
+               post.setCity(rs.getString("city"));
+               post.setShowCity(rs.getInt("scity") == 1);
+               post.setPostFooter(rs.getString("footer"));
+               post.setDomen(rs.getString("domen"));
+               post.setHead(rs.getString("tilte"));
             }
-            $resultSetHead.__destruct();
          }
          //Загружаем посты
-         foreach ($bodiesId as $table => $ids) {
-            $sqlBody = "SELECT id, body FROM " + $table + " WHERE id IN (" + $ids + ")";
-            try{
-               $resultSetBody = this.connection.doQuery(new QueryResult($sqlBody));
-            }catch (MySQLQueryException $e){
-               this.onDatabaseError($e);
+         for (Iterator<Entry<String, String>> iterator = $bodiesId.entrySet().iterator(); iterator.hasNext();) {
+            Entry<String, String> entry = iterator.next();
+            String $table = entry.getKey();
+            String $ids = entry.getValue();
+            String $sqlBody = "SELECT id, body FROM " + $table + " WHERE id IN (" + $ids + ")";
+            rs = st.executeQuery($sqlBody);
+            while (rs.next()){
+               Long postId = rs.getLong("id");
+               Post post = result.get(postId);
+               post.setBody(rs.getString("body"));
             }
-            this.onQuery($resultSetBody);
-            while ($row = mysql_fetch_assoc($resultSetBody.getResult())){
-               $result[$row['id']].setBody($row['body']);
-            }
-            $resultSetBody.__destruct();
          }
       } catch (ConfigurationException e) {
          e.printStackTrace();
@@ -333,27 +336,49 @@ public class TemaDao extends FJDao {
             e.printStackTrace();
          }
       }
-      return $result;
+      return result;
    }
 
    /**
     * Возвращает количество постов в ветке
     */
-   public function getPostsCountInThread($idMax){
-      $addQuery = "";
-      if ($idMax != ""){
+   public Integer getPostsCountInThread(Long $idMax){
+      Integer result = null;
+      String $addQuery = "";
+      if ($idMax != null){
          $addQuery = " AND id < " +  $idMax;
       }
-      String query = "SELECT count(id) as kolvo FROM body WHERE head=" +  this.getId() . $addQuery;
-      try{
-         $result = this.connection.doQuery(new QueryResult($query));
-      }catch (MySQLQueryException $e){
-         this.onDatabaseError($e);
+      String query = "SELECT count(id) as kolvo FROM body WHERE head=" +  this.getId() + $addQuery;
+      Connection conn = null;
+      Statement st = null;
+      try {
+         conn = getConnection();
+         st = conn.createStatement();
+         ResultSet rs = st.executeQuery(query);
+         if (rs.next()){
+            result = rs.getInt("kolvo");
+         }
+      } catch (ConfigurationException e) {
+         e.printStackTrace();
+         throw new RuntimeException(e);
+      } catch (SQLException e) {
+         DBException ex = new DBException(e);
+         onDatabaseError(ex);
+         e.printStackTrace();
+         throw new RuntimeException(e);
+      }finally{
+         try {
+            if (st != null){
+               st.close();
+            }
+            if (conn != null){
+               conn.close();
+            }
+         } catch (SQLException e) {
+            e.printStackTrace();
+         }
       }
-      this.onQuery($result);
-      $count = mysql_result($result.getResult(), 0, 'kolvo');
-      $result.__destruct();
-      return $count;
+      return result;
    }
 
    /**
@@ -363,35 +388,76 @@ public class TemaDao extends FJDao {
     * @return unknown
     */
    private List<Long> getIgnorArray(){
-      String query = "SELECT ignor FROM ignor WHERE user=" +  this.getIdUser()  + " AND end > NOW()";
-      try{
-         $ignorRS = this.connection.doQuery(new QueryResult($query));
-      }catch (MySQLQueryException $e){
-         this.onDatabaseError($e);
+      List<Long> result = new ArrayList<Long>();
+      String query = "SELECT ignor FROM ignor WHERE user=" + this.getUser().getId() + " and end > now()";
+      Connection conn = null;
+      Statement st = null;
+      try {
+         conn = getConnection();
+         st = conn.createStatement();
+         ResultSet rs = st.executeQuery(query);
+         while (rs.next()){
+            result.add(rs.getLong("ignor"));
+         }
+      } catch (ConfigurationException e) {
+         e.printStackTrace();
+         throw new RuntimeException(e);
+      } catch (SQLException e) {
+         DBException ex = new DBException(e);
+         onDatabaseError(ex);
+         e.printStackTrace();
+         throw new RuntimeException(e);
+      }finally{
+         try {
+            if (st != null){
+               st.close();
+            }
+            if (conn != null){
+               conn.close();
+            }
+         } catch (SQLException e) {
+            e.printStackTrace();
+         }
       }
-      this.onQuery($ignorRS);
-      $result = array();
-      while ($row = mysql_fetch_assoc($ignorRS.getResult())){
-         $result[] = $row['ignor'];
-      }
-      $ignorRS.__destruct();
-      return $result;
+      return result;
    }
 
    /**
     * Возвращает id последнего поста в ветке
     */
-   public function getMaxId(){
+   public Integer getMaxId(){
+      Integer result = null;
       String query = "SELECT MAX(id) as mx FROM body WHERE head=" +  this.getId();
-      try{
-         $result = this.connection.doQuery(new QueryResult($query));
-      }catch (MySQLQueryException $e){
-         this.onDatabaseError($e);
+      Connection conn = null;
+      Statement st = null;
+      try {
+         conn = getConnection();
+         st = conn.createStatement();
+         ResultSet rs = st.executeQuery(query);
+         if (rs.next()){
+            result = rs.getInt("mx");
+         }
+      } catch (ConfigurationException e) {
+         e.printStackTrace();
+         throw new RuntimeException(e);
+      } catch (SQLException e) {
+         DBException ex = new DBException(e);
+         onDatabaseError(ex);
+         e.printStackTrace();
+         throw new RuntimeException(e);
+      }finally{
+         try {
+            if (st != null){
+               st.close();
+            }
+            if (conn != null){
+               conn.close();
+            }
+         } catch (SQLException e) {
+            e.printStackTrace();
+         }
       }
-      this.onQuery($result);
-      $str_maxp = mysql_result($result.getResult(), 0, 'mx');
-      $result.__destruct();
-      return $str_maxp;
+      return result;
    }
 
    /**
@@ -400,17 +466,38 @@ public class TemaDao extends FJDao {
     * @param unknown_type $idUser
     * @return unknown
     */
-   public function isUserSubscribed($idUser){
+   public Boolean isUserSubscribed(Long $idUser){
       String query = "SELECT id FROM fd_subscribe WHERE user=" +  $idUser  + " AND title=" +  this.getId();
-      try{
-         $result = this.connection.doQuery(new QueryResult($query));
-      }catch (MySQLQueryException $e){
-         this.onDatabaseError($e);
+      Connection conn = null;
+      Statement st = null;
+      try {
+         conn = getConnection();
+         st = conn.createStatement();
+         ResultSet rs = st.executeQuery(query);
+         if (rs.next()){
+            return true;
+         }
+      } catch (ConfigurationException e) {
+         e.printStackTrace();
+         throw new RuntimeException(e);
+      } catch (SQLException e) {
+         DBException ex = new DBException(e);
+         onDatabaseError(ex);
+         e.printStackTrace();
+         throw new RuntimeException(e);
+      }finally{
+         try {
+            if (st != null){
+               st.close();
+            }
+            if (conn != null){
+               conn.close();
+            }
+         } catch (SQLException e) {
+            e.printStackTrace();
+         }
       }
-      this.onQuery($result);
-      $isSubscribed = mysql_num_rows($result.getResult()) > 0;
-      $result.__destruct();
-      return $isSubscribed;
+      return false;
    }
 
    /**
@@ -418,46 +505,65 @@ public class TemaDao extends FJDao {
     *
     * @param $postId
     */
-   public function getPost($postId){
-   String query="SELECT body.table_post, body.table_head FROM body WHERE body.id=" + $postId;
-      try{
-         $resultSet = this.connection.doQuery(new QueryResult($query));
-      }catch (MySQLQueryException $e){
-         this.onDatabaseError($e);
+   public Post getPost(Long $postId){
+      Post result = null;
+      String query="SELECT body.table_post, body.table_head FROM body WHERE body.id=" + $postId;
+      Connection conn = null;
+      Statement st = null;
+      try {
+         conn = getConnection();
+         st = conn.createStatement();
+         ResultSet rs = st.executeQuery(query);
+         if (rs.next()){
+            String tableHead = rs.getString("table_head");
+            String tablePost = rs.getString("table_post");
+            query="SELECT " +
+            "users.nick, " +
+            tableHead + ".tilte, " +
+            tableHead + ".auth, " +
+            tableHead + ".thread_id " +
+            "FROM " +
+            "(" + tableHead + 
+            "LEFT JOIN users ON " + tableHead + ".auth = users.id) " +
+            "LEFT JOIN titles ON " + tableHead + ".thread_id = titles.id " +
+            "WHERE " + tableHead + ".id=" + $postId;
+            rs = st.executeQuery(query);
+            if (rs.next()){
+               result = new Post($postId);
+               result.setHead(rs.getString("tilte"));
+               result.setIdu(rs.getLong("auth"));
+               result.setNick(rs.getString("nick"));
+               result.setTablePost(tablePost);
+               result.setTableHead(tableHead);
+               result.setIdThread(rs.getLong("thread_id"));
+            }
+            query = "SELECT body FROM " + tablePost + " WHERE id=" + $postId;
+            rs = st.executeQuery(query);
+            if (rs.next()){
+               result.setBody(rs.getString("body"));
+            }
+         }
+      } catch (ConfigurationException e) {
+         e.printStackTrace();
+         throw new RuntimeException(e);
+      } catch (SQLException e) {
+         DBException ex = new DBException(e);
+         onDatabaseError(ex);
+         e.printStackTrace();
+         throw new RuntimeException(e);
+      }finally{
+         try {
+            if (st != null){
+               st.close();
+            }
+            if (conn != null){
+               conn.close();
+            }
+         } catch (SQLException e) {
+            e.printStackTrace();
+         }
       }
-      this.onQuery($resultSet);
-      $result = array();
-      $result = mysql_fetch_assoc($resultSet.getResult());
- query="SELECT " +
-         "users.nick, " +
-         $result['table_head'] + ".tilte, " +
-         $result['table_head'] + ".auth " +
-      "FROM " +
-         "(" + $result['table_head'] + 
-         "LEFT JOIN users ON " + $result['table_head'] + ".auth = users.id) " +
-         "LEFT JOIN titles ON " + $result['table_head'] + ".thread_id = titles.id " +
-      "WHERE " + $result['table_head'] + ".id=" + $postId;
-      try{
-         $resultSet = this.connection.doQuery(new QueryResult($query));
-      }catch (MySQLQueryException $e){
-         this.onDatabaseError($e);
-      }
-      this.onQuery($resultSet);
-      $result['tilte'] = mysql_result($resultSet.getResult(), 0, 'tilte');
-      $result['nick'] = mysql_result($resultSet.getResult(), 0, 'nick');
-      $result['auth'] = mysql_result($resultSet.getResult(), 0, 'auth');
-      $resultSet.__destruct();
-      $result['id'] = $postId;
-      $sql_body = "SELECT body FROM " + $result['table_post'] + " WHERE id=" + $postId;
-      try{
-         $res_body = this.connection.doQuery(new QueryResult($sql_body));
-      }catch (MySQLQueryException $e){
-         this.onDatabaseError($e);
-      }
-      this.onQuery($res_body);
-      $result['body'] = mysql_result($res_body.getResult(), 0, 'body');
-      $res_body.__destruct();
-      return $result;
+      return result;
    }
 
    /**
@@ -466,33 +572,41 @@ public class TemaDao extends FJDao {
     * @param unknown_type $id
     * @return unknown
     */
-   public function isQuest($id){
-      $sqlQuest="SELECT type FROM titles WHERE id=" +  this.getId();
-      try{
-         $resQuest = this.connection.doQuery(new QueryResult($sqlQuest));
-      }catch (MySQLQueryException $e){
-         this.onDatabaseError($e);
+   public Boolean isQuest(){
+      String query="SELECT type FROM titles WHERE id=" +  this.getId();
+      Connection conn = null;
+      Statement st = null;
+      try {
+         conn = getConnection();
+         st = conn.createStatement();
+         ResultSet rs = st.executeQuery(query);
+         if (rs.next()){
+            Integer type = rs.getInt("type");
+            return type == 1 || type == 2;
+         }
+      } catch (ConfigurationException e) {
+         e.printStackTrace();
+         throw new RuntimeException(e);
+      } catch (SQLException e) {
+         DBException ex = new DBException(e);
+         onDatabaseError(ex);
+         e.printStackTrace();
+         throw new RuntimeException(e);
+      }finally{
+         try {
+            if (st != null){
+               st.close();
+            }
+            if (conn != null){
+               conn.close();
+            }
+         } catch (SQLException e) {
+            e.printStackTrace();
+         }
       }
-      this.onQuery($resQuest);
-      $type = mysql_result($resQuest.getResult(), 0, 'type');
-      $resQuest.__destruct();
-      return $type == 1 || $type == 2;
+      return false;
    }
 
-   /**
-    * Возвращает результат запроса с вариантами ответов
-    */
-   public function getQuestNodes(){
-      String query="SELECT quest.id, quest.node, quest.user, quest.gol, quest.type, users.nick FROM quest LEFT JOIN users ON quest.user=users.id WHERE quest.head=" + this.getId() + " ORDER BY numb";
-      try{
-         $result = this.connection.doQuery(new SelectQueryResult($query));
-      }catch (MySQLQueryException $e){
-         this.onDatabaseError($e);
-      }
-      this.onQuery($result);
-      return $result;
-   }
-   
    /**
     * Возвращает, есть ли уже голос текущего юзера
     * в опросе

@@ -25,7 +25,7 @@ import javax.servlet.http.*;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {"/picts/*", "/images/*", "/skin/*", "/banner/*"}, name="picts")
+@WebServlet(urlPatterns = {"/picts/*", "/images/*", "/skin/*", "/banner/*", "/smiles/*"}, name="picts")
 public class Images extends HttpServlet {
 
    private static final long serialVersionUID = -8810949466796099480L;

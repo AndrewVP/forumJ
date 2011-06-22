@@ -115,7 +115,7 @@ public class PHP {
    public static int strpos(String haystack ,String needle, int start){
       return haystack.indexOf(needle, start);
    }
-   
+
    public static boolean in_array(String needle, String[] haystack) {
       for(int arrIndex=0; arrIndex < haystack.length; arrIndex++) {
          if(haystack[arrIndex].equals(needle)) {
@@ -133,29 +133,38 @@ public class PHP {
       }
       return false;
    }
-   
+
+   public static boolean in_array(Long needle, List<Long> haystack) {
+      for(int arrIndex=0; arrIndex < haystack.size(); arrIndex++) {
+         if(haystack.get(arrIndex).longValue() == needle.longValue()) {
+            return true;
+         }
+      }
+      return false;
+   }
+
    public static String chr(int chr){
       return String.valueOf((char) chr);
    }
-   
+
    public static boolean isset(Object var){
       return var != null;
    }
-   
+
    public static int strlen(String string){
       return string.length();
    }
-   
+
    public static String nl2br(String string){
       return string.replace("\n","<br>");
    }
-   
+
    public static long round(double arg, int precision){
       //TODO Доделать!
       Formatter formatter = new Formatter();
       return Math.round(arg);
    }
-   
+
    public static String implode(String glue, Object[] pieces){
       String result = "";
       for (int piecesIndex = 0; piecesIndex < pieces.length; piecesIndex++) {
