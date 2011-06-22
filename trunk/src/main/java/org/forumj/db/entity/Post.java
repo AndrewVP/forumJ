@@ -18,7 +18,7 @@ package org.forumj.db.entity;
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.PHP.*;
 
-import java.util.Map;
+import java.util.*;
 
 import org.forumj.exception.InvalidKeyException;
 import org.forumj.tool.*;
@@ -33,112 +33,94 @@ public class Post {
    /**
     * Ник
     */
-   private String str_nick;
+   private String nick;
 
    /**
     * Id автора
     */
-   private Long str_idu;
+   private Long idu;
 
    /**
     * id поста
     */
-   private Long str_id;
+   private Long id;
 
    /**
     * Заголовок
     */
-   private String str_head;
+   private String head;
 
    /**
     * Текст
     * @var unknown_type
     */
-   private String str_body;
-
-   /**
-    * id Ветки
-    * @var unknown_type
-    */
-   private Long str_t_id;
+   private String body;
 
    /**
     * Количество редактрований
     * @var unknown_type
     */
-   private int str_nred;
+   private int nred;
 
    /**
     * ip автора
     * @var unknown_type
     */
-   private String str_ip;
-
-   /**
-    * Можно ли показывать ip
-    * @var unknown_type
-    */
-   private Boolean str_hip;
+   private String ip;
 
    /**
     * Адрес аватары
     * @var unknown_type
     */
-   private String str_avatar;
+   private String avatar;
 
    /**
     * Показывать аватару
     * @var unknown_type
     */
-   private Boolean str_s_avatar;
+   private Boolean showAvatar;
 
    /**
     * Показывать аватару
     * @var unknown_type
     */
-   private Boolean str_ok_avatar;
+   private Boolean showAvatarApproved;
 
    /**
     * Страна автора
     * @var unknown_type
     */
-   private String str_country;
+   private String country;
 
    /**
     * Город автора
     * @var unknown_type
     */
-   private String str_city;
+   private String city;
 
    /**
     * Показывать город
     * @var unknown_type
     */
-   private Boolean str_s_city;
+   private Boolean showCity;
 
    /**
     * Подпись к посту
     * @var unknown_type
     */
-   private String str_footer;
+   private String postFooter;
 
    /**
     * Домен автора
     * @var unknown_type
     */
-   private String str_domen;
+   private String domen;
 
    /**
     * Показывать страну
     * @var unknown_type
     */
-   private Boolean str_s_country;
-
-   /**
-    * Номер странцы
-    * @var unknown_type
-    */
-   private int pageNumber;
+   private Boolean showCountry;
 
    /**
     * Id темы
@@ -150,13 +132,13 @@ public class Post {
     * Resultset игнорируемых
     * @var unknown_type
     */
-   private Long[] res_ignor = null;
+   private List<Long> ignor = null;
 
    /**
     * Наличие игнора у посетителя
     * @var unknown_type
     */
-   private Boolean has_ignor;
+   private Boolean hasIgnor;
 
    /**
     * Локализация
@@ -167,7 +149,7 @@ public class Post {
     * Признак последнего поста
     * @var unknown_type
     */
-   private Boolean isLastPost;
+   private Boolean isLastPost = false;
 
    /**
     * Признак опроса
@@ -192,13 +174,13 @@ public class Post {
     * Показывать ли аватару
     * @var unknown_type
     */
-   private Boolean str_v_avatars;
+   private Boolean wantSeeAvatars;
 
    /**
     * Тип поиска 
     * @var unknown_type
     */
-   private Integer is_found = null;
+   private Integer searchType = null;
 
    /**
     * Массив поисковых слов
@@ -252,7 +234,7 @@ public class Post {
     *
     * @var array
     */
-   private String[][] arrNodes = null;
+   private List<QuestNode> arrNodes = null;
 
    /**
     * Проголосовал ли уже текущий посетитель
@@ -272,6 +254,9 @@ public class Post {
     * Текущий пользователь
     */
    private User currentUser = null;
+   
+   private String tablePost = null;
+   private String tableHead = null;
 
    /**
     * Конструктор
@@ -281,7 +266,7 @@ public class Post {
     */
    public Post(Long idThread, Long idPost, LocaleString locale, 
          String[] idWordsForms, 
-         Long[] res_ignor, 
+         List<Long> res_ignor, 
          Boolean has_ignor, 
          Integer is_found, 
          Boolean isAdminForvard, 
@@ -299,13 +284,13 @@ public class Post {
       // 
       this.pg = pg;
       // 
-      this.str_id = idPost;
+      this.id = idPost;
       // Массив поисковых слов
       if (idWordsForms != null){
          this.idWordsForms = idWordsForms;
       }
       // тип поиска
-      this.is_found = is_found;
+      this.searchType = is_found;
       //
       this.isAdminForvard = isAdminForvard;
       // 
@@ -315,80 +300,391 @@ public class Post {
       // 
       this.isUserCanAddAnswer = isUserCanAddAnswer; 
       // 
-      this.res_ignor = res_ignor;
+      this.ignor = res_ignor;
       // 
-      this.has_ignor = has_ignor;
+      this.hasIgnor = has_ignor;
       //
       this.isFirst = isFirst;;
+   }
+
+   /**
+    * @return the idThread
+    */
+   public Long getIdThread() {
+      return idThread;
+   }
+
+   /**
+    * @param idThread the idThread to set
+    */
+   public void setIdThread(Long idThread) {
+      this.idThread = idThread;
+   }
+
+   /**
+    * @return the tablePost
+    */
+   public String getTablePost() {
+      return tablePost;
+   }
+
+   /**
+    * @param tablePost the tablePost to set
+    */
+   public void setTablePost(String tablePost) {
+      this.tablePost = tablePost;
+   }
+
+   /**
+    * @return the tableHead
+    */
+   public String getTableHead() {
+      return tableHead;
+   }
+
+   /**
+    * @param tableHead the tableHead to set
+    */
+   public void setTableHead(String tableHead) {
+      this.tableHead = tableHead;
+   }
+
+   /**
+    * 
+    */
+   public Post(Long id) {
+      this.id = id;
+   }
+
+   /**
+    * @return the id
+    */
+   public Long getId() {
+      return id;
+   }
+
+   /**
+    * @param id the id to set
+    */
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   /**
+    * @return the body
+    */
+   public String getBody() {
+      return body;
+   }
+
+   /**
+    * @return the country
+    */
+   public String getCountry() {
+      return country;
+   }
+
+   /**
+    * @param country the country to set
+    */
+   public void setCountry(String country) {
+      this.country = country;
+   }
+
+   /**
+    * @return the city
+    */
+   public String getCity() {
+      return city;
+   }
+
+   /**
+    * @param city the city to set
+    */
+   public void setCity(String city) {
+      this.city = city;
+   }
+
+   /**
+    * @return the showCity
+    */
+   public Boolean getShowCity() {
+      return showCity;
+   }
+
+   /**
+    * @param showCity the showCity to set
+    */
+   public void setShowCity(Boolean showCity) {
+      this.showCity = showCity;
+   }
+
+   /**
+    * @return the postFooter
+    */
+   public String getPostFooter() {
+      return postFooter;
+   }
+
+   /**
+    * @param postFooter the postFooter to set
+    */
+   public void setPostFooter(String postFooter) {
+      this.postFooter = postFooter;
+   }
+
+   /**
+    * @return the domen
+    */
+   public String getDomen() {
+      return domen;
+   }
+
+   /**
+    * @param domen the domen to set
+    */
+   public void setDomen(String domen) {
+      this.domen = domen;
+   }
+
+   /**
+    * @return the showCountry
+    */
+   public Boolean getShowCountry() {
+      return showCountry;
+   }
+
+   /**
+    * @param showCountry the showCountry to set
+    */
+   public void setShowCountry(Boolean showCountry) {
+      this.showCountry = showCountry;
+   }
+
+   /**
+    * @return the wantSeeAvatars
+    */
+   public Boolean getWantSeeAvatars() {
+      return wantSeeAvatars;
+   }
+
+   /**
+    * @param wantSeeAvatars the wantSeeAvatars to set
+    */
+   public void setWantSeeAvatars(Boolean wantSeeAvatars) {
+      this.wantSeeAvatars = wantSeeAvatars;
+   }
+
+   /**
+    * @return the nick
+    */
+   public String getNick() {
+      return nick;
+   }
+
+   /**
+    * @param nick the nick to set
+    */
+   public void setNick(String nick) {
+      this.nick = nick;
+   }
+
+   /**
+    * @return the idu
+    */
+   public Long getIdu() {
+      return idu;
+   }
+
+   /**
+    * @param idu the idu to set
+    */
+   public void setIdu(Long idu) {
+      this.idu = idu;
+   }
+
+   /**
+    * @return the head
+    */
+   public String getHead() {
+      return head;
+   }
+
+   /**
+    * @param head the head to set
+    */
+   public void setHead(String head) {
+      this.head = head;
+   }
+
+   /**
+    * @return the nred
+    */
+   public int getNred() {
+      return nred;
+   }
+
+   /**
+    * @param nred the nred to set
+    */
+   public void setNred(int nred) {
+      this.nred = nred;
+   }
+
+   /**
+    * @return the ip
+    */
+   public String getIp() {
+      return ip;
+   }
+
+   /**
+    * @param ip the ip to set
+    */
+   public void setIp(String ip) {
+      this.ip = ip;
+   }
+
+   /**
+    * @return the avatar
+    */
+   public String getAvatar() {
+      return avatar;
+   }
+
+   /**
+    * @param avatar the avatar to set
+    */
+   public void setAvatar(String avatar) {
+      this.avatar = avatar;
+   }
+
+   /**
+    * @return the showAvatar
+    */
+   public Boolean getShowAvatar() {
+      return showAvatar;
+   }
+
+   /**
+    * @param showAvatar the showAvatar to set
+    */
+   public void setShowAvatar(Boolean showAvatar) {
+      this.showAvatar = showAvatar;
+   }
+
+   /**
+    * @return the showAvatarApproved
+    */
+   public Boolean getShowAvatarApproved() {
+      return showAvatarApproved;
+   }
+
+   /**
+    * @param showAvatarApproved the showAvatarApproved to set
+    */
+   public void setShowAvatarApproved(Boolean showAvatarApproved) {
+      this.showAvatarApproved = showAvatarApproved;
+   }
+
+   /**
+    * @return the postTime
+    */
+   public Time getPostTime() {
+      return postTime;
+   }
+
+   /**
+    * @param postTime the postTime to set
+    */
+   public void setPostTime(long postTime,long add_hr, long add_mn) {
+      Time time = new Time(postTime);
+      time.add(add_hr, Time.HOUR);
+      time.add(add_mn, Time.MINUTE);
+      this.postTime = time;
+   }
+
+   /**
+    * @return the postEditTime
+    */
+   public Time getPostEditTime() {
+      return postEditTime;
+   }
+
+   /**
+    * @param postEditTime the postEditTime to set
+    */
+   public void setPostEditTime(Time postEditTime) {
+      this.postEditTime = postEditTime;
    }
 
    public String toString(){
       String result = "";
       try {
          String rp;
-         if (this.is_found == 1){
-            this.str_nick = htmlspecialchars(this.str_nick);
-            this.str_nick = str_ireplace(this.idWordsForms, "<span class='found'>" + this.idWordsForms + "</span>", this.str_nick);
-         }else if(this.is_found == 2){
+         if (this.searchType == 1){
+            this.nick = htmlspecialchars(this.nick);
+            this.nick = str_ireplace(this.idWordsForms, "<span class='found'>" + this.idWordsForms + "</span>", this.nick);
+         }else if(this.searchType == 2){
             rp = "[span class='found']$0[/span]";
-            this.str_head = preg_replace(this.idWordsForms,rp, this.str_head);
-         }else if(this.is_found == 3){
+            this.head = preg_replace(this.idWordsForms,rp, this.head);
+         }else if(this.searchType == 3){
             rp = "[span class='found']$0[/span]";
-            this.str_body = preg_replace(this.idWordsForms,rp, this.str_body);
+            this.body = preg_replace(this.idWordsForms,rp, this.body);
          }
-         if (trim(this.str_ip) == trim(this.str_domen)){
-            this.str_domen = substr(this.str_domen, 0, strrpos(this.str_domen, " + ")+1) + "---";
+         if (trim(this.ip) == trim(this.domen)){
+            this.domen = substr(this.domen, 0, strrpos(this.domen, ".")+1) + "---";
          }else{
-            this.str_domen = "---" + substr(this.str_domen, strpos(this.str_domen, " + "));
+            this.domen = "---" + substr(this.domen, strpos(this.domen, ".") + 1);
          }
          result +="<tr class=heads>";
          result += "<td  class=internal>";
          if (this.isLastPost) result += "<a name='end'></a>";
          result += "<a name='this.str_id'>&nbsp;</a>";
-         result += "<a class=nik href='tema.php?id=" + this.idThread + "&msg=" + this.str_id + "#" + this.str_id + "'><b>&nbsp;&nbsp;" + fd_head(htmlspecialchars(this.str_head)) + "</b></a>";
+         result += "<a class=nik href='tema.php?id=" + this.idThread + "&msg=" + this.id + "#" + this.id + "'><b>&nbsp;&nbsp;" + fd_head(htmlspecialchars(this.head)) + "</b></a>";
          result += "</td></tr>";
          result += "<tr><td>";
          int div = 0;
          String div_ = "";
-         if (this.has_ignor){
-            if (in_array(this.str_idu, this.res_ignor)) div = 1;
+         if (this.hasIgnor){
+            if (in_array(this.idu, this.ignor)) div = 1;
          }
-         result += "<span class='tbtextnread'>" + this.str_nick + "</span>&nbsp;" + chr(149);
-         result += "&nbsp;<img border='0' src='smiles/icon_minipost.gif'>&nbsp;<span class='posthead'>" + this.postTime.toString("d.m.Y H:i") + "</span>&nbsp;";
-         if (div != 0 && isset(this.currentUser) && this.str_idu!=this.currentUser.getId()){
-            result += chr(149) + "&nbsp;<a class=\"posthead\" href=\"ignor.php?idi=" + this.str_idu + "&idt=" + this.idThread + "&idp=" + this.str_id + "&pg=" + this.pg + "\" rel=\"nofollow\">" + this.locale.getString("mess68") + "</a>";
+         result += "<span class='tbtextnread'>" + this.nick + "</span>&nbsp;" + chr(149);
+         result += "&nbsp;<img border='0' src='smiles/icon_minipost.gif'>&nbsp;<span class='posthead'>" + this.postTime.toString("dd.MM.yyyy HH:mm") + "</span>&nbsp;";
+         if (div != 0 && isset(this.currentUser) && this.idu!=this.currentUser.getId()){
+            result += chr(149) + "&nbsp;<a class=\"posthead\" href=\"ignor.php?idi=" + this.idu + "&idt=" + this.idThread + "&idp=" + this.id + "&pg=" + this.pg + "\" rel=\"nofollow\">" + this.locale.getString("mess68") + "</a>";
          }
          result +="</td></tr>";
          result +="<tr><td>";
          if (div != 0){
-            result += "<a href='#' onclick='togglemsg(\"dd" + this.str_id + "\"); return false;' rel='nofollow'>" + this.locale.getString("mess142") + "</a>";
+            result += "<a href='#' onclick='togglemsg(\"dd" + this.id + "\"); return false;' rel='nofollow'>" + this.locale.getString("mess142") + "</a>";
             div_ =" style='visibility: hidden; display:none;'";
          }
          else {
             div_ ="";
          }
-         result += "<div id=dd" + this.str_id.toString() + div_ + ">";
+         result += "<div id=dd" + this.id.toString() + div_ + ">";
          if (!(isset(this.currentUser) && div > 0)){
             result += "<table width='100%'><tr><td valign=top class='matras'>";
             result += "<table style='table-layout:fixed;' width='170'><tr><td valign=top>";
             result += "<div style='padding:10px;'>";
-            if (this.str_s_avatar && this.str_ok_avatar && trim(this.str_avatar).isEmpty() && this.str_v_avatars){
-               result += "<a href='control.php?id=9'><img border='0' src='" + this.str_avatar + "' rel=\"nofollow\"></a>";
+            if (this.showAvatar && this.showAvatarApproved && trim(this.avatar).isEmpty() && this.wantSeeAvatars){
+               result += "<a href='control.php?id=9'><img border='0' src='" + this.avatar + "' rel=\"nofollow\"></a>";
             }else{
                result += "<a href='control.php?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>";
             }
             result += "</div>";
             result += "<span class='posthead'><u>" + this.locale.getString("mess111") + "</u></span><br>";
-            if (this.str_s_country || this.str_country==""){
+            if (this.showCountry || this.country==""){
                result += "<span class='posthead'>" + this.locale.getString("mess114") + "</span><br>";
             }else{
-               result += "<span class='posthead'>" + this.str_country + "</span><br>";
+               result += "<span class='posthead'>" + this.country + "</span><br>";
             }
             result += "<span class='posthead'><u>" + this.locale.getString("mess112") + "</u></span><br>";
-            if (this.str_s_city || this.str_city==""){
+            if (this.showCity || this.city==""){
                result += "<span class='posthead'>" + this.locale.getString("mess114") + "</span><br>";
             }else{
-               result += "<span class='posthead'>" + this.str_city + "</span><br>";
+               result += "<span class='posthead'>" + this.city + "</span><br>";
             }
             result += "</td></tr></table>";
             result += "</td><td valign='top' width='100%'>";
@@ -397,18 +693,18 @@ public class Post {
                result += this.getQuest() ;
             }
             result +="<tr><td>";
-            result +="<p class=post>" + fd_body(this.str_body) + "</p>";
+            result +="<p class=post>" + fd_body(this.body) + "</p>";
             result +="</td></tr>";
             result += "</table></td></tr>";
             result +="<tr><td class='matras' colspan=2></td></tr>";
             result +="<tr><td class='matras'></td><td>";
-            result +="<p class=post>" + fd_body(this.str_footer) + "</p>";
+            result +="<p class=post>" + fd_body(this.postFooter) + "</p>";
             result +="</td></tr>";
             result +="<tr><td align='RIGHT' width='100%' colspan=2>";
-            if (this.str_nred>0){
+            if (this.nred>0){
                result += "<table class='matras' width='100%'>";
                result += "<tr><td align='LEFT'>";
-               result += "<span class='posthead'>" + this.locale.getString("mess50") + this.str_nred + this.locale.getString("mess51") + this.postEditTime.toString("d.m.Y H:i") + "</span>";
+               result += "<span class='posthead'>" + this.locale.getString("mess50") + this.nred + this.locale.getString("mess51") + this.postEditTime.toString("d.m.Y H:i") + "</span>";
             }
             else {
                result += "<table class='matras'>";
@@ -419,20 +715,20 @@ public class Post {
             if (isset(this.currentUser.getNick())) {
                if (this.isAdminForvard){
                   result += "<td align='CENTER' width='70'>";
-                  result += "<span class='posthead'><a href='site.php?id=" + this.idThread + "&post=" + this.str_id + "' rel=\"nofollow\">" + this.locale.getString("mess162") + "</a></span>";
+                  result += "<span class='posthead'><a href='site.php?id=" + this.idThread + "&post=" + this.id + "' rel=\"nofollow\">" + this.locale.getString("mess162") + "</a></span>";
                   result += "</td>";
                }
-               if (this.currentUser.getId()==this.str_idu) {
+               if (this.currentUser.getId()==this.idu) {
                   result += "<td align='CENTER' width='70'>";
-                  result += "<span class='posthead'><a href='tema.php?id=" + this.idThread + "&reply=" + this.str_id + "#edit' rel=\"nofollow\">" + this.locale.getString("mess141") + "</a></span>";
+                  result += "<span class='posthead'><a href='tema.php?id=" + this.idThread + "&reply=" + this.id + "#edit' rel=\"nofollow\">" + this.locale.getString("mess141") + "</a></span>";
                   result += "</td>";
                }
                else {
                   result += "<td align='CENTER' width='70'>";
-                  result += "<span class='posthead'><a href='tema.php?id=" + this.idThread + "&reply=" + this.str_id + "#edit' rel=\"nofollow\">" + this.locale.getString("mess139") + "</a></span>";
+                  result += "<span class='posthead'><a href='tema.php?id=" + this.idThread + "&reply=" + this.id + "#edit' rel=\"nofollow\">" + this.locale.getString("mess139") + "</a></span>";
                   result += "</td>";
                   result += "<td align='CENTER' width='70'>";
-                  result += "<span class='posthead'><a href='tema.php?id=" + this.idThread + "&reply=" + this.str_id + "&ans=1#edit' rel=\"nofollow\">" + this.locale.getString("mess140") + "</a></span>";
+                  result += "<span class='posthead'><a href='tema.php?id=" + this.idThread + "&reply=" + this.id + "&ans=1#edit' rel=\"nofollow\">" + this.locale.getString("mess140") + "</a></span>";
                   result += "</td>";
                }}
             result += "</tr></table>";
@@ -456,7 +752,7 @@ public class Post {
     * @param unknown_type $strBody
     */
    public void setBody(String strBody){
-      this.str_body = strBody;
+      this.body = strBody;
    }
 
    /**
@@ -469,49 +765,47 @@ public class Post {
 
    public void loadHeads(Map $arrFetch,long $add_hr, long $add_mn){
       // 
-      this.str_nick = (String) $arrFetch.get("nick");
+      this.nick = (String) $arrFetch.get("nick");
       // 
-      this.str_idu = (Long) $arrFetch.get("auth");
+      this.idu = (Long) $arrFetch.get("auth");
       // 
       Time $time = new Time((Long) $arrFetch.get("post_time"));
       $time.add($add_hr, Time.HOUR);
       $time.add($add_mn, Time.MINUTE);
       this.postTime =  $time;
       // 
-      this.str_head = stripslashes((String)$arrFetch.get("tilte"));
+      this.head = stripslashes((String)$arrFetch.get("tilte"));
       // 
       //      this.str_type = $arrFetch.get("type");
       // 
-      this.str_nred = (Integer) $arrFetch.get("nred");
+      this.nred = (Integer) $arrFetch.get("nred");
       // 
       Time $edTime = new Time((Long) $arrFetch.get("post_edit_time"));
       $edTime.add($add_hr, Time.HOUR);
       $edTime.add($add_mn, Time.MINUTE);
       this.postEditTime = $edTime; 
       // 
-      this.str_ip = (String) $arrFetch.get("ip");
+      this.ip = (String) $arrFetch.get("ip");
       // 
-      this.str_hip = (Boolean) $arrFetch.get("h_ip");
+      this.avatar = (String) $arrFetch.get("avatar");
       // 
-      this.str_avatar = (String) $arrFetch.get("avatar");
+      this.showAvatar = (Boolean) $arrFetch.get("s_avatar");
       // 
-      this.str_s_avatar = (Boolean) $arrFetch.get("s_avatar");
+      this.showAvatarApproved = (Boolean) $arrFetch.get("ok_avatar");
       // 
-      this.str_ok_avatar = (Boolean) $arrFetch.get("ok_avatar");
+      this.wantSeeAvatars = (Boolean) $arrFetch.get("v_avatars");
       // 
-      this.str_v_avatars = (Boolean) $arrFetch.get("v_avatars");
+      this.country = (String) $arrFetch.get("country");
       // 
-      this.str_country = (String) $arrFetch.get("country");
+      this.showCountry = (Boolean) $arrFetch.get("scountry");
       // 
-      this.str_s_country = (Boolean) $arrFetch.get("scountry");
+      this.city = (String) $arrFetch.get("city");
       // 
-      this.str_city = (String) $arrFetch.get("city");
+      this.showCity = (Boolean) $arrFetch.get("scity");
       // 
-      this.str_s_city = (Boolean) $arrFetch.get("scity");
+      this.postFooter = (String) $arrFetch.get("footer");
       // 
-      this.str_footer = (String) $arrFetch.get("footer");
-      // 
-      this.str_domen = (String) $arrFetch.get("domen");
+      this.domen = (String) $arrFetch.get("domen");
    }
 
    /**
@@ -587,7 +881,7 @@ public class Post {
     *
     * @param array $arrNodes
     */
-   public void setNodes(String[][] arrNodes){
+   public void setNodes(List<QuestNode> arrNodes){
       this.arrNodes = arrNodes;
    }
 
@@ -595,7 +889,7 @@ public class Post {
     * Возвращает варианты ответа в опросе
     * @return array
     */
-   public String[][] getNodes(){
+   public List<QuestNode> getNodes(){
       return this.arrNodes;
    }
 
@@ -624,28 +918,33 @@ public class Post {
          result += "<p align=\"CENTER\"><font size=4><b>" + this.getQuestion() + "</b></font></p><br>";
          result +=("</td></tr>");
          result +=("<tr><td align=\"CENTER\">");
-         String[][] $nodes = this.getNodes();
+         List<QuestNode> $nodes = this.getNodes();
          if (isset(this.currentUser.getNick()) && !this.isUserVote()){
             result +=("<form  action='voice.php' method='POST'><table class=content>");
-            for (int $iq1=1; $iq1<this.getAnswerAmount(); $iq1++){
+            boolean first = true;
+            for (Iterator<QuestNode> iterator = $nodes.iterator(); iterator.hasNext();) {
+               QuestNode questNode = iterator.next();
                result +=("<tr><td class=voice_left align='right'>");
-               String $in1 = $nodes[$iq1][0];
+               Long $in1 = questNode.getId();
                String $check = "";
-               if ($iq1==1) $check=" CHECKED";
-               if (!"".equals($nodes[$iq1][1])){
+               if (first){
+                  first = false;
+                  $check=" CHECKED";
+               }
+               if (questNode.getUserId() == 0){
                   result += this.locale.getString("mess143");
-                  if ($nodes[$iq1][1].equals("1")){
-                     result += "<b>" + $nodes[$iq1][2] + "</b>";
+                  if (questNode.getType() == 1){
+                     result += "<b>" + questNode.getUserNick() + "</b>";
                   }
                   else{
                      result += "<b>" + this.locale.getString("mess144") + "</b>";
                   }
                   result += "</td><td class=voice_right align='left'>";
-                  result +=("<input type='radio' name='ANSWER' value='$in1'>&nbsp;" + fd_smiles(fd_href(stripslashes($nodes[$iq1][1]))) + "<br>");
+                  result +=("<input type='radio' name='ANSWER' value='$in1'>&nbsp;" + fd_smiles(fd_href(stripslashes(questNode.getNode()))) + "<br>");
                }
                else {
                   result += "</td><td class=voice_right align='left'>";
-                  result +=("<input type='radio' name='ANSWER' value='$in1'" + $check + ">&nbsp;" + fd_smiles(fd_href(stripslashes($nodes[$iq1][1]))) + "<br>");
+                  result +=("<input type='radio' name='ANSWER' value='$in1'" + $check + ">&nbsp;" + fd_smiles(fd_href(stripslashes(questNode.getNode()))) + "<br>");
                }
                result +=("</td></tr>");
             }
@@ -665,8 +964,9 @@ public class Post {
             result +=("</td></tr>");
             if (this.isUserCanAddAnswer){
                int $iq3=0;
-               for (int $iq2=1; $iq2<this.getAnswerAmount(); $iq2++){
-                  if ($nodes[$iq2][3].equals(this.currentUser.getId().toString())) $iq3=1;
+               for (Iterator<QuestNode> iterator = $nodes.iterator(); iterator.hasNext();) {
+                  QuestNode questNode = iterator.next();
+                  if (questNode.getUserId() == this.currentUser.getId()) $iq3=1;
                }
                if ($iq3 > 0){
                   result +=("<tr><td>");
@@ -710,10 +1010,11 @@ public class Post {
          result +=("</th><th class='internal'>");
          result += this.locale.getString("mess151");
          result +=("</th></tr><tr>");
-         for (int $iq11=1; $iq11<this.getAnswerAmount(); $iq11++){
-            if (! "".equals($nodes[$iq11][1])){
-               if ($nodes[$iq11][1].equals(1)){
-                  result += "<td align='LEFT' class='internal'>" + $nodes[$iq11][4] + "</td>";
+         for (Iterator<QuestNode> iterator = $nodes.iterator(); iterator.hasNext();) {
+            QuestNode questNode = iterator.next();
+            if (questNode.getUserId() == 0){
+               if (questNode.getType() == 1){
+                  result += "<td align='LEFT' class='internal'>" + questNode.getUserNick() + "</td>";
                }
                else{
                   result += "<td align='LEFT' class='internal'>" + this.locale.getString("mess144") + "</td>";
@@ -723,14 +1024,14 @@ public class Post {
             {
                result += "<td align='LEFT' class='internal'></td>";
             }
-            result +=("<td class='internal'>" + fd_body(stripslashes($nodes[$iq11][1])) + "</td>");
+            result +=("<td class='internal'>" + fd_body(stripslashes(questNode.getNode())) + "</td>");
 
             result +=("<td align='CENTER' class='internal'>");
-            result +=($nodes[$iq11][5] + "</td>");
-            result += "<td class='internal'><TABLE cellSpacing=0 cellPadding=0 width='" + round(( Integer.valueOf($nodes[$iq11][5]).intValue()/$nvcs)*300,0) + "' border=0><TR><TD align=left bgColor=red><FONT size=-3>&nbsp;</FONT></TD></TR></TABLE>";
+            result +=(questNode.getGol() + "</td>");
+            result += "<td class='internal'><TABLE cellSpacing=0 cellPadding=0 width='" + round((questNode.getGol()/($nvcs == 0 ? 1 : $nvcs))*300,0) + "' border=0><TR><TD align=left bgColor=red><FONT size=-3>&nbsp;</FONT></TD></TR></TABLE>";
             result +=("</td>");
             result +=("<td class='internal'>");
-            result +=(round((Integer.valueOf($nodes[$iq11][5])/$nvcs)*100, 2)) + "%";
+            result +=(round((questNode.getGol()/($nvcs == 0 ? 1 : $nvcs))*100, 2)) + "%";
             result +=("</td></tr>");
 
          }

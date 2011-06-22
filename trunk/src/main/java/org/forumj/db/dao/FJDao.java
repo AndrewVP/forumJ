@@ -63,6 +63,14 @@ public class FJDao {
                String connectURI = config.getString("jdbc.url");
                String userName = config.getString("jdbc.user.name");
                String userPassword = config.getString("jdbc.user.password");
+               String driver = config.getString("jdbc.driver");
+               if (driver != null){
+                  try {
+                     Class.forName(driver);
+                  } catch (ClassNotFoundException e) {
+                     e.printStackTrace();
+                  }
+               }
                ConnectionFactory connectionFactory = new DriverManagerConnectionFactory(connectURI, userName, userPassword);
                PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory,connectionPool,null,null,false,true);
                dataSource = new PoolingDataSource(connectionPool); 

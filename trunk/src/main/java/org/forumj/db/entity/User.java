@@ -35,6 +35,38 @@ public class User {
    
    private int view = 0;
    
+   private int swowAvatars = 0;
+   
+   private int timezone = 0;
+   
+   /**
+    * @return the v_avatars
+    */
+   public int getVavatars() {
+      return swowAvatars;
+   }
+
+   /**
+    * @param v_avatars the v_avatars to set
+    */
+   public void setVavatars(int v_avatars) {
+      this.swowAvatars = v_avatars;
+   }
+
+   /**
+    * @return the fd_timezone
+    */
+   public int getTimezone() {
+      return timezone;
+   }
+
+   /**
+    * @param fd_timezone the fd_timezone to set
+    */
+   public void setTimezone(int fd_timezone) {
+      this.timezone = fd_timezone;
+   }
+
    /**
     * @return the view
     */
