@@ -53,17 +53,13 @@ public class Index extends HttpServlet {
       List<Map<String, Object>> viewsList = null;
       try {
          HttpSession session = request.getSession();
-         String lang = (String) session.getAttribute("lang");
-         if (lang == null){
-            lang = "ua"; 
-         }
          //Предотвращаем кеширование
          cache(response);
          // Функции   
          // номер страницы
          Integer pageNumber = request.getParameter("page") == null ? 1 : Integer.valueOf(request.getParameter("page"));
          // Загружаем локализацию
-         LocaleString locale = new LocaleString(lang, null, "ua");
+         LocaleString locale = (LocaleString) session.getAttribute("locale");
          User user = (User) session.getAttribute("user");
          Long userId = user.getId();
          IndexDao dao = new IndexDao(user);  

@@ -19,6 +19,17 @@ public class UserDao extends FJDao {
       }
       return loadUser(query + add, firstPassword);
    }
+
+   public User loadUser(String nick, String password, Boolean firstPassword){
+      String query="SELECT * FROM users WHERE nick='" + nick + "' AND pass='" + password + "'";
+      String add = "";
+      if(firstPassword){
+         add = " AND pass='" + password + "'";
+      }else{
+         add = " AND pass2='" + password + "'";
+      }
+      return loadUser(query + add, firstPassword);
+   }
    
    public User loadUser(Long userId){
       String query="SELECT * FROM users WHERE id=" + userId.toString();
