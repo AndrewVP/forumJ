@@ -116,7 +116,6 @@ public class TemaDao extends FJDao {
       }
       Connection conn = null;
       Statement st = null;
-      int result = 0;
       try {
          conn = getConnection();
          st = conn.createStatement();
@@ -193,19 +192,19 @@ public class TemaDao extends FJDao {
     * @param unknown_type $lastPost
     * @return unknown
     */
-   public Map<Long, Post> getPostsList(int $str_fd_timezone_hr, int $str_fd_timezone_mn, long $nfirstpost, int $count, LocaleString $locale, int $pg, boolean $lastPost){
-      String query="SELECT * FROM body WHERE body.head=" +  this.getId() + " ORDER BY body.id ASC LIMIT " + $nfirstpost + ", " +  $count;
-      Map<Long, Post> result = new HashMap<Long, Post>();
-      boolean $isLastPost = false;
-      boolean $isQuest = false;
-      boolean $isAdminForvard = false;
-      boolean $isUserCanAddAnswer = false;
-      boolean $hasIgnor = this.getArrIgnorId().size()>0;
-      boolean $isFirst;
-      int $nPost = 0;
-      Map<String, String> $bodiesId = new HashMap<String, String>();
-      Map<String, String> $headsId = new HashMap<String, String>();
-      Long $lastPostId = null;
+   public List<Post> getPostsList(int timezone_hr, int timezone_mn, long nfirstpost, int count, LocaleString locale, int page, boolean lastPost){
+      String query="SELECT * FROM body WHERE body.head=" +  this.getId() + " ORDER BY body.id ASC LIMIT " + nfirstpost + ", " +  count;
+      List<Post> result = new ArrayList<Post>();
+      Map<Long, Post> postsMap = new HashMap<Long, Post>();
+      boolean isQuest = false;
+      boolean isAdminForvard = false;
+      boolean isUserCanAddAnswer = false;
+      boolean hasIgnor = this.getArrIgnorId().size()>0;
+      boolean isFirst;
+      int nPost = 0;
+      Map<String, String> bodiesId = new HashMap<String, String>();
+      Map<String, String> headsId = new HashMap<String, String>();
+      Long lastPostId = null;
       Connection conn = null;
       Statement st = null;
       QuestNodeDao questDao = new QuestNodeDao();
@@ -214,44 +213,45 @@ public class TemaDao extends FJDao {
          st = conn.createStatement();
          ResultSet rs = st.executeQuery(query);
          while (rs.next()){
-            $isFirst = $pg == 1 && ++$nPost == 1;
-            $lastPostId = rs.getLong("id");
-            Post post = new Post(this.getId(), $lastPostId, $locale, null, getArrIgnorId(), $hasIgnor, 0, $isAdminForvard, $isQuest, $isUserCanAddAnswer, $pg, $isFirst, getUser());
-            if ($lastPost){
+            isFirst = page == 1 && ++nPost == 1;
+            lastPostId = rs.getLong("id");
+            Post post = new Post(this.getId(), lastPostId, locale, null, getArrIgnorId(), hasIgnor, 0, isAdminForvard, isQuest, isUserCanAddAnswer, page, isFirst, getUser());
+            if (lastPost){
                post.setLastPost();
             }
-            result.put($lastPostId, post);
+            result.add(post);
+            postsMap.put(lastPostId, post);
             String tablePost = rs.getString("table_post");
-            String tablePostIds = $bodiesId.get(tablePost);
+            String tablePostIds = bodiesId.get(tablePost);
             if (tablePostIds != null){
-               tablePostIds += ", " + $lastPostId.toString();
+               tablePostIds += ", " + lastPostId.toString();
             }else{
-               tablePostIds = $lastPostId.toString();
+               tablePostIds = lastPostId.toString();
             }
-            $bodiesId.put(tablePost, tablePostIds);
+            bodiesId.put(tablePost, tablePostIds);
             String tableHead = rs.getString("table_head");
-            String tableHeadIds = $headsId.get(tableHead);
+            String tableHeadIds = headsId.get(tableHead);
             if (tableHeadIds != null){
-               tableHeadIds += ", " + $lastPostId.toString();
+               tableHeadIds += ", " + lastPostId.toString();
             }else{
-               tableHeadIds = $lastPostId.toString();
+               tableHeadIds = lastPostId.toString();
             }
-            $headsId.put(tableHead, tableHeadIds);
+            headsId.put(tableHead, tableHeadIds);
          }
          //Загружаем заголовки постов
-         for (Iterator<Entry<String, String>> iterator = $headsId.entrySet().iterator(); iterator.hasNext();) {
+         for (Iterator<Entry<String, String>> iterator = headsId.entrySet().iterator(); iterator.hasNext();) {
             Entry<String, String> entry = iterator.next();
-            String $table = entry.getKey();
-            String $ids = entry.getValue();
-            String $sqlHead = "SELECT "+
-            $table + ".id, "+
-            $table + ".ip, "+
-            $table + ".auth, "+
-            $table + ".domen, "+
-            $table + ".tilte, "+
-            $table + ".fd_post_time as post_time, "+
-            $table + ".nred, "+
-            $table + ".fd_post_edit_time as post_edit_time, "+
+            String table = entry.getKey();
+            String ids = entry.getValue();
+            query = "SELECT "+
+            table + ".id, "+
+            table + ".ip, "+
+            table + ".auth, "+
+            table + ".domen, "+
+            table + ".tilte, "+
+            table + ".fd_post_time as post_time, "+
+            table + ".nred, "+
+            table + ".fd_post_edit_time as post_edit_time, "+
             "users.nick, "+
             "users.avatar, "+
             "users.s_avatar, "+
@@ -266,24 +266,24 @@ public class TemaDao extends FJDao {
             "titles.head, "+
             "titles.type "+
             "FROM "+
-            "(" + $table + 
-            " LEFT JOIN users ON " + $table + ".auth = users.id) "+
-            " LEFT JOIN titles ON " + $table + ".thread_id = titles.id "+
-            " WHERE " + $table + ".id IN (" + $ids + ") ";
-            rs = st.executeQuery($sqlHead);
+            "(" + table + 
+            " LEFT JOIN users ON " + table + ".auth = users.id) "+
+            " LEFT JOIN titles ON " + table + ".thread_id = titles.id "+
+            " WHERE " + table + ".id IN (" + ids + ") ";
+            rs = st.executeQuery(query);
             while (rs.next()){
                Long postId = rs.getLong("id");
                int type = rs.getInt("type");
-               $isQuest = (type == 1 || type == 2);
-               Post post = result.get(postId);
-               if (post.isFirst() && $isQuest){
+               isQuest = (type == 1 || type == 2);
+               Post post = postsMap.get(postId);
+               if (post.isFirst() && isQuest){
                   post.setQuest();
 
-                  List<QuestNode> $questNodes = questDao.loadNodes(getId());
-                  post.setAnswerAmount($questNodes.size());
+                  List<QuestNode> questNodes = questDao.loadNodes(getId());
+                  post.setAnswerAmount(questNodes.size());
                   post.setVoicesAmount(this.getVoicesAmount());
-                  post.setNodes($questNodes);
-                  post.setQuestion($questNodes.get(0).getNode());
+                  post.setNodes(questNodes);
+                  post.setQuestion(questNodes.get(0).getNode());
                   post.setUserVote(this.isUserVote());
                }
                post.setNick(rs.getString("nick"));
@@ -295,7 +295,7 @@ public class TemaDao extends FJDao {
                post.setWantSeeAvatars(rs.getInt("v_avatars") == 1);
                post.setCountry(rs.getString("country"));
                post.setShowCountry(rs.getInt("scountry") == 1);
-               post.setPostTime(rs.getLong("post_time"), $str_fd_timezone_hr,$str_fd_timezone_mn);
+               post.setPostTime(rs.getLong("post_time"), timezone_hr,timezone_mn);
                post.setCity(rs.getString("city"));
                post.setShowCity(rs.getInt("scity") == 1);
                post.setPostFooter(rs.getString("footer"));
@@ -304,15 +304,15 @@ public class TemaDao extends FJDao {
             }
          }
          //Загружаем посты
-         for (Iterator<Entry<String, String>> iterator = $bodiesId.entrySet().iterator(); iterator.hasNext();) {
+         for (Iterator<Entry<String, String>> iterator = bodiesId.entrySet().iterator(); iterator.hasNext();) {
             Entry<String, String> entry = iterator.next();
-            String $table = entry.getKey();
-            String $ids = entry.getValue();
-            String $sqlBody = "SELECT id, body FROM " + $table + " WHERE id IN (" + $ids + ")";
-            rs = st.executeQuery($sqlBody);
+            String table = entry.getKey();
+            String ids = entry.getValue();
+            query = "SELECT id, body FROM " + table + " WHERE id IN (" + ids + ")";
+            rs = st.executeQuery(query);
             while (rs.next()){
                Long postId = rs.getLong("id");
-               Post post = result.get(postId);
+               Post post = postsMap.get(postId);
                post.setBody(rs.getString("body"));
             }
          }
@@ -342,13 +342,13 @@ public class TemaDao extends FJDao {
    /**
     * Возвращает количество постов в ветке
     */
-   public Integer getPostsCountInThread(Long $idMax){
+   public Integer getPostsCountInThread(Long idMax){
       Integer result = null;
-      String $addQuery = "";
-      if ($idMax != null){
-         $addQuery = " AND id < " +  $idMax;
+      String addQuery = "";
+      if (idMax != null){
+         addQuery = " AND id < " +  idMax;
       }
-      String query = "SELECT count(id) as kolvo FROM body WHERE head=" +  this.getId() + $addQuery;
+      String query = "SELECT count(id) as kolvo FROM body WHERE head=" +  this.getId() + addQuery;
       Connection conn = null;
       Statement st = null;
       try {
@@ -466,8 +466,8 @@ public class TemaDao extends FJDao {
     * @param unknown_type $idUser
     * @return unknown
     */
-   public Boolean isUserSubscribed(Long $idUser){
-      String query = "SELECT id FROM fd_subscribe WHERE user=" +  $idUser  + " AND title=" +  this.getId();
+   public Boolean isUserSubscribed(Long idUser){
+      String query = "SELECT id FROM fd_subscribe WHERE user=" +  idUser  + " AND title=" +  this.getId();
       Connection conn = null;
       Statement st = null;
       try {
@@ -503,11 +503,11 @@ public class TemaDao extends FJDao {
    /**
     * Возвращает пост по его id
     *
-    * @param $postId
+    * @param postId
     */
-   public Post getPost(Long $postId){
+   public Post getPost(Long postId){
       Post result = null;
-      String query="SELECT body.table_post, body.table_head FROM body WHERE body.id=" + $postId;
+      String query="SELECT body.table_post, body.table_head FROM body WHERE body.id=" + postId;
       Connection conn = null;
       Statement st = null;
       try {
@@ -526,10 +526,10 @@ public class TemaDao extends FJDao {
             "(" + tableHead + 
             "LEFT JOIN users ON " + tableHead + ".auth = users.id) " +
             "LEFT JOIN titles ON " + tableHead + ".thread_id = titles.id " +
-            "WHERE " + tableHead + ".id=" + $postId;
+            "WHERE " + tableHead + ".id=" + postId;
             rs = st.executeQuery(query);
             if (rs.next()){
-               result = new Post($postId);
+               result = new Post(postId);
                result.setHead(rs.getString("tilte"));
                result.setIdu(rs.getLong("auth"));
                result.setNick(rs.getString("nick"));
@@ -537,7 +537,7 @@ public class TemaDao extends FJDao {
                result.setTableHead(tableHead);
                result.setIdThread(rs.getLong("thread_id"));
             }
-            query = "SELECT body FROM " + tablePost + " WHERE id=" + $postId;
+            query = "SELECT body FROM " + tablePost + " WHERE id=" + postId;
             rs = st.executeQuery(query);
             if (rs.next()){
                result.setBody(rs.getString("body"));

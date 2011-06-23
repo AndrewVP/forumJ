@@ -11,13 +11,12 @@ package org.forumj.web.servlet;
 
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
-import static org.forumj.web.servlet.tool.FJServletTools.*;
 import static org.forumj.tool.PHP.*;
+import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.*;
 import java.text.DecimalFormat;
 import java.util.*;
-import java.util.Map.Entry;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -46,38 +45,38 @@ public class Tema extends HttpServlet {
       StringBuffer buffer = new StringBuffer();
       try {
          HttpSession session = request.getSession();
-         String $defLang = (String) session.getAttribute("lang");
-         if ($defLang == null){
-            $defLang = "ua"; 
+         String lang = (String) session.getAttribute("lang");
+         if (lang == null){
+            lang = "ua"; 
          }
          cache(response);
          // Какой это номер страницы? если без номера, то первый
-         Integer $pg = request.getParameter("page") == null ? 1 : Integer.valueOf(request.getParameter("page"));
+         Integer pageNumber = request.getParameter("page") == null ? 1 : Integer.valueOf(request.getParameter("page"));
          // id Темы
-         Long $gid = request.getParameter("id") == null ? 1 : Long.valueOf(request.getParameter("id"));
+         Long threadId = request.getParameter("id") == null ? 1 : Long.valueOf(request.getParameter("id"));
          // Номер поста, на который отвечаем
-         String $reply = request.getParameter("reply");
-         LocaleString locale = new LocaleString($defLang, null, "ua");
+         String replyPostId = request.getParameter("reply");
+         LocaleString locale = new LocaleString(lang, null, "ua");
          // У гостей интерфейс модератора
          User user = (User) session.getAttribute("user");
-         TemaDao $dao = new TemaDao($gid, user);
-         session.setAttribute("page", $pg);
-         session.setAttribute("id", $gid);
-         session.setAttribute("where", request.getContextPath() + "?id=$gid&page=$pg&lang=" + $defLang);
+         TemaDao temaDao = new TemaDao(threadId, user);
+         session.setAttribute("page", pageNumber);
+         session.setAttribute("id", threadId);
+         session.setAttribute("where", request.getContextPath() + "?id=$gid&page=$pg&lang=" + lang);
          // Зашли с поиска?
-         String $_msg = request.getParameter("msg");
-         int $countPosts = 0;
-         if ($_msg != null && !"".equals($_msg.trim())){
-            $countPosts = $dao.getPostsCountInThread(new Long($_msg));
-            $pg=ceil($countPosts/user.getPt());
+         String msg = request.getParameter("msg");
+         int countPosts = 0;
+         if (msg != null && !"".equals(msg.trim())){
+            countPosts = temaDao.getPostsCountInThread(new Long(msg));
+            pageNumber=ceil(countPosts/user.getPt());
          }
          // Записываем счетчики
          // Робот?
          if (!isRobot(request)){
             // Нет
-            $dao.setSeen();
+            temaDao.setSeen();
          }
-         String $title = $dao.getTitle();
+         String title = temaDao.getTitle();
          buffer.append("<html>");
          buffer.append("<head>");
          buffer.append("<meta http-equiv='content-type' content='text/html; charset=windows-1251'>");
@@ -127,7 +126,7 @@ public class Tema extends HttpServlet {
          buffer.append("<link rel='icon' href='/favicon.ico' type='image/x-icon'>");
          buffer.append("<link rel='shortcut icon' href='/favicon.ico' type='image/x-icon'>");
          buffer.append("<title>");
-         buffer.append("форум Дилетантов :: "+$title);
+         buffer.append("форум Дилетантов :: "+title);
          buffer.append("</title>");
          buffer.append("</head>");
          // Цвет фона страницы
@@ -143,16 +142,16 @@ public class Tema extends HttpServlet {
          // Главное "меню"
          buffer.append(menu(request, user, locale));
          // Сколько страниц?
-         Integer $count = $dao.getPostsCountInThread(null);
-         Integer $cou_p = ceil($count/user.getPt())+1;
+         Integer count = temaDao.getPostsCountInThread(null);
+         Integer couP = ceil(count/user.getPt())+1;
          // Если цитирование или последний пост, то нам на последнюю
-         boolean $lastPost = false;
-         String $_end = request.getParameter("end");
-         if ($reply != null && !"".equals($reply.trim()) || isset($_end)){
-            $pg = $cou_p-1;
-            $lastPost = true;
+         boolean lastPost = false;
+         String end = request.getParameter("end");
+         if (replyPostId != null && !"".equals(replyPostId.trim()) || isset(end)){
+            pageNumber = couP-1;
+            lastPost = true;
          }
-         int $nfirstpost = ($pg-1)*user.getPt();
+         int nfirstpost = (pageNumber-1)*user.getPt();
          // Ссылки на другие страницы  Тут надо убрать colspan!
          buffer.append("<tr><td width=100%>");
          buffer.append("<table width=100%>");
@@ -163,19 +162,19 @@ public class Tema extends HttpServlet {
          buffer.append("<td class='page'>");
          buffer.append("<font class=mnuforum><b>" + locale.getString("mess22") + "&nbsp;</b></font>");
          buffer.append("</td>");
-         int $i_2=0;
-         for (int $i_1=1; $i_1<$cou_p; $i_1++){
-            $i_2=$i_2+1;
-            if (($i_1>($pg-5) && $i_1<($pg+5))||$i_2==10||$i_1==1||$i_1==($cou_p-1)){
-               if ($i_2==10) $i_2=0;
-               if ($i_1==$pg){
+         int i2=0;
+         for (int i1=1; i1<couP; i1++){
+            i2=i2+1;
+            if ((i1>(pageNumber-5) && i1<(pageNumber+5))||i2==10||i1==1||i1==(couP-1)){
+               if (i2==10) i2=0;
+               if (i1==pageNumber){
                   buffer.append("<td class='pagecurrent'>");
-                  buffer.append("<span class=mnuforum><b>"+$i_1 + "</b></span>");
+                  buffer.append("<span class=mnuforum><b>"+i1 + "</b></span>");
                   buffer.append("</td>");
                }
                else {
                   buffer.append("<td class='page'>");
-                  buffer.append("<a class=mnuforum href='tema.php?page="+$i_1 + "&id="+$gid + "'>"+$i_1 + "</a>");
+                  buffer.append("<a class=mnuforum href='tema.php?page="+i1 + "&id="+threadId + "'>"+i1 + "</a>");
                   buffer.append("</td>");
                }
             }
@@ -198,18 +197,18 @@ public class Tema extends HttpServlet {
          // Таблица форума
          buffer.append("<table border='0' cellpadding='2' cellspacing='0' width='100%'>");
          // Определяем кол-во строк таблицы
-         int $i2=$pg*user.getPt();
-         if ($i2>$count) {
-            $i2=$count-($pg-1)*user.getPt();
+         int i3=pageNumber*user.getPt();
+         if (i3>count) {
+            i3=count-(pageNumber-1)*user.getPt();
          }else{
-            $i2=user.getPt();
+            i3=user.getPt();
          }
          // Получаем массив постов
-         Map<Long, Post> $arrPosts = $dao.getPostsList(fd_timezone_hr(user.getTimezone()), fd_timezone_mn(user.getTimezone()), $nfirstpost,$i2, locale, $pg, $lastPost);
+         List<Post> postsList = temaDao.getPostsList(fd_timezone_hr(user.getTimezone()), fd_timezone_mn(user.getTimezone()), nfirstpost,i3, locale, pageNumber, lastPost);
          // Тема
          // Выводим строки
-         for (Iterator<Entry<Long, Post>> iterator = $arrPosts.entrySet().iterator(); iterator.hasNext();) {
-            Post post = iterator.next().getValue();
+         for (int postIndex = 0; postIndex < postsList.size(); postIndex++) {
+            Post post = postsList.get(postIndex);
             buffer.append(post.toString());
          }
 
@@ -230,19 +229,19 @@ public class Tema extends HttpServlet {
          buffer.append("<td class='page'>");
          buffer.append("<font class=mnuforum><b>" + locale.getString("mess22") + "&nbsp;</b></font>");
          buffer.append("</td>");
-         $i_2=0;
-         for (int $i_1=1; $i_1<$cou_p; $i_1++){
-            $i_2=$i_2+1;
-            if (($i_1>($pg-5) && $i_1<($pg+5))||$i_2==10||$i_1==1||$i_1==($cou_p-1)){
-               if ($i_2==10) $i_2=0;
-               if ($i_1==$pg){
+         i2=0;
+         for (int i1=1; i1<couP; i1++){
+            i2=i2+1;
+            if ((i1>(pageNumber-5) && i1<(pageNumber+5))||i2==10||i1==1||i1==(couP-1)){
+               if (i2==10) i2=0;
+               if (i1==pageNumber){
                   buffer.append("<td class='pagecurrent'>");
-                  buffer.append("<span class=mnuforum><b>"+$i_1 + "</b></span>");
+                  buffer.append("<span class=mnuforum><b>"+i1 + "</b></span>");
                   buffer.append("</td>");
                }
                else {
                   buffer.append("<td class='page'>");
-                  buffer.append("<a class=mnuforum href='tema.php?page="+$i_1 + "&id="+$gid + "'>"+$i_1 + "</a>");
+                  buffer.append("<a class=mnuforum href='tema.php?page="+i1 + "&id="+threadId + "'>"+i1 + "</a>");
                   buffer.append("</td>");
                }
             }
@@ -257,26 +256,26 @@ public class Tema extends HttpServlet {
          if (user.isLogined()){
             //Форма подписки/отписки  на ветку
             //Мы уже подписаны?
-            String $action = "";
-            String $mess = "";
-            if ($dao.isUserSubscribed(user.getId())){
+            String action = "";
+            String mess = "";
+            if (temaDao.isUserSubscribed(user.getId())){
                //               Подписка есть, предлагаем отказаться
-               $action="delonesubs.php?pg="+$pg;
-               $mess=locale.getString("mess90");
+               action="delonesubs.php?pg="+pageNumber;
+               mess=locale.getString("mess90");
             }else{
                //               Подписки нет - тогда предлагаем подписаться
-               $action="addsubs.php?pg="+$pg;
-               $mess=locale.getString("mess89");   
+               action="addsubs.php?pg="+pageNumber;
+               mess=locale.getString("mess89");   
             }
             buffer.append("<tr>");
             buffer.append("<td align=right>");
-            buffer.append("<form id='subs' action='" + $action + "' method='POST'>");
+            buffer.append("<form id='subs' action='" + action + "' method='POST'>");
             buffer.append("<table>");
             buffer.append("<tr>");
             buffer.append("<td>");
-            buffer.append(fd_button($mess,"subscribe();","btn_subs", "1"));
+            buffer.append(fd_button(mess,"subscribe();","btn_subs", "1"));
             //Прередаем нужные пераметры...
-            buffer.append("<input type=hidden name='IDT' value='" + $gid + "'>");
+            buffer.append("<input type=hidden name='IDT' value='" + threadId + "'>");
             buffer.append(fd_form_add(user));
             buffer.append("</td>");
             buffer.append("</tr>");
@@ -284,18 +283,18 @@ public class Tema extends HttpServlet {
             buffer.append("</form>");
             buffer.append("</td>");
             buffer.append("</tr>");
-            String $re="";
-            String $str_head=$title;
-            Post $res2 = null;
+            String re="";
+            String head=title;
+            Post replyPost = null;
             // Если цитируем/редактируем
-            if ($reply != null && !"".equals($reply.trim())) {
-               $res2 = $dao.getPost(Long.valueOf($reply));
+            if (replyPostId != null && !"".equals(replyPostId.trim())) {
+               replyPost = temaDao.getPost(Long.valueOf(replyPostId));
                // Редактируем?
-               $str_head=stripslashes($res2.getHead());
-               if ($res2.getNick().equalsIgnoreCase(user.getNick())) {
+               head=stripslashes(replyPost.getHead());
+               if (replyPost.getNick().equalsIgnoreCase(user.getNick())) {
                   // Да
-                  session.setAttribute("edit",$reply);
-                  $re="";
+                  session.setAttribute("edit",replyPostId);
+                  re="";
                }else{
                   // Нет
                   session.setAttribute("edit",null);
@@ -321,7 +320,7 @@ public class Tema extends HttpServlet {
             buffer.append(locale.getString("mess59") + ":&nbsp;");
             buffer.append("</td>");
             buffer.append("<td>");
-            buffer.append(fd_input("NHEAD", $re + htmlspecialchars($str_head), "70", "1"));
+            buffer.append(fd_input("NHEAD", re + htmlspecialchars(head), "70", "1"));
             buffer.append("</td>");
             buffer.append("</tr>");
             buffer.append("</table>");
@@ -337,7 +336,7 @@ public class Tema extends HttpServlet {
             //Приглашение
             buffer.append("<td align='CENTER'>");
             buffer.append("<p>");
-            buffer.append("<?echo($_mess12);?>");
+            buffer.append(locale.getString("mess12"));
             buffer.append("</p>");
             buffer.append("</td>");
             buffer.append("</tr>");
@@ -351,24 +350,24 @@ public class Tema extends HttpServlet {
             //Автотеги
             buffer.append(autotags_add());
             // текстарий
-            String $textarea="";
-            if ($reply != null && !"".equals($reply.trim())) {
-               String $_ans = request.getParameter("ans");
+            String textarea="";
+            if (replyPostId != null && !"".equals(replyPostId.trim())) {
+               String ans = request.getParameter("ans");
                if (session.getAttribute("edit") != null){
-                  $textarea+=stripslashes($res2.getBody());
-               }else if (!isset($_ans)){
-                  $textarea+="[quote][b]"+stripslashes($res2.getNick()) + "[/b]";
-                  $textarea+=locale.getString("mess14")+chr(13);
-                  $textarea+=stripslashes($res2.getBody()) + "[/quote]";
+                  textarea+=stripslashes(replyPost.getBody());
+               }else if (ans != null){
+                  textarea+="[quote][b]"+stripslashes(replyPost.getNick()) + "[/b]";
+                  textarea+=locale.getString("mess14")+chr(13);
+                  textarea+=stripslashes(replyPost.getBody()) + "[/quote]";
                }else{
-                  $textarea+="[b]"+stripslashes($res2.getNick()) + "[/b]";
-                  $textarea+=", ";
+                  textarea+="[b]"+stripslashes(replyPost.getNick()) + "[/b]";
+                  textarea+=", ";
                }
             }
-            buffer.append("<textarea rows='20' class='mnuforumSm' id='ed1' name='A2' cols='55'><?echo($textarea);?></textarea>");
+            buffer.append("<textarea rows='20' class='mnuforumSm' id='ed1' name='A2' cols='55'>" + textarea + "</textarea>");
             buffer.append("<br>");
             buffer.append("<input type='checkbox' name='no_exit' value='1'>");
-            buffer.append("<?echo($_mess123);?>");
+            buffer.append(locale.getString("mess123"));
             //Кнопки
             buffer.append("<table>");
             buffer.append("<tr>");
@@ -381,19 +380,19 @@ public class Tema extends HttpServlet {
             buffer.append("</tr>");
             buffer.append("</table>");
             //Если редактируем
-            if ($reply != null && !"".equals($reply.trim()) && ($res2.getIdu() == user.getId())){
-               buffer.append("<input type=hidden name='IDB' size='20' value='<?echo($reply);?>'>");
-               buffer.append("<input type=hidden name='IDTbl' size='20' value='" + $res2.getTablePost() + "'>");
-               buffer.append("<input type=hidden name='IDPst' size='20' value='" + $res2.getId().toString() + "'>");
-               buffer.append("<input type=hidden name='IDTblHead' size='20' value='" + $res2.getTableHead() + "'>");
-               buffer.append("<input type=hidden name='IDHead' size='20' value='" + $res2.getId().toString() + "'>");
+            if (replyPostId != null && !"".equals(replyPostId.trim()) && (replyPost.getIdu() == user.getId())){
+               buffer.append("<input type=hidden name='IDB' size='20' value='" + replyPostId + "'>");
+               buffer.append("<input type=hidden name='IDTbl' size='20' value='" + replyPost.getTablePost() + "'>");
+               buffer.append("<input type=hidden name='IDPst' size='20' value='" + replyPost.getId().toString() + "'>");
+               buffer.append("<input type=hidden name='IDTblHead' size='20' value='" + replyPost.getTableHead() + "'>");
+               buffer.append("<input type=hidden name='IDHead' size='20' value='" + replyPost.getId().toString() + "'>");
             }
             //id темы
-            buffer.append("<input type=hidden name='IDT' size='20' value='" + $gid + "'>");
-            if ($dao.isQuest()){
-               buffer.append("<input type=hidden name='ISQUEST' size='20' value='<?echo(true);?>'>");
+            buffer.append("<input type=hidden name='IDT' size='20' value='" + threadId + "'>");
+            if (temaDao.isQuest()){
+               buffer.append("<input type=hidden name='ISQUEST' size='20' value='true'>");
             }
-            buffer.append("<?echo(fd_form_add());?>");
+            buffer.append(fd_form_add(user));
             buffer.append("</td>");
             buffer.append("</tr>");
             buffer.append("</table>");

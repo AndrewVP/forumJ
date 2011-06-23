@@ -129,7 +129,7 @@ public class FJServletTools {
          buffer.append("</a>");
          ref=request.getContextPath() + "?" +query + "&exit=0";
          buffer.append("<img src='picts/key_delete.gif' border='0' class='menuImg'>");
-         buffer.append("<a class=mnuforumSm href='<?php  echo ref?>' rel='nofollow'>");
+         buffer.append("<a class=mnuforumSm href='" + ref + "' rel='nofollow'>");
          buffer.append(locale.getString("mess6"));
          buffer.append("</a>");
          buffer.append("</td>");
