@@ -21,7 +21,7 @@ public class FJServletTools {
 
    public static StringBuffer menu(HttpServletRequest request, User user, LocaleString locale) throws InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
-      String ref=request.getContextPath();
+      String ref=request.getContextPath() + "/";
       String query = request.getQueryString();
       if(query=="")
       {
@@ -127,6 +127,7 @@ public class FJServletTools {
          buffer.append("<a class=mnuforumSm href='control.php?id=2' rel='nofollow'>");
          buffer.append(locale.getString("mess23"));
          buffer.append("</a>");
+         /*Выход*/
          ref=request.getContextPath() + "?" +query + "&exit=0";
          buffer.append("<img src='picts/key_delete.gif' border='0' class='menuImg'>");
          buffer.append("<a class=mnuforumSm href='" + ref + "' rel='nofollow'>");

@@ -1,7 +1,5 @@
 package org.forumj.web.servlet.tool;
 
-import static org.forumj.web.servlet.tool.FJServletTools.loadResource;
-
 import java.io.*;
 
 import javax.servlet.http.*;

@@ -573,7 +573,7 @@ public class IndexDao extends FJDao {
          ResultSet rs = st.executeQuery(sql_views);
          while (rs.next()){
             Map<String, Object> map = new HashMap<String, Object>();
-            map.put("id", rs.getLong("name")) ;
+            map.put("id", rs.getLong("id")) ;
             map.put("flname", rs.getString("flname")) ;
             result.add(map);
          }
