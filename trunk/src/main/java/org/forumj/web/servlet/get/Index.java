@@ -18,7 +18,7 @@ package org.forumj.web.servlet.get;
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.tool.PHP.*;
-import static org.forumj.web.servlet.tool.FJServletTools.loadResource;
+import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -72,16 +72,10 @@ public class Index extends HttpServlet {
          buffer.append("<html>");
          buffer.append("<head>");
          buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
-         buffer.append("<style type='text/css'>");
          // Стили
-         buffer.append(loadResource("/css/style.css"));
-         buffer.append("</style>");
+         buffer.append(loadCSS("/css/style.css"));
          // Скрипты (флажки)
-         buffer.append("<script type='text/javascript'>");
-         buffer.append("// <!--\n");
-         buffer.append(loadResource("/js/jsmain_chek.js"));
-         buffer.append("\n// -->");
-         buffer.append("</script>");
+         buffer.append(loadJavaScript("/js/jsmain_chek.js"));
          Long m_xb = dao.getMaxPostId();
          Long m_xt = dao.getMaxThreadId();
          buffer.append("<script language='javascript' type='text/javascript'>");
@@ -90,17 +84,9 @@ public class Index extends HttpServlet {
          buffer.append("var m_xt=" + m_xt + ";");
          buffer.append("\n// -->");
          buffer.append("</script>");
-         buffer.append("<script type='text/javascript'>");
-         buffer.append("// <!--\n");
-         buffer.append(loadResource("/js/indicator.js"));
-         buffer.append("\n// -->");
-         buffer.append("</script>");
+         buffer.append(loadJavaScript("/js/indicator.js"));
          // Скрипты (submit формы интерфейсов)
-         buffer.append("<script type='text/javascript'>");
-         buffer.append("// <!-- \n");
-         buffer.append(loadResource("/js/jsview_ok.js"));
-         buffer.append("\n// -->");
-         buffer.append("</script>");
+         buffer.append(loadJavaScript("/js/jsview_ok.js"));
          buffer.append("<link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\">");
          buffer.append("<link rel=\"shortcut icon\" href=\"/favicon.ico\" type=\"image/x-icon\">");
          buffer.append("<title>");

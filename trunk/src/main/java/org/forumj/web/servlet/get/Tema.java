@@ -81,48 +81,17 @@ public class Tema extends HttpServlet {
          buffer.append("<head>");
          buffer.append("<meta http-equiv='content-type' content='text/html; charset=windows-1251'>");
          // Стили
-         buffer.append("<style type='text/css'>");
-         // Стили
-         buffer.append(loadResource("/css/style.css"));
-         buffer.append("</style>");
+         buffer.append(loadCSS("/css/style.css"));
          // Скрипты (смайлики)
-         buffer.append("<script type='text/javascript'>");
-         buffer.append("// <!--\n");
-         buffer.append(loadResource("/js/smile_.js"));
-         buffer.append("\n// -->");
-         buffer.append("</script>");
+         buffer.append(loadJavaScript("/js/smile_.js"));
          // Скрипты (игнор)
-         buffer.append("<script type='text/javascript'>");
-         buffer.append("// <!--\n");
-         buffer.append(loadResource("/js/jsignor.js"));
-         buffer.append("\n// -->");
-         buffer.append("</script>");
+         buffer.append(loadJavaScript("/js/jsignor.js"));
          // Скрипты (подписка)
-         buffer.append("<script type='text/javascript'>");
-         buffer.append("// <!--\n");
-         buffer.append(loadResource("/js/jssubscribe.js"));
-         buffer.append("\n// -->");
-         buffer.append("</script>");
+         buffer.append(loadJavaScript("/js/jssubscribe.js"));
          // Скрипты (submit поста)
-         buffer.append("<script type='text/javascript'>");
-         buffer.append("// <!--\n");
-         buffer.append("function post_submit(comand){");
-         buffer.append("if (document.post.NHEAD.value.replace(/(^\\s*)|(\\s*$)/g, \"\").length==0){");
-         buffer.append("alert('" + locale.getString("mess128") + "');");
-         buffer.append("");
-         buffer.append("}else if (document.post.A2.value.replace(/(^\\s*)|(\\s*$)/g, \"\").length==0){");
-         buffer.append("alert('" + locale.getString("mess128") + "');");
-         buffer.append("}else{");
-         buffer.append("document.post.comand.value=comand;");
-         buffer.append("document.post.submit();}}");
-         buffer.append("\n// -->");
-         buffer.append("</script>");
+         buffer.append(post_submit(locale.getString("mess128")));
          // Скрипты (автовставка тегов)
-         buffer.append("<script type='text/javascript'>");
-         buffer.append("// <!--\n");
-         buffer.append(loadResource("/js/jstags.js"));
-         buffer.append("\n// -->");
-         buffer.append("</script>");
+         buffer.append(loadJavaScript("/js/jstags.js"));
          buffer.append("<link rel='icon' href='/favicon.ico' type='image/x-icon'>");
          buffer.append("<link rel='shortcut icon' href='/favicon.ico' type='image/x-icon'>");
          buffer.append("<title>");
