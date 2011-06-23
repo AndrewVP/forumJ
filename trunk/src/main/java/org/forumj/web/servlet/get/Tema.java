@@ -7,7 +7,7 @@
  * You shall use it and distribute only in accordance with the terms of the 
  * License Agreement.
  */
-package org.forumj.web.servlet;
+package org.forumj.web.servlet.get;
 
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;

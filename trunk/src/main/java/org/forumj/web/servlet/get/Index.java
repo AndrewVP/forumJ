@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions &&
  * limitations under the License.
  */
-package org.forumj.web.servlet;
+package org.forumj.web.servlet.get;
 
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
