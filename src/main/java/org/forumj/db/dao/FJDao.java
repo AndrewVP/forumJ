@@ -41,13 +41,6 @@ public class FJDao {
     */
    private EMail mail = new EMail();
 
-   /**
-    * Максимальное время выполнения запроса
-    *
-    * @var maxQueryTime
-    */
-   private int maxQueryTime = 10;
-
    public static DataSource dataSource = null;
 
    protected static Configuration config = null;
@@ -87,16 +80,5 @@ public class FJDao {
     */
    protected void onDatabaseError(DBException exception){
       mail.sendInvalidQueryMail(999, 999, exception.getMessage(), "tema");
-   }
-
-   /**
-    * Событие, генерируемое после выполнения запроса к БД
-    *
-    * @param QueryResult $result
-    */
-   protected void onQuery(QueryResult result){
-      if (result.getQueryTime() > this.maxQueryTime){
-         mail.sendInvalidQueryMail(0, result.getQueryTime(), result.getQuery(), "tema");
-      }
    }
 }
