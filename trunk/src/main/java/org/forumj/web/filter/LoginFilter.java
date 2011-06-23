@@ -30,9 +30,8 @@ import org.forumj.db.entity.User;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebFilter(servletNames={"index", "tema"})
+@WebFilter(servletNames={"index", "tema", "auth"})
 public class LoginFilter implements Filter {
-
 
    /**
     * {@inheritDoc}
@@ -42,7 +41,7 @@ public class LoginFilter implements Filter {
       boolean ok = true;
       HttpServletRequest request = (HttpServletRequest) req;
       HttpServletResponse response = (HttpServletResponse) resp;
-      User user = (User) request.getSession(false).getAttribute("user");
+      User user = (User) request.getSession(true).getAttribute("user");
       Cookie[] cookies = request.getCookies();
       Cookie iduCookie = getCookie(cookies, "idu"); 
       Cookie userCookie = getCookie(cookies, "user"); 

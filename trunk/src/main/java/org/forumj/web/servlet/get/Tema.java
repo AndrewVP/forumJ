@@ -45,10 +45,6 @@ public class Tema extends HttpServlet {
       StringBuffer buffer = new StringBuffer();
       try {
          HttpSession session = request.getSession();
-         String lang = (String) session.getAttribute("lang");
-         if (lang == null){
-            lang = "ua"; 
-         }
          cache(response);
          // Какой это номер страницы? если без номера, то первый
          Integer pageNumber = request.getParameter("page") == null ? 1 : Integer.valueOf(request.getParameter("page"));
@@ -56,13 +52,13 @@ public class Tema extends HttpServlet {
          Long threadId = request.getParameter("id") == null ? 1 : Long.valueOf(request.getParameter("id"));
          // Номер поста, на который отвечаем
          String replyPostId = request.getParameter("reply");
-         LocaleString locale = new LocaleString(lang, null, "ua");
+         LocaleString locale = (LocaleString) session.getAttribute("locale");
          // У гостей интерфейс модератора
          User user = (User) session.getAttribute("user");
          TemaDao temaDao = new TemaDao(threadId, user);
          session.setAttribute("page", pageNumber);
          session.setAttribute("id", threadId);
-         session.setAttribute("where", request.getContextPath() + "?id=$gid&page=$pg&lang=" + lang);
+         session.setAttribute("where", request.getContextPath() + "?id=$gid&page=$pg");
          // Зашли с поиска?
          String msg = request.getParameter("msg");
          int countPosts = 0;
