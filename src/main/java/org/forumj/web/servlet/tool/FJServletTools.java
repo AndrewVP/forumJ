@@ -1,5 +1,7 @@
 package org.forumj.web.servlet.tool;
 
+import static org.forumj.web.servlet.tool.FJServletTools.loadResource;
+
 import java.io.*;
 
 import javax.servlet.http.*;
@@ -30,7 +32,7 @@ public class FJServletTools {
       response.addCookie(cookie);
    }
 
-   public static String loadResource(String path) throws IOException{
+   public static StringBuffer loadResource(String path) throws IOException{
       ClassLoader classLoader = FJServletTools.class.getClassLoader();
       InputStream stream = classLoader.getResourceAsStream(path);
       BufferedReader br = new BufferedReader(new InputStreamReader(stream));
@@ -38,9 +40,45 @@ public class FJServletTools {
       while(br.ready()){
          result.append(br.readLine());
       }
-      return result.toString();
+      return result;
+   }
+   
+   public static StringBuffer loadJavaScript(String path) throws IOException{
+      StringBuffer result = new StringBuffer();
+      result.append("<script type='text/javascript'>");
+      result.append("// <!--\n");
+      result.append(loadResource(path));
+      result.append("\n// -->");
+      result.append("</script>");
+      return result;
    }
 
+   public static StringBuffer loadCSS(String path) throws IOException{
+      StringBuffer result = new StringBuffer();
+      result.append("<style type='text/css'>");
+      result.append(loadResource(path));
+      result.append("</style>");
+      return result;
+   }
+   
+   public static StringBuffer post_submit(String mess128) throws IOException{
+      StringBuffer result = new StringBuffer();
+      result.append("<script type='text/javascript'>");
+      result.append("// <!--\n");
+      result.append("function post_submit(comand){");
+      result.append("if (document.post.NHEAD.value.replace(/(^\\s*)|(\\s*$)/g, \"\").length==0){");
+      result.append("alert('" + mess128 + "');");
+      result.append("");
+      result.append("}else if (document.post.A2.value.replace(/(^\\s*)|(\\s*$)/g, \"\").length==0){");
+      result.append("alert('" + mess128 + "');");
+      result.append("}else{");
+      result.append("document.post.comand.value=comand;");
+      result.append("document.post.submit();}}");
+      result.append("\n// -->");
+      result.append("</script>");
+      return result;
+   }
+   
    public static boolean isRobot(HttpServletRequest request){
       String uas = request.getHeader("user-agent");
       if (uas.contains("StackRambler") ||
