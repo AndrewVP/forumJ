@@ -712,25 +712,25 @@ public class Post {
                result += " ";
             }
             result +="</td>";
-            if (isset(this.currentUser.getNick())) {
+            if(this.currentUser.isLogined()){
                if (this.isAdminForvard){
                   result += "<td align='CENTER' width='70'>";
                   result += "<span class='posthead'><a href='site.php?id=" + this.idThread + "&post=" + this.id + "' rel=\"nofollow\">" + this.locale.getString("mess162") + "</a></span>";
                   result += "</td>";
                }
-               if (this.currentUser.getId()==this.idu) {
+               if (this.currentUser.getId() == this.idu) {
                   result += "<td align='CENTER' width='70'>";
                   result += "<span class='posthead'><a href='tema.php?id=" + this.idThread + "&reply=" + this.id + "#edit' rel=\"nofollow\">" + this.locale.getString("mess141") + "</a></span>";
                   result += "</td>";
-               }
-               else {
+               }else{
                   result += "<td align='CENTER' width='70'>";
                   result += "<span class='posthead'><a href='tema.php?id=" + this.idThread + "&reply=" + this.id + "#edit' rel=\"nofollow\">" + this.locale.getString("mess139") + "</a></span>";
                   result += "</td>";
                   result += "<td align='CENTER' width='70'>";
                   result += "<span class='posthead'><a href='tema.php?id=" + this.idThread + "&reply=" + this.id + "&ans=1#edit' rel=\"nofollow\">" + this.locale.getString("mess140") + "</a></span>";
                   result += "</td>";
-               }}
+               }
+            }
             result += "</tr></table>";
             result += "</td></tr>";
             result += "</table>";

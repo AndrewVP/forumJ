@@ -849,13 +849,13 @@ public class Diletant {
       result.append("<tr>");
       result.append("<td id='td1'>");
       /*Первая строчка Мальчики*/
-      result.append("<a href='#' onclick='smile(':)'); return false' rel='nofollow'>");
+      result.append("<a href='#' onclick=\"smile(':)'); return false;\" rel='nofollow'>");
       result.append("<img border='0' src='smiles/smile_.gif'>");
       result.append("</a>");
-      result.append("<a href='#' onclick='smile(':('); return false' rel='nofollow'>");
+      result.append("<a href='#' onclick=\"smile(':('); return false;\" rel='nofollow'>");
       result.append("<img border='0' src='smiles/sad.gif'>");
       result.append("</a>");
-      result.append("<a href='#' onclick='smile(';)'); return false' rel='nofollow'>");
+      result.append("<a href='#' onclick=\"smile(';)'); return false;\" rel='nofollow'>");
       result.append("<img border='0' src='smiles/wink3.gif'>");
       result.append("</a>");
       result.append("</td>");
@@ -863,8 +863,8 @@ public class Diletant {
       /*Вторая строчка Девочки*/
       result.append("<tr>");
       result.append("<td id='td2'>");
-      result.append("<a href='#' onclick='smile(':g)'); return false' rel='nofollow'><img border='0' src='smiles/girl_smile.gif'></a>"); 
-      result.append("<a href='#' onclick='smile(':g('); return false' rel='nofollow'><img border='0' src='smiles/girl_sad.gif'></a>"); 
+      result.append("<a href='#' onclick=\"smile(':g)'); return false;\" rel='nofollow'><img border='0' src='smiles/girl_smile.gif'></a>"); 
+      result.append("<a href='#' onclick=\"smile(':g('); return false;\" rel='nofollow'><img border='0' src='smiles/girl_sad.gif'></a>"); 
       result.append("</td>");
       result.append("</tr>");
       /*Третья строчка Остальное*/
@@ -884,18 +884,18 @@ public class Diletant {
 
    public static StringBuffer autotags_add(){
       StringBuffer result = new StringBuffer();
-      result.append("<img src='skin/standart/picts/b.gif' onclick='InsertTags('[b]','[/b]')' alt='Полужирный текст'>");
-      result.append("<img src='skin/standart/picts/i.gif' onclick='InsertTags('[i]','[/i]')' alt='Курсивный текст'>");
-      result.append("<img src='skin/standart/picts/u.gif' onclick='InsertTags('[u]','[/u]')' alt='Подчеркнутый текст'>");
+      result.append("<img src='skin/standart/picts/b.gif' onclick=\"InsertTags('[b]','[/b]')\" alt='Полужирный текст'>");
+      result.append("<img src='skin/standart/picts/i.gif' onclick=\"InsertTags('[i]','[/i]')\" alt='Курсивный текст'>");
+      result.append("<img src='skin/standart/picts/u.gif' onclick=\"InsertTags('[u]','[/u]')\" alt='Подчеркнутый текст'>");
       result.append("&nbsp;");
-      result.append("<img src='skin/standart/picts/1.gif' onclick='InsertTags('[size=1]','[/size]')' alt='Размер шрифта 1'>");
-      result.append("<img src='skin/standart/picts/2.gif' onclick='InsertTags('[size=2]','[/size]')' alt='Размер шрифта 2'>");
-      result.append("<img src='skin/standart/picts/3.gif' onclick='InsertTags('[size=3]','[/size]')' alt='Размер шрифта 3'>");
-      result.append("<img src='skin/standart/picts/4.gif' onclick='InsertTags('[size=4]','[/size]')' alt='Размер шрифта 4'>");
-      result.append("<img src='skin/standart/picts/5.gif' onclick='InsertTags('[size=5]','[/size]')' alt='Размер шрифта 5'>");
+      result.append("<img src='skin/standart/picts/1.gif' onclick=\"InsertTags('[size=1]','[/size]')\" alt='Размер шрифта 1'>");
+      result.append("<img src='skin/standart/picts/2.gif' onclick=\"InsertTags('[size=2]','[/size]')\" alt='Размер шрифта 2'>");
+      result.append("<img src='skin/standart/picts/3.gif' onclick=\"InsertTags('[size=3]','[/size]')\" alt='Размер шрифта 3'>");
+      result.append("<img src='skin/standart/picts/4.gif' onclick=\"InsertTags('[size=4]','[/size]')\" alt='Размер шрифта 4'>");
+      result.append("<img src='skin/standart/picts/5.gif' onclick=\"InsertTags('[size=5]','[/size]')\" alt='Размер шрифта 5'>");
       result.append("&nbsp;");
-      result.append("<img src='skin/standart/picts/img.gif' onclick='InsertTags('[img]','[/img]')' alt='Вставить картинку'>");
-      result.append("<img src='skin/standart/picts/quote.gif' onclick='InsertTags('[quote]','[/quote]')' alt='Добавить рамку'>");
+      result.append("<img src='skin/standart/picts/img.gif' onclick=\"InsertTags('[img]','[/img]')\" alt='Вставить картинку'>");
+      result.append("<img src='skin/standart/picts/quote.gif' onclick=\"InsertTags('[quote]','[/quote]')\" alt='Добавить рамку'>");
       result.append("<br>");
       result.append("<SELECT style='margin-top:1px; font:11px verdana; border: solid 1px black;' name=fcolor  onchange='javascript: InsertTags('[color=' + document.post.fcolor.options[document.post.fcolor.selectedIndex].value + ']', '[/color]'); document.post.fcolor.selectedIndex=0'>");
       result.append("<OPTION style='color:black' value='black'>Black</OPTION>");

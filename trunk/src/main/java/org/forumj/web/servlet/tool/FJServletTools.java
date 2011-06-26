@@ -36,7 +36,7 @@ public class FJServletTools {
       BufferedReader br = new BufferedReader(new InputStreamReader(stream));
       StringBuffer result = new StringBuffer();
       while(br.ready()){
-         result.append(br.readLine());
+         result.append(br.readLine() + "\n");
       }
       return result;
    }
@@ -44,9 +44,9 @@ public class FJServletTools {
    public static StringBuffer loadJavaScript(String path) throws IOException{
       StringBuffer result = new StringBuffer();
       result.append("<script type='text/javascript'>");
-      result.append("// <!--\n");
+      result.append("\n// <!--\n");
       result.append(loadResource(path));
-      result.append("\n// -->");
+      result.append("\n// -->\n");
       result.append("</script>");
       return result;
    }
