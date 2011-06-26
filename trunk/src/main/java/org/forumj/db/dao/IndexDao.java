@@ -260,7 +260,7 @@ public class IndexDao extends FJDao {
          }
          String where = "";
          if (isset(ignored)){
-            where = "WHERE titles.auth NOT IN " + ignored + " ";
+            where = " WHERE titles.auth NOT IN " + ignored + " ";
          }
          String join=null;
          String sqlTmpJoinTable = null;
@@ -285,9 +285,9 @@ public class IndexDao extends FJDao {
                /*Собираем запросы*/
                if (isset(moved)){
                   if (isset(ignored)){
-                     where+="AND titles.id NOT IN "+moved+" ";
+                     where+=" AND titles.id NOT IN "+moved+" ";
                   }else{
-                     where="WHERE titles.id NOT IN "+moved+" ";
+                     where=" WHERE titles.id NOT IN "+moved+" ";
                   }
                }
                folderName="'Форум' as _flname, ";
@@ -311,16 +311,16 @@ public class IndexDao extends FJDao {
                /*Собираем запросы*/
                if (isset(moved)){
                   if (isset(ignored)){
-                     where+="AND titles.id NOT IN "+moved+" ";
+                     where+=" AND titles.id NOT IN "+moved+" ";
                   }else{
-                     where="WHERE titles.id NOT IN "+moved+" ";
+                     where=" WHERE titles.id NOT IN "+moved+" ";
                   }
                }
                folderName="IF (ISNULL(fdfolders.flname), 'Форум', fdfolders.flname) as _flname, ";
                // Временная таблица
                sqlTmpJoinTable="CREATE TEMPORARY TABLE fdutranzit LIKE fdtranzit";
                sqlTmpJoinTableInsert="INSERT INTO fdutranzit (title, folder) SELECT fdtranzit.title, fdtranzit.folder FROM fdtranzit WHERE fdtranzit.user=" + this.getIdUser() + ";";
-               join=" LEFT JOIN fdutranzit on titles.id=fdutranzit.title LEFT JOIN fdfolders ON fdutranzit.folder=fdfolders.id";
+               join=" LEFT JOIN fdutranzit on titles.id=fdutranzit.title LEFT JOIN fdfolders ON fdutranzit.folder=fdfolders.id ";
             }
          }else{
             /*форума в интерфейсе нет*/
@@ -339,16 +339,16 @@ public class IndexDao extends FJDao {
             /*Собираем запросы*/
             if (isset(moved)){
                if (isset(ignored)){
-                  where+="AND titles.id NOT IN "+moved+" ";
+                  where+=" AND titles.id NOT IN "+moved+" ";
                }else{
-                  where="WHERE titles.id NOT IN "+moved+" ";
+                  where=" WHERE titles.id NOT IN "+moved+" ";
                }
             }
             folderName="IF (ISNULL(fdfolders.flname), 'Форум', fdfolders.flname) as _flname, ";
             // Временная таблица
             sqlTmpJoinTable="CREATE TEMPORARY TABLE fdutranzit LIKE fdtranzit";
             sqlTmpJoinTableInsert="INSERT INTO fdutranzit (title, folder) SELECT fdtranzit.title, fdtranzit.folder FROM fdtranzit WHERE fdtranzit.user=" + this.getIdUser() + ";";
-            join="LEFT JOIN fdutranzit on titles.id=fdutranzit.title LEFT JOIN fdfolders ON fdutranzit.folder=fdfolders.id";
+            join="LEFT JOIN fdutranzit on titles.id=fdutranzit.title LEFT JOIN fdfolders ON fdutranzit.folder=fdfolders.id ";
          }
          String sql_main="SELECT "+
          "titles.id, "+

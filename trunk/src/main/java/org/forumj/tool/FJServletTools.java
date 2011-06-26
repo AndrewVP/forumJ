@@ -86,7 +86,7 @@ public class FJServletTools {
          buffer.append("<a class=mnuforumSm href='" + ukr + "' rel='nofollow'>");
          buffer.append("Українська");
          buffer.append("</a>");
-         buffer.append(chr(149));
+         buffer.append("•");
          /*Рус. интерфейс*/
          buffer.append("<a class=mnuforumSm href='"+ rus + "' rel='nofollow'>");
          buffer.append("Русский");
@@ -137,7 +137,7 @@ public class FJServletTools {
          buffer.append("<a class=mnuforumSm href='" + ukr + "' rel='nofollow'>");
          buffer.append("Українська");
          buffer.append("</a>");
-         buffer.append(chr(149));
+         buffer.append("•");
          /* Рус. интерфейс*/
          buffer.append("<a class=mnuforumSm href='" + rus + "' rel='nofollow'>");
          buffer.append("Русский");
