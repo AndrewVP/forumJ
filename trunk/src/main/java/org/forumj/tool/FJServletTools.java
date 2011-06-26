@@ -2,7 +2,7 @@ package org.forumj.tool;
 
 import static org.forumj.tool.PHP.*;
 
-import java.util.Date;
+import java.util.*;
 
 import javax.servlet.http.*;
 
@@ -21,25 +21,23 @@ public class FJServletTools {
 
    public static StringBuffer menu(HttpServletRequest request, User user, LocaleString locale) throws InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
-      String ref=request.getContextPath() + "/";
-      String query = request.getQueryString();
-      if(query=="")
-      {
-         ref=ref + "?";
-      }else if(strpos(" " +query, "lang=") < 1){
-         ref=ref + "?" +query + "&";
-      }else if(strpos(query, "lang=")==0){
-         if(strlen(query)>7)
-         {
-            ref=ref + "?" +substr(query, 8) + "&";
-         }else{
-            ref=ref + "?";
+      Enumeration<String> parameters = request.getParameterNames();
+      boolean first = true;
+      String query = "";
+      while (parameters.hasMoreElements()){
+         String parameterName = parameters.nextElement();
+         if (!parameterName.equalsIgnoreCase("lang") && !parameterName.equalsIgnoreCase("exit")){
+            if(first){
+               query = "?";
+               first = false;
+            }else{
+               query += "&";
+            }
+            query += parameterName + "=" + request.getParameter(parameterName);  
          }
-      }else{
-         ref=ref + "?" +substr(query, 0, strpos(query, "lang=")-1) + substr(query, strpos(query, "lang=")+7) + "&";
       }
-      String ukr=ref + "lang=ua";
-      String rus=ref + "lang=ru";
+      String ukr = request.getContextPath() + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + ("".equalsIgnoreCase(query.trim()) ? "?lang=ua" : query.trim() + "&lang=ua");
+      String rus = request.getContextPath() + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + ("".equalsIgnoreCase(query.trim()) ? "?lang=ru" : query.trim() + "&lang=ru");
       buffer.append("<tr>");
       buffer.append("<td>");
       buffer.append("<table class=control>");
@@ -128,9 +126,9 @@ public class FJServletTools {
          buffer.append(locale.getString("mess23"));
          buffer.append("</a>");
          /*Выход*/
-         ref=request.getContextPath() + "?" +query + "&exit=0";
+         String exitUrl = request.getContextPath() + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + (query == null || "".equalsIgnoreCase(query.trim()) ? "exit=0" : query.trim() + "&exit=0");
          buffer.append("<img src='picts/key_delete.gif' border='0' class='menuImg'>");
-         buffer.append("<a class=mnuforumSm href='" + ref + "' rel='nofollow'>");
+         buffer.append("<a class=mnuforumSm href='" + exitUrl + "' rel='nofollow'>");
          buffer.append(locale.getString("mess6"));
          buffer.append("</a>");
          buffer.append("</td>");
