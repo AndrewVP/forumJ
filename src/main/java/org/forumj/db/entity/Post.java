@@ -649,7 +649,7 @@ public class Post {
          if (this.hasIgnor){
             if (in_array(this.idu, this.ignor)) div = 1;
          }
-         result += "<span class='tbtextnread'>" + this.nick + "</span>&nbsp;" + chr(149);
+         result += "<span class='tbtextnread'>" + this.nick + "</span>&nbsp;•";
          result += "&nbsp;<img border='0' src='smiles/icon_minipost.gif'>&nbsp;<span class='posthead'>" + this.postTime.toString("dd.MM.yyyy HH:mm") + "</span>&nbsp;";
          if (div != 0 && isset(this.currentUser) && this.idu!=this.currentUser.getId()){
             result += chr(149) + "&nbsp;<a class=\"posthead\" href=\"ignor.php?idi=" + this.idu + "&idt=" + this.idThread + "&idp=" + this.id + "&pg=" + this.pg + "\" rel=\"nofollow\">" + this.locale.getString("mess68") + "</a>";
