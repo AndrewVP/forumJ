@@ -23,7 +23,6 @@ import org.apache.commons.configuration.*;
 import org.apache.commons.dbcp.*;
 import org.apache.commons.pool.ObjectPool;
 import org.apache.commons.pool.impl.GenericObjectPool;
-import org.forumj.db.sql.result.QueryResult;
 import org.forumj.email.EMail;
 import org.forumj.exception.DBException;
 
