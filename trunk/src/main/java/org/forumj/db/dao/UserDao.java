@@ -60,6 +60,7 @@ public class UserDao extends FJDao {
             result.setView(rs.getInt("view_def"));
             result.setTimezone(rs.getInt("fd_timezone"));
             result.setVavatars(rs.getInt("v_avatars"));
+            result.setBan(rs.getInt("ban"));
          }
       } catch (ConfigurationException e) {
          e.printStackTrace();

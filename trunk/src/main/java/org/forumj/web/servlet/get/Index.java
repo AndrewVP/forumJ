@@ -38,7 +38,7 @@ import org.forumj.tool.LocaleString;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {"/index.php"}, name="index")
+@WebServlet(urlPatterns = {"/index.php", "/"}, name="index")
 public class Index extends HttpServlet {
 
    private static final long serialVersionUID = 1828936989822948738L;

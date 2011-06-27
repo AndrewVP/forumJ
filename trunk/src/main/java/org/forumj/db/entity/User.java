@@ -39,6 +39,22 @@ public class User {
    
    private int timezone = 0;
    
+   private int ban = 0;
+   
+   /**
+    * @return the ban
+    */
+   public int getBan() {
+      return ban;
+   }
+
+   /**
+    * @param ban the ban to set
+    */
+   public void setBan(int ban) {
+      this.ban = ban;
+   }
+
    /**
     * @return the v_avatars
     */
@@ -170,5 +186,9 @@ public class User {
     */
    public void setId(Long id) {
       this.id = id;
+   }
+   
+   public boolean isBanned(){
+      return ban != 0;
    }
 }

@@ -17,6 +17,7 @@ package org.forumj.tool;
 
 import static org.forumj.tool.PHP.*;
 
+import org.forumj.db.dao.UserDao;
 import org.forumj.db.entity.User;
 
 /**
@@ -910,5 +911,22 @@ public class Diletant {
       result.append("<OPTION style='color:gray' value='gray'>Gray</OPTION>");
       result.append("</SELECT>");
       return result;
+   }
+   
+   @Deprecated
+   public static User fd_guard(Long userId, String password, boolean firstPassword){
+      UserDao dao = new UserDao();
+      User user = dao.loadUser(userId, password, firstPassword);
+      return user;
+   }
+   
+   @Deprecated
+   public static boolean fd_ban(User user){
+      return user.getBan() == 1;
+   }
+
+   @Deprecated
+   public static String fd_nick(User user){
+      return user.getNick();
    }
 }

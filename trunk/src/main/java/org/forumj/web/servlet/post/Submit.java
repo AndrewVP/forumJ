@@ -57,7 +57,7 @@ public class Submit extends HttpServlet {
          writer.write(out);
       }else{
          // пароль не совпал
-         response.setHeader("Location", "auth.php?id=6");
+         response.sendRedirect(request.getContextPath() + "/auth.php?id=6");
       }      
    }
 
