@@ -39,7 +39,8 @@ public class Auth extends HttpServlet {
       try {
          cache(response);
          HttpSession session = request.getSession();
-         String $gid = request.getParameter("id");
+         String gid = request.getParameter("id");
+         gid = (gid == null || "".equalsIgnoreCase(gid.trim())) ? "1" : gid;
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          User user = (User) session.getAttribute("user");
          StringBuffer buffer = new StringBuffer();
@@ -65,7 +66,7 @@ public class Auth extends HttpServlet {
          buffer.append("<form  action='submit.php' method='POST'>");
          buffer.append("<table><tr><td><p>");
          // Определяем, откуда мы сюда попали?
-         switch (Integer.valueOf($gid)){
+         switch (Integer.valueOf(gid)){
             // Нажали на ссылку Вход
             case 1:
                buffer.append("Авторизуйтесь, пожалуйста");
@@ -111,7 +112,7 @@ public class Auth extends HttpServlet {
          buffer.append("</td>");
          buffer.append("</tr>");
          // Идентификатор
-         if ($gid.equals("7") || $gid.equals("8")) {
+         if (gid.equals("7") || gid.equals("8")) {
             buffer.append("<tr>");
             buffer.append("<td>Идентификатор</td>");
             buffer.append("<td><input type=password name='T3' size='20'>");

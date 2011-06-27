@@ -30,7 +30,7 @@ import org.forumj.db.entity.User;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebFilter(servletNames={"index", "tema", "auth"})
+@WebFilter(servletNames={"index", "tema", "auth", "mess"})
 public class LoginFilter implements Filter {
 
    /**
@@ -50,12 +50,12 @@ public class LoginFilter implements Filter {
       if (user == null){
          if (userCookie != null){
             if (pass2Cookie == null) {
-               goAwayStupidHackers(response, request.getContextPath());
+               goAwayStupidHackers(response, request.getContextPath() + "/");
                ok = false;
             }else{
                user = dao.loadUser(Long.valueOf(iduCookie.getValue()), pass2Cookie.getValue(), false);
                if (user == null){
-                  goAwayStupidHackers(response, request.getContextPath());
+                  goAwayStupidHackers(response, request.getContextPath() + "/");
                   ok = false;
                }else{
                   request.getSession().setAttribute("user", user);               
@@ -71,15 +71,14 @@ public class LoginFilter implements Filter {
       }
    }
 
-   private void goAwayStupidHackers(HttpServletResponse response, String redirectLocation){
+   private void goAwayStupidHackers(HttpServletResponse response, String redirectLocation) throws IOException{
       setcookie(response, "user", "", 0, "/forum", "www.diletant.com.ua");
       setcookie(response, "idu", "", 0, "/forum", "www.diletant.com.ua");
       setcookie(response, "pass2", "", 0, "/forum", "www.diletant.com.ua");
       setcookie(response, "user", "", 0, "/forum", "diletant.com.ua");
       setcookie(response, "idu", "", 0, "/forum", "diletant.com.ua");
       setcookie(response, "pass2", "", 0, "/forum", "diletant.com.ua");
-      response.setStatus(HttpServletResponse.SC_OK);
-      response.setHeader("Location", redirectLocation);
+      response.sendRedirect(redirectLocation);
    }
    
    /**

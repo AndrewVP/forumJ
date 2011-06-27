@@ -77,6 +77,24 @@ public class FJServletTools {
       return result;
    }
    
+   public static StringBuffer new_submit(String mess128) throws IOException{
+      StringBuffer result = new StringBuffer();
+      result.append("<script type='text/javascript'>");
+      result.append("// <!--\n");
+      result.append("function new_submit(comand){");
+      result.append("if (document.post.NHEAD.value.replace(/(^\\s*)|(\\s*$)/g, \"\").length==0){");
+      result.append("alert('" + mess128 + "');");
+      result.append("");
+      result.append("}else if (document.post.A2.value.replace(/(^\\s*)|(\\s*$)/g, \"\").length==0){");
+      result.append("alert('" + mess128 + "');");
+      result.append("}else{");
+      result.append("document.post.comand.value=comand;");
+      result.append("document.post.submit();}}");
+      result.append("\n// -->");
+      result.append("</script>");
+      return result;
+   }
+   
    public static boolean isRobot(HttpServletRequest request){
       String uas = request.getHeader("user-agent");
       if (uas.contains("StackRambler") ||
