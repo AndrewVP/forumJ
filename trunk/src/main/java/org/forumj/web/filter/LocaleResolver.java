@@ -16,7 +16,6 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
 
 import org.apache.commons.configuration.*;
-import org.forumj.db.entity.User;
 import org.forumj.tool.LocaleString;
 
 /**

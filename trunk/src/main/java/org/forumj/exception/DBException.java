@@ -29,6 +29,10 @@ public class DBException extends FJException {
       super(cause);
    }
 
+   public DBException(String message) {
+      super(message);
+   }
+
    private static final long serialVersionUID = -4325554039653089828L;
 
 }

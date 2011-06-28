@@ -59,7 +59,7 @@ public class Time {
     *
     */
    public void setClearTime(){
-       this.timestamp = strtotime(toString("m/d/Y"));
+       this.timestamp = strtotime(toString("dd.MM.yyyy HH:mm"));
    }
    
    /**
@@ -67,7 +67,7 @@ public class Time {
     *
     */
    public long getClearTime(){
-       return strtotime(this.toString("m/d/Y"));
+       return strtotime(this.toString("dd.MM.yyyy HH:mm"));
    }
    
    /**

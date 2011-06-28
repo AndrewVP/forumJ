@@ -73,9 +73,10 @@ public class Tema extends HttpServlet {
             temaDao.setSeen();
          }
          String title = temaDao.getTitle();
+         buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
          buffer.append("<html>");
          buffer.append("<head>");
-         buffer.append("<meta http-equiv='content-type' content='text/html; charset=windows-1251'>");
+         buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
          // Стили
          buffer.append(loadCSS("/css/style.css"));
          // Скрипты (смайлики)

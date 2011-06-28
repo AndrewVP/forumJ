@@ -421,8 +421,8 @@ public class IndexDao extends FJDao {
             thr.setNick(rs.getString("nick"));
             thr.setLastPostNick(rs.getString("lpostnick"));
             thr.setPcount(rs.getInt("npost")-1);
-            thr.setSnid(rs.getString("seenid"));
-            thr.setSnall(rs.getString("seenall"));
+            thr.setSnid(rs.getInt("seenid"));
+            thr.setSnall(rs.getInt("seenall"));
             thr.setType(rs.getInt("type"));
             thr.setFolder(rs.getString("_flname"));
             thr.setPg(pg);
