@@ -61,7 +61,7 @@ public class Auth extends HttpServlet {
          // Таблица с лого и верхним баннером
          buffer.append(logo(request));
          // Главные ссылки
-         buffer.append(menu(request, user, locale));
+         buffer.append(menu(request, user, locale, false));
          // Форма авторизации
          buffer.append("<tr><td width='100%' align='center'><table width='100%'><tr><td>");
          buffer.append("<form  action='submit.php' method='POST'>");
@@ -129,7 +129,7 @@ public class Auth extends HttpServlet {
          buffer.append("</td></tr></table></td></tr></table></form></td></tr></table></td></tr>");
          // Форма закончилась
          // Главные ссылки
-         buffer.append(menu(request, user, locale));
+         buffer.append(menu(request, user, locale, false));
          buffer.append(footer(request));
          buffer.append("</body>");
          buffer.append("</html>");

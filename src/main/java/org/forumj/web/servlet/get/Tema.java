@@ -106,7 +106,7 @@ public class Tema extends HttpServlet {
          buffer.append("<td width='100%'>");
          buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          // Главное "меню"
-         buffer.append(menu(request, user, locale));
+         buffer.append(menu(request, user, locale, false));
          // Сколько страниц?
          Integer count = temaDao.getPostsCountInThread(null);
          Integer couP = ceil(count/user.getPt())+1;
@@ -217,7 +217,7 @@ public class Tema extends HttpServlet {
          buffer.append("</td>");
          buffer.append("</tr>");
          // Главное "меню"
-         buffer.append(menu(request, user, locale));
+         buffer.append(menu(request, user, locale, false));
          buffer.append("</table></td></tr>");
          if (user.isLogined()){
             //Форма подписки/отписки  на ветку
