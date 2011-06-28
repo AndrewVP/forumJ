@@ -120,7 +120,7 @@ public class Index extends HttpServlet {
          buffer.append("<td width='100%'>");
          buffer.append("<table id='t2' width='100%'>");
          /*Главное меню*/
-         buffer.append(menu(request, user, locale));
+         buffer.append(menu(request, user, locale, true));
          // Интерфейс
          // Имя текущего
          if (session.getAttribute("vname") == null){
@@ -371,7 +371,7 @@ public class Index extends HttpServlet {
             buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          }
          /*Главное меню*/
-         menu(request, user, locale);
+         menu(request, user, locale, true);
          buffer.append("</table>");
          buffer.append("</td>");
          buffer.append("</tr>");

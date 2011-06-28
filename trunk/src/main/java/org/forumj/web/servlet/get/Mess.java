@@ -73,7 +73,7 @@ public class Mess extends HttpServlet {
          buffer.append(logo(request));
          // Главные ссылки
          // Главное "меню"
-         buffer.append(menu(request, user, locale));
+         buffer.append(menu(request, user, locale, false));
          // Форма новой ветки
          buffer.append("<tr>");
          buffer.append("<td>");
@@ -139,7 +139,7 @@ public class Mess extends HttpServlet {
          buffer.append("</td>");
          buffer.append("</tr>");
          // Главное "меню"
-         buffer.append(menu(request, user, locale));
+         buffer.append(menu(request, user, locale, false));
          // Баннер внизу, счетчики и копирайт.
          buffer.append(footer(request));
          buffer.append("</body>");

@@ -22,7 +22,7 @@ public class FJServletTools {
       response.setHeader("Pragma", "no-cache");
    }
 
-   public static StringBuffer menu(HttpServletRequest request, User user, LocaleString locale) throws InvalidKeyException{
+   public static StringBuffer menu(HttpServletRequest request, User user, LocaleString locale, boolean index) throws InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       Enumeration<String> parameters = request.getParameterNames();
       boolean first = true;
@@ -58,6 +58,13 @@ public class FJServletTools {
                   Авторизуемся id: код (1-Просто вход с "темы"), gid: номер темы, pg: номер страницы
           */
          buffer.append("<td class=bg align='LEFT'>");
+         if(!index){
+            /*Список тем*/
+            buffer.append("<img src='picts/index.gif' border='0' class='menuImg'>");
+            buffer.append("<a class=mnuforumSm href='index.php'>");
+            buffer.append(locale.getString("mess135"));
+            buffer.append("</a>");
+         }
          /*Новая тема*/
          buffer.append("<img src='picts/new_top.gif' border='0' class='menuImg'>");
          buffer.append("<a class=mnuforumSm href='auth.php' rel='nofollow'>");
@@ -103,6 +110,13 @@ public class FJServletTools {
          buffer.append("<span class=nik>");
          buffer.append(stripslashes(htmlspecialchars(user.getNick())));
          buffer.append("</span>");
+         if(!index){
+            /*Список тем*/
+            buffer.append("<img src='picts/index.gif' border='0' class='menuImg'>");
+            buffer.append("<a class=mnuforumSm href='index.php'>");
+            buffer.append(locale.getString("mess135"));
+            buffer.append("</a>");
+         }
          /*Новая тема*/
          buffer.append("<img src='picts/new_top.gif' border='0' class='menuImg'>");
          buffer.append("<a class=mnuforumSm href='mess.php' rel='nofollow'>");
@@ -297,7 +311,7 @@ public class FJServletTools {
       buffer.append("</div>");
       buffer.append("</td>");
       buffer.append("</tr>");
-      buffer.append(menu(request, user, locale));
+      buffer.append(menu(request, user, locale, false));
       buffer.append("<tr>");
       buffer.append("<td>");
       buffer.append("<table>");
