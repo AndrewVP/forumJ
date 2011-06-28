@@ -632,7 +632,7 @@ public class Post {
             rp = "[span class='found']$0[/span]";
             this.body = preg_replace(this.idWordsForms,rp, this.body);
          }
-         if (trim(this.ip) == trim(this.domen)){
+         if (trim(this.ip).equalsIgnoreCase(trim(this.domen))){
             this.domen = substr(this.domen, 0, strrpos(this.domen, ".")+1) + "---";
          }else{
             this.domen = "---" + substr(this.domen, strpos(this.domen, ".") + 1);
@@ -925,7 +925,6 @@ public class Post {
             for (Iterator<QuestNode> iterator = $nodes.iterator(); iterator.hasNext();) {
                QuestNode questNode = iterator.next();
                result +=("<tr><td class=voice_left align='right'>");
-               Long $in1 = questNode.getId();
                String $check = "";
                if (first){
                   first = false;

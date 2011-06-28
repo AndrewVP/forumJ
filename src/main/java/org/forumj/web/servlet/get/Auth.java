@@ -44,9 +44,10 @@ public class Auth extends HttpServlet {
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          User user = (User) session.getAttribute("user");
          StringBuffer buffer = new StringBuffer();
-         buffer.append("<html>");;
+         buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
+         buffer.append("<html>");
          buffer.append("<head>");
-         buffer.append("<meta http-equiv='content-type' content='text/html; charset=windows-1251'>");
+         buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
          // Стили
          buffer.append(loadCSS("/css/style.css"));
          buffer.append("<title>");

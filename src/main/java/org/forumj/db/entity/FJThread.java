@@ -25,6 +25,8 @@ import org.forumj.tool.*;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 public class FJThread{
+   
+   private Long lastPostId = null;
 
    /**
     * Локализация
@@ -42,10 +44,15 @@ public class FJThread{
    private String head;
 
    /**
-    * Автор
+    * Ник автора
     */
    private String nick;
 
+   /**
+    * Id автора
+    */
+   private Long authId;
+   
    /**
     * id ветки
     */
@@ -69,12 +76,12 @@ public class FJThread{
    /**
     * Количество просмотров участников
     */
-   private String snid;
+   private Integer snid;
 
    /**
     * Количество просмотров полное
     */
-   private String snall;
+   private Integer snall;
 
    /**
     * Тип ветки
@@ -86,6 +93,11 @@ public class FJThread{
     */
    private String folder;
 
+   /**
+    * Папка
+    */
+   private Long folderId;
+   
    /**
     * Дизайн
     */
@@ -344,28 +356,28 @@ public class FJThread{
    /**
     * @return the snid
     */
-   public String getSnid() {
+   public Integer getSnid() {
       return snid;
    }
 
    /**
     * @param snid the snid to set
     */
-   public void setSnid(String snid) {
+   public void setSnid(Integer snid) {
       this.snid = snid;
    }
 
    /**
     * @return the snall
     */
-   public String getSnall() {
+   public Integer getSnall() {
       return snall;
    }
 
    /**
     * @param snall the snall to set
     */
-   public void setSnall(String snall) {
+   public void setSnall(Integer snall) {
       this.snall = snall;
    }
 
@@ -466,4 +478,48 @@ public class FJThread{
    public void setCurrentUser(User currentUser) {
       this.currentUser = currentUser;
    }
+
+   /**
+    * @return the authId
+    */
+   public Long getAuthId() {
+      return authId;
+   }
+
+   /**
+    * @param authId the authId to set
+    */
+   public void setAuthId(Long authId) {
+      this.authId = authId;
+   }
+
+   /**
+    * @return the lastPostId
+    */
+   public Long getLastPostId() {
+      return lastPostId;
+   }
+
+   /**
+    * @param lastPostId the lastPostId to set
+    */
+   public void setLastPostId(Long lastPostId) {
+      this.lastPostId = lastPostId;
+   }
+
+   /**
+    * @return the folderId
+    */
+   public Long getFolderId() {
+      return folderId;
+   }
+
+   /**
+    * @param folderId the folderId to set
+    */
+   public void setFolderId(Long folderId) {
+      this.folderId = folderId;
+   }
+   
+   
 }
