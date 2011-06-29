@@ -366,7 +366,7 @@ public class IndexDao extends FJDao {
          folderName + 
          "users.nick "+
          "FROM "+
-         "titles force index(id_3) "+
+         "titles force index(titles0001) "+
          "LEFT JOIN users ON titles.auth=users.id "+
          join + 
          where + 

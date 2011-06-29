@@ -74,7 +74,7 @@ public class PHP {
    }
 
    public static String substr(String string, int start , int length){
-      return string.substring(start, length);
+      return string.substring(start, start+length);
    }
 
    public static String substr(String string, int start){
@@ -157,7 +157,7 @@ public class PHP {
    }
 
    public static String nl2br(String string){
-      return string.replace("\n","<br>");
+      return string.replace("\r\n","<br />");
    }
 
    public static long round(double arg, int precision){

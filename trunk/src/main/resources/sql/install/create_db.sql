@@ -513,7 +513,8 @@ CREATE TABLE IF NOT EXISTS `titles` (
   KEY `folder` (`folder`),
   KEY `id` (`auth`,`id`),
   KEY `id_2` (`id`,`dock`,`lposttime`),
-  KEY `id_3` (`id`,`dock`,`lposttime`,`type`,`npost`,`seenid`,`seenall`,`reg`,`head`,`lpostuser`,`lpostnick`,`id_last_post`,`auth`)
+  KEY `id_3` (`id`,`dock`,`lposttime`,`type`,`npost`,`seenid`,`seenall`,`reg`,`head`,`lpostuser`,`lpostnick`,`id_last_post`,`auth`),
+  KEY `titles0001` (dock desc, lposttime desc)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
 
 -- --------------------------------------------------------
