@@ -17,6 +17,8 @@ package org.forumj.db.entity;
 
 import static org.forumj.tool.PHP.*;
 
+import java.util.Date;
+
 import org.forumj.exception.InvalidKeyException;
 import org.forumj.tool.*;
 
@@ -24,7 +26,7 @@ import org.forumj.tool.*;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FJThread{
+public class FJThread implements IFJThread{
    
    private Long lastPostId = null;
 
@@ -61,13 +63,18 @@ public class FJThread{
    /**
     * время последнего поста
     */
-   private String lastPostTime;
+   private Date lastPostTime;
 
    /**
     * Ник автора последнего поста
     */
    private String lastPostNick;
 
+   /**
+    * Ник автора последнего поста
+    */
+   private Long lastPostAuthId = null;
+   
    /**
     * Количество постов в ветке
     */
@@ -122,6 +129,39 @@ public class FJThread{
     * Текущий пользователь
     */
    private User currentUser = null;
+   
+   /**
+    * Registration date
+    */
+   private Date regDate = null;
+
+   /**
+    * @return the lastPostAuthId
+    */
+   public Long getLastPostAuthId() {
+      return lastPostAuthId;
+   }
+
+   /**
+    * @param lastPostAuthId the lastPostAuthId to set
+    */
+   public void setLastPostAuthId(Long lastPostAuthId) {
+      this.lastPostAuthId = lastPostAuthId;
+   }
+
+   /**
+    * @return the regDate
+    */
+   public Date getRegDate() {
+      return regDate;
+   }
+
+   /**
+    * @param regDate the regDate to set
+    */
+   public void setRegDate(Date regDate) {
+      this.regDate = regDate;
+   }
 
    public String toString(){
       String result = "";
@@ -206,13 +246,11 @@ public class FJThread{
          // Количество просмотров всего
          result+="<font size='1' color='purple'>" + this.snall + "</font></div></td>";
          // Автор
-         result+="<td width='120' align='center' valign='middle'><div class='trforum'><font size='1'>" +htmlspecialchars(this.nick)+ "</font></div>";
-         // Время создания
-         result+="</td>";
+         result+="<td width='120' align='center' valign='middle'><div class='trforum'><font size='1'>" +htmlspecialchars(this.nick)+ "</font></div></td>";
          // Автор последнего поста
          result+="<td width='120' align=center><div class='mnuforum'><font size='1'>" +htmlspecialchars(this.lastPostNick)+ "</font></div>";
          // Время последнего поста
-         result+="<div class='mnuforum'><a href='tema.php?id=" + this.id.toString() + "&end=1#end' rel='nofollow'><font size='1'>" + substr(this.lastPostTime, 0, 5) + "&nbsp;" + substr(this.lastPostTime, 6, 5) + "</font></a></div>";
+         result+="<div class='mnuforum'><a href='tema.php?id=" + this.id.toString() + "&end=1#end' rel='nofollow'><font size='1'>" + date("dd.MM.yy HH:mm", getLastPostTime().getTime()) + "</font></a></div>";
          result+="</td>";
          // Папка
          result+="<td align='center' valign='middle'>";
@@ -314,14 +352,14 @@ public class FJThread{
    /**
     * @return the lastPostTime
     */
-   public String getLastPostTime() {
+   public Date getLastPostTime() {
       return lastPostTime;
    }
 
    /**
     * @param lastPostTime the lastPostTime to set
     */
-   public void setLastPostTime(String lastPostTime) {
+   public void setLastPostTime(Date lastPostTime) {
       this.lastPostTime = lastPostTime;
    }
 

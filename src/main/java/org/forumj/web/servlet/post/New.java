@@ -20,12 +20,14 @@ import static org.forumj.tool.FJServletTools.new_view;
 import static org.forumj.tool.PHP.*;
 
 import java.io.*;
+import java.sql.SQLException;
 import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.db.dao.FJThreadDao;
 import org.forumj.db.entity.*;
 import org.forumj.exception.*;
@@ -147,6 +149,10 @@ public class New extends HttpServlet {
       } catch (InvalidKeyException e) {
          e.printStackTrace();
       } catch (DBException e) {
+         e.printStackTrace();
+      } catch (ConfigurationException e) {
+         e.printStackTrace();
+      } catch (SQLException e) {
          e.printStackTrace();
       }
    }

@@ -10,6 +10,7 @@
 package org.forumj.db.dao;
 
 import static org.forumj.db.dao.tool.QueryBuilder.*;
+import static org.forumj.db.entity.IFJThread.*;
 
 import java.io.IOException;
 import java.sql.*;
@@ -25,7 +26,7 @@ import org.forumj.exception.DBException;
  */
 public class FJThreadDao extends FJDao {
 
-   public void create(FJThread thread, FJPost post) throws IOException, DBException{
+   public void create(FJThread thread, FJPost post) throws IOException, DBException, SQLException, ConfigurationException{
       String createThreadQuery = getCreateThreadQuery(); 
       Connection conn = null;
       PreparedStatement st = null;
@@ -56,14 +57,6 @@ public class FJThreadDao extends FJDao {
             throw new DBException("Thread wasn't created");
          }
          error = false;
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw ex;
       }finally{
          try {
             if (!error){
@@ -84,19 +77,11 @@ public class FJThreadDao extends FJDao {
       }
    }
 
-   public void update(FJThread thread) throws IOException, DBException{
+   public void update(FJThread thread) throws IOException, DBException, ConfigurationException, SQLException{
       Connection conn = null;
       try {
          conn = getConnection();
          update(thread, conn);
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw ex;
       }finally{
          try {
             if (conn != null){
@@ -106,6 +91,48 @@ public class FJThreadDao extends FJDao {
             e.printStackTrace();
          }
       }
+   }
+   
+   public FJThread read(Long id) throws ConfigurationException, SQLException, IOException{
+      FJThread thread = null;
+      String readThreadQuery = getReadThreadQuery(); 
+      PreparedStatement st = null;
+      Connection conn = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(readThreadQuery);
+         st.setLong(1, id);
+         ResultSet rs = st.executeQuery();
+         if (rs.next()){
+            thread = new FJThread();
+            thread.setId(id);
+            thread.setAuthId(rs.getLong(AUTH_FIELD_NAME));
+            thread.setHead(rs.getString(HEAD_FIELD_NAME));
+            thread.setRegDate(rs.getDate(REGISTRATION_DATE_FIELD_NAME));
+            thread.setLastPostTime(rs.getDate(LAST_POST_DATE_FIELD_NAME));
+            thread.setLastPostAuthId(rs.getLong(LAST_POST_USER_ID_FIELD_NAME));
+            thread.setLastPostNick(rs.getString(LAST_POST_USER_NICK_FIELD_NAME));
+            thread.setLastPostId(rs.getLong(LAST_POST_ID_FIELD_NAME));
+            thread.setSnid(rs.getInt(SEEN_ID_FIELD_NAME));
+            thread.setSnall(rs.getInt(SEEN_ALL_FIELD_NAME));
+            thread.setDock(rs.getInt(DOCK_FIELD_NAME));
+            thread.setType(rs.getInt(TYPE_FIELD_NAME));
+            thread.setFolderId(rs.getLong(FOLDER_ID_FIELD_NAME));
+            thread.setPcount(rs.getInt(POSTS_COUNT_FIELD_NAME));
+         }
+      }finally{
+         try {
+            if (conn != null){
+               conn.close();
+            }
+            if (st != null){
+               st.close();
+            }
+         } catch (SQLException e) {
+            e.printStackTrace();
+         }
+      }
+      return thread;
    }
    
    private void update(FJThread thread, Connection conn) throws IOException, SQLException{
@@ -136,4 +163,33 @@ public class FJThreadDao extends FJDao {
          }
       }
    }
+
+   public boolean isFirstPost(Long postId, Long threadId) throws ConfigurationException, SQLException, IOException{
+      boolean result = false;
+      String firstPostIdInThreadQuery = getFirstPostIdInThreadQuery(); 
+      PreparedStatement st = null;
+      Connection conn = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(firstPostIdInThreadQuery);
+         st.setLong(1, threadId);
+         ResultSet rs = st.executeQuery();
+         if (rs.next()){
+            result = postId == rs.getLong("id");
+         }
+      }finally{
+         try {
+            if (conn != null){
+               conn.close();
+            }
+            if (st != null){
+               st.close();
+            }
+         } catch (SQLException e) {
+            e.printStackTrace();
+         }
+      }
+      return result;
+   }
+   
 }

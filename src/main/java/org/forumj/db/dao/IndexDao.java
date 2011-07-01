@@ -353,7 +353,7 @@ public class IndexDao extends FJDao {
          String sql_main="SELECT "+
          "titles.id, "+
          "titles.dock, "+
-         "DATE_FORMAT(DATE_ADD(DATE_ADD(titles.lposttime,INTERVAL 0 HOUR), INTERVAL 0 MINUTE), '%d.%m %H:%i') as lposttime_, "+
+         "DATE_ADD(DATE_ADD(titles.lposttime,INTERVAL 0 HOUR), INTERVAL 0 MINUTE) as lposttime_, "+
          "titles.type, "+
          "titles.npost, "+
          "titles.seenid, "+
@@ -416,7 +416,7 @@ public class IndexDao extends FJDao {
             thr.setCurrentUser(user);
             thr.setId(id);
             thr.setDock(rs.getInt("dock"));
-            thr.setLastPostTime(rs.getString("lposttime_"));
+            thr.setLastPostTime(rs.getDate("lposttime_"));
             thr.setHead(rs.getString("head"));
             thr.setNick(rs.getString("nick"));
             thr.setLastPostNick(rs.getString("lpostnick"));
