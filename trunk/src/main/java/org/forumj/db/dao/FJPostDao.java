@@ -6,7 +6,7 @@
  * This software is distributed under GNU General Public License Version 2.0
  * You shall use it and distribute only in accordance with the terms of the 
  * License Agreement.
-  */
+ */
 package org.forumj.db.dao;
 
 import static org.forumj.db.dao.tool.QueryBuilder.*;
@@ -24,7 +24,7 @@ import org.forumj.exception.DBException;
  */
 public class FJPostDao extends FJDao {
 
-   public Long create(FJPost post, Connection conn) throws IOException, DBException{
+   public Long create(FJPost post, Connection conn) throws IOException, DBException, SQLException{
       Long postId = null;
       String createPostQuery = getCreatePostQuery();
       FJForumDao forumDao = new FJForumDao();
@@ -34,7 +34,6 @@ public class FJPostDao extends FJDao {
       String createPostHeadQuery = getCreatePostHeadQuery(tableHead);
       PreparedStatement st = null;
       try {
-         conn = getConnection();
          st = conn.prepareStatement(createPostQuery, new String[]{"id"});
          st.setLong(1, post.getHeadId());
          st.setInt(2, post.getState());
@@ -67,14 +66,6 @@ public class FJPostDao extends FJDao {
          }else{
             throw new DBException("Post wasn't created");
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw ex;
       }finally{
          try {
             if (st != null){
@@ -85,5 +76,38 @@ public class FJPostDao extends FJDao {
          }
       }
       return postId;
+   }
+
+   public Long create(FJPost post) throws IOException, DBException, ConfigurationException, SQLException{
+      Connection conn = null;
+      try {
+         conn = getConnection();
+         return create(post, conn);
+      }finally{
+         try {
+            if (conn != null){
+               conn.close();
+            }
+         } catch (SQLException e) {
+            e.printStackTrace();
+         }
+      }
+   }
+
+   public void update(FJPost post, Connection conn) throws IOException, SQLException{
+      String updateThreadQuery = getUpdateThreadQuery(); 
+      PreparedStatement st = null;
+      try {
+         st = conn.prepareStatement(updateThreadQuery);
+         st.executeUpdate();
+      }finally{
+         try {
+            if (st != null){
+               st.close();
+            }
+         } catch (SQLException e) {
+            e.printStackTrace();
+         }
+      }
    }
 }

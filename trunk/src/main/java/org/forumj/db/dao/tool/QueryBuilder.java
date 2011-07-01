@@ -24,6 +24,16 @@ public class QueryBuilder {
    private static String createThreadQuery = null;
 
    private static String updateThreadQuery = null;
+   
+   private static String updatePostQuery = null;
+
+   private static String updatePostBodyQuery = null;
+
+   private static String updatePostHeadQuery = null;
+
+   private static String readThreadQuery = null;
+   
+   private static String firstPostIdInThreadQuery = null;
 
    private static String createPostQuery = null;
    
@@ -50,6 +60,41 @@ public class QueryBuilder {
          updateThreadQuery = loadQuery("/sql/update_thread.sql");
       }
       return updateThreadQuery;
+   }
+   
+   public static String getUpdatePostQuery() throws IOException{
+      if (updatePostQuery == null){
+         updatePostQuery = loadQuery("/sql/update_post.sql");
+      }
+      return updatePostQuery;
+   }
+   
+   public static String getUpdatePostBodyQuery(String bodyTable) throws IOException{
+      if (updatePostBodyQuery == null){
+         updatePostBodyQuery = loadQuery("/sql/update_post_body.sql");
+      }
+      return updatePostBodyQuery;
+   }
+   
+   public static String getUpdatePostHeadQuery(String headTable) throws IOException{
+      if (updatePostHeadQuery == null){
+         updatePostHeadQuery = loadQuery("/sql/update_post.sql");
+      }
+      return updatePostHeadQuery;
+   }
+   
+   public static String getReadThreadQuery() throws IOException{
+      if (readThreadQuery == null){
+         readThreadQuery = loadQuery("/sql/read_thread.sql");
+      }
+      return readThreadQuery;
+   }
+   
+   public static String getFirstPostIdInThreadQuery() throws IOException{
+      if (firstPostIdInThreadQuery == null){
+         firstPostIdInThreadQuery = loadQuery("/sql/first_post_id_in_thread.sql");
+      }
+      return firstPostIdInThreadQuery;
    }
    
    public static String getCreatePostQuery() throws IOException{

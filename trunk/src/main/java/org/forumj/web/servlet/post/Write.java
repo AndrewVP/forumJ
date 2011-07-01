@@ -15,13 +15,16 @@ import static org.forumj.tool.PHP.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.*;
+import java.sql.SQLException;
 import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import org.forumj.db.entity.User;
+import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.db.dao.*;
+import org.forumj.db.entity.*;
 import org.forumj.exception.*;
 import org.forumj.tool.*;
 
@@ -60,9 +63,9 @@ public class Write extends HttpServlet {
             if (!("".equals(head.trim()) || "".equals(body.trim()))) {
                /* Не пустое*/
                /* Добавляем Сообщение*/
-//               $str_body=mysql_real_escape_string($_POST['A2']);
+               //               $str_body=mysql_real_escape_string($_POST['A2']);
                /* Текст заголовка*/
-//               $str_head=mysql_real_escape_string($_POST['NHEAD']);
+               //               $str_head=mysql_real_escape_string($_POST['NHEAD']);
                /* Добавляем заголовок*/
                String threadId = request.getParameter("IDT");
                String idt = request.getParameter("IDT");
@@ -73,15 +76,15 @@ public class Write extends HttpServlet {
                String domen = gethostbyaddr(ip);
                /*Просмотр или запись?*/
                if (command != null && "view".equalsIgnoreCase(command)){
-                  buffer.append(view(locale, request, user, head, $str_ip, $str_dom, idt, $lptime, body);
+                  buffer.append(view(locale, request, user, head, ip, domen, idt, rgTime, body));
                }else{
                   /* Записываем или редактируем???*/
                   if (idt != null) {
                      /*новый пост*/
-                     include("write_new.php");
+                     write_new(body, user, domen, ip, head, Long.valueOf(threadId));
                   }else{
                      /* Редактируем старый пост*/
-                     include("write_edit.php");
+                     write_edit(body, user, domen, ip, head, Long.valueOf(threadId));
                   }
                   /* Отправляем в форум*/
                   /*Остаемся в ветке?*/
@@ -107,9 +110,18 @@ public class Write extends HttpServlet {
          e.printStackTrace();
       } catch (DBException e) {
          e.printStackTrace();
+      } catch (NumberFormatException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      } catch (ConfigurationException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      } catch (SQLException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
       }
    }
-   
+
    private StringBuffer view(LocaleString locale, HttpServletRequest request, User user, String head, String $str_ip, String $str_dom, String idt, String $lptime, String body) throws IOException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
@@ -127,159 +139,200 @@ public class Write extends HttpServlet {
       buffer.append("<link rel='icon' href='/favicon.ico' type='image/x-icon'>");
       buffer.append("<link rel='shortcut icon' href='/favicon.ico' type='image/x-icon'>");
       buffer.append("<title>");
-         buffer.append("</title>");
+      buffer.append("</title>");
       buffer.append("</head>");
       buffer.append("<body bgcolor=#EFEFEF>");
-         buffer.append("<table class='content'>");
-            buffer.append("<tr class=heads>");
-               buffer.append("<td  class=internal>");
-                  /*"Закладка" последнего поста*/
-                     /*"Закладка" номера поста для ссылки из поиска, возврата после обработки игнора*/
-                     /*Тема*/
-                  buffer.append("<div class=nik>");
-                     buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(stripslashes(head))+ "</b>");
-                  buffer.append("</div>");
-               buffer.append("</td>");
-            buffer.append("</tr>");
-            buffer.append("<tr>");
-               buffer.append("<td class='matras'>");
-                     /*Ник*/
-                  buffer.append("<span class='tbtextnread'>");
-                     buffer.append(user.getNick());
-                  buffer.append("</span>&nbsp;•&nbsp;");
-                     /*Дата*/
-                  
-                  buffer.append("<img border='0' src='smiles/icon_minipost.gif'>&nbsp;");
-                  
-                  buffer.append("<span class='posthead'>" + $lptime+ "</span></span>&nbsp;•&nbsp;");
-                     /*Хост*/ 
-                  if ($str_ip.trim().equalsIgnoreCase($str_dom.trim())){
-                     $str_dom = substr($str_dom, 0, strrpos($str_dom, ".")+1) + "---";
-                  }else{
-                     $str_dom = "---" + substr($str_dom, strpos($str_dom, ".") + 1);
-                  }
-                  
-                  buffer.append("&nbsp;<span class='posthead'>");
-                     buffer.append($str_dom);
-                  buffer.append("</span>&nbsp;");
-                     /*игнорировать*/
-                  buffer.append("&nbsp;•");
-                  buffer.append("<span class='posthead'>");
-                     buffer.append(locale.getString("mess68"));
-                  buffer.append("</span>");
-               buffer.append("</td>");
-            buffer.append("</tr>");
-            buffer.append("<tr>");
-               buffer.append("<td>");
-                     /* div для игнора*/
-                  buffer.append("<div>");
-                        /*Аватара*/
-                     buffer.append("<table width='100%'>");
-                        buffer.append("<tr>");
-                           buffer.append("<td valign=top class='matras' style='padding:10px;'>");
-                              buffer.append("<div>");
-                                    buffer.append("<img border='0' src='smiles/no_avatar.gif'>");
-                              buffer.append("</div>");
-                           buffer.append("</td>");
-                           buffer.append("<td valign='top' width='100%'>");
-                              buffer.append("<table width='100%'>");
-                                 buffer.append("<tr>");
-                                    buffer.append("<td>");
-                                          /* Выводим текст*/
-                                       buffer.append("<p class=post>" + nl2br(fd_smiles(fd_bbcode(stripslashes(body))))+ "</p>");
-                                    buffer.append("</td>");
-                                 buffer.append("</tr>");
-                              buffer.append("</table>");
-                           buffer.append("</td>");
-                        buffer.append("</tr>");
-                     buffer.append("</table>");
-                  buffer.append("</div>");
-               buffer.append("</td>");
-            buffer.append("</tr>");
-            buffer.append(menu(request, user, locale, false));
-            buffer.append("<tr>");
-               buffer.append("<td>");
-                  buffer.append("<table>");
-                     buffer.append("<tr>");
-                        buffer.append("<td>");
-                           buffer.append("<form name='post' action='write.php' method='POST'>");
-                              buffer.append("<table width='100%'>");
-                                 /*Тема*/
-                                 buffer.append("<tr>");
-                                    buffer.append("<td colspan='2' align='CENTER'>");
-                                       buffer.append(locale.getString("mess59") + ":&nbsp;");
-                                       buffer.append("<input class='mnuforumSm' type=text name='NHEAD' size='70' value='" + stripslashes(head) +"'>");
-                                    buffer.append("</td>");
-                                 buffer.append("</tr>");
-                                 buffer.append("<tr>");
-                                    /*Смайлики заголовок*/
-                                    buffer.append("<td width='400' align='CENTER'>");
-                                       buffer.append("<p>");
-                                          buffer.append(locale.getString("mess21") + ":");
-                                       buffer.append("</p>");
-                                    buffer.append("</td>");
-                                       /*Приглашение*/
-                                    buffer.append("<td align='CENTER'>");
-                                       buffer.append("<p>" + locale.getString("mess12") + "</p>");
-                                    buffer.append("</td>");
-                                 buffer.append("</tr>");
-                                    /*Пост*/
-                                 buffer.append("<tr>");
-                                    buffer.append("<td valign='TOP' width='100%' height='100%'>");
-                                       /*Смайлики*/
-                                       buffer.append(smiles_add(locale.getString("mess11")));
-                                    buffer.append("</td>");
-                                    buffer.append("<td width='500' align='CENTER' valign='top'>");
-                                    /*Автотеги*/
-                                    buffer.append(autotags_add());
-                                       /* текстарий*/
-                                       buffer.append("<p>");
-                                          buffer.append("<textarea rows='20' class='mnuforumSm'  id='ed1' name='A2' cols='55'>"+stripslashes(body)+"</textarea>");
-                                       buffer.append("</p>");
-                                       String $checked="";
-                                       if (request.getParameter("no_exit") != null){
-                                          $checked="CHECKED";
-                                       }
-                                       buffer.append("<input type='checkbox'"+  $checked+" name='no_exit' value='1'>");
-                                       buffer.append(locale.getString("mess123"));
-                                       /*Кнопки*/
-                                       buffer.append("<table>");
-                                          buffer.append("<tr>");
-                                             buffer.append("<td>");
-                                                buffer.append(fd_button(locale.getString("mess13"),"post_submit(\"write\");","B1", "1"));
-                                             buffer.append("</td>");
-                                             buffer.append("<td>");
-                                                buffer.append(fd_button(locale.getString("mess63"),"post_submit(\"view\");","B3", "1"));
-                                             buffer.append("</td>");
-                                          buffer.append("</tr>");
-                                       buffer.append("</table>");
-                                          /*Прередаем нужные пераметры...*/
-                                       buffer.append(fd_form_add(user));
-                                          /* Если редактируем*/
-                                       if (idt != null) {
-                                          buffer.append("<input type=hidden name='IDB' value='"+ request.getParameter("IDB")+"'>");
-                                       }
-                                          /*id темы*/
-                                       buffer.append("<input type=hidden name='IDT' value='"+ request.getParameter("IDT")+"'>");
-                                    buffer.append("</td>");
-                                 buffer.append("</tr>");
-                                 buffer.append("<tr>");
-                                    buffer.append("<td>");
-                                    buffer.append("</td>");
-                                    buffer.append("<td align='CENTER' valign='top'>");
-                                    buffer.append("</td>");
-                                 buffer.append("</tr>");
-                              buffer.append("</table>");
-                           buffer.append("</form>");
-                        buffer.append("</td>");
-                     buffer.append("</tr>");
-                  buffer.append("</table>");
-               buffer.append("</td>");
-            buffer.append("</tr>");
-         buffer.append("</table>");
+      buffer.append("<table class='content'>");
+      buffer.append("<tr class=heads>");
+      buffer.append("<td  class=internal>");
+      /*"Закладка" последнего поста*/
+      /*"Закладка" номера поста для ссылки из поиска, возврата после обработки игнора*/
+      /*Тема*/
+      buffer.append("<div class=nik>");
+      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(stripslashes(head))+ "</b>");
+      buffer.append("</div>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("<tr>");
+      buffer.append("<td class='matras'>");
+      /*Ник*/
+      buffer.append("<span class='tbtextnread'>");
+      buffer.append(user.getNick());
+      buffer.append("</span>&nbsp;•&nbsp;");
+      /*Дата*/
+
+      buffer.append("<img border='0' src='smiles/icon_minipost.gif'>&nbsp;");
+
+      buffer.append("<span class='posthead'>" + $lptime+ "</span></span>&nbsp;•&nbsp;");
+      /*Хост*/ 
+      if ($str_ip.trim().equalsIgnoreCase($str_dom.trim())){
+         $str_dom = substr($str_dom, 0, strrpos($str_dom, ".")+1) + "---";
+      }else{
+         $str_dom = "---" + substr($str_dom, strpos($str_dom, ".") + 1);
+      }
+
+      buffer.append("&nbsp;<span class='posthead'>");
+      buffer.append($str_dom);
+      buffer.append("</span>&nbsp;");
+      /*игнорировать*/
+      buffer.append("&nbsp;•");
+      buffer.append("<span class='posthead'>");
+      buffer.append(locale.getString("mess68"));
+      buffer.append("</span>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      /* div для игнора*/
+      buffer.append("<div>");
+      /*Аватара*/
+      buffer.append("<table width='100%'>");
+      buffer.append("<tr>");
+      buffer.append("<td valign=top class='matras' style='padding:10px;'>");
+      buffer.append("<div>");
+      buffer.append("<img border='0' src='smiles/no_avatar.gif'>");
+      buffer.append("</div>");
+      buffer.append("</td>");
+      buffer.append("<td valign='top' width='100%'>");
+      buffer.append("<table width='100%'>");
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      /* Выводим текст*/
+      buffer.append("<p class=post>" + nl2br(fd_smiles(fd_bbcode(stripslashes(body))))+ "</p>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("</table>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("</table>");
+      buffer.append("</div>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append(menu(request, user, locale, false));
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      buffer.append("<table>");
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      buffer.append("<form name='post' action='write.php' method='POST'>");
+      buffer.append("<table width='100%'>");
+      /*Тема*/
+      buffer.append("<tr>");
+      buffer.append("<td colspan='2' align='CENTER'>");
+      buffer.append(locale.getString("mess59") + ":&nbsp;");
+      buffer.append("<input class='mnuforumSm' type=text name='NHEAD' size='70' value='" + stripslashes(head) +"'>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("<tr>");
+      /*Смайлики заголовок*/
+      buffer.append("<td width='400' align='CENTER'>");
+      buffer.append("<p>");
+      buffer.append(locale.getString("mess21") + ":");
+      buffer.append("</p>");
+      buffer.append("</td>");
+      /*Приглашение*/
+      buffer.append("<td align='CENTER'>");
+      buffer.append("<p>" + locale.getString("mess12") + "</p>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      /*Пост*/
+      buffer.append("<tr>");
+      buffer.append("<td valign='TOP' width='100%' height='100%'>");
+      /*Смайлики*/
+      buffer.append(smiles_add(locale.getString("mess11")));
+      buffer.append("</td>");
+      buffer.append("<td width='500' align='CENTER' valign='top'>");
+      /*Автотеги*/
+      buffer.append(autotags_add());
+      /* текстарий*/
+      buffer.append("<p>");
+      buffer.append("<textarea rows='20' class='mnuforumSm'  id='ed1' name='A2' cols='55'>"+stripslashes(body)+"</textarea>");
+      buffer.append("</p>");
+      String $checked="";
+      if (request.getParameter("no_exit") != null){
+         $checked="CHECKED";
+      }
+      buffer.append("<input type='checkbox'"+  $checked+" name='no_exit' value='1'>");
+      buffer.append(locale.getString("mess123"));
+      /*Кнопки*/
+      buffer.append("<table>");
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      buffer.append(fd_button(locale.getString("mess13"),"post_submit(\"write\");","B1", "1"));
+      buffer.append("</td>");
+      buffer.append("<td>");
+      buffer.append(fd_button(locale.getString("mess63"),"post_submit(\"view\");","B3", "1"));
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("</table>");
+      /*Прередаем нужные пераметры...*/
+      buffer.append(fd_form_add(user));
+      /* Если редактируем*/
+      if (idt != null) {
+         buffer.append("<input type=hidden name='IDB' value='"+ request.getParameter("IDB")+"'>");
+      }
+      /*id темы*/
+      buffer.append("<input type=hidden name='IDT' value='"+ request.getParameter("IDT")+"'>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      buffer.append("</td>");
+      buffer.append("<td align='CENTER' valign='top'>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("</table>");
+      buffer.append("</form>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("</table>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("</table>");
       buffer.append("</body>");
-   buffer.append("</html>");
-   return buffer;
+      buffer.append("</html>");
+      return buffer;
+   }
+   
+   private void write_new(String body, User user, String domen, String ip, String head, Long threadId) throws DBException, ConfigurationException, IOException, SQLException{
+      FJPost post = new FJPost();
+      FJPostBody postBody = new FJPostBody();
+      FJPostHead postHead = new FJPostHead();
+      post.setState(1);
+      post.setBody(postBody);
+      post.setHead(postHead);
+      postBody.setBody(body);
+      postHead.setAuth(user.getId());
+      postHead.setDomen(domen);
+      postHead.setIp(ip);
+      postHead.setNred(0);
+      postHead.setTitle(head);
+      FJPostDao postDao = new FJPostDao();
+      Long postId = postDao.create(post);
+      FJThreadDao threadDao = new FJThreadDao();
+      FJThread thread = threadDao.read(threadId);
+      thread.setLastPostId(postId);
+      threadDao.update(thread);
+   }
+   private void write_edit(String body, User user, String domen, String ip, String head, Long threadId) throws DBException, ConfigurationException, IOException, SQLException{
+      FJPost post = new FJPost();
+      FJPostBody postBody = new FJPostBody();
+      FJPostHead postHead = new FJPostHead();
+      post.setState(1);
+      post.setBody(postBody);
+      post.setHead(postHead);
+      postBody.setBody(body);
+      postHead.setAuth(user.getId());
+      postHead.setDomen(domen);
+      postHead.setIp(ip);
+      postHead.setNred(0);
+      postHead.setTitle(head);
+      FJPostDao postDao = new FJPostDao();
+      Long postId = postDao.create(post);
+      FJThreadDao threadDao = new FJThreadDao();
+      FJThread thread = threadDao.read(threadId);
+      thread.setLastPostId(postId);
+      threadDao.update(thread);
    }
 
 }
