@@ -50,18 +50,18 @@ public class New extends HttpServlet {
          HttpSession session = request.getSession();
          String userId = request.getParameter("IDU");
          String password = request.getParameter("PS1");
-         String head = request.getParameter("NHEAD");
-         String body = request.getParameter("A2");
-         String command = request.getParameter("comand");
-         LocaleString locale = (LocaleString) session.getAttribute("locale");
          boolean firstPassword = true;
          if (password == null){
             password = request.getParameter("PS2");
             firstPassword = false;
          }
+         LocaleString locale = (LocaleString) session.getAttribute("locale");
          User user = fd_guard(Long.valueOf(userId), password, firstPassword);
-         if (user != null && !user.isBanned()){
+         if (user != null && !user.isBanned() && user.isLogined()){
             // Все нормально
+            String head = request.getParameter("NHEAD");
+            String body = request.getParameter("A2");
+            String command = request.getParameter("comand");
             // Может пустая??
             if (!("".equals(head.trim()) || "".equals(body.trim()))) {
                // Не пустая
@@ -130,47 +130,15 @@ public class New extends HttpServlet {
                   //mail("an.diletant@mail.ru", $subject, $strMailAll, $headers);
                   //mail("andrew@sunbay.com", $subject, $strMailAll, $headers);
                   // Отправляем в форум
-                  buffer.append("<html>");
-                  buffer.append("<head>");
-                  buffer.append("<meta http-equiv='Refresh' content='10; url=index.php'>");
-                  buffer.append("<title>");
-                  buffer.append("</title>");
-                  buffer.append("</head>");
-                  buffer.append("<body>");
-                  buffer.append("</body>");
-                  buffer.append("</html>");
+                  buffer.append(successPostOut("3", "index.php"));
                }
             }else{
                // Пустая
-               buffer.append("<html>");
-               buffer.append("<head>");
-               buffer.append("<meta http-equiv='content-type' content='text/html; charset=windows-1251'>");
-               buffer.append("<meta http-equiv='Refresh' content='5; url=index.php'>");
-               buffer.append("<title>");
-               buffer.append("Мы не во всем Дилетанты!");
-               buffer.append("</title>");
-               buffer.append("</head>");
-               // Цвет фона страницы
-               buffer.append("<body bgcolor=#EFEFEF>");
-               buffer.append("<font size='5'><b>Шо, думаешь написано Дилетант, так тут все просто? Писать надо не только пробелами!</b></font>");
-               buffer.append("</body>");
-               buffer.append("</html>");
+               buffer.append(blankPostOut());
             }
          }else{
             // Вошли незарегистрировавшись
-            buffer.append("<html>");
-            buffer.append("<head>");
-            buffer.append("<meta http-equiv='content-type' content='text/html; charset=windows-1251'>");
-            buffer.append("<meta http-equiv='Refresh' content='5; url=auth.php?id=4.php'>");
-            buffer.append("<title>");
-            buffer.append("Мы не во всем Дилетанты!");
-            buffer.append("</title>");
-            buffer.append("</head>");
-            // Цвет фона страницы
-            buffer.append("<body bgcolor=#EFEFEF>");
-            buffer.append("<font size='5'><b>Входить надо как все нормальные люди!</b></font>");
-            buffer.append("</body>");
-            buffer.append("</html>");
+            buffer.append(unRegisteredPostOut());
          }   
          response.setContentType("text/html; charset=UTF-8");
          PrintWriter writer = response.getWriter();

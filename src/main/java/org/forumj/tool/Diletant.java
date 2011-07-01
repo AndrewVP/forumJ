@@ -590,4 +590,54 @@ public class Diletant {
    public static String fd_nick(User user){
       return user.getNick();
    }
+   
+   public static StringBuffer unRegisteredPostOut(){
+      StringBuffer buffer = new StringBuffer();
+      buffer.append("<html>");
+      buffer.append("<head>");
+      buffer.append("<meta http-equiv='content-type' content='text/html; charset=windows-1251'>");
+      buffer.append("<meta http-equiv='Refresh' content='5; url=auth.php?id=4.php'>");
+      buffer.append("<title>");
+      buffer.append("Мы не во всем Дилетанты!");
+      buffer.append("</title>");
+      buffer.append("</head>");
+      // Цвет фона страницы
+      buffer.append("<body bgcolor=#EFEFEF>");
+      buffer.append("<font size='5'><b>Входить надо как все нормальные люди!</b></font>");
+      buffer.append("</body>");
+      buffer.append("</html>");
+      return buffer;
+   }
+
+   public static StringBuffer blankPostOut(){
+      StringBuffer buffer = new StringBuffer();
+      buffer.append("<html>");
+      buffer.append("<head>");
+      buffer.append("<meta http-equiv='content-type' content='text/html; charset=windows-1251'>");
+      buffer.append("<meta http-equiv='Refresh' content='5; url=index.php'>");
+      buffer.append("<title>");
+      buffer.append("Мы не во всем Дилетанты!");
+      buffer.append("</title>");
+      buffer.append("</head>");
+      // Цвет фона страницы
+      buffer.append("<body bgcolor=#EFEFEF>");
+      buffer.append("<font size='5'><b>Шо, думаешь написано Дилетант, так тут все просто? Писать надо не только пробелами!</b></font>");
+      buffer.append("</body>");
+      buffer.append("</html>");
+      return buffer;
+   }
+
+   public static StringBuffer successPostOut(String seconds, String url){
+      StringBuffer buffer = new StringBuffer();
+      buffer.append("<html>");
+      buffer.append("<head>");
+      buffer.append("<meta http-equiv='Refresh' content='" + seconds + "; url=" + url + "'>");
+      buffer.append("<title>");
+      buffer.append("</title>");
+      buffer.append("</head>");
+      buffer.append("<body>");
+      buffer.append("</body>");
+      buffer.append("</html>");
+      return buffer;
+   }
 }

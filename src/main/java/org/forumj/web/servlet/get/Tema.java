@@ -225,11 +225,11 @@ public class Tema extends HttpServlet {
             String action = "";
             String mess = "";
             if (temaDao.isUserSubscribed(user.getId())){
-               //               Подписка есть, предлагаем отказаться
+               //Подписка есть, предлагаем отказаться
                action="delonesubs.php?pg="+pageNumber;
                mess=locale.getString("mess90");
             }else{
-               //               Подписки нет - тогда предлагаем подписаться
+               //Подписки нет - тогда предлагаем подписаться
                action="addsubs.php?pg="+pageNumber;
                mess=locale.getString("mess89");   
             }
