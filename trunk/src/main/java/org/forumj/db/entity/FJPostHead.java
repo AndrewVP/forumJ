@@ -15,7 +15,7 @@ import java.util.Date;
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FJPostHead {
+public class FJPostHead implements IFJPostHead {
 
    private Long id = null;
    

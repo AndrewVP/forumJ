@@ -524,9 +524,9 @@ public class TemaDao extends FJDao {
             tableHead + ".thread_id " +
             "FROM " +
             "(" + tableHead + 
-            "LEFT JOIN users ON " + tableHead + ".auth = users.id) " +
-            "LEFT JOIN titles ON " + tableHead + ".thread_id = titles.id " +
-            "WHERE " + tableHead + ".id=" + postId;
+            " LEFT JOIN users ON " + tableHead + ".auth = users.id) " +
+            " LEFT JOIN titles ON " + tableHead + ".thread_id = titles.id " +
+            " WHERE " + tableHead + ".id=" + postId;
             rs = st.executeQuery(query);
             if (rs.next()){
                result = new Post(postId);

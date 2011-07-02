@@ -13,7 +13,7 @@ package org.forumj.db.entity;
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FJPostBody {
+public class FJPostBody implements IFJPostBody {
    
    private Long id = null;
    

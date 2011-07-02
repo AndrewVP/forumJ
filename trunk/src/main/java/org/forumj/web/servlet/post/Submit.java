@@ -16,6 +16,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import org.apache.commons.codec.EncoderException;
 import org.forumj.db.dao.UserDao;
 import org.forumj.db.entity.User;
 
@@ -44,12 +45,16 @@ public class Submit extends HttpServlet {
          Long $idu=user.getId();
          String $pass2=user.getPass2();
          // ставим куку
-         setcookie(response, "user", $t1, 1209600, "/forum", "www.diletant.com.ua");
-         setcookie(response, "idu", $idu.toString(), 1209600, "/forum", "www.diletant.com.ua");
-         setcookie(response, "pass2", $pass2, 1209600, "/forum", "www.diletant.com.ua");
-         setcookie(response, "user", $t1, 1209600, "/forum", "diletant.com.ua");
-         setcookie(response, "idu", $idu.toString(), 1209600, "/forum", "diletant.com.ua");
-         setcookie(response, "pass2", $pass2, 1209600, "/forum", "diletant.com.ua");
+         try {
+            setcookie(response, "user",  $t1, 1209600, "/fj", "localhost");
+            setcookie(response, "idu", $idu.toString(), 1209600, "/fj", "localhost");
+            setcookie(response, "pass2", $pass2, 1209600, "/fj", "localhost");
+            setcookie(response, "user", $t1, 1209600, "/forum", "diletant.com.ua");
+            setcookie(response, "idu", $idu.toString(), 1209600, "/forum", "diletant.com.ua");
+            setcookie(response, "pass2", $pass2, 1209600, "/forum", "diletant.com.ua");
+         } catch (EncoderException e) {
+            e.printStackTrace();
+         }
          // Возвращаем на форум
          String out = "<html><head><meta http-equiv='Refresh' content='0; url=index.php'></head><body></body></html>";
          response.setContentType("text/html; charset=UTF-8");

@@ -37,6 +37,12 @@ public class QueryBuilder {
 
    private static String createPostQuery = null;
    
+   private static String readPostQuery = null;
+
+   private static String readPostHeadQuery = null;
+
+   private static String readPostBodyQuery = null;
+   
    private static String createPostBodyQuery = null;
    
    private static String createPostHeadQuery = null;
@@ -73,14 +79,14 @@ public class QueryBuilder {
       if (updatePostBodyQuery == null){
          updatePostBodyQuery = loadQuery("/sql/update_post_body.sql");
       }
-      return updatePostBodyQuery;
+      return updatePostBodyQuery.replace("@@TABLE@@", bodyTable);
    }
    
    public static String getUpdatePostHeadQuery(String headTable) throws IOException{
       if (updatePostHeadQuery == null){
-         updatePostHeadQuery = loadQuery("/sql/update_post.sql");
+         updatePostHeadQuery = loadQuery("/sql/update_post_head.sql");
       }
-      return updatePostHeadQuery;
+      return updatePostHeadQuery.replace("@@TABLE@@", headTable);
    }
    
    public static String getReadThreadQuery() throws IOException{
@@ -102,6 +108,27 @@ public class QueryBuilder {
          createPostQuery = loadQuery("/sql/create_post.sql");
       }
       return createPostQuery;
+   }
+   
+   public static String getReadPostQuery() throws IOException{
+      if (readPostQuery == null){
+         readPostQuery = loadQuery("/sql/read_post.sql");
+      }
+      return readPostQuery;
+   }
+   
+   public static String getReadPostHeadQuery(String headTable) throws IOException{
+      if (readPostHeadQuery == null){
+         readPostHeadQuery = loadQuery("/sql/read_post_head.sql");
+      }
+      return readPostHeadQuery.replace("@@TABLE@@", headTable);
+   }
+   
+   public static String getReadPostBodyQuery(String bodyTable) throws IOException{
+      if (readPostBodyQuery == null){
+         readPostBodyQuery = loadQuery("/sql/read_post_body.sql");
+      }
+      return readPostBodyQuery.replace("@@TABLE@@", bodyTable);
    }
    
    public static String getCreatePostBodyQuery(String bodyTableName) throws IOException{

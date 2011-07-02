@@ -4,6 +4,10 @@ import java.io.*;
 
 import javax.servlet.http.*;
 
+import org.apache.commons.codec.EncoderException;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.net.*;
+
 public class FJServletTools {
 
    public static Cookie getCookie(Cookie[] cookies, String name){
@@ -22,8 +26,10 @@ public class FJServletTools {
       return result;
    }
 
-   public static void setcookie(HttpServletResponse response, String name, String value, int expire, String path, String domain){
-      Cookie cookie = new Cookie(name, value);
+   public static void setcookie(HttpServletResponse response, String name, String value, int expire, String path, String domain) throws EncoderException{
+      QuotedPrintableCodec codec = new QuotedPrintableCodec();
+      String qpValue = value != null ? codec.encode(value) : null;
+      Cookie cookie = new Cookie(name, qpValue);
       cookie.setDomain(domain);
       cookie.setPath(path);
       cookie.setMaxAge(expire);

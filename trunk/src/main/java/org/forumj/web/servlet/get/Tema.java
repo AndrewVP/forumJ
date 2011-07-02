@@ -109,7 +109,7 @@ public class Tema extends HttpServlet {
          buffer.append(menu(request, user, locale, false));
          // Сколько страниц?
          Integer count = temaDao.getPostsCountInThread(null);
-         Integer couP = ceil(count/user.getPt())+1;
+         Integer couP = ceil((double)count/user.getPt())+1;
          // Если цитирование или последний пост, то нам на последнюю
          boolean lastPost = false;
          String end = request.getParameter("end");
