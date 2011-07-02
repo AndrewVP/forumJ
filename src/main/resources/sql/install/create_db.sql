@@ -486,7 +486,6 @@ CREATE TABLE IF NOT EXISTS `ss1` (
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
 
 -- --------------------------------------------------------
-
 --
 -- Структура таблицы `titles`
 --

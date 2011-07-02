@@ -23,6 +23,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
 
+import org.apache.commons.codec.EncoderException;
 import org.forumj.db.dao.UserDao;
 import org.forumj.db.entity.User;
 
@@ -47,10 +48,11 @@ public class LoginFilter implements Filter {
       Cookie userCookie = getCookie(cookies, "user"); 
       Cookie pass2Cookie = getCookie(cookies, "pass2"); 
       UserDao dao = new UserDao();
+      try {
       if (user == null){
          if (userCookie != null){
             if (pass2Cookie == null) {
-               goAwayStupidHackers(response, request.getContextPath() + "/");
+                  goAwayStupidHackers(response, request.getContextPath() + "/");
                ok = false;
             }else{
                user = dao.loadUser(Long.valueOf(iduCookie.getValue()), pass2Cookie.getValue(), false);
@@ -63,6 +65,9 @@ public class LoginFilter implements Filter {
             }
          }
       }
+      } catch (EncoderException e) {
+         e.printStackTrace();
+      }
       if (user == null){
          request.getSession().setAttribute("user", dao.loadUser(0l));
       }
@@ -71,7 +76,7 @@ public class LoginFilter implements Filter {
       }
    }
 
-   private void goAwayStupidHackers(HttpServletResponse response, String redirectLocation) throws IOException{
+   private void goAwayStupidHackers(HttpServletResponse response, String redirectLocation) throws IOException, EncoderException{
       setcookie(response, "user", "", 0, "/forum", "www.diletant.com.ua");
       setcookie(response, "idu", "", 0, "/forum", "www.diletant.com.ua");
       setcookie(response, "pass2", "", 0, "/forum", "www.diletant.com.ua");

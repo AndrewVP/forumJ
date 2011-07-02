@@ -83,8 +83,9 @@ public class Write extends HttpServlet {
                      /*новый пост*/
                      write_new(body, user, domen, ip, head, Long.valueOf(threadId));
                   }else{
+                     String postId = request.getParameter("IDB");
                      /* Редактируем старый пост*/
-                     write_edit(body, user, domen, ip, head, Long.valueOf(threadId));
+                     write_edit(body, user, domen, ip, head, Long.valueOf(threadId), Long.valueOf(postId));
                   }
                   /* Отправляем в форум*/
                   /*Остаемся в ветке?*/
@@ -301,38 +302,30 @@ public class Write extends HttpServlet {
       post.setState(1);
       post.setBody(postBody);
       post.setHead(postHead);
+      post.setThreadId(threadId);
       postBody.setBody(body);
       postHead.setAuth(user.getId());
       postHead.setDomen(domen);
       postHead.setIp(ip);
       postHead.setNred(0);
       postHead.setTitle(head);
+      postHead.setThreadId(threadId);
+      postHead.setCreateTime(new Date());
       FJPostDao postDao = new FJPostDao();
-      Long postId = postDao.create(post);
-      FJThreadDao threadDao = new FJThreadDao();
-      FJThread thread = threadDao.read(threadId);
-      thread.setLastPostId(postId);
-      threadDao.update(thread);
+      postDao.create(post);
    }
-   private void write_edit(String body, User user, String domen, String ip, String head, Long threadId) throws DBException, ConfigurationException, IOException, SQLException{
-      FJPost post = new FJPost();
-      FJPostBody postBody = new FJPostBody();
-      FJPostHead postHead = new FJPostHead();
-      post.setState(1);
-      post.setBody(postBody);
-      post.setHead(postHead);
+   private void write_edit(String body, User user, String domen, String ip, String head, Long threadId, Long postId) throws DBException, ConfigurationException, IOException, SQLException{
+      FJPostDao postDao = new FJPostDao();
+      FJPost post = postDao.read(postId);
+      FJPostBody postBody = post.getBody();
+      FJPostHead postHead = post.getHead();
       postBody.setBody(body);
-      postHead.setAuth(user.getId());
       postHead.setDomen(domen);
       postHead.setIp(ip);
-      postHead.setNred(0);
+      postHead.setNred(postHead.getNred() + 1);
+      postHead.setEditTime(new Date());
       postHead.setTitle(head);
-      FJPostDao postDao = new FJPostDao();
-      Long postId = postDao.create(post);
-      FJThreadDao threadDao = new FJThreadDao();
-      FJThread thread = threadDao.read(threadId);
-      thread.setLastPostId(postId);
-      threadDao.update(thread);
+      postDao.update(post);
    }
 
 }

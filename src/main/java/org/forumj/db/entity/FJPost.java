@@ -13,11 +13,11 @@ package org.forumj.db.entity;
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FJPost {
+public class FJPost implements IFJPost {
    
    private Long id = null;
    
-   private Long headId = null;
+   private Long threadId = null;
    
    private Integer state = null;
    
@@ -46,15 +46,15 @@ public class FJPost {
    /**
     * @return the headId
     */
-   public Long getHeadId() {
-      return headId;
+   public Long getThreadId() {
+      return threadId;
    }
 
    /**
     * @param headId the headId to set
     */
-   public void setHeadId(Long headId) {
-      this.headId = headId;
+   public void setThreadId(Long headId) {
+      this.threadId = headId;
    }
 
    /**

@@ -46,7 +46,7 @@ public class FJThreadDao extends FJDao {
          if (idRs.next()){
             Long threadId = idRs.getLong(1);
             thread.setId(threadId);
-            post.setHeadId(threadId);
+            post.setThreadId(threadId);
             post.getHead().setThreadId(threadId);
             post.getHead().setCreateTime(date);
             FJPostDao postDao = new FJPostDao();
@@ -135,7 +135,7 @@ public class FJThreadDao extends FJDao {
       return thread;
    }
    
-   private void update(FJThread thread, Connection conn) throws IOException, SQLException{
+   public void update(FJThread thread, Connection conn) throws IOException, SQLException{
       String updateThreadQuery = getUpdateThreadQuery(); 
       PreparedStatement st = null;
       try {
@@ -163,33 +163,4 @@ public class FJThreadDao extends FJDao {
          }
       }
    }
-
-   public boolean isFirstPost(Long postId, Long threadId) throws ConfigurationException, SQLException, IOException{
-      boolean result = false;
-      String firstPostIdInThreadQuery = getFirstPostIdInThreadQuery(); 
-      PreparedStatement st = null;
-      Connection conn = null;
-      try {
-         conn = getConnection();
-         st = conn.prepareStatement(firstPostIdInThreadQuery);
-         st.setLong(1, threadId);
-         ResultSet rs = st.executeQuery();
-         if (rs.next()){
-            result = postId == rs.getLong("id");
-         }
-      }finally{
-         try {
-            if (conn != null){
-               conn.close();
-            }
-            if (st != null){
-               st.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
-      }
-      return result;
-   }
-   
 }
