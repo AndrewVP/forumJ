@@ -143,7 +143,7 @@ public class FJServletTools {
          buffer.append(locale.getString("mess23"));
          buffer.append("</a>");
          /*Выход*/
-         String exitUrl = request.getContextPath() + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + (query == null || "".equalsIgnoreCase(query.trim()) ? "exit=0" : query.trim() + "&exit=0");
+         String exitUrl = request.getContextPath() + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + (query == null || "".equalsIgnoreCase(query.trim()) ? "?exit=0" : query.trim() + "&exit=0");
          buffer.append("<img src='picts/key_delete.gif' border='0' class='menuImg'>");
          buffer.append("<a class=mnuforumSm href='" + exitUrl + "' rel='nofollow'>");
          buffer.append(locale.getString("mess6"));
