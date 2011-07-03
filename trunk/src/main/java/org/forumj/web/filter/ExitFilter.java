@@ -28,7 +28,7 @@ import org.forumj.db.entity.User;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebFilter(servletNames={"index", "tema"})
+@WebFilter(servletNames={"index", "tema", "opr", "mess"})
 public class ExitFilter implements Filter {
 
    /**
