@@ -53,7 +53,6 @@ public class Tema extends HttpServlet {
          // Номер поста, на который отвечаем
          String replyPostId = request.getParameter("reply");
          LocaleString locale = (LocaleString) session.getAttribute("locale");
-         // У гостей интерфейс модератора
          User user = (User) session.getAttribute("user");
          TemaDao temaDao = new TemaDao(threadId, user);
          session.setAttribute("page", pageNumber);

@@ -7,6 +7,8 @@ import javax.servlet.http.*;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.net.*;
+import org.forumj.exception.InvalidKeyException;
+import org.forumj.tool.LocaleString;
 
 public class FJServletTools {
 
@@ -78,6 +80,41 @@ public class FJServletTools {
       result.append("}else{");
       result.append("document.post.comand.value=comand;");
       result.append("document.post.submit();}}");
+      result.append("\n// -->");
+      result.append("</script>");
+      return result;
+   }
+
+   public static StringBuffer quest_submit(LocaleString locale) throws IOException, InvalidKeyException{
+      StringBuffer result = new StringBuffer();
+      result.append("<script type='text/javascript'>");
+      result.append("// <!--\n");
+      result.append("function quest_submit(comand){");
+      result.append("if (document.post.T.value.replace(/(^\\s*)|(\\s*$)/g, \"\").length==0){");
+      result.append("alert('" + locale.getString("mess128") + "');");
+      result.append("}else if (document.post.Q.value.replace(/(^\\s*)|(\\s*$)/g, \"\").length==0){");
+      result.append("alert('" + locale.getString("mess130") + "');");
+      result.append("}else if (document.post.A2.value.replace(/(^\\s*)|(\\s*$)/g, \"\").length==0){");
+      result.append("alert('" + locale.getString("mess129") + "');");
+      result.append("}else{");
+      result.append("var x1=1;");
+      result.append("var x2=0;");
+      result.append("while (document.getElementById('P'+x1.toFixed(0))!=null){");
+      result.append("if (document.getElementById('P'+x1.toFixed(0)).value.replace(/(^\\s*)|(\\s*$)/g, \"\").length!=0)");
+      result.append("{");
+      result.append("x2+=1;");
+      result.append("}");
+      result.append("x1+=1;");
+      result.append("}");
+      result.append("if (x2<2)");
+            result.append("{");
+         result.append("alert('" + locale.getString("mess131") + "');");
+         result.append("}else{");
+         result.append("document.post.comand.value=comand;");
+         result.append("document.post.submit();");
+         result.append("}");
+         result.append("}");
+         result.append("}");
       result.append("\n// -->");
       result.append("</script>");
       return result;
