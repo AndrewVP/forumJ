@@ -46,12 +46,8 @@ public class Submit extends HttpServlet {
          String $pass2=user.getPass2();
          // ставим куку
          try {
-            setcookie(response, "user",  $t1, 1209600, "/fj", "localhost");
-            setcookie(response, "idu", $idu.toString(), 1209600, "/fj", "localhost");
-            setcookie(response, "pass2", $pass2, 1209600, "/fj", "localhost");
-            setcookie(response, "user", $t1, 1209600, "/forum", "diletant.com.ua");
-            setcookie(response, "idu", $idu.toString(), 1209600, "/forum", "diletant.com.ua");
-            setcookie(response, "pass2", $pass2, 1209600, "/forum", "diletant.com.ua");
+            setcookie(response, "idu", $idu.toString(), 1209600, request.getContextPath(), request.getServerName());
+            setcookie(response, "pass2", $pass2, 1209600, request.getContextPath(), request.getServerName());
          } catch (EncoderException e) {
             e.printStackTrace();
          }

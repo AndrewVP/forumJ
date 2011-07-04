@@ -46,14 +46,7 @@ public class Write extends HttpServlet {
          StringBuffer buffer = new StringBuffer();
          HttpSession session = request.getSession();
          LocaleString locale = (LocaleString) session.getAttribute("locale");
-         String userId = request.getParameter("IDU");
-         String password = request.getParameter("PS1");
-         boolean firstPassword = true;
-         if (password == null){
-            password = request.getParameter("PS2");
-            firstPassword = false;
-         }
-         User user = fd_guard(Long.valueOf(userId), password, firstPassword);
+         User user = (User) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             String head = request.getParameter("NHEAD");
             String body = request.getParameter("A2");
