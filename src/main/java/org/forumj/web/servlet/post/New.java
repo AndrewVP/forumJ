@@ -16,8 +16,9 @@
 package org.forumj.web.servlet.post;
 
 import static org.forumj.tool.Diletant.*;
-import static org.forumj.tool.FJServletTools.new_view;
+import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.tool.PHP.*;
+import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.*;
 import java.sql.SQLException;
@@ -150,4 +151,158 @@ public class New extends HttpServlet {
       }
    }
 
+   public StringBuffer new_view(LocaleString locale, String head, User user, String $rgtime, String $str_ip, String $str_dom, String body, HttpServletRequest request) throws IOException, InvalidKeyException{
+      StringBuffer buffer = new StringBuffer();
+      buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
+      buffer.append("<html>");
+      buffer.append("<head>");
+      buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
+      /* Стили*/
+      buffer.append(loadCSS("/css/style.css"));
+      // Скрипты (смайлики)
+      buffer.append(loadJavaScript("/js/smile_.js"));
+      // Скрипты (автовставка тегов)
+      buffer.append(loadJavaScript("/js/jstags.js"));
+      /*Скрипты (submit поста)*/
+      buffer.append(new_submit(locale.getString("mess128")));
+      buffer.append("<link rel='icon' href='/favicon.ico' type='image/x-icon'>");
+      buffer.append("<link rel='shortcut icon' href='/favicon.ico' type='image/x-icon'>");
+      buffer.append("<title>" + head + "</title>");
+      buffer.append("</head>");
+      buffer.append("<body bgcolor=#EFEFEF>");
+      buffer.append("<table class='content'>");
+      buffer.append("<tr class='heads'>");
+      buffer.append("<td  class='internal'>");
+      /*"Закладка" последнего поста*/
+      /*"Закладка" номера поста для ссылки из поиска, возврата после обработки игнора*/
+      /*Тема*/
+      buffer.append("<div class='nik'>");
+      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(head) + "</b>");
+      buffer.append("</div>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("<tr>");
+      buffer.append("<td class='matras'>");
+      /*Ник*/
+      buffer.append("<span class='tbtextnread'>" + user.getNick() + "</span>&nbsp;•&nbsp;");
+      /*Дата*/
+      
+      buffer.append("<img border='0' src='smiles/icon_minipost.gif'>&nbsp;");
+      buffer.append("<span class='posthead'>" + $rgtime + "</span>&nbsp;•");
+      /*Хост*/ 
+      if ($str_ip.trim().equalsIgnoreCase($str_dom.trim())){
+         $str_dom = substr($str_dom, 0, strrpos($str_dom, ".")+1) + "---";
+      }else{
+         $str_dom = "---" + substr($str_dom, strpos($str_dom, ".") + 1);
+      }
+      
+      buffer.append("&nbsp;<span class='posthead'>" + $str_dom + "</span>&nbsp;");
+      /*игнорировать*/
+      buffer.append("&nbsp;•<span class='posthead'>");
+      buffer.append(locale.getString("mess68"));
+      buffer.append("</span>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      /* div для игнора*/
+      buffer.append("<div>");
+      /*Аватара*/
+      buffer.append("<table width='100%'>");
+      buffer.append("<tr>");
+      buffer.append("<td valign=top class='matras' style='padding:10px;'>");
+      buffer.append("<div>");
+      buffer.append("<img border='0' src='smiles/no_avatar.gif'>");
+      buffer.append("</div>");
+      buffer.append("</td>");
+      buffer.append("<td valign='top' width='100%'>");
+      buffer.append("<table width='100%'>");
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      /* Выводим текст*/
+      buffer.append("<p class='post'>" + nl2br(fd_smiles(fd_bbcode(stripslashes(body)))) + "</p>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("</table>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("</table>");
+      buffer.append("</div>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append(menu(request, user, locale, false));
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      buffer.append("<table>");
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      buffer.append("<form name='post' action='new.php' method='POST'>");
+      buffer.append("<table width='100%'>");
+      buffer.append("<tr>");
+      buffer.append("<td colspan='2' align='CENTER'>");
+      /*Тема*/
+      buffer.append(locale.getString("mess4") + "&nbsp");
+      buffer.append("<input class='mnuforumSm' type=text name='NHEAD' size='70' value='" +htmlspecialchars(stripslashes(head)) + "'>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("<tr>");
+      /*Смайлики заголовок*/
+      buffer.append("<td width='400' align='CENTER'>");
+      buffer.append("<p>");
+      buffer.append(locale.getString("mess21") + ":");
+      buffer.append("</p>");
+      buffer.append("</td>");
+      /*Приглашение*/
+      buffer.append("<td align='CENTER'>");
+      buffer.append("<p>");
+      buffer.append(locale.getString("mess12"));
+      buffer.append("</p>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      /*Пост*/
+      buffer.append("<tr>");
+      /*Смайлики*/
+      buffer.append("<td valign='TOP' width='100%' height='100%'>");
+      /*Смайлики*/
+      buffer.append(smiles_add(locale.getString("mess11")));
+      buffer.append("</td>");
+      buffer.append("<td align='CENTER' valign='top'>");
+      buffer.append(autotags_add());
+      /* текстарий*/
+      buffer.append("<p>");
+      buffer.append("<textarea class='mnuforumSm' rows='20' id='ed1' name='A2' cols='55'>" + htmlspecialchars(stripslashes(body)) + "</textarea>");
+      buffer.append("</p>");
+      /*Кнопки*/
+      buffer.append("<table>");
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      buffer.append(fd_button(locale.getString("mess13"),"new_submit(\"write\");","B1", "1"));
+      buffer.append("</td>");
+      buffer.append("<td>");
+      buffer.append(fd_button(locale.getString("mess63"),"new_submit(\"view\");","B3", "1"));
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("</table>");
+      /*Прередаем нужные пераметры...*/
+      buffer.append(fd_form_add(user));
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      buffer.append("</td>");
+      buffer.append("<td align='CENTER' valign='top'>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("</table>");
+      buffer.append("</form>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("</table>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("</table>");
+      buffer.append("</body>");
+      buffer.append("</html>");
+      return buffer;
+   }
 }
