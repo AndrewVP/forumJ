@@ -28,7 +28,7 @@ import org.forumj.db.entity.User;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebFilter(servletNames={"mess", "new", "write", "opr"})
+@WebFilter(servletNames={"mess", "new", "write", "opr", "quest"})
 public class RestrictUnloginedUsersFilter implements Filter {
 
    /**

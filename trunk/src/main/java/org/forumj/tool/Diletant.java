@@ -620,6 +620,24 @@ public class Diletant {
       return buffer;
    }
 
+   public static StringBuffer twoAnswersReminedOut(){
+      StringBuffer buffer = new StringBuffer();
+      buffer.append("<html>");
+      buffer.append("<head>");
+      buffer.append("<meta http-equiv='content-type' content='text/html; charset=windows-1251'>");
+      buffer.append("<meta http-equiv='Refresh' content='5; url=index.php'>");
+      buffer.append("<title>");
+      buffer.append("Мы не во всем Дилетанты!");
+      buffer.append("</title>");
+      buffer.append("</head>");
+      // Цвет фона страницы
+      buffer.append("<body bgcolor=#EFEFEF>");
+      buffer.append("<font size='5'><b>Надо предложить хотя бы два варианта ответов!</b></font>");
+      buffer.append("</body>");
+      buffer.append("</html>");
+      return buffer;
+   }
+
    public static StringBuffer successPostOut(String seconds, String url){
       StringBuffer buffer = new StringBuffer();
       buffer.append("<html>");
