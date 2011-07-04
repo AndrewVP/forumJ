@@ -50,15 +50,8 @@ public class New extends HttpServlet {
       try {
          StringBuffer buffer = new StringBuffer();
          HttpSession session = request.getSession();
-         String userId = request.getParameter("IDU");
-         String password = request.getParameter("PS1");
-         boolean firstPassword = true;
-         if (password == null){
-            password = request.getParameter("PS2");
-            firstPassword = false;
-         }
          LocaleString locale = (LocaleString) session.getAttribute("locale");
-         User user = fd_guard(Long.valueOf(userId), password, firstPassword);
+         User user = (User) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             // Все нормально
             String head = request.getParameter("NHEAD");

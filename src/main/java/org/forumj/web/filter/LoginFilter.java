@@ -23,7 +23,8 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
 
-import org.apache.commons.codec.EncoderException;
+import org.apache.commons.codec.*;
+import org.apache.commons.codec.net.QuotedPrintableCodec;
 import org.forumj.db.dao.UserDao;
 import org.forumj.db.entity.User;
 
@@ -43,49 +44,49 @@ public class LoginFilter implements Filter {
       HttpServletRequest request = (HttpServletRequest) req;
       HttpServletResponse response = (HttpServletResponse) resp;
       User user = (User) request.getSession(true).getAttribute("user");
-      Cookie[] cookies = request.getCookies();
-      Cookie iduCookie = getCookie(cookies, "idu"); 
-      Cookie userCookie = getCookie(cookies, "user"); 
-      Cookie pass2Cookie = getCookie(cookies, "pass2"); 
       UserDao dao = new UserDao();
+      QuotedPrintableCodec codec = new QuotedPrintableCodec();
       try {
-      if (user == null){
-         if (userCookie != null){
-            if (pass2Cookie == null) {
-                  goAwayStupidHackers(response, request.getContextPath() + "/");
-               ok = false;
-            }else{
-               user = dao.loadUser(Long.valueOf(iduCookie.getValue()), pass2Cookie.getValue(), false);
-               if (user == null){
-                  goAwayStupidHackers(response, request.getContextPath() + "/");
-                  ok = false;
+         if (user == null || !user.isLogined()){
+            Cookie[] cookies = request.getCookies();
+            Cookie iduCookie = getCookie(cookies, "idu"); 
+            Cookie pass2Cookie = getCookie(cookies, "pass2"); 
+            if (pass2Cookie != null) {
+               String pass2 = pass2Cookie.getValue();
+               if (pass2 != null){
+                  pass2 = codec.decode(pass2);
+                  user = dao.loadUser(Long.valueOf(iduCookie.getValue()), pass2Cookie.getValue(), false);
+                  if (user == null){
+                     ok = false;
+                  }else{
+                     request.getSession().setAttribute("user", user);               
+                  }
                }else{
-                  request.getSession().setAttribute("user", user);               
+                  ok = false;
                }
             }
          }
-      }
+         if (user == null){
+            request.getSession().setAttribute("user", dao.loadUser(0l));
+         }
+         if (ok){
+            chain.doFilter(request, response);
+         }else{
+            goAwayStupidHackers(response, request.getContextPath() + "/", request);
+         }
       } catch (EncoderException e) {
          e.printStackTrace();
-      }
-      if (user == null){
-         request.getSession().setAttribute("user", dao.loadUser(0l));
-      }
-      if (ok){
-         chain.doFilter(request, response);
+      } catch (DecoderException e) {
+         e.printStackTrace();
       }
    }
 
-   private void goAwayStupidHackers(HttpServletResponse response, String redirectLocation) throws IOException, EncoderException{
-      setcookie(response, "user", "", 0, "/forum", "www.diletant.com.ua");
-      setcookie(response, "idu", "", 0, "/forum", "www.diletant.com.ua");
-      setcookie(response, "pass2", "", 0, "/forum", "www.diletant.com.ua");
-      setcookie(response, "user", "", 0, "/forum", "diletant.com.ua");
-      setcookie(response, "idu", "", 0, "/forum", "diletant.com.ua");
-      setcookie(response, "pass2", "", 0, "/forum", "diletant.com.ua");
+   private void goAwayStupidHackers(HttpServletResponse response, String redirectLocation, HttpServletRequest request) throws IOException, EncoderException{
+      setcookie(response, "idu", "", 0, request.getContextPath(), request.getServerName());
+      setcookie(response, "pass2", "", 0, request.getContextPath(), request.getServerName());
       response.sendRedirect(redirectLocation);
    }
-   
+
    /**
     * {@inheritDoc}
     */

@@ -575,13 +575,6 @@ public class Diletant {
    }
 
    @Deprecated
-   public static User fd_guard(Long userId, String password, boolean firstPassword){
-      UserDao dao = new UserDao();
-      User user = dao.loadUser(userId, password, firstPassword);
-      return user;
-   }
-
-   @Deprecated
    public static boolean fd_ban(User user){
       return user.getBan() == 1;
    }

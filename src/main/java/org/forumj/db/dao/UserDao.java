@@ -48,13 +48,8 @@ public class UserDao extends FJDao {
             result = new User();
             result.setId(rs.getLong("id"));
             result.setNick(rs.getString("nick"));
-            if (firstPassword != null){
-               if (firstPassword){
-                  result.setPass(rs.getString("pass"));
-               }else{
-                  result.setPass2(rs.getString("pass2"));
-               }
-            }
+            result.setPass(rs.getString("pass"));
+            result.setPass2(rs.getString("pass2"));
             result.setPp(rs.getInt("pp_def"));
             result.setPt(rs.getInt("pt_def"));
             result.setView(rs.getInt("view_def"));

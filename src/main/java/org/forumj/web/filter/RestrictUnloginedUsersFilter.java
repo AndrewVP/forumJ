@@ -21,6 +21,7 @@ import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
 
+import org.forumj.db.dao.UserDao;
 import org.forumj.db.entity.User;
 
 /**
@@ -37,11 +38,27 @@ public class RestrictUnloginedUsersFilter implements Filter {
    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
       HttpServletRequest request = (HttpServletRequest) req;
       HttpServletResponse response = (HttpServletResponse) resp;
-      User user = (User) request.getSession(true).getAttribute("user");
-      if (user.isLogined()){
-         chain.doFilter(req, resp);
-      }else{
+      HttpSession session = request.getSession(true);
+      User user = (User) session.getAttribute("user");
+      if (user == null || !user.isLogined()){
+         String idu = request.getParameter("IDU");
+         String password1 = request.getParameter("PS1");
+         String password2 = request.getParameter("PS2");
+         if (idu != null && (password1 != null || password2 != null)){
+            Long userId = Long.valueOf(idu);
+            UserDao dao = new UserDao();
+            boolean firstPassword = password1 != null;
+            String password = password1 == null ? password1 : password2;
+            user = dao.loadUser(userId, password, firstPassword);
+            if (user != null){
+               session.setAttribute("user", user);
+            }
+         }
+      }
+      if (user == null || !user.isLogined()){
          response.sendRedirect(request.getContextPath() + "/");
+      }else{
+         chain.doFilter(req, resp);
       }
    }
 
