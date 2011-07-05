@@ -46,6 +46,10 @@ public class QueryBuilder {
    private static String createPostBodyQuery = null;
    
    private static String createPostHeadQuery = null;
+
+   private static String loadAnswersQuery = null;
+
+   private static String createAnswerQuery = null;
    
    public static String getLoadConfigQuery() throws IOException{
       if (loadConfigQuery == null){
@@ -144,6 +148,22 @@ public class QueryBuilder {
       }
       return createPostHeadQuery.replace("@@currentHeadTable@@", headTableName);
    }
+   
+   public static String getLoadAnswersQuery() throws IOException{
+      if (loadAnswersQuery == null){
+         loadAnswersQuery = loadQuery("/sql/load_answers.sql");
+      }
+      return loadAnswersQuery;
+   }
+   
+   public static String getCreateAnswerQuery() throws IOException{
+      if (createAnswerQuery == null){
+         createAnswerQuery = loadQuery("/sql/create_answer.sql");
+      }
+      return createAnswerQuery;
+   }
+   
+   
    
    private static String loadQuery(String path) throws IOException{
       ClassLoader classLoader = FJServletTools.class.getClassLoader();

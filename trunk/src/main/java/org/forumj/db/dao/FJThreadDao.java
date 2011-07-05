@@ -14,6 +14,7 @@ import static org.forumj.db.entity.IFJThread.*;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.*;
 import java.util.Date;
 
 import org.apache.commons.configuration.ConfigurationException;
@@ -41,6 +42,7 @@ public class FJThreadDao extends FJDao {
          st.setDate(3, new java.sql.Date(date.getTime()));
          st.setDate(4, new java.sql.Date(date.getTime()));
          st.setString(5, thread.getNick());
+         st.setInt(6, thread.getType());
          st.executeUpdate();
          ResultSet idRs = st.getGeneratedKeys();
          if (idRs.next()){
@@ -53,6 +55,24 @@ public class FJThreadDao extends FJDao {
             Long postId = postDao.create(post, conn);
             thread.setLastPostId(postId);
             update(thread, conn);
+            if (thread instanceof FJQuestionThread){
+               QuestNodeDao answersDao = new QuestNodeDao();
+               FJQuestionThread questionThread = (FJQuestionThread) thread;
+               List<QuestNode> answers = questionThread.getAnswers();
+               QuestNode question = new QuestNode();
+               question.setNode(questionThread.getQuestion());
+               question.setGol(0);
+               question.setHead(threadId);
+               question.setNumb(0);
+               question.setType(0);
+               question.setUserId((long) 0);
+               answersDao.create(question, conn);
+               for(int answerIndex = 0; answerIndex < answers.size(); answerIndex++){
+                  QuestNode answer = answers.get(answerIndex);
+                  answer.setHead(threadId);
+                  answersDao.create(answer, conn);
+               }
+            }
          }else{
             throw new DBException("Thread wasn't created");
          }
