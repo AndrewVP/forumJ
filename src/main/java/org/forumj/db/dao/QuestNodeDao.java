@@ -9,6 +9,9 @@
  */
 package org.forumj.db.dao;
 
+import static org.forumj.db.dao.tool.QueryBuilder.*;
+
+import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
@@ -22,15 +25,16 @@ import org.forumj.exception.DBException;
  */
 public class QuestNodeDao extends FJDao {
 
-   public List<QuestNode> loadNodes(Long threadId){
+   public List<QuestNode> loadNodes(Long threadId) throws IOException{
       List<QuestNode> result = new ArrayList<QuestNode>();
-      String query="SELECT quest.id, quest.node, quest.numb,quest.user, quest.gol, quest.type, users.nick FROM quest LEFT JOIN users ON quest.user=users.id WHERE quest.head=" + threadId + " ORDER BY numb";
+      String query = getLoadAnswersQuery();
       Connection conn = null;
-      Statement st = null;
+      PreparedStatement st = null;
       try {
          conn = getConnection();
-         st = conn.createStatement();
-         ResultSet rs = st.executeQuery(query);
+         st = conn.prepareStatement(query) ;
+         st.setLong(1, threadId);
+         ResultSet rs = st.executeQuery();
          while (rs.next()){
             QuestNode node = new QuestNode();
             node.setId(rs.getLong("id"));
@@ -64,5 +68,28 @@ public class QuestNodeDao extends FJDao {
          }
       }
       return result;
+   }
+
+   public void create(QuestNode answer, Connection conn) throws IOException, SQLException{
+      String query = getCreateAnswerQuery();
+      PreparedStatement st = null;
+      try{
+         st = conn.prepareStatement(query);
+         st.setString(1, answer.getNode());
+         st.setInt(2, answer.getNumb());
+         st.setLong(3, answer.getUserId());
+         st.setInt(4, answer.getType());
+         st.setInt(5, answer.getGol());
+         st.setLong(6, answer.getHead());
+         st.executeUpdate();
+      }finally{
+         try {
+            if (st != null){
+               st.close();
+            }
+         } catch (SQLException e) {
+            e.printStackTrace();
+         }
+      }
    }
 }

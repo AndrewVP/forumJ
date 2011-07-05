@@ -15,6 +15,7 @@
  */
 package org.forumj.db.dao;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 import java.util.Map.Entry;
@@ -191,8 +192,9 @@ public class TemaDao extends FJDao {
     * @param unknown_type $pg
     * @param unknown_type $lastPost
     * @return unknown
+    * @throws IOException 
     */
-   public List<Post> getPostsList(int timezone_hr, int timezone_mn, long nfirstpost, int count, LocaleString locale, int page, boolean lastPost){
+   public List<Post> getPostsList(int timezone_hr, int timezone_mn, long nfirstpost, int count, LocaleString locale, int page, boolean lastPost) throws IOException{
       String query="SELECT * FROM body WHERE body.head=" +  this.getId() + " ORDER BY body.id ASC LIMIT " + nfirstpost + ", " +  count;
       List<Post> result = new ArrayList<Post>();
       Map<Long, Post> postsMap = new HashMap<Long, Post>();
@@ -278,7 +280,7 @@ public class TemaDao extends FJDao {
                Post post = postsMap.get(postId);
                if (post.isFirst() && isQuest){
                   post.setQuest();
-
+                  post.setIsUserCanAddAnswer(type == 2);
                   List<QuestNode> questNodes = questDao.loadNodes(getId());
                   post.setAnswerAmount(questNodes.size());
                   post.setVoicesAmount(this.getVoicesAmount());

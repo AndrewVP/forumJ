@@ -89,6 +89,7 @@ public class New extends HttpServlet {
                   thread.setSnid(0);
                   thread.setFolderId((long) 1);
                   thread.setPcount(1);
+                  thread.setType(0);
                   FJThreadDao threadDao = new FJThreadDao();
                   threadDao.create(thread, post);
                   // Подготавливаем текст поста.          

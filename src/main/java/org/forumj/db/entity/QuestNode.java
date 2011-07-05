@@ -14,6 +14,19 @@ package org.forumj.db.entity;
  */
 public class QuestNode {
 
+   public QuestNode() {
+      super();
+   }
+
+   public QuestNode(Integer numb, String node, Long userId) {
+      super();
+      this.gol = 0;
+      this.type = 0;
+      this.numb = numb;
+      this.node = node;
+      this.userId = userId;
+   }
+
    private Long id;
    
    private Long head;

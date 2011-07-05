@@ -15,14 +15,17 @@ import static org.forumj.web.servlet.tool.FJServletTools.*;
 import static org.forumj.tool.FJServletTools.*;
 
 import java.io.*;
+import java.sql.SQLException;
 import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import org.forumj.db.entity.User;
-import org.forumj.exception.InvalidKeyException;
+import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.db.dao.FJThreadDao;
+import org.forumj.db.entity.*;
+import org.forumj.exception.*;
 import org.forumj.tool.*;
 
 /**
@@ -61,13 +64,13 @@ public class Quest extends HttpServlet {
                   String domen = gethostbyaddr(ip);
                   boolean usersCanAddAnswers = request.getParameter("US") != null; 
                   Time threadTime = new Time(new Date().getTime());
-                  ArrayList<String> answers = new ArrayList<String>();
-                  answers.add(answer1);
-                  answers.add(answer2);
+                  ArrayList<QuestNode> answers = new ArrayList<QuestNode>();
+                  answers.add(new QuestNode(1, answer1, user.getId()));
+                  answers.add(new QuestNode(2, answer2, user.getId()));
                   for (int answerIndex = 3;; answerIndex++){
                      String answer = request.getParameter("P" + answerIndex);
                      if (answer != null && !"".equalsIgnoreCase(answer.trim())){
-                        answers.add(answer);
+                        answers.add(new QuestNode(answerIndex, answer, user.getId()));
                      }else{
                         break;
                      }
@@ -75,7 +78,32 @@ public class Quest extends HttpServlet {
                   if (command != null && "view".equalsIgnoreCase(command)){
                      buffer.append(view(locale, head, question, user, threadTime.toString("dd.MM.yyyy HH:mm"), ip, domen, answers, usersCanAddAnswers, body, request));
                   }else{
-
+                     FJPost post = new FJPost();
+                     FJPostBody postBody = new FJPostBody();
+                     FJPostHead postHead = new FJPostHead();
+                     post.setState(1);
+                     post.setBody(postBody);
+                     post.setHead(postHead);
+                     postBody.setBody(body);
+                     postHead.setAuth(user.getId());
+                     postHead.setDomen(domen);
+                     postHead.setIp(ip);
+                     postHead.setNred(0);
+                     postHead.setTitle(head);
+                     FJQuestionThread thread = new FJQuestionThread();
+                     thread.setAuthId(user.getId());
+                     thread.setHead(head);
+                     thread.setNick(user.getNick());
+                     thread.setSnall(0);
+                     thread.setSnid(0);
+                     thread.setFolderId((long) 1);
+                     thread.setPcount(1);
+                     thread.setType(usersCanAddAnswers ? 2 :1);
+                     thread.setAnswers(answers);
+                     thread.setQuestion(question);
+                     FJThreadDao threadDao = new FJThreadDao();
+                     threadDao.create(thread, post);
+                     buffer.append(successPostOut("3", "index.php"));
                   }
                }else{
                   // Пустая
@@ -95,10 +123,16 @@ public class Quest extends HttpServlet {
          writer.write(out);
       } catch (InvalidKeyException e) {
          e.printStackTrace();
+      } catch (DBException e) {
+         e.printStackTrace();
+      } catch (ConfigurationException e) {
+         e.printStackTrace();
+      } catch (SQLException e) {
+         e.printStackTrace();
       }
    }
 
-   private StringBuffer view(LocaleString locale, String head, String question, User user, String $rgtime, String $str_ip, String $str_dom, List<String> answers, boolean usersCanAddAnswers, String body, HttpServletRequest request) throws InvalidKeyException, IOException{
+   private StringBuffer view(LocaleString locale, String head, String question, User user, String $rgtime, String $str_ip, String $str_dom, List<QuestNode> answers, boolean usersCanAddAnswers, String body, HttpServletRequest request) throws InvalidKeyException, IOException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
       buffer.append("<html>");
@@ -192,12 +226,12 @@ public class Quest extends HttpServlet {
       buffer.append("<td align='CENTER'>");
       buffer.append("<table class=content>");
       for (int i = 0; i < answers.size(); i++) {
-         String answer = answers.get(i);
+         String answer = answers.get(i).getNode();
          String $check="";
-         if (i == 1) $check=" CHECKED";
+         if (i == 0) $check=" CHECKED";
          buffer.append("<tr>");
          buffer.append("<td class=voice_right >");
-         buffer.append("<input type='radio' name='ANSWER' value='" + i + "'" + $check + ">");
+         buffer.append("<input type='radio' name='ANSWER' value='" + (i + 1) + "'" + $check + ">");
          buffer.append("</td>");
          buffer.append("<td class=voice_right nowrap align='left'>");
          buffer.append(fd_smiles(fd_href(stripslashes(answer))));
@@ -266,10 +300,10 @@ public class Quest extends HttpServlet {
       buffer.append("<td>");
       buffer.append("<table id=tbl_node>");
       for (int i = 0; i < answers.size(); i++) {
-         String answer = answers.get(i);
+         String answer = answers.get(i).getNode();
          buffer.append("<tr>");
          buffer.append("<td>");
-         buffer.append("" + i + ". <input type='text' class='mnuforumSm' value='" + answer + "' name='P" + i +"' id='P"+ i + "' size='100'>");
+         buffer.append("" + (i + 1) + ". <input type='text' class='mnuforumSm' value='" + answer + "' name='P" + (i + 1) +"' id='P"+ (i + 1) + "' size='100'>");
          buffer.append("</td>");
          buffer.append("</tr>");
       }

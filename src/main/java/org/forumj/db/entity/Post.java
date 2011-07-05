@@ -910,6 +910,21 @@ public class Post {
       return this.userVote;
    }
 
+   
+   /**
+    * @return the isUserCanAddAnswer
+    */
+   public Boolean getIsUserCanAddAnswer() {
+      return isUserCanAddAnswer;
+   }
+
+   /**
+    * @param isUserCanAddAnswer the isUserCanAddAnswer to set
+    */
+   public void setIsUserCanAddAnswer(Boolean isUserCanAddAnswer) {
+      this.isUserCanAddAnswer = isUserCanAddAnswer;
+   }
+
    private String getQuest(){
       String result="";
       try {
@@ -962,12 +977,12 @@ public class Post {
             result +=("</table></form>");
             result +=("</td></tr>");
             if (this.isUserCanAddAnswer){
-               int $iq3=0;
+               boolean userVotes = false;
                for (Iterator<QuestNode> iterator = $nodes.iterator(); iterator.hasNext();) {
                   QuestNode questNode = iterator.next();
-                  if (questNode.getUserId() == this.currentUser.getId()) $iq3=1;
+                  if (questNode.getUserId() == this.currentUser.getId()) userVotes = true;
                }
-               if ($iq3 > 0){
+               if (!userVotes){
                   result +=("<tr><td>");
                   result +=("<form  action=\"uservoice.php\" method=\"POST\"><table align=\"CENTER\">");
                   result +=("<tr><td>");
