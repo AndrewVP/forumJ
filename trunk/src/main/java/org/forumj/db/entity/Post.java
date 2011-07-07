@@ -132,7 +132,7 @@ public class Post {
     * Resultset игнорируемых
     * @var unknown_type
     */
-   private List<Long> ignor = null;
+   private List<Ignor> ignor = null;
 
    /**
     * Наличие игнора у посетителя
@@ -266,7 +266,7 @@ public class Post {
     */
    public Post(Long idThread, Long idPost, LocaleString locale, 
          String[] idWordsForms, 
-         List<Long> res_ignor, 
+         List<Ignor> ignorList, 
          Boolean has_ignor, 
          Integer is_found, 
          Boolean isAdminForvard, 
@@ -300,7 +300,7 @@ public class Post {
       // 
       this.isUserCanAddAnswer = isUserCanAddAnswer; 
       // 
-      this.ignor = res_ignor;
+      this.ignor = ignorList;
       // 
       this.hasIgnor = has_ignor;
       //
@@ -647,7 +647,7 @@ public class Post {
          int div = 0;
          String div_ = "";
          if (this.hasIgnor){
-            if (in_array(this.idu, this.ignor)) div = 1;
+            if (isIgnored(this.idu)) div = 1;
          }
          result += "<span class='tbtextnread'>" + this.nick + "</span>&nbsp;•";
          result += "&nbsp;<img border='0' src='smiles/icon_minipost.gif'>&nbsp;<span class='posthead'>" + this.postTime.toString("dd.MM.yyyy HH:mm") + "</span>&nbsp;";
@@ -1071,5 +1071,14 @@ public class Post {
          e.printStackTrace();
       }
       return result;
+   }
+   
+   private boolean isIgnored(Long authorId){
+      for(int arrIndex=0; arrIndex < this.ignor.size(); arrIndex++) {
+         if(this.ignor.get(arrIndex).getUser().getId() == authorId.longValue()) {
+            return true;
+         }
+      }
+      return false;
    }
 }

@@ -17,7 +17,6 @@ package org.forumj.tool;
 
 import static org.forumj.tool.PHP.*;
 
-import org.forumj.db.dao.UserDao;
 import org.forumj.db.entity.User;
 
 /**

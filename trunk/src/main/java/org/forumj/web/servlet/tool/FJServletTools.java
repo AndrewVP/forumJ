@@ -120,6 +120,25 @@ public class FJServletTools {
       return result;
    }
    
+   public static StringBuffer send_submit(LocaleString locale) throws IOException, InvalidKeyException{
+      StringBuffer result = new StringBuffer();
+      result.append("<script type='text/javascript'>");
+      result.append("// <!--\n");
+      result.append("function send_submit(comand){");
+      result.append("if (document.post.RCVR.value.replace(/(^\\s*)|(\\s*$)/g, \"\").length==0){");
+      result.append("alert('" + locale.getString("mess132") + "');");
+      result.append("}else if (document.post.NHEAD.value.replace(/(^\\s*)|(\\s*$)/g, \"\").length==0){");
+      result.append("alert('" + locale.getString("mess128") + "');");
+      result.append("}else if (document.post.A2.value.replace(/(^\\s*)|(\\s*$)/g, \"\").length==0){");
+      result.append("alert('" + locale.getString("mess129") + "');");
+      result.append("}else{");
+      result.append("document.post.comand.value=comand;");
+      result.append("document.post.submit();}}");
+      result.append("\n// -->");
+      result.append("</script>");
+      return result;
+   }
+   
    public static StringBuffer new_submit(String mess128) throws IOException{
       StringBuffer result = new StringBuffer();
       result.append("<script type='text/javascript'>");
@@ -127,7 +146,6 @@ public class FJServletTools {
       result.append("function new_submit(comand){");
       result.append("if (document.post.NHEAD.value.replace(/(^\\s*)|(\\s*$)/g, \"\").length==0){");
       result.append("alert('" + mess128 + "');");
-      result.append("");
       result.append("}else if (document.post.A2.value.replace(/(^\\s*)|(\\s*$)/g, \"\").length==0){");
       result.append("alert('" + mess128 + "');");
       result.append("}else{");
@@ -149,6 +167,6 @@ public class FJServletTools {
          return true;
       }
       return false;
-
    }
+   
 }
