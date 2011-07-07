@@ -49,6 +49,8 @@ public class QueryBuilder {
 
    private static String loadAnswersQuery = null;
 
+   private static String loadIgnorQuery = null;
+
    private static String createAnswerQuery = null;
    
    public static String getLoadConfigQuery() throws IOException{
@@ -154,6 +156,13 @@ public class QueryBuilder {
          loadAnswersQuery = loadQuery("/sql/load_answers.sql");
       }
       return loadAnswersQuery;
+   }
+   
+   public static String getLoadIgnorQuery() throws IOException{
+      if (loadIgnorQuery == null){
+         loadIgnorQuery = loadQuery("/sql/load_ignor.sql");
+      }
+      return loadIgnorQuery;
    }
    
    public static String getCreateAnswerQuery() throws IOException{

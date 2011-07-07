@@ -48,14 +48,15 @@ public class TemaDao extends FJDao {
     *
     * @var unknown_type
     */
-   private List<Long> arrIgnorId;
+   private List<Ignor> arrIgnorId;
 
    /**
     * Конструктор
     *
     * @param IConnection $conection
+    * @throws IOException 
     */
-   public TemaDao(Long id, User user){
+   public TemaDao(Long id, User user) throws IOException{
       this.id = id;
       this.user = user;
       this.arrIgnorId = this.getIgnorArray();
@@ -92,14 +93,14 @@ public class TemaDao extends FJDao {
    /**
     * @return the arrIgnorId
     */
-   public List<Long> getArrIgnorId() {
+   public List<Ignor> getArrIgnorId() {
       return arrIgnorId;
    }
 
    /**
     * @param arrIgnorId the arrIgnorId to set
     */
-   public void setArrIgnorId(List<Long> arrIgnorId) {
+   public void setArrIgnorId(List<Ignor> arrIgnorId) {
       this.arrIgnorId = arrIgnorId;
    }
 
@@ -388,40 +389,10 @@ public class TemaDao extends FJDao {
     * TODO Этот метод должен быть у пользователя
     * @param unknown_type $idUser
     * @return unknown
+    * @throws IOException 
     */
-   private List<Long> getIgnorArray(){
-      List<Long> result = new ArrayList<Long>();
-      String query = "SELECT ignor FROM ignor WHERE user=" + this.getUser().getId() + " and end > now()";
-      Connection conn = null;
-      Statement st = null;
-      try {
-         conn = getConnection();
-         st = conn.createStatement();
-         ResultSet rs = st.executeQuery(query);
-         while (rs.next()){
-            result.add(rs.getLong("ignor"));
-         }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
-      }
-      return result;
+   private List<Ignor> getIgnorArray() throws IOException{
+      return new IgnorDao().loadAll(this.getUser().getId());
    }
 
    /**
