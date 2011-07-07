@@ -53,6 +53,14 @@ public class QueryBuilder {
 
    private static String createAnswerQuery = null;
    
+   private static String receiveMailQuery = null;
+
+   private static String markMailAsReadQuery = null;
+   
+   private static String loadInboxQuery = null;
+   
+   private static String loadMailQuery = null;
+   
    public static String getLoadConfigQuery() throws IOException{
       if (loadConfigQuery == null){
          loadConfigQuery = loadQuery("/sql/load_config.sql");
@@ -172,6 +180,33 @@ public class QueryBuilder {
       return createAnswerQuery;
    }
    
+   public static String getReceiveMailQuery() throws IOException{
+      if (receiveMailQuery  == null){
+         receiveMailQuery  = loadQuery("/sql/receive_mail.sql");
+      }
+      return receiveMailQuery ;
+   }
+   
+   public static String getMarkMailAsReadQuery() throws IOException{
+      if (markMailAsReadQuery  == null){
+         markMailAsReadQuery  = loadQuery("/sql/mark_mail_as_read.sql");
+      }
+      return markMailAsReadQuery ;
+   }
+   
+   public static String getLoadInboxQuery() throws IOException{
+      if (loadInboxQuery  == null){
+         loadInboxQuery  = loadQuery("/sql/load_inbox.sql");
+      }
+      return loadInboxQuery ;
+   }
+   
+   public static String getLoadMailQuery() throws IOException{
+      if (loadMailQuery  == null){
+         loadMailQuery  = loadQuery("/sql/load_mail.sql");
+      }
+      return loadMailQuery ;
+   }
    
    
    private static String loadQuery(String path) throws IOException{

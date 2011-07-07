@@ -19,7 +19,7 @@ package org.forumj.db.entity;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class User {
+public class User implements IUser {
 
    private Long id = null;
    
@@ -41,6 +41,16 @@ public class User {
    
    private int ban = 0;
    
+   public User() {
+      super();
+   }
+
+   public User(Long id, String nick) {
+      super();
+      this.id = id;
+      this.nick = nick;
+   }
+
    /**
     * @return the ban
     */
