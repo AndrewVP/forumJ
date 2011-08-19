@@ -59,6 +59,8 @@ public class QueryBuilder {
    
    private static String loadInboxQuery = null;
    
+   private static String loadOutNotReceivedBoxQuery = null;
+   
    private static String loadMailQuery = null;
    
    public static String getLoadConfigQuery() throws IOException{
@@ -199,6 +201,13 @@ public class QueryBuilder {
          loadInboxQuery  = loadQuery("/sql/load_inbox.sql");
       }
       return loadInboxQuery ;
+   }
+   
+   public static String getLoadOutNotReceivedBoxQuery() throws IOException{
+      if (loadOutNotReceivedBoxQuery  == null){
+         loadOutNotReceivedBoxQuery  = loadQuery("/sql/load_out_not_received_box.sql");
+      }
+      return loadOutNotReceivedBoxQuery ;
    }
    
    public static String getLoadMailQuery() throws IOException{
