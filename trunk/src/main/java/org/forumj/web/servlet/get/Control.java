@@ -204,7 +204,7 @@ public class Control extends HttpServlet {
                break;
             case 3:
                // Отправлено, но не доставлено
-               buffer.append(case3());
+               buffer.append(case3(locale, user, msg));
                break;
             case 4:
                // Отправлено, и доставлено
@@ -647,8 +647,92 @@ public class Control extends HttpServlet {
       return buffer;
    }
 
-   private StringBuffer case3(){
+   private StringBuffer case3(LocaleString locale, User user, Long msg){
       StringBuffer buffer = new StringBuffer();
+      buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess15") + "</b></div>");
+      buffer.append("<table class='control'><tr class=heads>");
+      // Выбираем почту
+      FJMailDao mailDao = new FJMailDao();
+      List<FJMail> mails = mailDao.loadOutNotReceivedBox(user);
+      if (mails.size() > 0){
+      // Заголовки таблицы
+      buffer.append("<th class='internal' width='120'><div class=tbtext>" + locale.getString("mess19") + "</div></th>");
+      buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess59") + "</div></th>");
+      buffer.append("<th class='internal' width='120'><div class=tbtext>" + locale.getString("mess61") + "</div></th>");
+      buffer.append("</tr>");
+      // Выводим сообщения
+      for ($m1=0; $m1 < $numrows; $m1++) {
+         // id письма
+         $str_id=mysql_result($res_mail, $m1, "id");
+         // Тема письма
+         $str_head=mysql_result($res_mail, $m1, "head");
+         // Кому
+         $str_nick=mysql_result($res_mail, $m1, "nick");
+         // Когда отправлено
+         $str_snt=mysql_result($res_mail, $m1, "d__snt");
+         buffer.append("<tr>");
+         // Кому
+         buffer.append("<td class='internal' width='120'><div class=tbtext>");
+         echo $str_nick;
+         buffer.append("</div></td>");
+         // Тема письма
+         buffer.append("<td class='internal'><div class=tbtext>");
+         buffer.append("<a href='control.php?id=3&msg=" + $str_id + "'>" + fd_head($str_head) + "</a>");
+         buffer.append("</div></td>");
+         // Когда отправлено
+         buffer.append("<td class='internal' width='120'><div class=tbtext>");
+         echo $str_snt;
+         buffer.append("</div></td>");
+         buffer.append("</tr>");
+         }}
+         else {
+            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess18") + "</div></th>");
+            buffer.append("</tr>");
+         }
+         // Выводим письмо.
+         if (msg != null){
+            // Находим его
+            $sql_msg="
+            SELECT
+               fdmail.head,
+               fdmail.body,
+               DATE_FORMAT(fdmail.d_snt, '%d.%m %H:%i') as d__snt,
+               users.nick
+            FROM
+               fdmail
+               LEFT JOIN users ON fdmail.rcvr=users.id
+            WHERE
+               fdmail.sndr=".$_SESSION['idu']." AND
+               fdmail.del_s<>1 AND
+               fdmail.d_rcv IS NULL
+               AND fdmail.id=".$_GET['msg']."
+            ");
+            $rslt_msg=fd_query($sql_msg, $conn, "");
+            if (mysql_num_rows($rslt_msg)){
+               // Принимаем.     
+               // id письма
+               $str_id=$_GET['msg'];
+               // Отправлено.
+               $str_snt=mysql_result($rslt_msg, 0, 'd__snt');
+               // Кому.
+               $str_nick=mysql_result($rslt_msg, 0, 'nick');
+               // Заголовок.
+               $str_head=mysql_result($rslt_msg, 0, 'head');
+               // Тело.
+               $str_body=mysql_result($rslt_msg, 0, 'body');
+               buffer.append("<tr class=heads><td colspan=3 class=internal>");
+               // Кому.
+               buffer.append("<span class=tbtext>" + locale.getString("mess61") + ":&nbsp;" + $str_snt + "&nbsp;" + locale.getString("mess19") + ":&nbsp;</span><span class=nick>" + $str_nick + "</span>");
+               buffer.append("</td></tr>");
+               // Тело.
+               buffer.append("<tr><td colspan=3 class=internal>");
+               buffer.append("<div class=nik>" + fd_head($str_head) + "</div>");
+               buffer.append("<div class=post>" + fd_body($str_body) + "</div>");
+               buffer.append("</td></tr>");
+            }
+         }
+      buffer.append("</table>");
+      buffer.append("</form>");
       return buffer;
    }
 
