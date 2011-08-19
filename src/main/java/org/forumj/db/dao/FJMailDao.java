@@ -82,10 +82,22 @@ public class FJMailDao extends FJDao {
    
    public List<FJMail> loadOutNotReceivedBox(User user) throws IOException, ConfigurationException, SQLException{
       String query = getLoadOutNotReceivedBoxQuery();
-      List<FJMail> result = loadMails(user, query, true);
+      List<FJMail> result = loadMails(user, query, false);
       return result;
    }
 
+   public List<FJMail> loadOutReceivedBox(User user) throws IOException, ConfigurationException, SQLException{
+      String query = getLoadOutReceivedBoxQuery();
+      List<FJMail> result = loadMails(user, query, false);
+      return result;
+   }
+   
+   public List<FJMail> loadDraftBox(User user) throws IOException, ConfigurationException, SQLException{
+      String query = getLoadDraftBoxQuery();
+      List<FJMail> result = loadMails(user, query, false);
+      return result;
+   }
+   
    public List<FJMail> loadMails(User user, String query, boolean isInbox) throws IOException, ConfigurationException, SQLException{
       List<FJMail> result = new ArrayList<FJMail>();
       Connection conn = null;
@@ -142,7 +154,8 @@ public class FJMailDao extends FJDao {
          conn.setAutoCommit(false);
          st = conn.prepareStatement(loadMailQuery);
          st.setLong(1, user.getId());
-         st.setLong(2, mailId);
+         st.setLong(2, user.getId());
+         st.setLong(3, mailId);
          ResultSet rs = st.executeQuery();
          if (rs.next()){
             result = new FJMail();
@@ -153,11 +166,11 @@ public class FJMailDao extends FJDao {
             result.setReadDate(rs.getDate(DATE_READ_FIELD_NAME));
             result.setReadDate(rs.getDate(DATE_READ_FIELD_NAME));
             if (userIsSender){
-               result.setReceiver(new User(rs.getLong(SENDER_ID_FIELD_NAME), rs.getString(IUser.NICK_FIELD_NAME)));
+               result.setReceiver(new User(rs.getLong(RECEIVER_ID_FIELD_NAME), rs.getString(RECEIVER_NICK_FIELD_NAME)));
                result.setSender(user);
             }else{
                result.setReceiver(user);
-               result.setSender(new User(rs.getLong(SENDER_ID_FIELD_NAME), rs.getString(IUser.NICK_FIELD_NAME)));
+               result.setSender(new User(rs.getLong(SENDER_ID_FIELD_NAME), rs.getString(SENDER_NICK_FIELD_NAME)));
             }
             result.setSubject(rs.getString(SUBJECT_FIELD_NAME));
             result.setBody(rs.getString(BODY_FIELD_NAME));

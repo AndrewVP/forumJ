@@ -25,4 +25,7 @@ public interface IFJMail {
    public static final String BODY_FIELD_NAME = "body";
    public static final String DELETED_BY_SENDER_FIELD_NAME = "del_s";
    public static final String DELETED_RECEIVER_FIELD_NAME = "del_r";
+
+   public static final String RECEIVER_NICK_FIELD_NAME = "rcvr_nick";
+   public static final String SENDER_NICK_FIELD_NAME = "sndr_nick";
 }

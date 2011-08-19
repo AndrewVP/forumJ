@@ -191,53 +191,53 @@ public class Control extends HttpServlet {
          buffer.append("</td>");
          buffer.append("<td valign='TOP'>");
          switch(id) {
-            case 0:
-               // Зашли "по умолчанию"
-               break;
-            case 1:
-               // Игнор-лист
-               buffer.append(case1(user, locale));
-               break;
-            case 2:
-               // Inbox
-               buffer.append(case2(locale, user, msg));
-               break;
-            case 3:
-               // Отправлено, но не доставлено
-               buffer.append(case3(locale, user, msg));
-               break;
-            case 4:
-               // Отправлено, и доставлено
-               buffer.append(case4());
-               break;
-            case 5:
-               //  Черновики
-               buffer.append(case5());
-               break;
-            case 6:
-               // Интерфейсы
-               buffer.append(case6());
-               break;
-            case 7:
-               // Папки
-               buffer.append(case7());
-               break;
-            case 8:
-               // Подписка
-               buffer.append(case8());
-               break;
-            case 9:
-               // Аватара
-               buffer.append(case9());
-               break;
-            case 10:
-               // Местонахождение
-               buffer.append(case10());
-               break;
-            case 11:
-               // Подпись
-               buffer.append(case11());
-               break;
+         case 0:
+            // Зашли "по умолчанию"
+            break;
+         case 1:
+            // Игнор-лист
+            buffer.append(case1(user, locale));
+            break;
+         case 2:
+            // Inbox
+            buffer.append(case2(locale, user, msg));
+            break;
+         case 3:
+            // Отправлено, но не доставлено
+            buffer.append(case3(locale, user, msg));
+            break;
+         case 4:
+            // Отправлено, и доставлено
+            buffer.append(case4(locale, user, msg));
+            break;
+         case 5:
+            //  Черновики
+            buffer.append(case5(locale, user, msg));
+            break;
+         case 6:
+            // Интерфейсы
+            buffer.append(case6());
+            break;
+         case 7:
+            // Папки
+            buffer.append(case7());
+            break;
+         case 8:
+            // Подписка
+            buffer.append(case8());
+            break;
+         case 9:
+            // Аватара
+            buffer.append(case9());
+            break;
+         case 10:
+            // Местонахождение
+            buffer.append(case10());
+            break;
+         case 11:
+            // Подпись
+            buffer.append(case11());
+            break;
          }
          buffer.append("</td>");
          buffer.append("</tr>");
@@ -549,45 +549,33 @@ public class Control extends HttpServlet {
          // Выводим сообщения
          for (int mailIndex=0; mailIndex < mails.size(); mailIndex++){
             FJMail mail = mails.get(mailIndex);
-            // id письма
-            Long mailId = mail.getId();
-            // Тема письма
-            String mailSubject = mail.getSubject();
-            // От.
-            String senderNick = mail.getSender().getNick();
-            // Когда пришло.
-            Date receiveDate = mail.getReceiveDate();
-            // Когда отправлено.
-            Date sentDate = mail.getSentDate();
-            // Прочитано?
-            Date readDate = mail.getReadDate();
             buffer.append("<tr>");
             // От.
             buffer.append("<td class='internal'><div align='center' class='tbtext'>");
-            buffer.append(senderNick);
+            buffer.append(mail.getSender().getNick());
             buffer.append("</div></td>");
             // Тема письма
-            if (readDate == null){
+            if (mail.getReadDate() == null){
                buffer.append("<td class='internal'><div class='tbtextnread'>");
-               buffer.append("<a href='control.php?id=2&msg=" + mailId + "'>" + fd_head(mailSubject) + "</a>");
+               buffer.append("<a href='control.php?id=2&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
                buffer.append("</div></td>");
             }
             else {
                buffer.append("<td class='internal'><div class='tbtext'>");
-               buffer.append("<a href='control.php?id=2&msg=" + mailId + "'>" + fd_head(mailSubject) + "</a>");
+               buffer.append("<a href='control.php?id=2&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
                buffer.append("</div></td>");
             }
             // Когда пришло.
             buffer.append("<td class='internal'><div align='center' class='tbtext'>");
-            buffer.append(receiveDate);
+            buffer.append(mail.getReceiveDate());
             buffer.append("</div></td>");
             // Когда отправлено.
             buffer.append("<td class='internal'><div align='center' class='tbtext'>");
-            buffer.append(sentDate);
+            buffer.append(mail.getSentDate());
             buffer.append("</div></td>");
             // Флажок.
             buffer.append("<td class='internal'><div align='center' class='tbtext'>");
-            buffer.append("<input type='checkbox' name='" + mailIndex + "' value='" + mailId + "'>");
+            buffer.append("<input type='checkbox' name='" + mailIndex + "' value='" + mail.getId() + "'>");
             buffer.append("</div></td>");       
             buffer.append("</tr>");
          }
@@ -614,31 +602,20 @@ public class Control extends HttpServlet {
       //Выводим письмо
       if (msg != null){
          // Находим его
-         FJMail mail = mailDao.loadMail(user, msg);
+         FJMail mail = mailDao.loadMail(user, msg, false);
          if (mail != null){ 
             // Помечаем как прочитанное.
             if (mail.getReadDate() == null){
                mailDao.markMailAsRead(user.getId(), msg);
             }
-            // Принимаем.     
-            // Отправлено.
-            Date sentDate = mail.getSentDate();
-            // Получено.
-            Date receiveDate = mail.getReceiveDate();
-            // От кого.
-            String senderNick = mail.getSender().getNick();
-            // Заголовок.
-            String subject = mail.getSubject();
-            // Тело.
-            String body = mail.getBody();
             buffer.append("<tr class='heads'><td colspan=5 class='internal'>");
             // От кого.
-            buffer.append("<span class='tbtext'>" + locale.getString("mess60") + ":&nbsp;" + receiveDate + "&nbsp;" + locale.getString("mess61") + ":&nbsp;" + sentDate + "&nbsp;" + locale.getString("mess58") + ":&nbsp;</span><span class=nick>" + senderNick + "</span>");
+            buffer.append("<span class='tbtext'>" + locale.getString("mess60") + ":&nbsp;" + mail.getReceiveDate() + "&nbsp;" + locale.getString("mess61") + ":&nbsp;" + mail.getSentDate() + "&nbsp;" + locale.getString("mess58") + ":&nbsp;</span><span class=nick>" + mail.getSender().getNick() + "</span>");
             buffer.append("</td></tr>");
             // Тело.
             buffer.append("<tr><td colspan=5 class='internal'>");
-            buffer.append("<div class=nik>" + fd_head(subject) + "</div>");
-            buffer.append("<div class=post>" + fd_body(body) + "</div>");
+            buffer.append("<div class=nik>" + fd_head(mail.getSubject()) + "</div>");
+            buffer.append("<div class=post>" + fd_body(mail.getBody()) + "</div>");
             buffer.append("</td></tr>");
          }
       }
@@ -647,7 +624,7 @@ public class Control extends HttpServlet {
       return buffer;
    }
 
-   private StringBuffer case3(LocaleString locale, User user, Long msg){
+   private StringBuffer case3(LocaleString locale, User user, Long msg) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess15") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
@@ -655,94 +632,191 @@ public class Control extends HttpServlet {
       FJMailDao mailDao = new FJMailDao();
       List<FJMail> mails = mailDao.loadOutNotReceivedBox(user);
       if (mails.size() > 0){
-      // Заголовки таблицы
-      buffer.append("<th class='internal' width='120'><div class=tbtext>" + locale.getString("mess19") + "</div></th>");
-      buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess59") + "</div></th>");
-      buffer.append("<th class='internal' width='120'><div class=tbtext>" + locale.getString("mess61") + "</div></th>");
-      buffer.append("</tr>");
-      // Выводим сообщения
-      for ($m1=0; $m1 < $numrows; $m1++) {
-         // id письма
-         $str_id=mysql_result($res_mail, $m1, "id");
-         // Тема письма
-         $str_head=mysql_result($res_mail, $m1, "head");
-         // Кому
-         $str_nick=mysql_result($res_mail, $m1, "nick");
-         // Когда отправлено
-         $str_snt=mysql_result($res_mail, $m1, "d__snt");
-         buffer.append("<tr>");
-         // Кому
-         buffer.append("<td class='internal' width='120'><div class=tbtext>");
-         echo $str_nick;
-         buffer.append("</div></td>");
-         // Тема письма
-         buffer.append("<td class='internal'><div class=tbtext>");
-         buffer.append("<a href='control.php?id=3&msg=" + $str_id + "'>" + fd_head($str_head) + "</a>");
-         buffer.append("</div></td>");
-         // Когда отправлено
-         buffer.append("<td class='internal' width='120'><div class=tbtext>");
-         echo $str_snt;
-         buffer.append("</div></td>");
+         // Заголовки таблицы
+         buffer.append("<th class='internal' width='120'><div class=tbtext>" + locale.getString("mess19") + "</div></th>");
+         buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess59") + "</div></th>");
+         buffer.append("<th class='internal' width='120'><div class=tbtext>" + locale.getString("mess61") + "</div></th>");
          buffer.append("</tr>");
-         }}
-         else {
-            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess18") + "</div></th>");
+         // Выводим сообщения
+         for (int mailIndex=0; mailIndex < mails.size(); mailIndex++){
+            FJMail mail = mails.get(mailIndex);
+            buffer.append("<tr>");
+            // Кому
+            buffer.append("<td class='internal' width='120'><div class=tbtext>");
+            buffer.append(mail.getReceiver().getNick());
+            buffer.append("</div></td>");
+            // Тема письма
+            buffer.append("<td class='internal'><div class=tbtext>");
+            buffer.append("<a href='control.php?id=3&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
+            buffer.append("</div></td>");
+            // Когда отправлено
+            buffer.append("<td class='internal' width='120'><div class=tbtext>");
+            buffer.append(mail.getSentDate());
+            buffer.append("</div></td>");
             buffer.append("</tr>");
+         }}
+      else {
+         buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess18") + "</div></th>");
+         buffer.append("</tr>");
+      }
+      // Выводим письмо.
+      if (msg != null){
+         // Находим его
+         FJMail mail = mailDao.loadMail(user, msg, false);
+         if (mail != null){
+            buffer.append("<tr class=heads><td colspan=3 class=internal>");
+            // Кому.
+            buffer.append("<span class=tbtext>" + locale.getString("mess61") + ":&nbsp;" + mail.getSentDate() + "&nbsp;" + locale.getString("mess19") + ":&nbsp;</span><span class=nick>" + mail.getReceiver().getNick() + "</span>");
+            buffer.append("</td></tr>");
+            // Тело.
+            buffer.append("<tr><td colspan=3 class=internal>");
+            buffer.append("<div class=nik>" + fd_head(mail.getSubject()) + "</div>");
+            buffer.append("<div class=post>" + fd_body(mail.getBody()) + "</div>");
+            buffer.append("</td></tr>");
          }
-         // Выводим письмо.
-         if (msg != null){
-            // Находим его
-            $sql_msg="
-            SELECT
-               fdmail.head,
-               fdmail.body,
-               DATE_FORMAT(fdmail.d_snt, '%d.%m %H:%i') as d__snt,
-               users.nick
-            FROM
-               fdmail
-               LEFT JOIN users ON fdmail.rcvr=users.id
-            WHERE
-               fdmail.sndr=".$_SESSION['idu']." AND
-               fdmail.del_s<>1 AND
-               fdmail.d_rcv IS NULL
-               AND fdmail.id=".$_GET['msg']."
-            ");
-            $rslt_msg=fd_query($sql_msg, $conn, "");
-            if (mysql_num_rows($rslt_msg)){
-               // Принимаем.     
-               // id письма
-               $str_id=$_GET['msg'];
-               // Отправлено.
-               $str_snt=mysql_result($rslt_msg, 0, 'd__snt');
-               // Кому.
-               $str_nick=mysql_result($rslt_msg, 0, 'nick');
-               // Заголовок.
-               $str_head=mysql_result($rslt_msg, 0, 'head');
-               // Тело.
-               $str_body=mysql_result($rslt_msg, 0, 'body');
-               buffer.append("<tr class=heads><td colspan=3 class=internal>");
-               // Кому.
-               buffer.append("<span class=tbtext>" + locale.getString("mess61") + ":&nbsp;" + $str_snt + "&nbsp;" + locale.getString("mess19") + ":&nbsp;</span><span class=nick>" + $str_nick + "</span>");
-               buffer.append("</td></tr>");
-               // Тело.
-               buffer.append("<tr><td colspan=3 class=internal>");
-               buffer.append("<div class=nik>" + fd_head($str_head) + "</div>");
-               buffer.append("<div class=post>" + fd_body($str_body) + "</div>");
-               buffer.append("</td></tr>");
-            }
-         }
+      }
       buffer.append("</table>");
       buffer.append("</form>");
       return buffer;
    }
 
-   private StringBuffer case4(){
+   private StringBuffer case4(LocaleString locale, User user, Long msg) throws ConfigurationException, IOException, SQLException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
+      buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess16") + "</b></div>");
+      buffer.append("<form method='POST' class=content action='delmail.php?id=4'>");
+      buffer.append("<table class='control'><tr class=heads>");
+      // Выбираем почту
+      FJMailDao mailDao = new FJMailDao();
+      List<FJMail> mails = mailDao.loadOutReceivedBox(user);
+      if (mails.size() > 0){
+         // Заголовки таблицы
+         // Кому
+         buffer.append("<th class='internal' width='120'><div class=tbtext>" + locale.getString("mess19") + "</div></th>");
+         // Тема письма
+         buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess59") + "</div></th>");
+         // Когда отправлено.
+         buffer.append("<th class='internal' width='120'><div class=tbtext>" + locale.getString("mess61") + "</div></th>");
+         // Когда получено.
+         buffer.append("<th class='internal' width='120'><div class=tbtext>" + locale.getString("mess60") + "</div></th>");
+         buffer.append("<th class='internal' width='20'></th>");
+         buffer.append("</tr>");
+         // Выводим сообщения
+         for (int mailIndex=0; mailIndex < mails.size(); mailIndex++){
+            FJMail mail = mails.get(mailIndex);
+            buffer.append("<tr>");
+            // Кому
+            buffer.append("<td class='internal' width='120'><div class=tbtext>");
+            buffer.append(mail.getReceiver().getNick());
+            buffer.append("</div></td>");
+            // Тема письма
+            buffer.append("<td class='internal'><div class=tbtext>");
+            buffer.append("<a href='control.php?id=4&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
+            buffer.append("</div></td>");
+            // Когда отправлено.
+            buffer.append("<td class='internal' width='120'><div class=tbtext>");
+            buffer.append(mail.getSentDate());
+            buffer.append("</div></td>");
+            // Когда получено.
+            buffer.append("<td class='internal' width='120'><div class=tbtext>");
+            buffer.append(mail.getReceiveDate());
+            buffer.append("</div></td>");
+            // Флажок.
+            buffer.append("<td class='internal'><div align='center' class=tbtext>");
+            buffer.append("<input type='checkbox' name='" + mailIndex + "' value='" + mail.getId() + "'>");
+            buffer.append("</div></td>");       
+            buffer.append("</tr>");
+         }
+         // Сервис (пока только удаление)
+         buffer.append("<tr>");
+         buffer.append("<td colspan=5 align='right'>"); 
+         buffer.append("<span class=tbtextnread>" + locale.getString("mess69") + "&nbsp;&nbsp;</span>");
+         buffer.append("<select size='1' name='ACT'>");
+         buffer.append("<option selected value='del'><span class=mnuprof>" + locale.getString("mess70") + "&nbsp;&nbsp;</span></option>");
+         buffer.append("</select>&nbsp;");
+         buffer.append(fd_form_add(user));
+         buffer.append("<input value='OK' type='submit'>");
+         buffer.append("</td>");
+         buffer.append("</tr>");
+      }else{
+         buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess18") + "</div></th>");
+         buffer.append("</tr>");
+      }
+      //Выводим письмо
+      if (msg != null){
+         // Находим его
+         FJMail mail = mailDao.loadMail(user, msg, false);
+         if (mail != null){
+            buffer.append("<tr class=heads><td colspan=4 class=internal>");
+            // Кому.
+            buffer.append("<span class=tbtext>" + locale.getString("mess60") + ":&nbsp;" + mail.getReceiveDate() + "&nbsp;" + locale.getString("mess61") + ":&nbsp;" + mail.getSentDate() + "&nbsp;" + locale.getString("mess28") + ":&nbsp;</span><span class=nick>" + mail.getReceiver().getNick() + "</span>");
+            buffer.append("</td></tr>");
+            // Тело.
+            buffer.append("<tr><td colspan=4 class=internal>");
+            buffer.append("<div class=nik>" + fd_head(mail.getSubject()) + "</div>");
+            buffer.append("<div class=post>" + fd_body(mail.getBody()) + "</div>");
+            buffer.append("</td></tr>");
+         }
+      }
+      buffer.append("</table>");
+      buffer.append("</form>");
       return buffer;
    }
 
-   private StringBuffer case5(){
+   private StringBuffer case5(LocaleString locale, User user, Long msg) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
+      buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess62") + "</b></div>");
+      buffer.append("<table class='control'><tr class=heads>");
+      // Выбираем почту
+      FJMailDao mailDao = new FJMailDao();
+      List<FJMail> mails = mailDao.loadDraftBox(user);
+      if (mails.size() > 0){
+         // Заголовки таблицы
+         // Кому
+         buffer.append("<th class='internal' width='120'><div class=tbtext>" + locale.getString("mess19") + "</div></th>");
+         // Тема письма
+         buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess59") + "</div></th>");
+         // Когда создано
+         buffer.append("<th class='internal' width='120'><div class=tbtext>" + locale.getString("mess20") + "</div></th>");
+         buffer.append("</tr>");
+         // Выводим сообщения
+         for (int mailIndex=0; mailIndex < mails.size(); mailIndex++){
+            FJMail mail = mails.get(mailIndex);
+            buffer.append("<tr>");
+            // Кому
+            buffer.append("<td class='internal' width='120'><div class=tbtext>");
+            buffer.append(mail.getReceiver().getNick());
+            buffer.append("</div></td>");
+            // Тема письма
+            buffer.append("<td class='internal'><div class=tbtext>");
+            buffer.append("<a href='control.php?id=5&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
+            buffer.append("</div></td>");
+            // Когда создано.
+            buffer.append("<td class='internal' width='120'><div class=tbtext>");
+            buffer.append(mail.getCreateDate());
+            buffer.append("</div></td>");
+            buffer.append("</tr>");
+         }
+      }else{
+         buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess18") + "</div></th>");
+         buffer.append("</tr>");
+      }
+      //Выводим письмо
+      if (msg != null){
+         // Находим его
+         FJMail mail = mailDao.loadMail(user, msg, false);
+         if (mail != null){
+            buffer.append("<tr class=heads><td colspan=3 class=internal>");
+            // Кому.
+            buffer.append("<span class=tbtext>" + locale.getString("mess20") + ":&nbsp;" + mail.getCreateDate() + "&nbsp;" + locale.getString("mess19") + ":&nbsp;</span><span class=nick>" + mail.getReceiver().getNick());
+            buffer.append("</td></tr>");
+            // Тело.
+            buffer.append("<tr><td colspan=3 class=internal>");
+            buffer.append("<div class=nik>" + fd_head(mail.getSubject()) + "</div>");
+            buffer.append("<div class=post>" + fd_body(mail.getBody()) + "</div>");
+            buffer.append("</td></tr>");
+         }
+      }
+      buffer.append("</table>");
       return buffer;
    }
 
