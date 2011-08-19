@@ -210,6 +210,20 @@ public class QueryBuilder {
       return loadOutNotReceivedBoxQuery ;
    }
    
+   public static String getLoadOutReceivedBoxQuery() throws IOException{
+      if (loadOutNotReceivedBoxQuery  == null){
+         loadOutNotReceivedBoxQuery  = loadQuery("/sql/load_out_received_box.sql");
+      }
+      return loadOutNotReceivedBoxQuery ;
+   }
+   
+   public static String getLoadDraftBoxQuery() throws IOException{
+      if (loadOutNotReceivedBoxQuery  == null){
+         loadOutNotReceivedBoxQuery  = loadQuery("/sql/load_draft_box.sql");
+      }
+      return loadOutNotReceivedBoxQuery ;
+   }
+   
    public static String getLoadMailQuery() throws IOException{
       if (loadMailQuery  == null){
          loadMailQuery  = loadQuery("/sql/load_mail.sql");

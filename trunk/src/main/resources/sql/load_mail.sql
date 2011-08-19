@@ -9,12 +9,15 @@ SELECT
  , fdmail.del_r
  , fdmail.del_s
  , fdmail.sndr
- , users.nick
+ , fdmail.rcvr
+ , senders.nick AS sndr_nick
+ , receivers.nick AS rcvr_nick
 FROM
  fdmail
- LEFT JOIN users ON fdmail.sndr = users.id
+ (LEFT JOIN users AS senders ON fdmail.sndr = senders.id)
+ (LEFT JOIN users AS receivers ON fdmail.rcvr = receivers.id)
+ 
 WHERE
- fdmail.rcvr= ?
+ fdmail.rcvr = ? OR fdmail.sndr = ?
  AND fdmail.del_r <> 1 
- AND fdmail.d_snt IS NOT NULL
  AND fdmail.id = ?
