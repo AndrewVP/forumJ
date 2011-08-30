@@ -80,4 +80,17 @@ public class FJDao {
    protected void onDatabaseError(DBException exception){
       mail.sendInvalidQueryMail(999, 999, exception.getMessage(), "tema");
    }
+   
+   protected void readFinally(Connection conn, Statement st){
+      try {
+         if (conn != null){
+            conn.close();
+         }
+         if (st != null){
+            st.close();
+         }
+      } catch (SQLException e) {
+         e.printStackTrace();
+      }
+   }
 }

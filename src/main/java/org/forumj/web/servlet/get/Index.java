@@ -283,7 +283,7 @@ public class Index extends HttpServlet {
          // Выводим строки
          for (int threadIndex = 0; threadIndex < threadsList.size(); threadIndex++) {
             FJThread thread = threadsList.get(threadIndex);
-            buffer.append( thread.toString());
+            buffer.append(thread.toString());
          }
          // Главные ссылки внизу страницы
          buffer.append("</table>");

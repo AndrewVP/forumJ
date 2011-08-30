@@ -60,8 +60,20 @@ public class QueryBuilder {
    private static String loadInboxQuery = null;
    
    private static String loadOutNotReceivedBoxQuery = null;
+
+   private static String loadOutReceivedBoxQuery = null;
+
+   private static String loadDraftBoxQuery = null;
    
    private static String loadMailQuery = null;
+
+   private static String loadInterfacesQuery = null;
+   
+   private static String loadInterfaceQuery = null;
+
+   private static String loadFoldersQuery = null;
+   
+   private static String loadFoldersNotInQuery = null;
    
    public static String getLoadConfigQuery() throws IOException{
       if (loadConfigQuery == null){
@@ -211,17 +223,17 @@ public class QueryBuilder {
    }
    
    public static String getLoadOutReceivedBoxQuery() throws IOException{
-      if (loadOutNotReceivedBoxQuery  == null){
-         loadOutNotReceivedBoxQuery  = loadQuery("/sql/load_out_received_box.sql");
+      if (loadOutReceivedBoxQuery  == null){
+         loadOutReceivedBoxQuery  = loadQuery("/sql/load_out_received_box.sql");
       }
-      return loadOutNotReceivedBoxQuery ;
+      return loadOutReceivedBoxQuery;
    }
    
    public static String getLoadDraftBoxQuery() throws IOException{
-      if (loadOutNotReceivedBoxQuery  == null){
-         loadOutNotReceivedBoxQuery  = loadQuery("/sql/load_draft_box.sql");
+      if (loadDraftBoxQuery  == null){
+         loadDraftBoxQuery  = loadQuery("/sql/load_draft_box.sql");
       }
-      return loadOutNotReceivedBoxQuery ;
+      return loadDraftBoxQuery ;
    }
    
    public static String getLoadMailQuery() throws IOException{
@@ -231,6 +243,33 @@ public class QueryBuilder {
       return loadMailQuery ;
    }
    
+   public static String getLoadInterfacesQuery() throws IOException{
+      if (loadInterfacesQuery == null){
+         loadInterfacesQuery = loadQuery("/sql/load_interfaces.sql");
+      }
+      return loadInterfacesQuery;
+   }
+   
+   public static String getLoadInterfaceQuery() throws IOException{
+      if (loadInterfaceQuery == null){
+         loadInterfaceQuery = loadQuery("/sql/load_interface.sql");
+      }
+      return loadInterfaceQuery;
+   }
+   
+   public static String getLoadFoldersQuery() throws IOException{
+      if (loadFoldersQuery == null){
+         loadFoldersQuery = loadQuery("/sql/load_folders.sql");
+      }
+      return loadFoldersQuery;
+   }
+   
+   public static String getLoadFoldersNotInQuery() throws IOException{
+      if (loadFoldersNotInQuery == null){
+         loadFoldersNotInQuery = loadQuery("/sql/load_folders_not_in.sql");
+      }
+      return loadFoldersNotInQuery;
+   }
    
    private static String loadQuery(String path) throws IOException{
       ClassLoader classLoader = FJServletTools.class.getClassLoader();
