@@ -104,7 +104,6 @@ public class FJMailDao extends FJDao {
       PreparedStatement st = null;
       try {
          conn = getConnection();
-         conn.setAutoCommit(false);
          st = conn.prepareStatement(query);
          st.setLong(1, user.getId());
          ResultSet rs = st.executeQuery();
@@ -151,7 +150,6 @@ public class FJMailDao extends FJDao {
       PreparedStatement st = null;
       try {
          conn = getConnection();
-         conn.setAutoCommit(false);
          st = conn.prepareStatement(loadMailQuery);
          st.setLong(1, user.getId());
          st.setLong(2, user.getId());

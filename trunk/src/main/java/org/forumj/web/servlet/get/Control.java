@@ -55,7 +55,8 @@ public class Control extends HttpServlet {
          // Функции   
          // номер страницы
          Integer id = request.getParameter("id") == null ? 1 : Integer.valueOf(request.getParameter("id"));
-         Long msg = request.getParameter("msg") == null ? 1 : Long.valueOf(request.getParameter("msg"));
+         Long msg = request.getParameter("msg") == null ? null : Long.valueOf(request.getParameter("msg"));
+         Long view = request.getParameter("view") == null ? null : Long.valueOf(request.getParameter("view"));
          // Загружаем локализацию
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          User user = (User) session.getAttribute("user");
@@ -216,7 +217,7 @@ public class Control extends HttpServlet {
             break;
          case 6:
             // Интерфейсы
-            buffer.append(case6());
+            buffer.append(case6(locale, user, view));
             break;
          case 7:
             // Папки
@@ -820,8 +821,205 @@ public class Control extends HttpServlet {
       return buffer;
    }
 
-   private StringBuffer case6(){
+   private StringBuffer case6(LocaleString locale, User user, Long viewId) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
       StringBuffer buffer = new StringBuffer();
+      // Выбираем список интерфейсов
+      FJInterfaceDao dao = new FJInterfaceDao();
+      List<IFJInterface> interfaces = dao.findAll(user);
+      int $views_num = interfaces.size();  
+      // "Список Ваших интерфейсов"
+      buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess76") + "</b></div>");
+      // Интерфейс по умолчанию
+      // 
+      buffer.append("<form method='POST' class=content action='defview.php'>");
+      buffer.append("<span class=tbtext><b>" + locale.getString("mess84") + "</b></span>");
+      buffer.append("<select size='1' name='DVIEW'>");
+      for (int $dv=0; $dv < $views_num; $dv++){
+         String $_add="";
+         IFJInterface interf = interfaces.get($dv);
+         if (interf.getId() == user.getView()) {
+            $_add="selected ";
+         }
+         buffer.append("<option " + $_add + "value='" + interf.getId() + "'><span class=mnuprof>" + interf.getName() + "</span></option>");
+      }
+      buffer.append("</select>&nbsp;");
+      buffer.append("<input type='submit' value='" + locale.getString("mess85") + "'>");
+      // Прередаем нужные пераметры...
+      // Автор
+      buffer.append(fd_form_add(user));
+      buffer.append("</form>");
+      
+      buffer.append("<form method='POST' class=content action='delview.php?'>");
+      buffer.append("<table class='control'><tr class=heads>");
+      // Заголовки таблицы
+      // Имя интерфейса
+      buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess77") + "</div></th>");
+      // Флажок
+      buffer.append("<th class='internal' width='20'></th>");
+      buffer.append("</tr>");
+      User $str_user = null;
+      for (int $xv1 = 0; $xv1 < $views_num; $xv1++){ 
+         IFJInterface interf = interfaces.get($xv1);
+         // Имя интерфейса
+         String $str_name = interf.getName();
+         // id интерфейсса
+         Long $str_id = interf.getId();
+         // выделяем выбраный интерфейс
+         if (viewId != null && viewId == $str_id){
+            $str_name="<b>" + $str_name + "</b>";
+         }
+         // автор интерфейса
+         $str_user  = interf.getUser();
+         buffer.append("<tr>");
+         // Интерфейс
+         buffer.append("<td class='internal'><div class=tbtext>");
+         buffer.append("<a href=control.php?id=6&view=" + $str_id + ">" + $str_name + "</a>");
+         buffer.append("</div></td>");
+         // Флажок.
+         buffer.append("<td class='internal'>");
+         if ($str_user != null){
+            buffer.append("<div align='center' class=tbtext>");
+            buffer.append("<input type='checkbox' name='" + $xv1 + "' value='" + $str_id + "'>");
+            buffer.append("</div>");
+         }
+         buffer.append("</td>");       
+         buffer.append("</tr>");
+      }
+      // Сервис (пока только удаление)
+      buffer.append("<tr>");
+      buffer.append("<td colspan=2 class='internal' align='right'>"); 
+      buffer.append("<span class=tbtextnread>" + locale.getString("mess69") + "&nbsp;&nbsp;</span>");
+      buffer.append("<select size='1' name='ACT'>");
+      buffer.append("<option selected value='del'><span class=mnuprof>" + locale.getString("mess70") + "&nbsp;&nbsp;</span></option>");
+      buffer.append("</select>&nbsp;");
+      buffer.append("<input type='hidden' value='" + $views_num + "' name='NRW'>");
+      // Прередаем нужные пераметры...
+      buffer.append(fd_form_add(user));
+      buffer.append("<input value='OK' type='submit'>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("</table>");
+      buffer.append("</form>");  
+      buffer.append("<form method='POST' class=content action='newview.php'>");
+      buffer.append("<span class=tbtext>" + locale.getString("mess77") + ":&nbsp;</span>"); 
+      buffer.append("<input type='text' size=50 name='FOLD'>");
+      buffer.append("&nbsp;<input type='submit' value='" + locale.getString("mess75") + "' >");
+      // Прередаем нужные пераметры...
+      buffer.append(fd_form_add(user));
+      buffer.append("</form>");  
+      // Настройки интерфейса
+      if (viewId != null) {
+         IFJInterface interf = dao.find(user, viewId);
+         String $str_vname = interf.getName();
+         // Выбираем список папок в интерфейсе
+         FJFolderDao folderDao = new FJFolderDao();
+         List<IFJFolder> folders = folderDao.findAll(user, interf);
+         int $vfolders_num = folders.size();
+         buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess78") + "<u>" + $str_vname + "</u></b></div>");
+         buffer.append("<form method='POST' class=content action='delvfolder.php'>");
+         buffer.append("<table class='control'><tr class=heads>");
+         // Заголовки таблицы
+         // Имя папки
+         buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess74") + "</div></th>");
+         // Флажок
+         buffer.append("<th class='internal' width='20'></th>");
+         buffer.append("</tr>");
+         for (int $xvf1=0; $xvf1 < folders.size(); $xvf1++){
+            IFJFolder folder = folders.get($xvf1);
+            // Имя папки
+            String $str_name = folder.getName();
+            // id папки
+            Long $str_id = folder.getId();
+            // автор папки
+            $str_user = folder.getUser();
+            // Папки
+            buffer.append("<tr>");
+            buffer.append("<td class='internal'><div class=tbtext>");
+            buffer.append($str_name);
+            buffer.append("</div></td>");
+            // Флажок.
+            buffer.append("<td class='internal'>");
+            if ($str_user != null){
+               buffer.append("<div align='center' class=tbtext>");
+               buffer.append("<input type='checkbox' name='" + $xvf1 + "' value='" + $str_id + "'>");
+               buffer.append("</div>");
+            }
+            buffer.append("</td>");       
+            buffer.append("</tr>");
+         }
+         // Сервис (пока только удаление)
+         buffer.append("<tr>");
+         buffer.append("<td colspan=2 class='internal' align='right'>"); 
+         buffer.append("<span class=tbtextnread>" + locale.getString("mess69") + "&nbsp;&nbsp;</span>");
+         buffer.append("<select size='1' name='ACT'>");
+         buffer.append("<option selected value='del'><span class=mnuprof>" + locale.getString("mess70") + "&nbsp;&nbsp;</span></option>");
+         buffer.append("</select>&nbsp;");
+         buffer.append("<input type='hidden' value='" + $vfolders_num + "' name='NRW'>");
+         // id Интерфейса
+         buffer.append("<input type=hidden name='IDVW' value='" + viewId + "'>");
+         // Прередаем нужные пераметры...
+         buffer.append(fd_form_add(user));
+         buffer.append("<input value='OK' type='submit'>");
+         buffer.append("</td>");
+         buffer.append("</tr>");
+         buffer.append("</table>");
+         buffer.append("</form>");
+         List<IFJFolder> foldersNotIn = folderDao.findAllNotIn(user, interf);
+         int $folders_num = foldersNotIn.size();
+         buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess73") + "</b></div>");
+         buffer.append("<form method='POST' class=content action='delfolder.php?id=6&view=" + viewId + "'>");
+         buffer.append("<table class='control'><tr class=heads>");
+         // Заголовки таблицы
+         // Имя папки
+         buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess74") + "</div></th>");
+         // Птичка
+         buffer.append("<th class='internal' width='20'></th>");
+         buffer.append("</tr>");
+         for (int $xf1=0; $xf1<$folders_num; $xf1++){ 
+            IFJFolder folder = foldersNotIn.get($xf1);
+            // Имя папки
+            String $str_name = folder.getName();
+            // id папки
+            Long $str_id = folder.getId();
+            // автор папки
+            $str_user = folder.getUser();
+            // Папка
+            buffer.append("<tr>");
+            buffer.append("<td class='internal'><div class=tbtext>");
+            buffer.append($str_name);
+            buffer.append("</div></td>");
+            // Флажок.
+            buffer.append("<td class='internal'>");
+            buffer.append("<div align='center' class=tbtext>");
+            buffer.append("<input type='checkbox' name='" + $xf1 + "' value='" + $str_id + "'>");
+            buffer.append("</div>");
+            buffer.append("</td>");       
+            buffer.append("</tr>");
+         }
+         // Сервис: добавление в интерфейс 
+         buffer.append("<tr>");
+         buffer.append("<td colspan=2 class='internal' align='right'>"); 
+         buffer.append("<span class=tbtextnread>" + locale.getString("mess69") + "&nbsp;&nbsp;</span>");
+         buffer.append("<select size='1' name='ACT'>");
+         buffer.append("<option selected value='add'><span class=mnuprof>" + locale.getString("mess79") + $str_vname + "&nbsp;&nbsp;</span></option>");
+         buffer.append("</select>&nbsp;");
+         buffer.append("<input type='hidden' value='" + $folders_num + "' name='NRW'>");
+         // Прередаем нужные пераметры...
+         buffer.append(fd_form_add(user));
+         buffer.append("<input value='OK' type='submit'>");
+         buffer.append("</td>");
+         buffer.append("</tr>");
+         buffer.append("</table>");
+         buffer.append("</form>");  
+         // Добавление новой папки
+         buffer.append("<form method='POST' class=content action='newfolder.php?id=6&view=" + viewId + "'>");
+         buffer.append("<span class=tbtext>" + locale.getString("mess74") + ":&nbsp;</span>"); 
+         buffer.append("<input type='text' size=50 name='FOLD'>");
+         buffer.append("&nbsp;<input type='submit' value='" + locale.getString("mess75") + "' >");
+         // Прередаем нужные пераметры...
+         buffer.append(fd_form_add(user));
+         buffer.append("</form>");  
+      }
       return buffer;
    }
 
