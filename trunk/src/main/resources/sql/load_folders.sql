@@ -1,14 +1,11 @@
 SELECT 
- fdfolders.id
- , fdfolders.flname
- , fdfolders.d_cr
+ id
+ , flname
  , user
+ , d_cr
 FROM
- fdvtranzit
- LEFT JOIN fdfolders on fdvtranzit.folder = fdfolders.id
+ fdfolders
 WHERE
- (fdvtranzit.user = ?   
- OR fdvtranzit.user = 0)
- AND fdvtranzit.view = ?
+ user = ? OR user=0
 ORDER BY
- fdvtranzit.id
+ id    
