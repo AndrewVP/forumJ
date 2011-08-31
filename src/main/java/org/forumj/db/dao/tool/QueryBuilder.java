@@ -71,9 +71,13 @@ public class QueryBuilder {
    
    private static String loadInterfaceQuery = null;
 
-   private static String loadFoldersQuery = null;
+   private static String loadFoldersInQuery = null;
    
    private static String loadFoldersNotInQuery = null;
+   
+   private static String loadFoldersQuery = null;
+   
+   private static String loadSubscribesQuery = null;
    
    public static String getLoadConfigQuery() throws IOException{
       if (loadConfigQuery == null){
@@ -257,11 +261,11 @@ public class QueryBuilder {
       return loadInterfaceQuery;
    }
    
-   public static String getLoadFoldersQuery() throws IOException{
-      if (loadFoldersQuery == null){
-         loadFoldersQuery = loadQuery("/sql/load_folders.sql");
+   public static String getLoadFoldersInQuery() throws IOException{
+      if (loadFoldersInQuery == null){
+         loadFoldersInQuery = loadQuery("/sql/load_folders_in.sql");
       }
-      return loadFoldersQuery;
+      return loadFoldersInQuery;
    }
    
    public static String getLoadFoldersNotInQuery() throws IOException{
@@ -269,6 +273,20 @@ public class QueryBuilder {
          loadFoldersNotInQuery = loadQuery("/sql/load_folders_not_in.sql");
       }
       return loadFoldersNotInQuery;
+   }
+   
+   public static String getLoadFoldersQuery() throws IOException{
+      if (loadFoldersQuery == null){
+         loadFoldersQuery = loadQuery("/sql/load_folders.sql");
+      }
+      return loadFoldersQuery;
+   }
+   
+   public static String getLoadSubscribesQuery() throws IOException{
+      if (loadSubscribesQuery == null){
+         loadSubscribesQuery = loadQuery("/sql/load_subscribes.sql");
+      }
+      return loadSubscribesQuery;
    }
    
    private static String loadQuery(String path) throws IOException{
