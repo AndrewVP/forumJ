@@ -17,6 +17,7 @@ package org.forumj.web.servlet.get;
 
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
+import static org.forumj.tool.PHP.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.*;
@@ -229,7 +230,7 @@ public class Control extends HttpServlet {
             break;
          case 9:
             // Аватара
-            buffer.append(case9());
+            buffer.append(case9(locale, user));
             break;
          case 10:
             // Местонахождение
@@ -847,7 +848,7 @@ public class Control extends HttpServlet {
       // Автор
       buffer.append(fd_form_add(user));
       buffer.append("</form>");
-      
+
       buffer.append("<form method='POST' class=content action='delview.php?'>");
       buffer.append("<table class='control'><tr class=heads>");
       // Заголовки таблицы
@@ -1107,17 +1108,78 @@ public class Control extends HttpServlet {
       return buffer;
    }
 
-   private StringBuffer case9(){
+   private StringBuffer case9(LocaleString locale, User user)
+         throws InvalidKeyException {
+      StringBuffer buffer = new StringBuffer();
+      if (user.getAvatar() != null && user.getOk_avatar()) {
+         buffer.append("<div class='mnuprof' align='CENTER'>");
+         buffer.append("<b>");
+         buffer.append(locale.getString("mess93"));
+         buffer.append("</b>");
+         buffer.append("</div>");
+         buffer.append("<div>");
+         buffer.append("<img border='0' src='" + user.getAvatar() + "'>");
+         buffer.append("</div>");
+         buffer.append("<br>");
+         buffer.append("<div>");
+         buffer.append(locale.getString("mess95"));
+         buffer.append("</div>");
+         buffer.append("<br>");
+      } else {
+         buffer.append("<div class=mnuprof align='CENTER'>");
+         buffer.append("<b>");
+         buffer.append(locale.getString("mess92"));
+         buffer.append("</b>");
+         buffer.append("</div>");
+         buffer.append("<br>");
+         buffer.append("<div>");
+         buffer.append(locale.getString("mess96"));
+         buffer.append("</div>");
+         buffer.append("<br>");
+      }
+      buffer.append("<form method='POST' class=content action='setavatar.php?id=9'>");
+      buffer.append(locale.getString("mess97") + "&nbsp;");
+      buffer.append("<input type=text size=100 name='avatar' value='" + htmlspecialchars(user.getAvatar()) + "'>");
+      buffer.append("<br>");
+      buffer.append("<br>");
+      if (user.getS_avatar()) {
+         buffer.append("<input type=checkbox checked  name='s_avatar'>");
+         buffer.append("&nbsp;" + locale.getString("mess94"));
+         buffer.append("<br>");
+         buffer.append("<br>");
+      } else {
+         buffer.append("<input type=checkbox  name='s_avatar'>");
+         buffer.append("&nbsp;" + locale.getString("mess94"));
+         buffer.append("<br>");
+         buffer.append("<br>");
+      }
+      buffer.append("<input type='submit' value='<?echo($_mess75);?>'>");
+      buffer.append(fd_form_add(user));
+      buffer.append("</form>");
+      buffer.append("<form method='POST' class=content action='vavatar.php?id=9'>");
+      if (user.getAvatar() != null) {
+         buffer.append("<input type=checkbox checked  name='v_avatar'>");
+         buffer.append("&nbsp;" + locale.getString("mess98"));
+         buffer.append("<br>");
+         buffer.append("<br>");
+      } else {
+         buffer.append("<input type=checkbox  name='v_avatar'>");
+         buffer.append("&nbsp;" + locale.getString("mess98"));
+         buffer.append("<br>");
+         buffer.append("<br>");
+      }
+      buffer.append("<input type='submit' value='" + locale.getString("mess85") + "'>");
+      buffer.append(fd_form_add(user));
+      buffer.append("</form>");
+      return buffer;
+   }
+
+   private StringBuffer case10() {
       StringBuffer buffer = new StringBuffer();
       return buffer;
    }
 
-   private StringBuffer case10(){
-      StringBuffer buffer = new StringBuffer();
-      return buffer;
-   }
-
-   private StringBuffer case11(){
+   private StringBuffer case11() {
       StringBuffer buffer = new StringBuffer();
       return buffer;
    }
