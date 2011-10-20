@@ -35,14 +35,28 @@ public class User implements IUser {
    
    private int view = 0;
    
-   private int swowAvatars = 0;
+   private Boolean swowAvatars = null;
    
    private int timezone = 0;
    
    private int ban = 0;
    
+   private String avatar = null;
+
+   private Boolean ok_avatar = null;
+
+   private Boolean s_avatar = null;
+
    public User() {
       super();
+   }
+
+   public Boolean getS_avatar() {
+      return s_avatar;
+   }
+
+   public void setS_avatar(Boolean s_avatar) {
+      this.s_avatar = s_avatar;
    }
 
    public User(Long id, String nick) {
@@ -68,14 +82,14 @@ public class User implements IUser {
    /**
     * @return the v_avatars
     */
-   public int getVavatars() {
+   public Boolean getVavatars() {
       return swowAvatars;
    }
 
    /**
     * @param v_avatars the v_avatars to set
     */
-   public void setVavatars(int v_avatars) {
+   public void setVavatars(boolean v_avatars) {
       this.swowAvatars = v_avatars;
    }
 
@@ -200,5 +214,21 @@ public class User implements IUser {
    
    public boolean isBanned(){
       return ban != 0;
+   }
+
+   public String getAvatar() {
+      return avatar;
+   }
+
+   public void setAvatar(String avatar) {
+      this.avatar = avatar;
+   }
+
+   public Boolean getOk_avatar() {
+      return ok_avatar;
+   }
+
+   public void setOk_avatar(Boolean ok_avatar) {
+      this.ok_avatar = ok_avatar;
    }
 }

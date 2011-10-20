@@ -54,8 +54,11 @@ public class UserDao extends FJDao {
             result.setPt(rs.getInt("pt_def"));
             result.setView(rs.getInt("view_def"));
             result.setTimezone(rs.getInt("fd_timezone"));
-            result.setVavatars(rs.getInt("v_avatars"));
+            result.setVavatars(rs.getInt("v_avatars") > 0);
             result.setBan(rs.getInt("ban"));
+            result.setAvatar(rs.getString("avatar"));
+            result.setOk_avatar(rs.getInt("ok_avatar") > 0);
+            result.setS_avatar(rs.getInt("s_avatar") > 0);
          }
       } catch (ConfigurationException e) {
          e.printStackTrace();
@@ -78,5 +81,9 @@ public class UserDao extends FJDao {
          }
       }
       return result;
+   }
+
+   public void save(User user) {
+      throw new IllegalAccessError("Unimplimented!");
    }
 }
