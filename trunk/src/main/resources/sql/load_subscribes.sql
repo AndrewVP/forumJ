@@ -5,6 +5,7 @@ SELECT
  , fd_subscribe.d_end
  , fd_subscribe.kod
  , fd_subscribe.type
+ , fd_subscribe.act
  , titles.head
 FROM
  fd_subscribe

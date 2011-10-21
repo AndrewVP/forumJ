@@ -41,7 +41,7 @@ public class FJInterfaceDao extends FJDao {
          st = conn.prepareStatement(query);
          st.setLong(1, user.getId());
          ResultSet rs = st.executeQuery();
-         if (rs.next()){
+         while (rs.next()){
             IFJInterface interf = new FJInterface();
             interf.setId(rs.getLong(ID_FIELD_NAME));
             interf.setCreateDate(rs.getDate(DATE_CREATE_FIELD_NAME));
@@ -66,6 +66,7 @@ public class FJInterfaceDao extends FJDao {
          conn = getConnection();
          st = conn.prepareStatement(query);
          st.setLong(1, user.getId());
+         st.setLong(2, id);
          ResultSet rs = st.executeQuery();
          if (rs.next()){
             result.setId(id);

@@ -40,6 +40,7 @@ public class FJSubscribeDao extends FJDao {
          conn = getConnection();
          st = conn.prepareStatement(query);
          st.setLong(1, user.getId());
+         st.setInt(2, active);
          ResultSet rs = st.executeQuery();
          if (rs.next()){
             IFJSubscribe subscribe = new FJSubscribe();

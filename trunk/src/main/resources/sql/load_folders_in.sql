@@ -2,7 +2,7 @@ SELECT
  fdfolders.id
  , fdfolders.flname
  , fdfolders.d_cr
- , user
+ , fdfolders.user
 FROM
  fdvtranzit
  LEFT JOIN fdfolders on fdvtranzit.folder = fdfolders.id
