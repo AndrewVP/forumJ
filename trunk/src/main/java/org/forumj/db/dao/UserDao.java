@@ -53,12 +53,32 @@ public class UserDao extends FJDao {
             result.setPp(rs.getInt("pp_def"));
             result.setPt(rs.getInt("pt_def"));
             result.setView(rs.getInt("view_def"));
-            result.setTimezone(rs.getInt("fd_timezone"));
+            result.setTimeZone(rs.getInt("fd_timezone"));
             result.setVavatars(rs.getInt("v_avatars") > 0);
             result.setBan(rs.getInt("ban"));
             result.setAvatar(rs.getString("avatar"));
             result.setOk_avatar(rs.getInt("ok_avatar") > 0);
             result.setS_avatar(rs.getInt("s_avatar") > 0);
+            result.setName(rs.getString("name"));
+            result.setFam(rs.getString("fam"));
+            result.setSex(rs.getByte("sex"));
+            result.setBith(rs.getDate("bith"));
+            result.setReg(rs.getDate("reg"));
+            result.setShowMail(rs.getBoolean("smail"));
+            result.setShowName(rs.getBoolean("sname"));
+            result.setCity(rs.getString("city"));
+            result.setShowCity(rs.getBoolean("scity"));
+            result.setCountry(rs.getString("country"));
+            result.setShowCountry(rs.getBoolean("scountry"));
+            result.setShowSex(rs.getBoolean("ssex"));
+            result.setShowBithday(rs.getBoolean("sbith"));
+            result.setIcq(rs.getString("icq"));
+            result.setShowIcq(rs.getBoolean("sicq"));
+            result.setHideIp(rs.getBoolean("h_ip"));
+            result.setLanguge(rs.getInt("lang"));
+            result.setFooter(rs.getString("footer"));
+            result.setActivateCode(rs.getInt("activate_code"));
+            result.setIsActive(rs.getInt("is_active")>1);
          }
       } catch (ConfigurationException e) {
          e.printStackTrace();

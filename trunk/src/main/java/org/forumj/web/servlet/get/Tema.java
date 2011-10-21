@@ -169,7 +169,7 @@ public class Tema extends HttpServlet {
             i3=user.getPt();
          }
          // Получаем массив постов
-         List<Post> postsList = temaDao.getPostsList(fd_timezone_hr(user.getTimezone()), fd_timezone_mn(user.getTimezone()), nfirstpost,i3, locale, pageNumber, lastPost);
+         List<Post> postsList = temaDao.getPostsList(fd_timezone_hr(user.getTimeZone()), fd_timezone_mn(user.getTimeZone()), nfirstpost,i3, locale, pageNumber, lastPost);
          // Тема
          // Выводим строки
          for (int postIndex = 0; postIndex < postsList.size(); postIndex++) {

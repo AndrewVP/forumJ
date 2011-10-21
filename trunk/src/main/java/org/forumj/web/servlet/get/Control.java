@@ -234,11 +234,11 @@ public class Control extends HttpServlet {
             break;
          case 10:
             // Местонахождение
-            buffer.append(case10());
+            buffer.append(case10(locale, user));
             break;
          case 11:
             // Подпись
-            buffer.append(case11());
+            buffer.append(case11(locale, user));
             break;
          }
          buffer.append("</td>");
@@ -1174,13 +1174,94 @@ public class Control extends HttpServlet {
       return buffer;
    }
 
-   private StringBuffer case10() {
+   private StringBuffer case10(LocaleString locale, User user) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
+      buffer.append("<div class=mnuprof align='CENTER'>");
+      buffer.append("<b><?echo($_mess105);?></b>");
+      buffer.append("</div>");
+      buffer.append("<br>");
+      buffer.append("<div>");
+      buffer.append("<form method='POST' class=content action='setlocation.php?id=10'>");
+      buffer.append(fd_form_add(user));
+      buffer.append("<table>");
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      buffer.append(locale.getString("mess106"));
+      buffer.append("</td>");
+      buffer.append("<td>");
+      buffer.append("<select name='timezone'>");
+      for (int localeInex = 1; localeInex < 31; localeInex++){
+         buffer.append("<option value='" + localeInex + "'");
+         if (user.getTimeZone().equals(localeInex)){
+            buffer.append(" SELECTED ");
+         }
+         buffer.append(">");
+         buffer.append(locale.getString("mess110[" + localeInex + "]"));
+         buffer.append("</option>"); 
+      } 
+      buffer.append("</select>");     
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      buffer.append(locale.getString("mess111"));
+      buffer.append("</td>");
+      buffer.append("<td>");
+      buffer.append("<input size='25' maxlength='20' type='text' name='country' value='" + htmlspecialchars(user.getCountry() != null ? user.getCountry() : "") + "'>");
+      buffer.append("<input type='checkbox' name='scountry' value='1'");
+      if (user.getShowCountry()){
+         buffer.append(" CHECKED ");
+      }
+      buffer.append(">");
+      buffer.append("&nbsp;" + locale.getString("mess113"));
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      buffer.append(locale.getString("mess112"));
+      buffer.append("</td>");
+      buffer.append("<td>");
+      buffer.append("<input size='25' maxlength='20' type='text' name='city' value='" + htmlspecialchars(user.getCity() != null ? user.getCity() : "") + "'>");
+      buffer.append("<input type='checkbox' name='city' value='1'");
+      if (user.getShowCity()){
+         buffer.append(" CHECKED ");
+      }
+      buffer.append(">");
+      buffer.append("&nbsp;" + locale.getString("mess113"));
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("<tr>");
+      buffer.append("<td colspan='2' align=right>");
+      buffer.append("<br>");
+      buffer.append("<input type='submit' value='?echo($_mess85);?>'>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("</table>");
+      buffer.append("</form>");  
+      buffer.append("</div>");
       return buffer;
    }
 
-   private StringBuffer case11() {
+   /*подпись*/
+   private StringBuffer case11(LocaleString locale, User user) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
+      buffer.append("<div class=mnuprof align='CENTER'>");
+      buffer.append("<b>");
+      buffer.append(locale.getString("mess138"));
+      buffer.append("</b>");
+      buffer.append("</div>");
+      String $textArea = "";
+      if (user.getFooter() != null && !"".equals(user.getFooter())){
+         $textArea=htmlspecialchars(user.getFooter());
+      }
+      buffer.append("<form method='POST' name='footer' class=content action='setfooter.php?id=11'>");
+      buffer.append("<br>");
+      buffer.append("<br>");
+      buffer.append("<textarea name='foot' cols=50 rows=15 onkeyup='checkLength(this, 255);' onkeypress='this.onkeyup();' onChange='this.onkeyup();' onFocus='this.onkeyup();' onBlur='this.onkeyup();' onSelect='this.onkeyup();' onMouseOut='this.onkeyup();' onMouseMove='this.onkeyup();'>" + $textArea + "</textarea>");
+      buffer.append("<br>");
+      buffer.append(fd_button(locale.getString("mess85"),"document.footer.submit();","foot_ok", "1"));
+      buffer.append(fd_form_add(user));
+      buffer.append("</form>");
       return buffer;
    }
 
