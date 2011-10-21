@@ -1152,7 +1152,7 @@ public class Control extends HttpServlet {
          buffer.append("<br>");
          buffer.append("<br>");
       }
-      buffer.append("<input type='submit' value='<?echo($_mess75);?>'>");
+      buffer.append("<input type='submit' value='" + locale.getString("mess75") + "'>");
       buffer.append(fd_form_add(user));
       buffer.append("</form>");
       buffer.append("<form method='POST' class=content action='vavatar.php?id=9'>");
@@ -1176,7 +1176,7 @@ public class Control extends HttpServlet {
    private StringBuffer case10(LocaleString locale, User user) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class=mnuprof align='CENTER'>");
-      buffer.append("<b><?echo($_mess105);?></b>");
+      buffer.append("<b>" + locale.getString("mess105") + "</b>");
       buffer.append("</div>");
       buffer.append("<br>");
       buffer.append("<div>");
@@ -1232,7 +1232,7 @@ public class Control extends HttpServlet {
       buffer.append("<tr>");
       buffer.append("<td colspan='2' align=right>");
       buffer.append("<br>");
-      buffer.append("<input type='submit' value='?echo($_mess85);?>'>");
+      buffer.append("<input type='submit' value='" + locale.getString("mess85") + "'>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table>");

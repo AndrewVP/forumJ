@@ -43,7 +43,7 @@ public class FJFolderDao extends FJDao {
          st.setLong(1, user.getId());
          st.setLong(2, interf.getId());
          ResultSet rs = st.executeQuery();
-         if (rs.next()){
+         while (rs.next()){
             IFJFolder folder = new FJFolder();
             folder.setId(rs.getLong(ID_FIELD_NAME));
             folder.setCreateDate(rs.getDate(DATE_CREATE_FIELD_NAME));
@@ -71,7 +71,7 @@ public class FJFolderDao extends FJDao {
          st.setLong(2, user.getId());
          st.setLong(3, interf.getId());
          ResultSet rs = st.executeQuery();
-         if (rs.next()){
+         while (rs.next()){
             IFJFolder folder = new FJFolder();
             folder.setId(rs.getLong(ID_FIELD_NAME));
             folder.setCreateDate(rs.getDate(DATE_CREATE_FIELD_NAME));
@@ -97,7 +97,7 @@ public class FJFolderDao extends FJDao {
          st = conn.prepareStatement(query);
          st.setLong(1, user.getId());
          ResultSet rs = st.executeQuery();
-         if (rs.next()){
+         while (rs.next()){
             IFJFolder folder = new FJFolder();
             folder.setId(rs.getLong(ID_FIELD_NAME));
             folder.setCreateDate(rs.getDate(DATE_CREATE_FIELD_NAME));

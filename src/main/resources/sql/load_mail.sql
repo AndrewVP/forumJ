@@ -13,11 +13,11 @@ SELECT
  , senders.nick AS sndr_nick
  , receivers.nick AS rcvr_nick
 FROM
- fdmail
- (LEFT JOIN users AS senders ON fdmail.sndr = senders.id)
- (LEFT JOIN users AS receivers ON fdmail.rcvr = receivers.id)
+ ((fdmail
+ LEFT JOIN users AS senders ON fdmail.sndr = senders.id)
+ LEFT JOIN users AS receivers ON fdmail.rcvr = receivers.id)
  
 WHERE
- fdmail.rcvr = ? OR fdmail.sndr = ?
+ (fdmail.rcvr = ? OR fdmail.sndr = ?)
  AND fdmail.del_r <> 1 
  AND fdmail.id = ?

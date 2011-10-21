@@ -17,6 +17,6 @@ FROM
 WHERE
  fdmail.sndr= ?
  AND fdmail.del_r <> 1 
- fdmail.d_snt IS NULL
+ AND fdmail.d_snt IS NULL
 ORDER BY
  fdmail.d_cr DESC
