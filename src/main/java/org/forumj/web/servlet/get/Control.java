@@ -249,7 +249,6 @@ public class Control extends HttpServlet {
          buffer.append("</table>");
          buffer.append("</td>");
          buffer.append("</tr>");
-         // Закрываем соединение MySql
          // Главное "меню"
          buffer.append("<tr>");
          buffer.append("<td width='100%'>");
