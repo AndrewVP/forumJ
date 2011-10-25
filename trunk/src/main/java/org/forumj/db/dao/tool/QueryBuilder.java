@@ -78,6 +78,10 @@ public class QueryBuilder {
    private static String loadFoldersQuery = null;
    
    private static String loadSubscribesQuery = null;
+
+   private static String isSubscribeKeyPresentQuery = null;
+
+   private static String createSubscribeQuery = null;
    
    public static String getLoadConfigQuery() throws IOException{
       if (loadConfigQuery == null){
@@ -287,6 +291,20 @@ public class QueryBuilder {
          loadSubscribesQuery = loadQuery("/sql/load_subscribes.sql");
       }
       return loadSubscribesQuery;
+   }
+   
+   public static String getIsSubscribeKeyPresentQuery() throws IOException{
+      if (isSubscribeKeyPresentQuery == null){
+         isSubscribeKeyPresentQuery = loadQuery("/sql/is_subscribe_key_present.sql");
+      }
+      return isSubscribeKeyPresentQuery;
+   }
+   
+   public static String getCreateSubscribeQuery() throws IOException{
+      if (createSubscribeQuery == null){
+         createSubscribeQuery = loadQuery("/sql/create_subscribe.sql");
+      }
+      return createSubscribeQuery;
    }
    
    private static String loadQuery(String path) throws IOException{
