@@ -93,4 +93,23 @@ public class FJDao {
          e.printStackTrace();
       }
    }
+   
+   protected void writeFinally(Connection conn, Statement st, boolean error){
+      try {
+         if (!error){
+            conn.commit();
+         }else{
+            conn.rollback();
+         }
+         conn.setAutoCommit(true);
+         if (st != null){
+            st.close();
+         }
+         if (conn != null){
+            conn.close();
+         }
+      } catch (SQLException e) {
+         e.printStackTrace();
+      }
+   }
 }

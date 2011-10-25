@@ -78,22 +78,7 @@ public class FJThreadDao extends FJDao {
          }
          error = false;
       }finally{
-         try {
-            if (!error){
-               conn.commit();
-            }else{
-               conn.rollback();
-            }
-            conn.setAutoCommit(true);
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         writeFinally(conn, st, error);
       }
    }
 

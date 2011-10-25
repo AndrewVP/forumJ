@@ -60,4 +60,40 @@ public class FJSubscribeDao extends FJDao {
       }
       return result;
    }
+   
+   public void save(IFJSubscribe subscribe) throws ConfigurationException, SQLException, IOException{
+      String query = getIsSubscribeKeyPresentQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setLong(1, subscribe.getTitleId());
+         st.setDate(2, new java.sql.Date(subscribe.getStart().getTime()));
+         st.setLong(3, subscribe.getKey());
+         st.setInt(4, subscribe.getType());
+         st.executeUpdate();
+      }finally{
+         readFinally(conn, st);
+      }
+   }
+   
+   public boolean isKeyPresent(Integer key) throws SQLException, ConfigurationException, IOException{
+      String query = getIsSubscribeKeyPresentQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setInt(1, key);
+         ResultSet rs = st.executeQuery();
+         if (rs.next()){
+            return true;
+         }else{
+            return false;
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+   }
 }
