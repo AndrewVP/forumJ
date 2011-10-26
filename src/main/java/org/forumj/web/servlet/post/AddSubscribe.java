@@ -11,7 +11,6 @@ import javax.servlet.http.*;
 
 import org.forumj.db.dao.FJSubscribeDao;
 import org.forumj.db.entity.*;
-import org.forumj.tool.LocaleString;
 
 @WebServlet(urlPatterns = {"/addsubs.php"}, name="AddSubscribe")
 public class AddSubscribe extends HttpServlet {
@@ -24,15 +23,13 @@ public class AddSubscribe extends HttpServlet {
        return Math.abs(random.nextInt());
    }
 
-   
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       try {
          StringBuffer buffer = new StringBuffer();
          HttpSession session = request.getSession();
-         String threadIdParameter = request.getParameter("IDT");
+         String threadIdParameter = request.getParameter("C1");
          String pageParameter = request.getParameter("pg");
-         LocaleString locale = (LocaleString) session.getAttribute("locale");
          User user = (User) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             if (threadIdParameter != null && !"".equals(threadIdParameter)){
@@ -60,6 +57,7 @@ public class AddSubscribe extends HttpServlet {
             buffer.append(unRegisteredPostOut());
          }
       }catch (Exception e) {
+         e.printStackTrace();
       }
    }
 }

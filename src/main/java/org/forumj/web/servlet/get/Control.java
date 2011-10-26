@@ -397,7 +397,7 @@ public class Control extends HttpServlet {
       writer.write(out);
    }
 
-   private StringBuffer case1(User user, LocaleString locale) throws InvalidKeyException, IOException{
+   private StringBuffer case1(User user, LocaleString locale) throws InvalidKeyException, IOException, ConfigurationException, SQLException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список Игнорируемых
       List<Ignor> ignorList = new IgnorDao().loadAll(user.getId());
