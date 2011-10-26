@@ -55,8 +55,10 @@ public class TemaDao extends FJDao {
     *
     * @param IConnection $conection
     * @throws IOException 
+    * @throws SQLException 
+    * @throws ConfigurationException 
     */
-   public TemaDao(Long id, User user) throws IOException{
+   public TemaDao(Long id, User user) throws IOException, ConfigurationException, SQLException{
       this.id = id;
       this.user = user;
       this.arrIgnorId = this.getIgnorArray();
@@ -390,8 +392,10 @@ public class TemaDao extends FJDao {
     * @param unknown_type $idUser
     * @return unknown
     * @throws IOException 
+    * @throws SQLException 
+    * @throws ConfigurationException 
     */
-   private List<Ignor> getIgnorArray() throws IOException{
+   private List<Ignor> getIgnorArray() throws IOException, ConfigurationException, SQLException{
       return new IgnorDao().loadAll(this.getUser().getId());
    }
 

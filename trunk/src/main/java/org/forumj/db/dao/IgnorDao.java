@@ -24,7 +24,6 @@ import java.util.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.db.entity.*;
-import org.forumj.exception.DBException;
 
 /**
  * 
@@ -32,14 +31,14 @@ import org.forumj.exception.DBException;
  */
 public class IgnorDao extends FJDao {
 
-   public List<Ignor> loadAll(Long userId) throws IOException{
+   public List<Ignor> loadAll(Long userId) throws IOException, ConfigurationException, SQLException{
       List<Ignor> result = new ArrayList<Ignor>();
       String query = getLoadIgnorQuery();
       Connection conn = null;
       PreparedStatement st = null;
       try {
          conn = getConnection();
-         st = conn.prepareStatement(query) ;
+         st = conn.prepareStatement(query);
          st.setLong(1, userId);
          ResultSet rs = st.executeQuery();
          while (rs.next()){
@@ -55,26 +54,28 @@ public class IgnorDao extends FJDao {
             ignor.setEnd(rs.getDate(IGNOR_END_FIELD_NAME));
             result.add(ignor);
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
+   }
+   
+   public void update(Ignor ignor) throws IOException, ConfigurationException, SQLException{
+      String query = getUpdateIgnorQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setDate(1, new java.sql.Date(ignor.getEnd().getTime()));
+         st.setInt(2, ignor.getType());
+         st.setLong(3, ignor.getId());
+         st.setLong(4, ignor.getUserId());
+         st.executeUpdate();
+      }finally{
+         readFinally(conn, st);
+      }
+      
+      
    }
 }
