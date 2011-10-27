@@ -64,7 +64,7 @@ public class FJDao {
                   }
                }
                ConnectionFactory connectionFactory = new DriverManagerConnectionFactory(connectURI, userName, userPassword);
-               PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(connectionFactory,connectionPool,null,null,false,true);
+               new PoolableConnectionFactory(connectionFactory,connectionPool,null,null,false,true);
                dataSource = new PoolingDataSource(connectionPool); 
             }
          }

@@ -21,6 +21,7 @@ import static org.forumj.tool.PHP.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.*;
+import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -28,6 +29,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.db.dao.IndexDao;
 import org.forumj.db.entity.*;
 import org.forumj.exception.InvalidKeyException;
@@ -408,6 +410,10 @@ public class Index extends HttpServlet {
          buffer.append("</body>");
          buffer.append("</html>");
       } catch (InvalidKeyException e) {
+         e.printStackTrace();
+      } catch (ConfigurationException e) {
+         e.printStackTrace();
+      } catch (SQLException e) {
          e.printStackTrace();
       }
       Double allTime = (double) ((new Date().getTime() - startTime));

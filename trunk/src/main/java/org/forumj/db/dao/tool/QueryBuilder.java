@@ -42,6 +42,12 @@ public class QueryBuilder {
    private static String readPostHeadQuery = null;
 
    private static String readPostBodyQuery = null;
+
+   private static String addedPostsAmountQuery = null;
+
+   private static String addedPostsInThreadAmountQuery = null;
+   
+   private static String addedThreadsAmountQuery = null;
    
    private static String createPostBodyQuery = null;
    
@@ -167,6 +173,27 @@ public class QueryBuilder {
          readPostBodyQuery = loadQuery("/sql/read_post_body.sql");
       }
       return readPostBodyQuery.replace("@@TABLE@@", bodyTable);
+   }
+   
+   public static String getAddedPostsAmountQuery() throws IOException{
+      if (addedPostsAmountQuery == null){
+         addedPostsAmountQuery = loadQuery("/sql/added_posts_amount.sql");
+      }
+      return addedPostsAmountQuery;
+   }
+   
+   public static String getAddedPostsInThreadAmountQuery() throws IOException{
+      if (addedPostsInThreadAmountQuery == null){
+         addedPostsInThreadAmountQuery = loadQuery("/sql/added_posts_in_thread_amount.sql");
+      }
+      return addedPostsInThreadAmountQuery;
+   }
+   
+   public static String getAddedThreadsAmountQuery() throws IOException{
+      if (addedThreadsAmountQuery == null){
+         addedThreadsAmountQuery = loadQuery("/sql/added_threads_amount.sql");
+      }
+      return addedThreadsAmountQuery;
    }
    
    public static String getCreatePostBodyQuery(String bodyTableName) throws IOException{

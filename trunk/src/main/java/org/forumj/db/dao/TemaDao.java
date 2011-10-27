@@ -22,7 +22,6 @@ import java.util.Map.Entry;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.db.entity.*;
-import org.forumj.exception.DBException;
 import org.forumj.tool.LocaleString;
 
 /**
@@ -110,8 +109,10 @@ public class TemaDao extends FJDao {
     * Записывает состояние счетчиков просмотров ветки
     *
     * @param $isLogin Авторизован ли посетитель
+    * @throws SQLException 
+    * @throws ConfigurationException 
     */
-   public void setSeen(){
+   public void setSeen() throws ConfigurationException, SQLException{
       String query = "";
       if (user.isLogined()){
          query = "UPDATE titles SET seenid=seenid + 1, seenall=seenall+1 WHERE id=" +  this.getId();
@@ -124,32 +125,17 @@ public class TemaDao extends FJDao {
          conn = getConnection();
          st = conn.createStatement();
          st.executeUpdate(query);
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
    }
 
    /**
     * Возвращает заголовок ветки
+    * @throws SQLException 
+    * @throws ConfigurationException 
     */
-   public String getTitle(){
+   public String getTitle() throws ConfigurationException, SQLException{
       String query="SELECT head FROM titles WHERE id=" +  this.getId();
       String result = null;
       Connection conn = null;
@@ -161,25 +147,8 @@ public class TemaDao extends FJDao {
          if (rs.next()){
             result = rs.getString("head");
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
@@ -196,8 +165,10 @@ public class TemaDao extends FJDao {
     * @param unknown_type $lastPost
     * @return unknown
     * @throws IOException 
+    * @throws SQLException 
+    * @throws ConfigurationException 
     */
-   public List<Post> getPostsList(int timezone_hr, int timezone_mn, long nfirstpost, int count, LocaleString locale, int page, boolean lastPost) throws IOException{
+   public List<Post> getPostsList(int timezone_hr, int timezone_mn, long nfirstpost, int count, LocaleString locale, int page, boolean lastPost) throws IOException, SQLException, ConfigurationException{
       String query="SELECT * FROM body WHERE body.head=" +  this.getId() + " ORDER BY body.id ASC LIMIT " + nfirstpost + ", " +  count;
       List<Post> result = new ArrayList<Post>();
       Map<Long, Post> postsMap = new HashMap<Long, Post>();
@@ -321,33 +292,18 @@ public class TemaDao extends FJDao {
                post.setBody(rs.getString("body"));
             }
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
 
    /**
     * Возвращает количество постов в ветке
+    * @throws SQLException 
+    * @throws ConfigurationException 
     */
-   public Integer getPostsCountInThread(Long idMax){
+   public Integer getPostsCountInThread(Long idMax) throws ConfigurationException, SQLException{
       Integer result = null;
       String addQuery = "";
       if (idMax != null){
@@ -363,25 +319,8 @@ public class TemaDao extends FJDao {
          if (rs.next()){
             result = rs.getInt("kolvo");
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
@@ -401,8 +340,10 @@ public class TemaDao extends FJDao {
 
    /**
     * Возвращает id последнего поста в ветке
+    * @throws SQLException 
+    * @throws ConfigurationException 
     */
-   public Integer getMaxId(){
+   public Integer getMaxId() throws ConfigurationException, SQLException{
       Integer result = null;
       String query = "SELECT MAX(id) as mx FROM body WHERE head=" +  this.getId();
       Connection conn = null;
@@ -414,25 +355,8 @@ public class TemaDao extends FJDao {
          if (rs.next()){
             result = rs.getInt("mx");
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
@@ -442,8 +366,10 @@ public class TemaDao extends FJDao {
     *
     * @param unknown_type $idUser
     * @return unknown
+    * @throws SQLException 
+    * @throws ConfigurationException 
     */
-   public Boolean isUserSubscribed(Long idUser){
+   public Boolean isUserSubscribed(Long idUser) throws ConfigurationException, SQLException{
       String query = "SELECT id FROM fd_subscribe WHERE user=" +  idUser  + " AND title=" +  this.getId();
       Connection conn = null;
       Statement st = null;
@@ -454,25 +380,8 @@ public class TemaDao extends FJDao {
          if (rs.next()){
             return true;
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return false;
    }
@@ -481,8 +390,10 @@ public class TemaDao extends FJDao {
     * Возвращает пост по его id
     *
     * @param postId
+    * @throws SQLException 
+    * @throws ConfigurationException 
     */
-   public Post getPost(Long postId){
+   public Post getPost(Long postId) throws SQLException, ConfigurationException{
       Post result = null;
       String query="SELECT body.table_post, body.table_head FROM body WHERE body.id=" + postId;
       Connection conn = null;
@@ -520,25 +431,8 @@ public class TemaDao extends FJDao {
                result.setBody(rs.getString("body"));
             }
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
@@ -548,8 +442,10 @@ public class TemaDao extends FJDao {
     *
     * @param unknown_type $id
     * @return unknown
+    * @throws SQLException 
+    * @throws ConfigurationException 
     */
-   public Boolean isQuest(){
+   public Boolean isQuest() throws ConfigurationException, SQLException{
       String query="SELECT type FROM titles WHERE id=" +  this.getId();
       Connection conn = null;
       Statement st = null;
@@ -561,25 +457,8 @@ public class TemaDao extends FJDao {
             Integer type = rs.getInt("type");
             return type == 1 || type == 2;
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return false;
    }
@@ -587,8 +466,10 @@ public class TemaDao extends FJDao {
    /**
     * Возвращает, есть ли уже голос текущего юзера
     * в опросе
+    * @throws SQLException 
+    * @throws ConfigurationException 
     */
-   public boolean isUserVote(){
+   public boolean isUserVote() throws ConfigurationException, SQLException{
       String query="SELECT user FROM voice WHERE head=" + this.getId() + " AND user=" + this.getUser().getId().toString();
       Connection conn = null;
       Statement st = null;
@@ -599,25 +480,8 @@ public class TemaDao extends FJDao {
          if (rs.next()){
             return true;
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return false;
    }
@@ -625,8 +489,10 @@ public class TemaDao extends FJDao {
    /**
     * Возвращает количество проголосовавших
     * в опросе
+    * @throws SQLException 
+    * @throws ConfigurationException 
     */
-   public int getVoicesAmount(){
+   public int getVoicesAmount() throws ConfigurationException, SQLException{
       String query = "SELECT COUNT(id) AS nvcs FROM voice WHERE head=" + this.getId();
       Connection conn = null;
       Statement st = null;
@@ -638,25 +504,8 @@ public class TemaDao extends FJDao {
          if (rs.next()){
             result = rs.getInt("nvcs");
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
