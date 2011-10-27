@@ -81,4 +81,41 @@ public class FJInterfaceDao extends FJDao {
       }
       return result;
    }
+   
+   public boolean isInterfaceContainsFolder(long interfaceId, long folderId, User user) throws IOException, ConfigurationException, SQLException{
+      boolean result = false;
+      String query = getIsInterfaceContainsFolderQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setLong(1, interfaceId);
+         st.setLong(2, folderId);
+         st.setLong(3, user.getId());
+         ResultSet rs = st.executeQuery();
+         if (rs.next()){
+            result = true;
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
+   }
+   
+   public void addFolder(long interfaceId, long folderId, User user) throws ConfigurationException, SQLException, IOException{
+      String query = getAddFolderQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setLong(1, interfaceId);
+         st.setLong(2, folderId);
+         st.setLong(3, user.getId());
+         st.executeUpdate();
+      }finally{
+         readFinally(conn, st);
+      }
+   }
 }

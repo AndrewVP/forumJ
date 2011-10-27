@@ -93,6 +93,16 @@ public class QueryBuilder {
 
    private static String updateUserQuery = null;
    
+   private static String deleteTranzitQuery = null;
+   
+   private static String deleteVTranzitQuery = null;
+   
+   private static String deleteFolderQuery = null;
+   
+   private static String isInterfaceContainsFolderQuery = null;
+   
+   private static String addFolderQuery = null;
+   
    public static String getLoadConfigQuery() throws IOException{
       if (loadConfigQuery == null){
          loadConfigQuery = loadQuery("/sql/load_config.sql");
@@ -126,6 +136,41 @@ public class QueryBuilder {
          updatePostQuery = loadQuery("/sql/update_post.sql");
       }
       return updatePostQuery;
+   }
+   
+   public static String getDeleteTranzitQuery() throws IOException{
+      if (deleteTranzitQuery == null){
+         deleteTranzitQuery = loadQuery("/sql/delete_tranzit.sql");
+      }
+      return deleteTranzitQuery;
+   }
+   
+   public static String getDeleteVTranzitQuery() throws IOException{
+      if (deleteVTranzitQuery == null){
+         deleteVTranzitQuery = loadQuery("/sql/delete_vtranzit.sql");
+      }
+      return deleteVTranzitQuery;
+   }
+   
+   public static String getDeleteFolderQuery() throws IOException{
+      if (deleteFolderQuery == null){
+         deleteFolderQuery = loadQuery("/sql/delete_folder.sql");
+      }
+      return deleteFolderQuery;
+   }
+
+   public static String getIsInterfaceContainsFolderQuery() throws IOException{
+      if (isInterfaceContainsFolderQuery == null){
+         isInterfaceContainsFolderQuery = loadQuery("/sql/is_interface_contains_folder.sql");
+      }
+      return isInterfaceContainsFolderQuery;
+   }
+   
+   public static String getAddFolderQuery() throws IOException{
+      if (addFolderQuery == null){
+         addFolderQuery = loadQuery("/sql/add_folder.sql");
+      }
+      return addFolderQuery;
    }
    
    public static String getUpdatePostBodyQuery(String bodyTable) throws IOException{
