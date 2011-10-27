@@ -88,13 +88,7 @@ public class FJThreadDao extends FJDao {
          conn = getConnection();
          update(thread, conn);
       }finally{
-         try {
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, null);
       }
    }
    
@@ -126,16 +120,7 @@ public class FJThreadDao extends FJDao {
             thread.setPcount(rs.getInt(POSTS_COUNT_FIELD_NAME));
          }
       }finally{
-         try {
-            if (conn != null){
-               conn.close();
-            }
-            if (st != null){
-               st.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return thread;
    }
@@ -159,13 +144,26 @@ public class FJThreadDao extends FJDao {
          st.setLong(11, thread.getId());
          st.executeUpdate();
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(null, st);
       }
+   }
+
+   public long getAddedThreadsAmount(long lastThreadId) throws SQLException, ConfigurationException, IOException{
+      long result = 0;
+      String query = getAddedThreadsAmountQuery();
+      PreparedStatement st = null;
+      Connection conn = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setLong(1, lastThreadId);
+         ResultSet rs = st.executeQuery();
+         if (rs.next()){
+            result = rs.getLong("mx");
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
    }
 }

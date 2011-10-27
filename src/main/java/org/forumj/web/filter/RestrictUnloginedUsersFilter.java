@@ -16,11 +16,13 @@
 package org.forumj.web.filter;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.db.dao.UserDao;
 import org.forumj.db.entity.User;
 
@@ -41,18 +43,24 @@ public class RestrictUnloginedUsersFilter implements Filter {
       HttpSession session = request.getSession(true);
       User user = (User) session.getAttribute("user");
       if (user == null || !user.isLogined()){
-         String idu = request.getParameter("IDU");
-         String password1 = request.getParameter("PS1");
-         String password2 = request.getParameter("PS2");
-         if (idu != null && (password1 != null || password2 != null)){
-            Long userId = Long.valueOf(idu);
-            UserDao dao = new UserDao();
-            boolean firstPassword = password1 != null;
-            String password = password1 == null ? password1 : password2;
-            user = dao.loadUser(userId, password, firstPassword);
-            if (user != null){
-               session.setAttribute("user", user);
+         try {
+            String idu = request.getParameter("IDU");
+            String password1 = request.getParameter("PS1");
+            String password2 = request.getParameter("PS2");
+            if (idu != null && (password1 != null || password2 != null)){
+               Long userId = Long.valueOf(idu);
+               UserDao dao = new UserDao();
+               boolean firstPassword = password1 != null;
+               String password = password1 == null ? password1 : password2;
+               user = dao.loadUser(userId, password, firstPassword);
+               if (user != null){
+                  session.setAttribute("user", user);
+               }
             }
+         } catch (ConfigurationException e) {
+            e.printStackTrace();
+         } catch (SQLException e) {
+            e.printStackTrace();
          }
       }
       if (user == null || !user.isLogined()){

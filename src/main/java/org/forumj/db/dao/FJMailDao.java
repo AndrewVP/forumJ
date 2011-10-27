@@ -36,16 +36,7 @@ public class FJMailDao extends FJDao {
          st.setLong(1, userId);
          st.executeUpdate();
       }finally{
-         try {
-            if (conn != null){
-               conn.close();
-            }
-            if (st != null){
-               st.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
    }
    
@@ -61,16 +52,7 @@ public class FJMailDao extends FJDao {
          st.setLong(2, mailId);
          st.executeUpdate();
       }finally{
-         try {
-            if (conn != null){
-               conn.close();
-            }
-            if (st != null){
-               st.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
    }
    
@@ -129,16 +111,7 @@ public class FJMailDao extends FJDao {
             result.add(mail);
          }
       }finally{
-         try {
-            if (conn != null){
-               conn.close();
-            }
-            if (st != null){
-               st.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
@@ -176,16 +149,7 @@ public class FJMailDao extends FJDao {
             result.setDeletedBySender(rs.getInt(DELETED_BY_SENDER_FIELD_NAME));
          }
       }finally{
-         try {
-            if (conn != null){
-               conn.close();
-            }
-            if (st != null){
-               st.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }

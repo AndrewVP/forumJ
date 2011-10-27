@@ -25,21 +25,21 @@ public class FJForumDao extends FJDao {
    private String curretBodyTable = null;
    private String curretBodyHeadTable = null;
 
-   public String getCurretBodyTable() throws IOException, DBException{
+   public String getCurretBodyTable() throws IOException, DBException, ConfigurationException, SQLException{
       if (curretBodyTable == null){
          loadConfig();
       }
       return curretBodyTable;
    }
    
-   public String getCurretBodyHeadTable() throws IOException, DBException{
+   public String getCurretBodyHeadTable() throws IOException, DBException, ConfigurationException, SQLException{
       if (curretBodyHeadTable == null){
          loadConfig();
       }
       return curretBodyHeadTable;
    }
    
-   private void loadConfig() throws IOException, DBException{
+   private void loadConfig() throws IOException, DBException, ConfigurationException, SQLException{
       String query = QueryBuilder.getLoadConfigQuery();
       Connection conn = null;
       Statement st = null;
@@ -51,25 +51,8 @@ public class FJForumDao extends FJDao {
             curretBodyTable = rs.getString("curret_body_table");
             curretBodyHeadTable = rs.getString("current_body_head_table");
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw ex;
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
    }
 }

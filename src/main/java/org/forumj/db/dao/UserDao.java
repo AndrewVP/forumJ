@@ -4,12 +4,11 @@ import java.sql.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.db.entity.User;
-import org.forumj.exception.DBException;
 
 
 public class UserDao extends FJDao {
 
-   public User loadUser(Long userId, String password, boolean firstPassword){
+   public User loadUser(Long userId, String password, boolean firstPassword) throws ConfigurationException, SQLException{
       String query="SELECT * FROM users WHERE id=" + userId.toString();
       String add = "";
       if(firstPassword){
@@ -20,7 +19,7 @@ public class UserDao extends FJDao {
       return loadUser(query + add, firstPassword);
    }
 
-   public User loadUser(String nick, String password, Boolean firstPassword){
+   public User loadUser(String nick, String password, Boolean firstPassword) throws ConfigurationException, SQLException{
       String query="SELECT * FROM users WHERE nick='" + nick + "' AND pass='" + password + "'";
       String add = "";
       if(firstPassword){
@@ -31,12 +30,12 @@ public class UserDao extends FJDao {
       return loadUser(query + add, firstPassword);
    }
    
-   public User loadUser(Long userId){
+   public User loadUser(Long userId) throws ConfigurationException, SQLException{
       String query="SELECT * FROM users WHERE id=" + userId.toString();
       return loadUser(query, null);
    }
    
-   private User loadUser(String sql, Boolean firstPassword){
+   private User loadUser(String sql, Boolean firstPassword) throws ConfigurationException, SQLException{
       User result = null;
       Connection conn = null;
       Statement st = null;
@@ -80,25 +79,8 @@ public class UserDao extends FJDao {
             result.setActivateCode(rs.getInt("activate_code"));
             result.setIsActive(rs.getInt("is_active")>1);
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }

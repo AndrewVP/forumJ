@@ -17,7 +17,6 @@ import java.util.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.db.entity.QuestNode;
-import org.forumj.exception.DBException;
 
 /**
  *
@@ -25,7 +24,7 @@ import org.forumj.exception.DBException;
  */
 public class QuestNodeDao extends FJDao {
 
-   public List<QuestNode> loadNodes(Long threadId) throws IOException{
+   public List<QuestNode> loadNodes(Long threadId) throws IOException, ConfigurationException, SQLException{
       List<QuestNode> result = new ArrayList<QuestNode>();
       String query = getLoadAnswersQuery();
       Connection conn = null;
@@ -47,25 +46,8 @@ public class QuestNodeDao extends FJDao {
             node.setNode(rs.getString("node"));
             result.add(node);
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
@@ -83,13 +65,7 @@ public class QuestNodeDao extends FJDao {
          st.setLong(6, answer.getHead());
          st.executeUpdate();
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(null, st);
       }
    }
 }

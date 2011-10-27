@@ -18,6 +18,7 @@ package org.forumj.web.filter;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -25,6 +26,7 @@ import javax.servlet.http.*;
 
 import org.apache.commons.codec.*;
 import org.apache.commons.codec.net.QuotedPrintableCodec;
+import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.db.dao.UserDao;
 import org.forumj.db.entity.User;
 
@@ -77,6 +79,12 @@ public class LoginFilter implements Filter {
       } catch (EncoderException e) {
          e.printStackTrace();
       } catch (DecoderException e) {
+         e.printStackTrace();
+      } catch (NumberFormatException e) {
+         e.printStackTrace();
+      } catch (ConfigurationException e) {
+         e.printStackTrace();
+      } catch (SQLException e) {
          e.printStackTrace();
       }
    }

@@ -72,13 +72,7 @@ public class FJPostDao extends FJDao {
             throw new DBException("Post wasn't created");
          }
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(null, st);
       }
       return postId;
    }
@@ -89,13 +83,7 @@ public class FJPostDao extends FJDao {
          conn = getConnection();
          return create(post, conn);
       }finally{
-         try {
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, null);
       }
    }
 
@@ -147,22 +135,7 @@ public class FJPostDao extends FJDao {
             threadDao.update(thread, conn);
          }
       }finally{
-         try {
-            if (!error){
-               conn.commit();
-            }else{
-               conn.rollback();
-            }
-            conn.setAutoCommit(true);
-            if (conn != null){
-               conn.close();
-            }
-            if (st != null){
-               st.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         writeFinally(conn, st, error);
       }
    }
 
@@ -178,13 +151,7 @@ public class FJPostDao extends FJDao {
             result = postId == rs.getLong("id");
          }
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(null, st);
       }
       return result;
    }
@@ -212,16 +179,7 @@ public class FJPostDao extends FJDao {
             result.setBody(postBody);
          }
       }finally{
-         try {
-            if (conn != null){
-               conn.close();
-            }
-            if (st != null){
-               st.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
@@ -249,16 +207,7 @@ public class FJPostDao extends FJDao {
             result.setThreadId(rs.getLong(IFJPostHead.THREAD_ID_FIELD_NAME));
          }
       }finally{
-         try {
-            if (conn != null){
-               conn.close();
-            }
-            if (st != null){
-               st.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
@@ -278,16 +227,45 @@ public class FJPostDao extends FJDao {
             result.setPostId(rs.getLong(IFJPostBody.POST_ID_FIELD_NAME));
          }
       }finally{
-         try {
-            if (conn != null){
-               conn.close();
-            }
-            if (st != null){
-               st.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
+         readFinally(conn, st);
+      }
+      return result;
+   }
+   
+   public long getAddedPostsAmount(long lastPostId) throws SQLException, ConfigurationException, IOException{
+      long result = 0;
+      String query = getAddedPostsAmountQuery();
+      PreparedStatement st = null;
+      Connection conn = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setLong(1, lastPostId);
+         ResultSet rs = st.executeQuery();
+         if (rs.next()){
+            result = rs.getLong("mx");
          }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
+   }
+
+   public long getAddedPostsAmount(long threadId, long lastPostId) throws SQLException, ConfigurationException, IOException{
+      long result = 0;
+      String query = getAddedPostsInThreadAmountQuery();
+      PreparedStatement st = null;
+      Connection conn = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setLong(1, lastPostId);
+         ResultSet rs = st.executeQuery();
+         if (rs.next()){
+            result = rs.getLong("mx");
+         }
+      }finally{
+         readFinally(conn, st);
       }
       return result;
    }

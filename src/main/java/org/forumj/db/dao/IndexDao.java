@@ -489,7 +489,7 @@ public class IndexDao extends FJDao {
       return result;
    }
 
-   public String getCurrentViewName(Long idView){
+   public String getCurrentViewName(Long idView) throws ConfigurationException, SQLException{
       String result = null;
       String sql_vname="SELECT name FROM fdviews WHERE id=" + idView.toString();
       Connection conn = null;
@@ -501,30 +501,13 @@ public class IndexDao extends FJDao {
          if (rs.next()){
             result = rs.getString("name");
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
 
-   public List<Map<String, Object>> getViewsArray(Long idUser){
+   public List<Map<String, Object>> getViewsArray(Long idUser) throws ConfigurationException, SQLException{
       List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
       String sql_views="SELECT id, name FROM fdviews WHERE user=0 OR user=" + idUser.toString() + " ORDER BY id ";
       Connection conn = null;
@@ -539,30 +522,13 @@ public class IndexDao extends FJDao {
             map.put("name", rs.getString("name")) ;
             result.add(map);
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
 
-   public List<Map<String, Object>> getFoldersArray(Long idUser){
+   public List<Map<String, Object>> getFoldersArray(Long idUser) throws ConfigurationException, SQLException{
       List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
       String sql_views="SELECT id, flname FROM fdfolders WHERE user=0 OR user=" + idUser.toString() + " ORDER BY id ";
       Connection conn = null;
@@ -577,30 +543,13 @@ public class IndexDao extends FJDao {
             map.put("flname", rs.getString("flname")) ;
             result.add(map);
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
 
-   public List<Map<String, Object>> getUsersArray(){
+   public List<Map<String, Object>> getUsersArray() throws ConfigurationException, SQLException{
       List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
       String query33="SELECT "+
       "DISTINCT users.nick AS nicks "+
@@ -620,30 +569,13 @@ public class IndexDao extends FJDao {
             map.put("nick", rs.getString("nicks")) ;
             result.add(map);
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
 
-   public int getGuestCount(){
+   public int getGuestCount() throws ConfigurationException, SQLException{
       Integer result = 0;
       String query34="" +
       "SELECT" +
@@ -662,25 +594,8 @@ public class IndexDao extends FJDao {
          if (rs.next()){
             result = rs.getInt("guests");
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
