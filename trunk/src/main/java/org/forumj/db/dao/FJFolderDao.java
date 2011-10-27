@@ -113,5 +113,32 @@ public class FJFolderDao extends FJDao {
       return result;
    }
    
+   public void delete(Long folderId, User user) throws ConfigurationException, SQLException, IOException{
+      String deleteTranzitQuery = getDeleteTranzitQuery();
+      String deleteVTranzitQuery = getDeleteVTranzitQuery();
+      String deleteFolderQuery = getDeleteFolderQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      boolean error = true;
+      try {
+         conn = getConnection();
+         conn.setAutoCommit(false);
+         st = conn.prepareStatement(deleteTranzitQuery);
+         st.setLong(1, folderId);
+         st.setLong(2, user.getId());
+         st.executeUpdate();
+         st = conn.prepareStatement(deleteVTranzitQuery);
+         st.setLong(1, folderId);
+         st.setLong(2, user.getId());
+         st.executeUpdate();
+         st = conn.prepareStatement(deleteFolderQuery);
+         st.setLong(1, folderId);
+         st.setLong(2, user.getId());
+         st.executeUpdate();
+         error = false;
+      }finally{
+         writeFinally(conn, st, error);
+      }
+   }
    
 }

@@ -134,6 +134,7 @@ public class FJPostDao extends FJDao {
             thread.setHead(postHead.getTitle());
             threadDao.update(thread, conn);
          }
+         error = false;
       }finally{
          writeFinally(conn, st, error);
       }
