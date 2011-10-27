@@ -90,12 +90,21 @@ public class QueryBuilder {
    private static String isSubscribeKeyPresentQuery = null;
 
    private static String createSubscribeQuery = null;
+
+   private static String updateUserQuery = null;
    
    public static String getLoadConfigQuery() throws IOException{
       if (loadConfigQuery == null){
          loadConfigQuery = loadQuery("/sql/load_config.sql");
       }
       return loadConfigQuery;
+   }
+   
+   public static String getUpdateUserQuery() throws IOException{
+      if (updateUserQuery == null){
+         updateUserQuery = loadQuery("/sql/update_user.sql");
+      }
+      return updateUserQuery;
    }
    
    public static String getCreateThreadQuery() throws IOException{

@@ -46,8 +46,7 @@
       echo "<body>";
       echo "</body>";
       echo "</html>";
-      }
-   else {
+      }   else {
       $add="";
       if (isset($_GET['id'])) $add="?id=".$_GET['id'];
       if (isset($_GET['view'])) $add=$add."&view=".$_GET['view'];

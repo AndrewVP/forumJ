@@ -36,6 +36,7 @@ public class Amn extends HttpServlet {
       try {
          StringBuffer buffer = new StringBuffer();
          HttpSession session = request.getSession();
+         User user = (User) session.getAttribute("user");
          String ignorTypeParameter = request.getParameter("C1");
          String ignorIdParameter = request.getParameter("IDZ");
          String ignorYearParameter = request.getParameter("pg");
@@ -43,7 +44,6 @@ public class Amn extends HttpServlet {
          String ignorDayParameter = request.getParameter("D");
          String ignorHourParameter = request.getParameter("H");
          String ignorMinuteParameter = request.getParameter("M");
-         User user = (User) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             String strDate = ignorDayParameter+ "." + ignorMounthParameter + "." + ignorYearParameter + "." + ignorHourParameter + "." + ignorMinuteParameter;
             SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy.HH.mm");
