@@ -88,6 +88,22 @@ public class User implements IUser {
    private Integer activateCode = null;
 
    private Boolean isActive = null;
+   
+   private String email = null;
+
+   /**
+    * @return the eMail
+    */
+   public String getEmail() {
+      return email;
+   }
+
+   /**
+    * @param eMail the eMail to set
+    */
+   public void setEmail(String email) {
+      this.email = email;
+   }
 
    public Boolean getSwowAvatars() {
       return swowAvatars;

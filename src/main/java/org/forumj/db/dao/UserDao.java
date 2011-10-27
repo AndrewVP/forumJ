@@ -1,5 +1,8 @@
 package org.forumj.db.dao;
 
+import static org.forumj.db.dao.tool.QueryBuilder.*;
+
+import java.io.IOException;
 import java.sql.*;
 
 import org.apache.commons.configuration.ConfigurationException;
@@ -78,6 +81,7 @@ public class UserDao extends FJDao {
             result.setFooter(rs.getString("footer"));
             result.setActivateCode(rs.getInt("activate_code"));
             result.setIsActive(rs.getInt("is_active")>1);
+            result.setEmail(rs.getString("mail"));
          }
       }finally{
          readFinally(conn, st);
@@ -85,7 +89,48 @@ public class UserDao extends FJDao {
       return result;
    }
 
-   public void save(User user) {
-      throw new IllegalAccessError("Unimplimented!");
+   public void update(User user) throws IOException, ConfigurationException, SQLException {
+      String query = getCreateAnswerQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try{
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setString(1, user.getNick());
+         st.setString(1, user.getPass());
+         st.setString(1, user.getEmail());
+         st.setString(1, user.getName());
+         st.setString(1, user.getFam());
+         st.setByte(1, user.getSex());
+         st.setDate(1, new java.sql.Date(user.getBith().getTime()));
+         st.setString(1, user.getPass2());
+         st.setInt(1, user.getShowMail() ? 1 : 0);
+         st.setInt(1, user.getShowName() ? 1 : 0);
+         st.setString(1, user.getCity());
+         st.setInt(1, user.getShowCity() ? 1 : 0);
+         st.setString(1, user.getCountry());
+         st.setInt(1, user.getShowCountry() ? 1 : 0);
+         st.setInt(1, user.getShowSex() ? 1 : 0);
+         st.setString(1, user.getIcq());
+         st.setInt(1, user.getShowIcq() ? 1 : 0);
+         st.setInt(1, user.getShowBithday() ? 1 : 0);
+         st.setInt(1, user.getLanguge());
+         st.setInt(1, user.getHideIp() ? 1 : 0);
+         st.setInt(1, user.getView());
+         st.setInt(1, user.getPp());
+         st.setInt(1, user.getPt());
+         st.setString(1, user.getAvatar());
+         st.setInt(1, user.getS_avatar() ? 1 : 0);
+         st.setInt(1, user.getOk_avatar() ? 1 : 0);
+         st.setInt(1, user.getVavatars() ? 1 : 0);
+         st.setInt(1, user.getTimeZone());
+         st.setString(1, user.getFooter());
+         st.setInt(1, user.getBan());
+         st.setInt(1, user.getActivateCode());
+         st.setInt(1, user.getIsActive() ? 1 : 0);
+         st.executeUpdate();
+      }finally{
+         readFinally(null, st);
+      }
    }
 }
