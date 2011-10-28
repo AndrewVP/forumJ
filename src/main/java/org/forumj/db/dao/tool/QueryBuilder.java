@@ -91,6 +91,8 @@ public class QueryBuilder {
    
    private static String loadSubscribesQuery = null;
 
+   private static String deleteSubscribeQuery = null;
+   
    private static String isSubscribeKeyPresentQuery = null;
 
    private static String createSubscribeQuery = null;
@@ -417,6 +419,13 @@ public class QueryBuilder {
          loadSubscribesQuery = loadQuery("/sql/load_subscribes.sql");
       }
       return loadSubscribesQuery;
+   }
+   
+   public static String getDeleteSubscribeQuery() throws IOException{
+      if (deleteSubscribeQuery == null){
+         deleteSubscribeQuery = loadQuery("/sql/delete_subscribe.sql");
+      }
+      return deleteSubscribeQuery;
    }
    
    public static String getIsSubscribeKeyPresentQuery() throws IOException{

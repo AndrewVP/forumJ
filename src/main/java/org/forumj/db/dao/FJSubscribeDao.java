@@ -61,7 +61,7 @@ public class FJSubscribeDao extends FJDao {
       return result;
    }
    
-   public void save(IFJSubscribe subscribe) throws ConfigurationException, SQLException, IOException{
+   public void create(IFJSubscribe subscribe) throws ConfigurationException, SQLException, IOException{
       String query = getIsSubscribeKeyPresentQuery();
       Connection conn = null;
       PreparedStatement st = null;
@@ -72,6 +72,21 @@ public class FJSubscribeDao extends FJDao {
          st.setDate(2, new java.sql.Date(subscribe.getStart().getTime()));
          st.setLong(3, subscribe.getKey());
          st.setInt(4, subscribe.getType());
+         st.executeUpdate();
+      }finally{
+         readFinally(conn, st);
+      }
+   }
+   
+   public void delete(long titleId, User user) throws ConfigurationException, SQLException, IOException{
+      String query = getDeleteSubscribeQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setLong(1, user.getId());
+         st.setLong(2, titleId);
          st.executeUpdate();
       }finally{
          readFinally(conn, st);
