@@ -17,5 +17,6 @@ public interface FJUrl {
    public static final String DEL_MAIL="/delmail.php";
    public static final String DELONE="/delone.php";
    public static final String DELONE_SUBSCRIBE="/delonesubs.php";
+   public static final String DELONE_SUBSCRIBE_BY_EMAIL="/delonesubsbymail.php";
 
 }

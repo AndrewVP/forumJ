@@ -93,6 +93,8 @@ public class QueryBuilder {
 
    private static String deleteSubscribeQuery = null;
    
+   private static String deleteSubscribeByKeyQuery = null;
+   
    private static String isSubscribeKeyPresentQuery = null;
 
    private static String createSubscribeQuery = null;
@@ -426,6 +428,13 @@ public class QueryBuilder {
          deleteSubscribeQuery = loadQuery("/sql/delete_subscribe.sql");
       }
       return deleteSubscribeQuery;
+   }
+   
+   public static String getDeleteSubscribeByKeyQuery() throws IOException{
+      if (deleteSubscribeByKeyQuery == null){
+         deleteSubscribeByKeyQuery = loadQuery("/sql/delete_subscribe_by_key.sql");
+      }
+      return deleteSubscribeByKeyQuery;
    }
    
    public static String getIsSubscribeKeyPresentQuery() throws IOException{
