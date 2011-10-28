@@ -114,7 +114,7 @@ public class FJFolderDao extends FJDao {
    }
    
    public void delete(Long folderId, User user) throws ConfigurationException, SQLException, IOException{
-      String deleteTranzitQuery = getDeleteTranzitQuery();
+      String deleteTranzitQuery = getDeleteFolderTranzitQuery();
       String deleteVTranzitQuery = getDeleteVTranzitQuery();
       String deleteFolderQuery = getDeleteFolderQuery();
       Connection conn = null;
@@ -141,4 +141,32 @@ public class FJFolderDao extends FJDao {
       }
    }
    
+   public void moveToRecyclebin(long threadId, User user) throws IOException, ConfigurationException, SQLException{
+      // TODO Magic integer!
+      moveToFolder(threadId, 3, user);
+   }
+
+   public void moveToFolder(long threadId, long folderId, User user) throws IOException, ConfigurationException, SQLException{
+      String deleteTranzitQuery = getDeleteThreadTranzitQuery();
+      String appendQuery = getAppendThreadInFolderQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      boolean error = true;
+      try {
+         conn = getConnection();
+         conn.setAutoCommit(false);
+         st = conn.prepareStatement(deleteTranzitQuery);
+         st.setLong(1, threadId);
+         st.setLong(2, user.getId());
+         st.executeUpdate();
+         st = conn.prepareStatement(appendQuery);
+         st.setLong(1, threadId);
+         st.setLong(2, user.getId());
+         st.setLong(3, folderId);
+         st.executeUpdate();
+         error = false;
+      }finally{
+         writeFinally(conn, st, error);
+      }
+   }
 }
