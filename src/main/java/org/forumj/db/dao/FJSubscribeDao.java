@@ -78,8 +78,8 @@ public class FJSubscribeDao extends FJDao {
       }
    }
    
-   public void delete(long titleId, User user) throws ConfigurationException, SQLException, IOException{
-      String query = getDeleteSubscribeQuery();
+   public void deleteByTitleId(long titleId, User user) throws ConfigurationException, SQLException, IOException{
+      String query = getDeleteSubscribeByTitleIdQuery();
       Connection conn = null;
       PreparedStatement st = null;
       try {
@@ -93,7 +93,22 @@ public class FJSubscribeDao extends FJDao {
       }
    }
    
-   public void delete(long key) throws ConfigurationException, SQLException, IOException{
+   public void deleteById(long id, User user) throws ConfigurationException, SQLException, IOException{
+      String query = getDeleteSubscribeByIdQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setLong(1, user.getId());
+         st.setLong(2, id);
+         st.executeUpdate();
+      }finally{
+         readFinally(conn, st);
+      }
+   }
+   
+   public void deleteByKey(long key) throws ConfigurationException, SQLException, IOException{
       String query = getDeleteSubscribeByKeyQuery();
       Connection conn = null;
       PreparedStatement st = null;

@@ -91,7 +91,9 @@ public class QueryBuilder {
    
    private static String loadSubscribesQuery = null;
 
-   private static String deleteSubscribeQuery = null;
+   private static String deleteSubscribeByTitleIdQuery = null;
+   
+   private static String deleteSubscribeByIdQuery = null;
    
    private static String deleteSubscribeByKeyQuery = null;
    
@@ -423,11 +425,18 @@ public class QueryBuilder {
       return loadSubscribesQuery;
    }
    
-   public static String getDeleteSubscribeQuery() throws IOException{
-      if (deleteSubscribeQuery == null){
-         deleteSubscribeQuery = loadQuery("/sql/delete_subscribe.sql");
+   public static String getDeleteSubscribeByTitleIdQuery() throws IOException{
+      if (deleteSubscribeByTitleIdQuery == null){
+         deleteSubscribeByTitleIdQuery = loadQuery("/sql/delete_subscribe_by_title_id.sql");
       }
-      return deleteSubscribeQuery;
+      return deleteSubscribeByTitleIdQuery;
+   }
+   
+   public static String getDeleteSubscribeByIdQuery() throws IOException{
+      if (deleteSubscribeByIdQuery == null){
+         deleteSubscribeByIdQuery = loadQuery("/sql/delete_subscribe_by_id.sql");
+      }
+      return deleteSubscribeByIdQuery;
    }
    
    public static String getDeleteSubscribeByKeyQuery() throws IOException{
