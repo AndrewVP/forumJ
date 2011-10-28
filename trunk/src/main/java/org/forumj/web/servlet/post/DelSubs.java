@@ -24,30 +24,32 @@ import org.forumj.db.entity.User;
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {FJUrl.DELONE_SUBSCRIBE}, name=FJServletName.DELONE_SUBSCRIBE)
-public class DelOneSubs extends HttpServlet {
+@WebServlet(urlPatterns = {FJUrl.DEL_SUBSCRIBES}, name=FJServletName.DEL_SUBSCRIBES)
+public class DelSubs extends HttpServlet {
 
-   private static final long serialVersionUID = -8156876539710291711L;
-
+   private static final long serialVersionUID = -6951760787312461408L;
+   
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       try {
          StringBuffer buffer = new StringBuffer();
          HttpSession session = request.getSession();
-         String threadIdParameter = request.getParameter("IDT");
-         String pageParameter = request.getParameter("pg");
+         String actionParameter = request.getParameter("ACT");
          User user = (User) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
-            if (threadIdParameter != null && !"".equals(threadIdParameter)){
-               Long subscribeId = Long.valueOf(threadIdParameter);
+            if (actionParameter != null && !"".equals(actionParameter)){
                FJSubscribeDao dao = new FJSubscribeDao();
-               dao.deleteByTitleId(subscribeId, user);
-               String urlQuery = "?id=" + threadIdParameter;
-               if (pageParameter != null && !"".equals(pageParameter)){
-                  urlQuery += "&page=" + pageParameter;
+               String nrwParameter = request.getParameter("NRW");
+               Integer nrw = Integer.valueOf(nrwParameter);
+               if ("del".equalsIgnoreCase(actionParameter)){
+                  for (int nrwIndex = 0; nrwIndex < nrw; nrwIndex++) {
+                     String subscribeIdParameter = request.getParameter(String.valueOf(nrwIndex));
+                     Long subscribeId = Long.valueOf(subscribeIdParameter);
+                     dao.deleteById(subscribeId, user);
+                  }
                }
-               buffer.append(successPostOut("0", "tema.php" + urlQuery));
             }
+            buffer.append(successPostOut("0", "control.php?id=8"));
          }else{
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());
@@ -56,4 +58,5 @@ public class DelOneSubs extends HttpServlet {
          e.printStackTrace();
       }
    }
+
 }

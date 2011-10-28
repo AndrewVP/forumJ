@@ -36,7 +36,7 @@ public class DelOneSubsByMail extends HttpServlet {
          if (keyParameter != null && !"".equals(keyParameter)){
             Long key = Long.valueOf(keyParameter);
             FJSubscribeDao dao = new FJSubscribeDao();
-            dao.delete(key);
+            dao.deleteByKey(key);
             buffer.append(successPostOut("0", "index.php"));
          }
       }catch (Exception e) {
