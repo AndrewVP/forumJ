@@ -16,5 +16,6 @@ public interface FJServletName {
 
    public static final String DEL_MAIL="DelMail";
    public static final String DELONE="DelOne";
+   public static final String DELONE_SUBSCRIBE="DelOneSubs";
 
 }
