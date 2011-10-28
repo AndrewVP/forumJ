@@ -75,6 +75,10 @@ public class QueryBuilder {
    
    private static String loadMailQuery = null;
 
+   private static String deleteFromOutboxQuery = null;
+   
+   private static String deleteFromInboxQuery = null;
+   
    private static String loadInterfacesQuery = null;
    
    private static String loadInterfaceQuery = null;
@@ -331,14 +335,28 @@ public class QueryBuilder {
       if (loadDraftBoxQuery  == null){
          loadDraftBoxQuery  = loadQuery("/sql/load_draft_box.sql");
       }
-      return loadDraftBoxQuery ;
+      return loadDraftBoxQuery;
    }
    
    public static String getLoadMailQuery() throws IOException{
       if (loadMailQuery  == null){
          loadMailQuery  = loadQuery("/sql/load_mail.sql");
       }
-      return loadMailQuery ;
+      return loadMailQuery;
+   }
+   
+   public static String getDeleteFromOutboxQuery() throws IOException{
+      if (deleteFromOutboxQuery  == null){
+         deleteFromOutboxQuery  = loadQuery("/sql/delete_from_outbox.sql");
+      }
+      return deleteFromOutboxQuery;
+   }
+   
+   public static String getDeleteFromInboxQuery() throws IOException{
+      if (deleteFromInboxQuery  == null){
+         deleteFromInboxQuery  = loadQuery("/sql/delete_from_inbox.sql");
+      }
+      return deleteFromInboxQuery;
    }
    
    public static String getLoadInterfacesQuery() throws IOException{

@@ -15,6 +15,8 @@
  */
 package org.forumj.web.filter;
 
+import static org.forumj.common.FJServletName.*;
+
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -30,7 +32,7 @@ import org.forumj.db.entity.User;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebFilter(servletNames={"mess", "new", "write", "opr", "quest", "control", "AddSubscribe", "amn", "defview", "DelFolder"})
+@WebFilter(servletNames={"mess", "new", "write", "opr", "quest", "control", "AddSubscribe", "amn", "defview", "DelFolder", DEL_MAIL})
 public class RestrictUnloginedUsersFilter implements Filter {
 
    /**

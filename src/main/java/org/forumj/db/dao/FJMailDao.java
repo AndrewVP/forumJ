@@ -153,4 +153,34 @@ public class FJMailDao extends FJDao {
       }
       return result;
    }
+   
+   public void deleteFromOutbox(Long mailId, User user) throws ConfigurationException, SQLException, IOException{
+      String query = getDeleteFromOutboxQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setLong(1, mailId);
+         st.setLong(2, user.getId());
+         st.executeUpdate();
+      }finally{
+         readFinally(conn, st);
+      }
+   }
+
+   public void deleteFromInbox(Long mailId, User user) throws ConfigurationException, SQLException, IOException{
+      String query = getDeleteFromInboxQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setLong(1, mailId);
+         st.setLong(2, user.getId());
+         st.executeUpdate();
+      }finally{
+         readFinally(conn, st);
+      }
+   }
 }
