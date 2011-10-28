@@ -93,6 +93,20 @@ public class FJSubscribeDao extends FJDao {
       }
    }
    
+   public void delete(long key) throws ConfigurationException, SQLException, IOException{
+      String query = getDeleteSubscribeByKeyQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setLong(1, key);
+         st.executeUpdate();
+      }finally{
+         readFinally(conn, st);
+      }
+   }
+   
    public boolean isKeyPresent(Integer key) throws SQLException, ConfigurationException, IOException{
       String query = getIsSubscribeKeyPresentQuery();
       Connection conn = null;
