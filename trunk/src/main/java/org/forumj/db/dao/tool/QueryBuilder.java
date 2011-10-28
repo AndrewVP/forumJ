@@ -97,9 +97,13 @@ public class QueryBuilder {
 
    private static String updateUserQuery = null;
    
-   private static String deleteTranzitQuery = null;
+   private static String deleteFolderTranzitQuery = null;
+   
+   private static String deleteThreadTranzitQuery = null;
    
    private static String deleteVTranzitQuery = null;
+   
+   private static String appendThreadInFolderQuery = null;
    
    private static String deleteFolderQuery = null;
    
@@ -142,11 +146,18 @@ public class QueryBuilder {
       return updatePostQuery;
    }
    
-   public static String getDeleteTranzitQuery() throws IOException{
-      if (deleteTranzitQuery == null){
-         deleteTranzitQuery = loadQuery("/sql/delete_tranzit.sql");
+   public static String getDeleteFolderTranzitQuery() throws IOException{
+      if (deleteFolderTranzitQuery == null){
+         deleteFolderTranzitQuery = loadQuery("/sql/delete_tranzit.sql");
       }
-      return deleteTranzitQuery;
+      return deleteFolderTranzitQuery;
+   }
+   
+   public static String getDeleteThreadTranzitQuery() throws IOException{
+      if (deleteThreadTranzitQuery == null){
+         deleteThreadTranzitQuery = loadQuery("/sql/delete_thread_tranzit.sql");
+      }
+      return deleteThreadTranzitQuery;
    }
    
    public static String getDeleteVTranzitQuery() throws IOException{
@@ -154,6 +165,13 @@ public class QueryBuilder {
          deleteVTranzitQuery = loadQuery("/sql/delete_vtranzit.sql");
       }
       return deleteVTranzitQuery;
+   }
+   
+   public static String getAppendThreadInFolderQuery() throws IOException{
+      if (appendThreadInFolderQuery == null){
+         appendThreadInFolderQuery = loadQuery("/sql/append_thread_in_folder.sql");
+      }
+      return appendThreadInFolderQuery;
    }
    
    public static String getDeleteFolderQuery() throws IOException{
