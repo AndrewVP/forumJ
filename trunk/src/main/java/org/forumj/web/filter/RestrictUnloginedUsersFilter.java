@@ -34,7 +34,7 @@ import org.forumj.db.entity.User;
  */
 @WebFilter(servletNames={"mess", "new", "write", "opr", "quest", "control", "AddSubscribe", "amn", "defview", "DelFolder", 
       DEL_MAIL, DELONE, DELONE_SUBSCRIBE, DELETE_FOLDER_FROM_VIEW, DELETE_VIEW, DELETE_VOICE, VOICE, ADD_VOTE,
-      MOVE_TITLE})
+      MOVE_TITLE, NEW_FOLDER})
 public class RestrictUnloginedUsersFilter implements Filter {
 
    /**

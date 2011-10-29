@@ -188,4 +188,52 @@ public class FJFolderDao extends FJDao {
          writeFinally(conn, st, error);
       }
    }
+   
+   public boolean isFolderExist(String folderName, User user) throws SQLException, ConfigurationException, IOException{
+      boolean result = false;
+      String query = getIsFolderExistQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setLong(1, user.getId());
+         st.setString(2, folderName);
+         ResultSet rs = st.executeQuery();
+         if (rs.next()){
+            result = true;
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
+   }
+   
+   public Long create(String folderName, User user) throws SQLException, ConfigurationException, IOException{
+      Long result = null; 
+      String query = getCreateFolderQuery();
+      PreparedStatement st = null;
+      Connection conn = null;
+      boolean error = true;
+      try{
+         conn = getConnection();
+         conn.setAutoCommit(false);
+         st = conn.prepareStatement(query, new String[]{"id"});
+         st.setString(1, folderName);
+         st.setLong(3, user.getId());
+         st.executeUpdate();
+         ResultSet idRs = st.getGeneratedKeys();
+         if (idRs.next()){
+            result = idRs.getLong(1);
+         }
+         FJInterfaceDao interfaceDao = new FJInterfaceDao();
+         //TODO Magic integer!
+         interfaceDao.addFolder(3, result, user, conn);
+         interfaceDao.addFolder(4, result, user, conn);
+         error = false;
+      }finally{
+         writeFinally(conn, st, error);
+      }
+      return result;
+   }
 }
