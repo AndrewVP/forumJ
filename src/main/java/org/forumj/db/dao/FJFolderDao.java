@@ -189,7 +189,7 @@ public class FJFolderDao extends FJDao {
       }
    }
    
-   public boolean isFolderExist(String folderName, User user) throws SQLException, ConfigurationException, IOException{
+   public boolean isExist(String name, User user) throws SQLException, ConfigurationException, IOException{
       boolean result = false;
       String query = getIsFolderExistQuery();
       Connection conn = null;
@@ -198,7 +198,7 @@ public class FJFolderDao extends FJDao {
          conn = getConnection();
          st = conn.prepareStatement(query);
          st.setLong(1, user.getId());
-         st.setString(2, folderName);
+         st.setString(2, name);
          ResultSet rs = st.executeQuery();
          if (rs.next()){
             result = true;

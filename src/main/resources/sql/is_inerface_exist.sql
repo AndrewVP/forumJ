@@ -1,7 +1,7 @@
 SELECT 
  id
 FROM
- fdfolders
+ fdviews
 WHERE
  (user = ? OR user=0)
- AND flname = ?
+ AND name = ?

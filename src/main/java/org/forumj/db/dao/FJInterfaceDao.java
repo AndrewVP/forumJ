@@ -140,4 +140,43 @@ public class FJInterfaceDao extends FJDao {
          readFinally(conn, st);
       }
    }
+   
+   public boolean isExist(String name, User user) throws SQLException, ConfigurationException, IOException{
+      boolean result = false;
+      String query = getIsInterfaceExistQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setLong(1, user.getId());
+         st.setString(2, name);
+         ResultSet rs = st.executeQuery();
+         if (rs.next()){
+            result = true;
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
+   }
+   
+   public void create(String name, User user) throws SQLException, ConfigurationException, IOException{
+      String query = getCreateInterfaceQuery();
+      PreparedStatement st = null;
+      Connection conn = null;
+      boolean error = true;
+      try{
+         conn = getConnection();
+         conn.setAutoCommit(false);
+         st = conn.prepareStatement(query);
+         st.setString(1, name);
+         st.setLong(3, user.getId());
+         st.executeUpdate();
+         error = false;
+      }finally{
+         writeFinally(conn, st, error);
+      }
+   }
+
 }
