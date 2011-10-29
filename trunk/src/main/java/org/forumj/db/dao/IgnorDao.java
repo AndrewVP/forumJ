@@ -75,7 +75,20 @@ public class IgnorDao extends FJDao {
       }finally{
          readFinally(conn, st);
       }
-      
-      
+   }
+   
+   public void create(long ignoredUserId, User user) throws SQLException, ConfigurationException, IOException{
+      String query = getCreateIgnorQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setLong(1, user.getId());
+         st.setLong(2, ignoredUserId);
+         st.executeUpdate();
+      }finally{
+         readFinally(conn, st);
+      }
    }
 }
