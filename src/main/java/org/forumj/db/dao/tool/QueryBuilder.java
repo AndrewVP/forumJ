@@ -119,6 +119,8 @@ public class QueryBuilder {
    
    private static String increaseVoiceNumbersQuery = null;
    
+   private static String maxAnswerNumberQuery = null;
+   
    private static String deleteAllFoldersFromViewQuery = null;
    
    private static String deleteViewQuery = null;
@@ -196,6 +198,13 @@ public class QueryBuilder {
          increaseVoiceNumbersQuery = loadQuery("/sql/increase_voice_mumbers.sql");
       }
       return increaseVoiceNumbersQuery;
+   }
+   
+   public static String getMaxAnswerNumberQuery() throws IOException{
+      if (maxAnswerNumberQuery == null){
+         maxAnswerNumberQuery = loadQuery("/sql/max_answer_mumber.sql");
+      }
+      return maxAnswerNumberQuery;
    }
    
    public static String getDeleteAllFoldersFromViewQuery() throws IOException{

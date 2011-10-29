@@ -52,11 +52,12 @@ public class QuestNodeDao extends FJDao {
       return result;
    }
 
-   public void create(QuestNode answer, Connection conn) throws IOException, SQLException{
+   public Long create(QuestNode answer, Connection conn) throws IOException, SQLException{
+      Long result = null; 
       String query = getCreateAnswerQuery();
       PreparedStatement st = null;
       try{
-         st = conn.prepareStatement(query);
+         st = conn.prepareStatement(query, new String[]{"id"});
          st.setString(1, answer.getNode());
          st.setInt(2, answer.getNumb());
          st.setLong(3, answer.getUserId());
@@ -64,9 +65,14 @@ public class QuestNodeDao extends FJDao {
          st.setInt(5, answer.getGol());
          st.setLong(6, answer.getHead());
          st.executeUpdate();
+         ResultSet idRs = st.getGeneratedKeys();
+         if (idRs.next()){
+            result = idRs.getLong(1);
+         }
       }finally{
          readFinally(null, st);
       }
+      return result;
    }
 
    public void repealVote(Long threadId, User user) throws ConfigurationException, IOException, SQLException{
@@ -91,7 +97,7 @@ public class QuestNodeDao extends FJDao {
       }
    }
 
-   public void addVote(Long threadId, Long answerId, User user) throws ConfigurationException, IOException, SQLException{
+   public void addVote(Long threadId, Long answerId, User user, Connection connection) throws ConfigurationException, IOException, SQLException{
       FJVoiceDao voiceDao = new FJVoiceDao();
       FJVoice voice = new FJVoice();
       String query = getIncreaseVoiceNumbersQuery();
@@ -99,13 +105,44 @@ public class QuestNodeDao extends FJDao {
       PreparedStatement st = null;
       boolean error = true;
       try {
-         conn = getConnection();
+         conn = connection == null ? getConnection() : connection;
          conn.setAutoCommit(false);
          voiceDao.create(voice, conn);
          st = conn.prepareStatement(query);
          st.setLong(1, voice.getNodeId());
          st.executeUpdate();
          error = false;
+      }finally{
+         writeFinally(connection == null ? conn : null, st, error);
+      }
+   }
+   
+   public void addCustomAnswer(long threadId, String node, int type, User user) throws ConfigurationException, IOException, SQLException{
+      QuestNode answer = new QuestNode();
+      String maxAnswerNumberQuery = getMaxAnswerNumberQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      boolean error = true;
+      try {
+         conn = getConnection();
+         conn.setAutoCommit(false);
+         st = conn.prepareStatement(maxAnswerNumberQuery);
+         st.setLong(1, threadId);
+         ResultSet rs = st.executeQuery();
+         if (rs.next()){
+            int maxNumber = rs.getInt("mx") + 1;
+            answer.setHead(threadId);
+            answer.setNumb(maxNumber);
+            answer.setNode(node);
+            answer.setGol(1);
+            answer.setType(type);
+            answer.setUserId(user.getId());
+            Long nodeId = create(answer, conn);
+            if (nodeId != null){
+               addVote(threadId, nodeId, user, conn);
+               error = false;
+            }
+         }
       }finally{
          writeFinally(conn, st, error);
       }

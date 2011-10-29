@@ -24,10 +24,11 @@ import org.forumj.db.entity.User;
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {FJUrl.VOICE}, name=FJServletName.VOICE)
-public class Voice extends HttpServlet {
-
-   private static final long serialVersionUID = 6980345465145855420L;
+@SuppressWarnings("serial")
+@WebServlet(urlPatterns = {FJUrl.ADD_VOTE}, name=FJServletName.ADD_VOTE)
+public class UserVoice extends HttpServlet {
+   
+   //TODO Нет валидации параметра answerParameter - в случае пустого ничего не происходит
 
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -35,19 +36,22 @@ public class Voice extends HttpServlet {
          StringBuffer buffer = new StringBuffer();
          HttpSession session = request.getSession();
          String threadIdParameter = request.getParameter("IDT1");
-         String answerIdParameter = request.getParameter("ANSWER");
+         String anonymouslyParameter = request.getParameter("HD");
+         String answerParameter = request.getParameter("P");
          User user = (User) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             if (threadIdParameter != null && !"".equals(threadIdParameter)){
-               FJVoiceDao voteDao = new FJVoiceDao();
-               Long threadId = Long.valueOf(threadIdParameter);
-               if (!voteDao.isUserVoted(threadId, user)){
-                  Long answerId = Long.valueOf(answerIdParameter);
+               if (answerParameter != null && !"".equals(answerParameter)){
                   QuestNodeDao questDao = new QuestNodeDao();
-                  questDao.addVote(threadId, answerId, user, null);
+                  Long threadId = Long.valueOf(threadIdParameter);
+                  FJVoiceDao voteDao = new FJVoiceDao();
+                  // TODO Magic integer!
+                  int answerType = anonymouslyParameter == null ? 1 : 2; 
+                  if (!voteDao.isUserVoted(threadId, user)){
+                     questDao.addCustomAnswer(threadId, answerParameter, answerType, user);
+                  }
                }
-               String urlQuery = "?id=" + threadIdParameter;
-               buffer.append(successPostOut("3", "tema.php" + urlQuery));
+               buffer.append(successPostOut("3", "tema.php?id=" + threadIdParameter));
             }
          }else{
             // Вошли незарегистрировавшись
