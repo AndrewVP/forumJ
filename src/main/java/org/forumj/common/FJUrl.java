@@ -22,5 +22,6 @@ public interface FJUrl {
    public static final String DELETE_FOLDER_FROM_VIEW="/delvfolder.php";
    public static final String DELETE_VIEW="/delview.php";
    public static final String DELETE_VOICE="/delvoice.php";
+   public static final String VOICE="/voice.php";
 
 }

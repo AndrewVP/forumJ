@@ -57,7 +57,11 @@ public class QueryBuilder {
 
    private static String readVoiceQuery = null;
    
+   private static String isUserVotedQuery = null;
+   
    private static String deleteVoiceQuery = null;
+   
+   private static String createVoiceQuery = null;
    
    private static String loadIgnorQuery = null;
 
@@ -112,6 +116,8 @@ public class QueryBuilder {
    private static String deleteFolderFromViewQuery = null;
    
    private static String reduceVoiceNumbersQuery = null;
+   
+   private static String increaseVoiceNumbersQuery = null;
    
    private static String deleteAllFoldersFromViewQuery = null;
    
@@ -183,6 +189,13 @@ public class QueryBuilder {
          reduceVoiceNumbersQuery = loadQuery("/sql/reduce_voice_mumbers.sql");
       }
       return reduceVoiceNumbersQuery;
+   }
+   
+   public static String getIncreaseVoiceNumbersQuery() throws IOException{
+      if (increaseVoiceNumbersQuery == null){
+         increaseVoiceNumbersQuery = loadQuery("/sql/increase_voice_mumbers.sql");
+      }
+      return increaseVoiceNumbersQuery;
    }
    
    public static String getDeleteAllFoldersFromViewQuery() throws IOException{
@@ -346,11 +359,25 @@ public class QueryBuilder {
       return readVoiceQuery;
    }
    
+   public static String getIsUserVotedQuery() throws IOException{
+      if (isUserVotedQuery == null){
+         isUserVotedQuery = loadQuery("/sql/is_user_voted_query.sql");
+      }
+      return isUserVotedQuery;
+   }
+   
    public static String getDeleteVoiceQuery() throws IOException{
       if (deleteVoiceQuery == null){
          deleteVoiceQuery = loadQuery("/sql/delete_voice.sql");
       }
       return deleteVoiceQuery;
+   }
+   
+   public static String getCreateVoiceQuery() throws IOException{
+      if (createVoiceQuery == null){
+         createVoiceQuery = loadQuery("/sql/create_voice.sql");
+      }
+      return createVoiceQuery;
    }
    
    public static String getLoadIgnorQuery() throws IOException{
