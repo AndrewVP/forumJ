@@ -25,5 +25,6 @@ public interface FJServletName {
    public static final String VOICE="Voice";
    public static final String ADD_VOTE="UserVoice";
    public static final String ADD_IGNOR="AddIgnor";
+   public static final String MOVE_TITLE="MoveTitle";
 
 }
