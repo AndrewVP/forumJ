@@ -105,6 +105,8 @@ public class QueryBuilder {
    
    private static String deleteFolderTranzitQuery = null;
    
+   private static String deleteFolderFromViewQuery = null;
+   
    private static String deleteThreadTranzitQuery = null;
    
    private static String deleteVTranzitQuery = null;
@@ -157,6 +159,13 @@ public class QueryBuilder {
          deleteFolderTranzitQuery = loadQuery("/sql/delete_tranzit.sql");
       }
       return deleteFolderTranzitQuery;
+   }
+   
+   public static String getDeleteFolderFromViewQuery() throws IOException{
+      if (deleteFolderFromViewQuery == null){
+         deleteFolderFromViewQuery = loadQuery("/sql/delete_tranzit_from_view.sql");
+      }
+      return deleteFolderFromViewQuery;
    }
    
    public static String getDeleteThreadTranzitQuery() throws IOException{
