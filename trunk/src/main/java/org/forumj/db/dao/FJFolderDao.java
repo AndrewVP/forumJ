@@ -141,6 +141,25 @@ public class FJFolderDao extends FJDao {
       }
    }
    
+   public void deleteFolderFromView(Long folderId, Long viewId, User user) throws ConfigurationException, SQLException, IOException{
+      String deleteTranzitQuery = getDeleteFolderFromViewQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      boolean error = true;
+      try {
+         conn = getConnection();
+         conn.setAutoCommit(false);
+         st = conn.prepareStatement(deleteTranzitQuery);
+         st.setLong(1, folderId);
+         st.setLong(2, user.getId());
+         st.setLong(3, viewId);
+         st.executeUpdate();
+         error = false;
+      }finally{
+         writeFinally(conn, st, error);
+      }
+   }
+   
    public void moveToRecyclebin(long threadId, User user) throws IOException, ConfigurationException, SQLException{
       // TODO Magic integer!
       moveToFolder(threadId, 3, user);
