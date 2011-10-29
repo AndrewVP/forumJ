@@ -23,5 +23,6 @@ public interface FJServletName {
    public static final String DELETE_VIEW="DelView";
    public static final String DELETE_VOICE="DelVoice";
    public static final String VOICE="Voice";
+   public static final String ADD_VOTE="UserVoice";
 
 }
