@@ -23,17 +23,18 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import org.forumj.common.*;
 import org.forumj.db.dao.*;
 import org.forumj.db.entity.User;
+import org.forumj.web.servlet.FJServlet;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {"/delfolder.php"}, name="DelFolder")
-public class DelFolder extends HttpServlet {
-
-   private static final long serialVersionUID = 1273343677774942694L;
+@SuppressWarnings("serial")
+@WebServlet(urlPatterns = {FJUrl.NEW_FOLDER}, name = FJServletName.NEW_FOLDER)
+public class NewFolder extends FJServlet {
 
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -42,30 +43,12 @@ public class DelFolder extends HttpServlet {
          HttpSession session = request.getSession();
          String idParameter = request.getParameter("id");
          String viewIdParameter = request.getParameter("view");
-         String actionParameter = request.getParameter("ACT");
+         String folderNameParameter = request.getParameter("FOLD");
          User user = (User) session.getAttribute("user");
-         FJFolderDao folderDao = new FJFolderDao();
-         FJInterfaceDao interfaceDao = new FJInterfaceDao();
          if (user != null && !user.isBanned() && user.isLogined()){
-            if (actionParameter != null && !"".equals(actionParameter)){
-               String nrwParameter = request.getParameter("NRW");
-               Integer nrw = Integer.valueOf(nrwParameter);
-               if ("del".equalsIgnoreCase(actionParameter)){
-                  for (int nrwIndex = 0; nrwIndex < nrw; nrwIndex++) {
-                     String folderIdParameter = request.getParameter(String.valueOf(nrwIndex));
-                     Long folderId = Long.valueOf(folderIdParameter);
-                     folderDao.delete(folderId, user);
-                  }
-               }else if ("add".equalsIgnoreCase(actionParameter)){
-                  long viewId = Long.valueOf(viewIdParameter);
-                  for (int nrwIndex = 0; nrwIndex < nrw; nrwIndex++) {
-                     String folderIdParameter = request.getParameter(String.valueOf(nrwIndex));
-                     Long folderId = Long.valueOf(folderIdParameter);
-                     if (!interfaceDao.isInterfaceContainsFolder(viewId, folderId, user)){
-                        interfaceDao.addFolder(viewId, folderId, user, null);
-                     }
-                  }
-               }
+            if (!isEmptyParameter(folderNameParameter)){
+               FJFolderDao folderDao = new FJFolderDao();
+               folderDao.create(folderNameParameter, user);
             }
             String urlQuery = "";
             if (idParameter != null && !"".equals(idParameter)){

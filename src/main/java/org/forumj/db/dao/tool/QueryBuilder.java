@@ -71,6 +71,8 @@ public class QueryBuilder {
    
    private static String createAnswerQuery = null;
    
+   private static String createFolderQuery = null;
+   
    private static String receiveMailQuery = null;
 
    private static String markMailAsReadQuery = null;
@@ -98,6 +100,8 @@ public class QueryBuilder {
    private static String loadFoldersNotInQuery = null;
    
    private static String loadFoldersQuery = null;
+   
+   private static String isFolderExistQuery = null;
    
    private static String loadSubscribesQuery = null;
 
@@ -419,6 +423,13 @@ public class QueryBuilder {
       return createAnswerQuery;
    }
    
+   public static String getCreateFolderQuery() throws IOException{
+      if (createFolderQuery == null){
+         createFolderQuery = loadQuery("/sql/create_folder.sql");
+      }
+      return createFolderQuery;
+   }
+   
    public static String getReceiveMailQuery() throws IOException{
       if (receiveMailQuery  == null){
          receiveMailQuery  = loadQuery("/sql/receive_mail.sql");
@@ -515,6 +526,13 @@ public class QueryBuilder {
          loadFoldersQuery = loadQuery("/sql/load_folders.sql");
       }
       return loadFoldersQuery;
+   }
+   
+   public static String getIsFolderExistQuery() throws IOException{
+      if (isFolderExistQuery == null){
+         isFolderExistQuery = loadQuery("/sql/is_folder_exist.sql");
+      }
+      return isFolderExistQuery;
    }
    
    public static String getLoadSubscribesQuery() throws IOException{

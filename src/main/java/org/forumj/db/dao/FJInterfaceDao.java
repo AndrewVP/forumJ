@@ -103,19 +103,21 @@ public class FJInterfaceDao extends FJDao {
       return result;
    }
    
-   public void addFolder(long interfaceId, long folderId, User user) throws ConfigurationException, SQLException, IOException{
+   public void addFolder(long interfaceId, long folderId, User user, Connection connection) throws ConfigurationException, SQLException, IOException{
       String query = getAddFolderQuery();
       Connection conn = null;
       PreparedStatement st = null;
+      boolean error = true;
       try {
-         conn = getConnection();
+         conn = connection == null ? getConnection() : connection;
          st = conn.prepareStatement(query);
          st.setLong(1, interfaceId);
          st.setLong(2, folderId);
          st.setLong(3, user.getId());
          st.executeUpdate();
+         error = false;
       }finally{
-         readFinally(conn, st);
+         writeFinally(connection == null ? conn : null, st, error);
       }
    }
 
