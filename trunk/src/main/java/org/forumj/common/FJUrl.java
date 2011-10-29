@@ -27,4 +27,5 @@ public interface FJUrl {
    public static final String ADD_IGNOR="/ignor.php";
    public static final String MOVE_TITLE="/movetitle.php";
    public static final String NEW_FOLDER="/newfolder.php";
+   public static final String NEW_VIEW="/newview.php";
 }

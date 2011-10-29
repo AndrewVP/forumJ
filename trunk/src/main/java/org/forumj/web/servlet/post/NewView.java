@@ -33,33 +33,25 @@ import org.forumj.web.servlet.FJServlet;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = {FJUrl.NEW_FOLDER}, name = FJServletName.NEW_FOLDER)
-public class NewFolder extends FJServlet {
+@WebServlet(urlPatterns = {FJUrl.NEW_VIEW}, name = FJServletName.NEW_VIEW)
+public class NewView extends FJServlet {
 
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       try {
          StringBuffer buffer = new StringBuffer();
          HttpSession session = request.getSession();
-         String idParameter = request.getParameter("id");
-         String viewIdParameter = request.getParameter("view");
-         String folderNameParameter = request.getParameter("FOLD");
+         String vewNameParameter = request.getParameter("FOLD");
          User user = (User) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
-            if (!isEmptyParameter(folderNameParameter)){
-               FJFolderDao folderDao = new FJFolderDao();
-               if (!folderDao.isExist(folderNameParameter, user)){
-                  folderDao.create(folderNameParameter, user);
+            if (!isEmptyParameter(vewNameParameter)){
+               FJInterfaceDao dao = new FJInterfaceDao();
+               if (!dao.isExist(vewNameParameter, user)){
+                  dao.create(vewNameParameter, user);
                }
             }
-            String urlQuery = "";
-            if (idParameter != null && !"".equals(idParameter)){
-               urlQuery = "?id=" + idParameter;
-            }
-            if (viewIdParameter != null && !"".equals(viewIdParameter)){
-               urlQuery += "&view=" + viewIdParameter;
-            }
-            buffer.append(successPostOut("0", "control.php" + urlQuery));
+            //TODO Magic integer!
+            buffer.append(successPostOut("0", "control.php?id=6"));
          }else{
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());

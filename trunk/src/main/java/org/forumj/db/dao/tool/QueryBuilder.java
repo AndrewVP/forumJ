@@ -73,6 +73,8 @@ public class QueryBuilder {
    
    private static String createFolderQuery = null;
    
+   private static String createInterfaceQuery = null;
+   
    private static String receiveMailQuery = null;
 
    private static String markMailAsReadQuery = null;
@@ -102,6 +104,8 @@ public class QueryBuilder {
    private static String loadFoldersQuery = null;
    
    private static String isFolderExistQuery = null;
+
+   private static String isInterfaceExistQuery = null;
    
    private static String loadSubscribesQuery = null;
 
@@ -430,6 +434,13 @@ public class QueryBuilder {
       return createFolderQuery;
    }
    
+   public static String getCreateInterfaceQuery() throws IOException{
+      if (createInterfaceQuery == null){
+         createInterfaceQuery = loadQuery("/sql/create_interface.sql");
+      }
+      return createInterfaceQuery;
+   }
+   
    public static String getReceiveMailQuery() throws IOException{
       if (receiveMailQuery  == null){
          receiveMailQuery  = loadQuery("/sql/receive_mail.sql");
@@ -533,6 +544,13 @@ public class QueryBuilder {
          isFolderExistQuery = loadQuery("/sql/is_folder_exist.sql");
       }
       return isFolderExistQuery;
+   }
+   
+   public static String getIsInterfaceExistQuery() throws IOException{
+      if (isInterfaceExistQuery == null){
+         isInterfaceExistQuery = loadQuery("/sql/is_inerface_exist.sql");
+      }
+      return isInterfaceExistQuery;
    }
    
    public static String getLoadSubscribesQuery() throws IOException{

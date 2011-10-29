@@ -27,5 +27,6 @@ public interface FJServletName {
    public static final String ADD_IGNOR="AddIgnor";
    public static final String MOVE_TITLE="MoveTitle";
    public static final String NEW_FOLDER="NewFolder";
+   public static final String NEW_VIEW="NewView";
 
 }
