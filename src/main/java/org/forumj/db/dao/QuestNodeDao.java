@@ -16,7 +16,7 @@ import java.sql.*;
 import java.util.*;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.db.entity.QuestNode;
+import org.forumj.db.entity.*;
 
 /**
  *
@@ -66,6 +66,28 @@ public class QuestNodeDao extends FJDao {
          st.executeUpdate();
       }finally{
          readFinally(null, st);
+      }
+   }
+   
+   public void reduceVoiceNumbers(Long threadId, User user) throws ConfigurationException, IOException, SQLException{
+      FJVoiceDao voiceDao = new FJVoiceDao();
+      FJVoice voice = voiceDao.read(threadId, user);
+      if (voice != null){
+         String deleteTranzitQuery = getReduceVoiceNumbersQuery();
+         Connection conn = null;
+         PreparedStatement st = null;
+         boolean error = true;
+         try {
+            conn = getConnection();
+            conn.setAutoCommit(false);
+            st = conn.prepareStatement(deleteTranzitQuery);
+            st.setLong(1, voice.getNodeId());
+            st.executeUpdate();
+            voiceDao.delete(voice, conn);
+            error = false;
+         }finally{
+            writeFinally(conn, st, error);
+         }
       }
    }
 }

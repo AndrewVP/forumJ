@@ -96,12 +96,14 @@ public class FJDao {
    
    protected void writeFinally(Connection conn, Statement st, boolean error){
       try {
-         if (!error){
-            conn.commit();
-         }else{
-            conn.rollback();
+         if (conn != null){
+            if (!error){
+               conn.commit();
+            }else{
+               conn.rollback();
+            }
+            conn.setAutoCommit(true);
          }
-         conn.setAutoCommit(true);
          if (st != null){
             st.close();
          }

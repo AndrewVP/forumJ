@@ -21,5 +21,6 @@ public interface FJServletName {
    public static final String DEL_ONE_SUBSCRIBE_BY_EMAIL="DelOneSubsByMail";
    public static final String DELETE_FOLDER_FROM_VIEW="DelVFolder";
    public static final String DELETE_VIEW="DelView";
+   public static final String DELETE_VOICE="DelVoice";
 
 }
