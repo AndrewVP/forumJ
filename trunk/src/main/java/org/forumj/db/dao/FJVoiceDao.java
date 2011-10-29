@@ -46,15 +46,54 @@ public class FJVoiceDao extends FJDao {
    }
 
    public void delete(FJVoice voice, Connection connection) throws ConfigurationException, IOException, SQLException{
-      String deleteTranzitQuery = getDeleteVoiceQuery();
+      String query = getDeleteVoiceQuery();
       Connection conn = null;
       PreparedStatement st = null;
       boolean error = true;
       try {
          conn = connection == null ? getConnection() : connection;
          conn.setAutoCommit(false);
-         st = conn.prepareStatement(deleteTranzitQuery);
+         st = conn.prepareStatement(query);
          st.setLong(1, voice.getNodeId());
+         st.executeUpdate();
+         error = false;
+      }finally{
+         writeFinally(connection == null ? conn : null, st, error);
+      }
+   }
+   
+   public boolean isUserVoted(long threadId, User user) throws SQLException, ConfigurationException, IOException{
+      boolean result = false;
+      String query = getIsUserVotedQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query) ;
+         st.setLong(1, threadId);
+         st.setLong(2, user.getId());
+         ResultSet rs = st.executeQuery();
+         if (rs.next()){
+            result = true;
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
+   }
+   
+   public void create(FJVoice voice, Connection connection) throws IOException, ConfigurationException, SQLException{
+      String query = getCreateVoiceQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      boolean error = true;
+      try {
+         conn = connection == null ? getConnection() : connection;
+         conn.setAutoCommit(false);
+         st = conn.prepareStatement(query);
+         st.setLong(1, voice.getThreadId());
+         st.setLong(1, voice.getNodeId());
+         st.setLong(1, voice.getUserId());
          st.executeUpdate();
          error = false;
       }finally{

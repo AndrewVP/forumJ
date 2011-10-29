@@ -68,19 +68,19 @@ public class QuestNodeDao extends FJDao {
          readFinally(null, st);
       }
    }
-   
-   public void reduceVoiceNumbers(Long threadId, User user) throws ConfigurationException, IOException, SQLException{
+
+   public void repealVote(Long threadId, User user) throws ConfigurationException, IOException, SQLException{
       FJVoiceDao voiceDao = new FJVoiceDao();
       FJVoice voice = voiceDao.read(threadId, user);
       if (voice != null){
-         String deleteTranzitQuery = getReduceVoiceNumbersQuery();
+         String query = getReduceVoiceNumbersQuery();
          Connection conn = null;
          PreparedStatement st = null;
          boolean error = true;
          try {
             conn = getConnection();
             conn.setAutoCommit(false);
-            st = conn.prepareStatement(deleteTranzitQuery);
+            st = conn.prepareStatement(query);
             st.setLong(1, voice.getNodeId());
             st.executeUpdate();
             voiceDao.delete(voice, conn);
@@ -88,6 +88,26 @@ public class QuestNodeDao extends FJDao {
          }finally{
             writeFinally(conn, st, error);
          }
+      }
+   }
+
+   public void addVote(Long threadId, Long answerId, User user) throws ConfigurationException, IOException, SQLException{
+      FJVoiceDao voiceDao = new FJVoiceDao();
+      FJVoice voice = new FJVoice();
+      String query = getIncreaseVoiceNumbersQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      boolean error = true;
+      try {
+         conn = getConnection();
+         conn.setAutoCommit(false);
+         voiceDao.create(voice, conn);
+         st = conn.prepareStatement(query);
+         st.setLong(1, voice.getNodeId());
+         st.executeUpdate();
+         error = false;
+      }finally{
+         writeFinally(conn, st, error);
       }
    }
 }

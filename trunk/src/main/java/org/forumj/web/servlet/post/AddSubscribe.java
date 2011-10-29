@@ -28,7 +28,7 @@ public class AddSubscribe extends HttpServlet {
       try {
          StringBuffer buffer = new StringBuffer();
          HttpSession session = request.getSession();
-         String threadIdParameter = request.getParameter("C1");
+         String threadIdParameter = request.getParameter("IDT");
          String pageParameter = request.getParameter("pg");
          User user = (User) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){

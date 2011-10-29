@@ -1,17 +1,11 @@
 /*
- * Copyright Andrew V. Pogrebnyak
- * 
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- * 
- *     http://www.apache.org/licenses/LICENSE-2.0
- * 
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ * Copyright (c) 2011
+ * Andrew V. Pogrebnyak
+ * All rights reserved.
+ *
+ * This software is distributed under GNU General Public License Version 2.0
+ * You shall use it and distribute only in accordance with the terms of the 
+ * License Agreement.
  */
 package org.forumj.web.servlet.post;
 
@@ -28,27 +22,32 @@ import org.forumj.db.dao.*;
 import org.forumj.db.entity.User;
 
 /**
- * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {FJUrl.DELETE_VOICE}, name = FJServletName.DELETE_VOICE)
-public class DelVoice extends HttpServlet {
+@WebServlet(urlPatterns = {FJUrl.VOICE}, name=FJServletName.VOICE)
+public class Voice extends HttpServlet {
 
-   private static final long serialVersionUID = 2509685115114235032L;
+   private static final long serialVersionUID = 6980345465145855420L;
 
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       try {
          StringBuffer buffer = new StringBuffer();
          HttpSession session = request.getSession();
-         String threadIdParameter = request.getParameter("IDT");
+         String threadIdParameter = request.getParameter("IDT1");
+         String answerIdParameter = request.getParameter("ANSWER");
          User user = (User) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             if (threadIdParameter != null && !"".equals(threadIdParameter)){
+               FJVoiceDao voteDao = new FJVoiceDao();
                Long threadId = Long.valueOf(threadIdParameter);
-               QuestNodeDao dao = new QuestNodeDao();
-               dao.repealVote(threadId, user);
-               buffer.append(successPostOut("0", "tema.php?id=" + threadIdParameter));
+               if (!voteDao.isUserVoted(threadId, user)){
+                  Long answerId = Long.valueOf(answerIdParameter);
+                  QuestNodeDao questDao = new QuestNodeDao();
+                  questDao.addVote(threadId, answerId, user);
+               }
+               String urlQuery = "?id=" + threadIdParameter;
+               buffer.append(successPostOut("3", "tema.php" + urlQuery));
             }
          }else{
             // Вошли незарегистрировавшись
@@ -58,4 +57,6 @@ public class DelVoice extends HttpServlet {
          e.printStackTrace();
       }
    }
+
+
 }
