@@ -118,4 +118,24 @@ public class FJInterfaceDao extends FJDao {
          readFinally(conn, st);
       }
    }
+
+   public void delete(long interfaceId, User user) throws ConfigurationException, SQLException, IOException{
+      String deleteFoldersQuery = getDeleteAllFoldersFromViewQuery();
+      String deleteViewQuery = getDeleteViewQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(deleteFoldersQuery);
+         st.setLong(1, interfaceId);
+         st.setLong(2, user.getId());
+         st.executeUpdate();
+         st = conn.prepareStatement(deleteViewQuery);
+         st.setLong(1, interfaceId);
+         st.setLong(2, user.getId());
+         st.executeUpdate();
+      }finally{
+         readFinally(conn, st);
+      }
+   }
 }
