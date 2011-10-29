@@ -55,6 +55,10 @@ public class QueryBuilder {
 
    private static String loadAnswersQuery = null;
 
+   private static String readVoiceQuery = null;
+   
+   private static String deleteVoiceQuery = null;
+   
    private static String loadIgnorQuery = null;
 
    private static String updateIgnorQuery = null;
@@ -106,6 +110,8 @@ public class QueryBuilder {
    private static String deleteFolderTranzitQuery = null;
    
    private static String deleteFolderFromViewQuery = null;
+   
+   private static String reduceVoiceNumbersQuery = null;
    
    private static String deleteAllFoldersFromViewQuery = null;
    
@@ -170,6 +176,13 @@ public class QueryBuilder {
          deleteFolderFromViewQuery = loadQuery("/sql/delete_tranzit_from_view.sql");
       }
       return deleteFolderFromViewQuery;
+   }
+   
+   public static String getReduceVoiceNumbersQuery() throws IOException{
+      if (reduceVoiceNumbersQuery == null){
+         reduceVoiceNumbersQuery = loadQuery("/sql/reduce_voice_mumbers.sql");
+      }
+      return reduceVoiceNumbersQuery;
    }
    
    public static String getDeleteAllFoldersFromViewQuery() throws IOException{
@@ -324,6 +337,20 @@ public class QueryBuilder {
          loadAnswersQuery = loadQuery("/sql/load_answers.sql");
       }
       return loadAnswersQuery;
+   }
+   
+   public static String getReadVoiceQuery() throws IOException{
+      if (readVoiceQuery == null){
+         readVoiceQuery = loadQuery("/sql/load_voice.sql");
+      }
+      return readVoiceQuery;
+   }
+   
+   public static String getDeleteVoiceQuery() throws IOException{
+      if (deleteVoiceQuery == null){
+         deleteVoiceQuery = loadQuery("/sql/delete_voice.sql");
+      }
+      return deleteVoiceQuery;
    }
    
    public static String getLoadIgnorQuery() throws IOException{
