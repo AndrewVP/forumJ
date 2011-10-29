@@ -24,5 +24,5 @@ public interface FJUrl {
    public static final String DELETE_VOICE="/delvoice.php";
    public static final String VOICE="/voice.php";
    public static final String ADD_VOTE="/uservoice.php";
-
+   public static final String ADD_IGNOR="/ignor.php";
 }

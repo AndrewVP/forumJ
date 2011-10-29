@@ -67,6 +67,8 @@ public class QueryBuilder {
 
    private static String updateIgnorQuery = null;
 
+   private static String createIgnorQuery = null;
+   
    private static String createAnswerQuery = null;
    
    private static String receiveMailQuery = null;
@@ -401,6 +403,13 @@ public class QueryBuilder {
          updateIgnorQuery = loadQuery("/sql/update_ignor.sql");
       }
       return updateIgnorQuery;
+   }
+   
+   public static String getCreateIgnorQuery() throws IOException{
+      if (createIgnorQuery == null){
+         createIgnorQuery = loadQuery("/sql/create_ignor.sql");
+      }
+      return createIgnorQuery;
    }
    
    public static String getCreateAnswerQuery() throws IOException{
