@@ -32,4 +32,5 @@ public interface FJUrl {
    public static final String S_AVATAR="/s_avatar.php";
    public static final String SET_AVATAR="/setavatar.php";
    public static final String SET_FOOTER="/setfooter.php";
+   public static final String SET_LOCATION="/setlocation.php";
 }
