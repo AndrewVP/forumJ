@@ -33,5 +33,6 @@ public interface FJServletName {
    public static final String SET_AVATAR="SetAvatar";
    public static final String SET_FOOTER="SetFooter";
    public static final String SET_LOCATION="SetLocation";
+   public static final String V_AVATAR="VAvatar";
 
 }
