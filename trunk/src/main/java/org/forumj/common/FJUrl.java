@@ -29,4 +29,6 @@ public interface FJUrl {
    public static final String NEW_FOLDER="/newfolder.php";
    public static final String NEW_VIEW="/newview.php";
    public static final String OK_AVATAR="/ok_avatar.php";
+   public static final String S_AVATAR="/s_avatar.php";
+   public static final String SET_AVATAR="/setavatar.php";
 }
