@@ -35,5 +35,6 @@ public interface FJServletName {
    public static final String SET_LOCATION="SetLocation";
    public static final String V_AVATAR="VAvatar";
    public static final String SELECT_VIEW="SlctView";
+   public static final String SEND_PIVATE_MESSAGE="Send";
 
 }

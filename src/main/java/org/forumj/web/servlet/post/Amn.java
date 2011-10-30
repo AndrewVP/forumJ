@@ -39,7 +39,7 @@ public class Amn extends HttpServlet {
          User user = (User) session.getAttribute("user");
          String ignorTypeParameter = request.getParameter("C1");
          String ignorIdParameter = request.getParameter("IDZ");
-         String ignorYearParameter = request.getParameter("pg");
+         String ignorYearParameter = request.getParameter("Y");
          String ignorMounthParameter = request.getParameter("MTH");
          String ignorDayParameter = request.getParameter("D");
          String ignorHourParameter = request.getParameter("H");
