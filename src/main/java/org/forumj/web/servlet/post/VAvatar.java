@@ -32,7 +32,7 @@ public class VAvatar extends FJServlet {
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       try {
          StringBuffer buffer = new StringBuffer();
-         boolean vAvatar = request.getParameter("v_avatar") != null;;
+         boolean vAvatar = request.getParameter("v_avatar") != null;
          HttpSession session = request.getSession();
          User user = (User) session.getAttribute("user");
          UserDao dao = new UserDao();
