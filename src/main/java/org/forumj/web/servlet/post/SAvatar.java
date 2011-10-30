@@ -12,9 +12,10 @@ package org.forumj.web.servlet.post;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import org.forumj.common.FJConfiguration;
+import org.forumj.common.*;
 import org.forumj.db.dao.UserDao;
 import org.forumj.db.entity.User;
 import org.forumj.web.servlet.FJServlet;
@@ -23,6 +24,7 @@ import org.forumj.web.servlet.FJServlet;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
+@WebServlet(urlPatterns = {FJUrl.S_AVATAR}, name=FJServletName.S_AVATAR)
 public class SAvatar extends FJServlet {
 
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
