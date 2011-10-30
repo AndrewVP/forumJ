@@ -23,6 +23,7 @@ import org.apache.commons.configuration.*;
 import org.apache.commons.dbcp.*;
 import org.apache.commons.pool.ObjectPool;
 import org.apache.commons.pool.impl.GenericObjectPool;
+import org.forumj.common.FJConfiguration;
 import org.forumj.email.EMail;
 import org.forumj.exception.DBException;
 
@@ -42,14 +43,10 @@ public class FJDao {
 
    public static DataSource dataSource = null;
 
-   protected static Configuration config = null;
-   
    public static Connection getConnection() throws SQLException, ConfigurationException{
       if (dataSource == null){
          synchronized (FJDao.class) {
-            if (config == null){
-               config = new PropertiesConfiguration("fj.properties");
-            }
+            Configuration config = FJConfiguration.getConfig();
             if (dataSource == null){
                ObjectPool connectionPool = new GenericObjectPool(null);
                String connectURI = config.getString("jdbc.url");

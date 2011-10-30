@@ -23,7 +23,6 @@ public class AddSubscribe extends HttpServlet {
        return Math.abs(random.nextInt());
    }
 
-   @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       try {
          StringBuffer buffer = new StringBuffer();

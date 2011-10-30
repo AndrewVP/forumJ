@@ -49,7 +49,7 @@ public class OkAvatar extends FJServlet {
          buffer.append("<input type=checkbox  name='ok_avatar'>&nbsp;Разрешить<br><br>");   
          buffer.append("<input type='password' name=pass>");
          buffer.append("<input type='submit'>");
-         buffer.append("</form></td></tr></table></html>");
+         buffer.append("</form></td></tr></table></body></html>");
          response.getWriter().write(buffer.toString());
       } catch (ConfigurationException e) {
          e.printStackTrace();
