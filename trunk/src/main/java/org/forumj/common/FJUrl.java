@@ -35,4 +35,5 @@ public interface FJUrl {
    public static final String SET_LOCATION="/setlocation.php";
    public static final String V_AVATAR="/vavatar.php";
    public static final String SELECT_VIEW="/slctview.php";
+   public static final String SEND_PIVATE_MESSAGE="/send.php";
 }
