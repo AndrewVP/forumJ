@@ -3,3 +3,4 @@ jdbc.user.name=diletant
 jdbc.user.password=qqq
 jdbc.driver=com.mysql.jdbc.Driver
 lang.default=ua
+okAvatar.password=
