@@ -29,5 +29,7 @@ public interface FJServletName {
    public static final String NEW_FOLDER="NewFolder";
    public static final String NEW_VIEW="NewView";
    public static final String OK_AVATAR="OkAvatar";
+   public static final String S_AVATAR="SAvatar";
+   public static final String SET_AVATAR="SetAvatar";
 
 }

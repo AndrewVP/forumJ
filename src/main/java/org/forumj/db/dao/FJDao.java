@@ -24,7 +24,7 @@ import org.apache.commons.dbcp.*;
 import org.apache.commons.pool.ObjectPool;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.forumj.common.FJConfiguration;
-import org.forumj.email.EMail;
+import org.forumj.email.FJEMail;
 import org.forumj.exception.DBException;
 
 
@@ -39,7 +39,7 @@ public class FJDao {
     *
     * @var Email
     */
-   private EMail mail = new EMail();
+   private FJEMail mail = new FJEMail();
 
    public static DataSource dataSource = null;
 
@@ -67,15 +67,6 @@ public class FJDao {
          }
       }
       return dataSource.getConnection();
-   }
-   
-   /**
-    * Вызывается при возникновении ошибки БД
-    *
-    * @param DataBaseException $exception
-    */
-   protected void onDatabaseError(DBException exception){
-      mail.sendInvalidQueryMail(999, 999, exception.getMessage(), "tema");
    }
    
    protected void readFinally(Connection conn, Statement st){

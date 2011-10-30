@@ -58,8 +58,10 @@ public class IndexDao extends FJDao {
 
    /**
     * Конструктор
+    * @throws SQLException 
+    * @throws ConfigurationException 
     */
-   public IndexDao(User user){
+   public IndexDao(User user) throws ConfigurationException, SQLException{
       super();
       this.user =  user;
       this.arrIgnorId = this.getIgnorArray();
@@ -106,8 +108,10 @@ public class IndexDao extends FJDao {
     * TODO Этот метод должен быть у пользователя
     * @param unknown_type idUser
     * @return unknown
+    * @throws SQLException 
+    * @throws ConfigurationException 
     */
-   private List<Long> getIgnorArray(){
+   private List<Long> getIgnorArray() throws SQLException, ConfigurationException{
       List<Long> result = new ArrayList<Long>();
       String query = "SELECT ignor FROM ignor WHERE user=" + this.getIdUser() + " and end > now()";
       Connection conn = null;
@@ -119,25 +123,8 @@ public class IndexDao extends FJDao {
          while (rs.next()){
             result.add(rs.getLong("ignor"));
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
@@ -146,8 +133,10 @@ public class IndexDao extends FJDao {
     * Возвращает id последнего поста в форуме
     *
     * @return unknown
+    * @throws SQLException 
+    * @throws ConfigurationException 
     */
-   public Long getMaxPostId(){
+   public Long getMaxPostId() throws ConfigurationException, SQLException{
       Long result = 0l;
       String query="SELECT max(id) as mx FROM body";
       Connection conn = null;
@@ -159,25 +148,8 @@ public class IndexDao extends FJDao {
          if (rs.next()){
             result = rs.getLong("mx");
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
@@ -186,8 +158,10 @@ public class IndexDao extends FJDao {
     * Возвращает id последней ветки в форуме
     *
     * @return unknown
+    * @throws SQLException 
+    * @throws ConfigurationException 
     */
-   public Long getMaxThreadId(){
+   public Long getMaxThreadId() throws ConfigurationException, SQLException{
       Long result = 0l;
       String query="SELECT max(id) as mx FROM titles";
       Connection conn = null;
@@ -199,30 +173,13 @@ public class IndexDao extends FJDao {
          if (rs.next()){
             result = rs.getLong("mx");
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
 
-   public List<FJThread> getThreads(Long viewId, int threadCountPerPage, long nfirstpost, LocaleString locale, Boolean isLogin, int pg, int pt){
+   public List<FJThread> getThreads(Long viewId, int threadCountPerPage, long nfirstpost, LocaleString locale, Boolean isLogin, int pg, int pt) throws SQLException, ConfigurationException{
       List<FJThread> result = new ArrayList<FJThread>();
       String sql_views="SELECT folder FROM fdvtranzit WHERE (user=" + this.getIdUser() + " OR user=0) AND view=" + viewId;
       Connection conn = null;
@@ -431,30 +388,13 @@ public class IndexDao extends FJDao {
             result.add(thr);
             disain = disain * -1;
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
 
-   public int getNewMailCount(Long idUser){
+   public int getNewMailCount(Long idUser) throws ConfigurationException, SQLException{
       int result = 0;
       String sql_newmail="SELECT COUNT(*) as nmail FROM fdmail WHERE rcvr=" + idUser + " AND d_rcv IS NULL ";
       Connection conn = null;
@@ -466,25 +406,8 @@ public class IndexDao extends FJDao {
          if (rs.next()){
             result = rs.getInt("nmail");
          }
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-         throw new RuntimeException(e);
-      } catch (SQLException e) {
-         DBException ex = new DBException(e);
-         onDatabaseError(ex);
-         e.printStackTrace();
-         throw new RuntimeException(e);
       }finally{
-         try {
-            if (st != null){
-               st.close();
-            }
-            if (conn != null){
-               conn.close();
-            }
-         } catch (SQLException e) {
-            e.printStackTrace();
-         }
+         readFinally(conn, st);
       }
       return result;
    }
