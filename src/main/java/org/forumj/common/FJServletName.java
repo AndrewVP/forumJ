@@ -28,5 +28,6 @@ public interface FJServletName {
    public static final String MOVE_TITLE="MoveTitle";
    public static final String NEW_FOLDER="NewFolder";
    public static final String NEW_VIEW="NewView";
+   public static final String OK_AVATAR="OkAvatar";
 
 }

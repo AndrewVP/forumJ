@@ -27,10 +27,9 @@ import org.forumj.tool.LocaleString;
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
+@SuppressWarnings("serial")
 @WebServlet(urlPatterns = {"/opr.php"}, name="opr")
 public class Opr extends HttpServlet {
-
-   private static final long serialVersionUID = -2266825074094804030L;
 
    /**
     * {@inheritDoc}
