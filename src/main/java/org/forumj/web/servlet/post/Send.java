@@ -13,8 +13,7 @@ import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
 
-import java.io.*;
-import java.text.*;
+import java.io.IOException;
 import java.util.Date;
 
 import javax.servlet.ServletException;
