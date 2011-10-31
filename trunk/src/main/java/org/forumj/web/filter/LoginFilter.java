@@ -57,7 +57,7 @@ public class LoginFilter implements Filter {
                String pass2 = pass2Cookie.getValue();
                if (pass2 != null){
                   pass2 = codec.decode(pass2);
-                  user = dao.loadUser(Long.valueOf(iduCookie.getValue()), pass2Cookie.getValue(), false);
+                  user = dao.read(Long.valueOf(iduCookie.getValue()), pass2Cookie.getValue(), false);
                   if (user == null){
                      ok = false;
                   }else{
@@ -69,7 +69,7 @@ public class LoginFilter implements Filter {
             }
          }
          if (user == null){
-            request.getSession().setAttribute("user", dao.loadUser(0l));
+            request.getSession().setAttribute("user", dao.read(0l));
          }
          if (ok){
             chain.doFilter(request, response);

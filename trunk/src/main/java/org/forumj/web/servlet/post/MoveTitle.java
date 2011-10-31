@@ -65,6 +65,8 @@ public class MoveTitle extends FJServlet {
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());
          }
+         response.setContentType("text/html; charset=UTF-8");
+         response.getWriter().write(buffer.toString());
       }catch (Exception e) {
          e.printStackTrace();
       }
