@@ -48,6 +48,8 @@ public class Defview extends HttpServlet {
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());
          }
+         response.setContentType("text/html; charset=UTF-8");
+         response.getWriter().write(buffer.toString());
       } catch (ConfigurationException e) {
          e.printStackTrace();
       } catch (SQLException e) {

@@ -36,7 +36,7 @@ public class OkAvatar extends FJServlet {
       Long userId = Long.valueOf(userIdParameter);
       UserDao dao = new UserDao();
       try {
-         User user = dao.loadUser(userId);
+         User user = dao.read(userId);
          buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
          buffer.append("<html><head><title></title><meta http-equiv='content-type' content='text/html; charset=UTF-8'></head><body><table><tr><td>");
          buffer.append("<form action='s_avatar.php?qqnn=" + userIdParameter + "' method='post'>");
@@ -50,6 +50,7 @@ public class OkAvatar extends FJServlet {
          buffer.append("<input type='password' name=pass>");
          buffer.append("<input type='submit'>");
          buffer.append("</form></td></tr></table></body></html>");
+         response.setContentType("text/html; charset=UTF-8");
          response.getWriter().write(buffer.toString());
       } catch (ConfigurationException e) {
          e.printStackTrace();

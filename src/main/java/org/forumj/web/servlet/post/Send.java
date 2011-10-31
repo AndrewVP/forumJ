@@ -13,7 +13,7 @@ import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
 
-import java.io.IOException;
+import java.io.*;
 import java.text.*;
 import java.util.Date;
 
@@ -22,7 +22,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
-import org.forumj.db.dao.IgnorDao;
+import org.forumj.db.dao.*;
 import org.forumj.db.entity.*;
 import org.forumj.exception.InvalidKeyException;
 import org.forumj.tool.LocaleString;
@@ -49,25 +49,36 @@ public class Send extends FJServlet {
          String headParameter = request.getParameter("NHEAD");
          String bodyParameter = request.getParameter("A2");
          String receiverNickParameter = request.getParameter("RCVR");
-         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-         String currentTime = sdf.format(new Date());
+         Date currentDate = new Date();
+         FJMail mail = new FJMail();
+         UserDao userDao = new UserDao();
+         User receiver = userDao.read(receiverNickParameter);
+         mail.setSender(user);
+         mail.setReceiver(receiver);
+         mail.setBody(bodyParameter);
+         mail.setSubject(headParameter);
+         mail.setCreateDate(currentDate);
+         mail.setSentDate(currentDate);
          if (user != null && !user.isBanned() && user.isLogined()){
             if (!isEmptyParameter(comandParameter) && comandParameter.equals("view")){
-               buffer.append(view(headParameter, bodyParameter, locale, currentTime, user, receiverNickParameter, request));
+               buffer.append(view(mail, locale, request));
             }else{
-               buffer.append(write());
+               FJMailDao dao = new FJMailDao();
+               dao.create(mail);
+               buffer.append(successPostOut("0", "control.php?id=" + idParameter));
             }
-            buffer.append(successPostOut("0", "control.php?id=" + idParameter));
          }else{
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());
          }
+         response.setContentType("text/html; charset=UTF-8");
+         response.getWriter().write(buffer.toString());
       }catch (Exception e) {
          e.printStackTrace();
       }
    }
 
-   private StringBuffer view(String $str_head, String $str_body, LocaleString locale, String $lptime, User user, String receiver, HttpServletRequest request) throws InvalidKeyException, IOException{
+   private StringBuffer view(FJMail mail, LocaleString locale, HttpServletRequest request) throws InvalidKeyException, IOException{
       StringBuffer buffer = new StringBuffer();
       /*Тело.*/
       buffer.append("<html>");
@@ -98,13 +109,13 @@ public class Send extends FJServlet {
       buffer.append("<span class=tbtext>");
       buffer.append(locale.getString("mess61"));
       buffer.append(":&nbsp;");
-      buffer.append($lptime);
+      buffer.append(dateToString(mail.getSentDate(), "yyyy-MM-dd HH:mm:ss"));
       buffer.append("&nbsp;");
       buffer.append(locale.getString("mess58"));
       buffer.append(":&nbsp;");
       buffer.append("</span>");
       buffer.append("<span class=nick>");
-      buffer.append(user.getNick());
+      buffer.append(mail.getSender().getNick());
       buffer.append("</span>");
       buffer.append("<span class='tbtext'>");
       buffer.append("&nbsp;");
@@ -112,22 +123,22 @@ public class Send extends FJServlet {
       buffer.append(":&nbsp;");
       buffer.append("</span>");
       buffer.append("<span class='nick'>");
-      buffer.append(receiver);
+      buffer.append(mail.getReceiver().getNick());
       buffer.append("</span>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("<tr>");
       buffer.append("<td colspan='5' class='internal'>");
       /*Заголовок.*/
-      buffer.append("<div class=nik>" + fd_head($str_head) + "</div>");
+      buffer.append("<div class=nik>" + fd_head(mail.getSubject()) + "</div>");
       /*Тело.*/
-      buffer.append("<div class=post>" + fd_body($str_body) + "</div>");
+      buffer.append("<div class=post>" + fd_body(mail.getBody()) + "</div>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table>");
       buffer.append("</td>");
       buffer.append("</tr>");
-      buffer.append(menu(request, user, locale, false));
+      buffer.append(menu(request, mail.getSender(), locale, false));
       buffer.append("<tr>");
       buffer.append("<td>");
       buffer.append("<table>");
@@ -147,7 +158,7 @@ public class Send extends FJServlet {
       buffer.append("</td>");
       buffer.append("<td>");
       buffer.append("<div class='mnuprof'>");
-      buffer.append(user.getNick());
+      buffer.append(mail.getSender().getNick());
       buffer.append("</div>");
       buffer.append("</td>");
       buffer.append("</tr>");
@@ -159,7 +170,7 @@ public class Send extends FJServlet {
       buffer.append("</div>");
       buffer.append("</td>");
       buffer.append("<td colspan='2'>");
-      buffer.append("<input type=text class='mnuforumSm' value='" + receiver + "' name='RCVR' size='30'>");
+      buffer.append("<input type=text class='mnuforumSm' value='" + mail.getReceiver().getNick() + "' name='RCVR' size='30'>");
       buffer.append("</td>");
       buffer.append("</tr>");
       /*Тема*/
@@ -170,7 +181,7 @@ public class Send extends FJServlet {
       buffer.append("</div>");
       buffer.append("</td>");
       buffer.append("<td>");
-      buffer.append("<input type=text class='mnuforumSm' name='NHEAD' value='" + $str_head + "' size='100'>");
+      buffer.append("<input type=text class='mnuforumSm' name='NHEAD' value='" + mail.getSubject() + "' size='100'>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table>");
@@ -202,7 +213,7 @@ public class Send extends FJServlet {
       buffer.append(autotags_add());
       /* текстарий*/
       buffer.append("<p>");
-      buffer.append("<textarea rows='20' class='mnuforumSm' id='ed1' name='A2' cols='55'>" + $str_body + "</textarea>");
+      buffer.append("<textarea rows='20' class='mnuforumSm' id='ed1' name='A2' cols='55'>" + mail.getBody() + "</textarea>");
       buffer.append("</p>");
       /*Кнопки*/
       buffer.append("<table>");
@@ -216,7 +227,7 @@ public class Send extends FJServlet {
       buffer.append("</tr>");
       buffer.append("</table>");
       /*Прередаем нужные пераметры...*/
-      buffer.append(fd_form_add(user));
+      buffer.append(fd_form_add(mail.getSender()));
       buffer.append("</td>");
       buffer.append("</table>");
       buffer.append("</td>");
@@ -231,11 +242,6 @@ public class Send extends FJServlet {
       buffer.append("</table>");
       buffer.append("</body>");
       buffer.append("</html>");
-      return buffer;
-   }
-
-   private StringBuffer write(){
-      StringBuffer buffer = new StringBuffer();
       return buffer;
    }
 

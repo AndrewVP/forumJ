@@ -183,4 +183,21 @@ public class FJMailDao extends FJDao {
          readFinally(conn, st);
       }
    }
+   
+   public void create(FJMail mail) throws SQLException, ConfigurationException, IOException{
+      String query = getCreateMailQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setLong(1, mail.getSender().getId());
+         st.setLong(2, mail.getReceiver().getId());
+         st.setString(3, mail.getSubject());
+         st.setString(4, mail.getBody());
+         st.executeUpdate();
+      }finally{
+         readFinally(conn, st);
+      }
+   }
 }

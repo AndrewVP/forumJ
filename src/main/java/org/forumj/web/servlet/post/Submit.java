@@ -42,7 +42,7 @@ public class Submit extends HttpServlet {
       String $t2 = request.getParameter("T2");
       UserDao dao = new UserDao();
       try {
-         User user = dao.loadUser($t1, $t2, true);
+         User user = dao.read($t1, $t2, true);
          if(user != null) {
             session.setAttribute("user", user);
             Long $idu=user.getId();

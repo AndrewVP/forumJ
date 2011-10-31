@@ -17,6 +17,9 @@ package org.forumj.tool;
 
 import static org.forumj.tool.PHP.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import org.forumj.db.entity.User;
 
 /**
@@ -649,5 +652,10 @@ public class Diletant {
       buffer.append("</body>");
       buffer.append("</html>");
       return buffer;
+   }
+   
+   public static String dateToString(Date date, String pattern){
+      SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+      return sdf.format(date);
    }
 }

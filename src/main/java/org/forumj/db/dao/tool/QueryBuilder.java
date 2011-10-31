@@ -93,6 +93,8 @@ public class QueryBuilder {
    
    private static String deleteFromInboxQuery = null;
    
+   private static String createMailQuery = null;
+   
    private static String loadInterfacesQuery = null;
    
    private static String loadInterfaceQuery = null;
@@ -502,6 +504,13 @@ public class QueryBuilder {
          deleteFromInboxQuery  = loadQuery("/sql/delete_from_inbox.sql");
       }
       return deleteFromInboxQuery;
+   }
+   
+   public static String getCreateMailQuery() throws IOException{
+      if (createMailQuery  == null){
+         createMailQuery  = loadQuery("/sql/create_mail.sql");
+      }
+      return createMailQuery;
    }
    
    public static String getLoadInterfacesQuery() throws IOException{

@@ -48,7 +48,7 @@ public class ExitFilter implements Filter {
       try {
          if (exitParam != null && user != null && user.isLogined()){
             UserDao dao = new UserDao();
-            request.getSession().setAttribute("user", dao.loadUser(0l));
+            request.getSession().setAttribute("user", dao.read(0l));
             setcookie(response, "idu", "", 0, request.getContextPath(), request.getServerName());
             setcookie(response, "pass2", "", 0, request.getContextPath(), request.getServerName());
             String query = request.getQueryString();

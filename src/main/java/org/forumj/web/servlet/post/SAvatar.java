@@ -37,7 +37,7 @@ public class SAvatar extends FJServlet {
          if (!isEmptyParameter(passParameter) && passParameter.equalsIgnoreCase(okAvatarPass)){
             Long userId = Long.valueOf(userIdParameter);
             UserDao dao = new UserDao();
-            User user = dao.loadUser(userId);
+            User user = dao.read(userId);
             user.setAvatar(avatarParameter);
             user.setOk_avatar(true);
             user.setS_avatar(true);
@@ -48,6 +48,8 @@ public class SAvatar extends FJServlet {
             buffer.append("<img src='" + avatarParameter + "'>");
             buffer.append("</body></html>");
          }
+         response.setContentType("text/html; charset=UTF-8");
+         response.getWriter().write(buffer.toString());
       }catch (Exception e) {
          e.printStackTrace();
       }

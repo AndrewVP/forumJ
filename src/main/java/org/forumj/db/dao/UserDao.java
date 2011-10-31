@@ -11,7 +11,7 @@ import org.forumj.db.entity.User;
 
 public class UserDao extends FJDao {
 
-   public User loadUser(Long userId, String password, boolean firstPassword) throws ConfigurationException, SQLException{
+   public User read(Long userId, String password, boolean firstPassword) throws ConfigurationException, SQLException{
       String query="SELECT * FROM users WHERE id=" + userId.toString();
       String add = "";
       if(firstPassword){
@@ -22,7 +22,7 @@ public class UserDao extends FJDao {
       return loadUser(query + add, firstPassword);
    }
 
-   public User loadUser(String nick, String password, Boolean firstPassword) throws ConfigurationException, SQLException{
+   public User read(String nick, String password, Boolean firstPassword) throws ConfigurationException, SQLException{
       String query="SELECT * FROM users WHERE nick='" + nick + "' AND pass='" + password + "'";
       String add = "";
       if(firstPassword){
@@ -33,8 +33,13 @@ public class UserDao extends FJDao {
       return loadUser(query + add, firstPassword);
    }
    
-   public User loadUser(Long userId) throws ConfigurationException, SQLException{
+   public User read(Long userId) throws ConfigurationException, SQLException{
       String query="SELECT * FROM users WHERE id=" + userId.toString();
+      return loadUser(query, null);
+   }
+   
+   public User read(String nick) throws ConfigurationException, SQLException{
+      String query="SELECT * FROM users WHERE nick=\"" + nick + "\"";
       return loadUser(query, null);
    }
    

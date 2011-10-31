@@ -56,7 +56,7 @@ public class RestrictUnloginedUsersFilter implements Filter {
                UserDao dao = new UserDao();
                boolean firstPassword = password1 != null;
                String password = password1 == null ? password1 : password2;
-               user = dao.loadUser(userId, password, firstPassword);
+               user = dao.read(userId, password, firstPassword);
                if (user != null){
                   session.setAttribute("user", user);
                }

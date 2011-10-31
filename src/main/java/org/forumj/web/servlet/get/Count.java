@@ -52,6 +52,7 @@ public class Count extends HttpServlet {
             result.append(",");
             result.append(postDao.getAddedPostsAmount(Long.valueOf(threadId), Long.valueOf(lastPostId)));
          }
+         response.setContentType("text/html; charset=UTF-8");
          response.getWriter().write(buffer.toString());
       } catch (NumberFormatException e) {
          e.printStackTrace();
