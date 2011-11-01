@@ -23,7 +23,7 @@ import org.forumj.tool.LocaleString;
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebFilter(servletNames={INDEX, VIEW_THREAD, LOGIN, NEW_THREAD, NEW_POST, "new", NEW_QUESTION, "quest", SETTINGS})
+@WebFilter(servletNames={INDEX, VIEW_THREAD, LOGIN, NEW_THREAD, ADD_POST, ADD_THREAD, NEW_QUESTION, ADD_QUESTION, SETTINGS})
 public class LocaleResolver implements Filter {
 
    protected static Configuration config = null;

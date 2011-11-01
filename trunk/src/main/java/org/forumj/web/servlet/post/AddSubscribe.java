@@ -12,12 +12,12 @@ import javax.servlet.http.*;
 import org.forumj.common.*;
 import org.forumj.db.dao.FJSubscribeDao;
 import org.forumj.db.entity.*;
+import org.forumj.web.servlet.FJServlet;
 
+@SuppressWarnings("serial")
 @WebServlet(urlPatterns = {"/" + FJUrl.ADD_SUBSCRIBE}, name=FJServletName.ADD_SUBSCRIBE)
-public class AddSubscribe extends HttpServlet {
+public class AddSubscribe extends FJServlet {
 
-   private static final long serialVersionUID = -4232484548540853804L;
-   
    private static Random random = new Random(new Date().getTime());
 
    static int generateRandom() {

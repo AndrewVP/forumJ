@@ -23,17 +23,18 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import org.forumj.common.*;
 import org.forumj.db.dao.*;
 import org.forumj.db.entity.User;
+import org.forumj.web.servlet.FJServlet;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {"/delfolder.php"}, name="DelFolder")
-public class DelFolder extends HttpServlet {
-
-   private static final long serialVersionUID = 1273343677774942694L;
+@SuppressWarnings("serial")
+@WebServlet(urlPatterns = {"/" + FJUrl.FOLDER_TOOLS}, name = FJServletName.FOLDER_TOOLS)
+public class DelFolder extends FJServlet {
 
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

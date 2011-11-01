@@ -26,7 +26,7 @@ import org.forumj.web.servlet.FJServlet;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = {FJUrl.V_AVATAR}, name=FJServletName.V_AVATAR)
+@WebServlet(urlPatterns = {"/" + FJUrl.V_AVATAR}, name=FJServletName.V_AVATAR)
 public class VAvatar extends FJServlet {
 
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

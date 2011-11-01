@@ -33,7 +33,7 @@ import org.forumj.web.servlet.FJServlet;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = {FJUrl.NEW_VIEW}, name = FJServletName.NEW_VIEW)
+@WebServlet(urlPatterns = {"/" + FJUrl.NEW_VIEW}, name = FJServletName.NEW_VIEW)
 public class NewView extends FJServlet {
 
    @Override

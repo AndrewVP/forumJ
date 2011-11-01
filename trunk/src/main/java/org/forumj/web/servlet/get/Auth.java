@@ -10,7 +10,7 @@
 package org.forumj.web.servlet.get;
 
 import static org.forumj.tool.FJServletTools.*;
-import static org.forumj.web.servlet.tool.FJServletTools.loadCSS;
+import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.*;
 
@@ -22,15 +22,15 @@ import org.forumj.common.*;
 import org.forumj.db.entity.User;
 import org.forumj.exception.InvalidKeyException;
 import org.forumj.tool.LocaleString;
+import org.forumj.web.servlet.FJServlet;
 
 /**
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
+@SuppressWarnings("serial")
 @WebServlet(urlPatterns = {"/" + FJUrl.LOGIN}, name = FJServletName.LOGIN)
-public class Auth extends HttpServlet {
-
-   private static final long serialVersionUID = 1651376978036223885L;
+public class Auth extends FJServlet {
 
    /**
     * {@inheritDoc}

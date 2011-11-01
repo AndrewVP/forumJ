@@ -20,14 +20,14 @@ import javax.servlet.http.*;
 import org.forumj.common.*;
 import org.forumj.db.dao.*;
 import org.forumj.db.entity.User;
+import org.forumj.web.servlet.FJServlet;
 
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {FJUrl.VOICE}, name=FJServletName.VOICE)
-public class Voice extends HttpServlet {
-
-   private static final long serialVersionUID = 6980345465145855420L;
+@SuppressWarnings("serial")
+@WebServlet(urlPatterns = {"/" + FJUrl.VOICE}, name=FJServletName.VOICE)
+public class Voice extends FJServlet {
 
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

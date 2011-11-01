@@ -20,14 +20,14 @@ import javax.servlet.http.*;
 import org.forumj.common.*;
 import org.forumj.db.dao.FJSubscribeDao;
 import org.forumj.db.entity.User;
+import org.forumj.web.servlet.FJServlet;
 
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {FJUrl.DEL_SUBSCRIBES}, name=FJServletName.DEL_SUBSCRIBES)
-public class DelSubs extends HttpServlet {
-
-   private static final long serialVersionUID = -6951760787312461408L;
+@SuppressWarnings("serial")
+@WebServlet(urlPatterns = {"/" + FJUrl.DELETE_SUBSCRIBES}, name=FJServletName.DELETE_SUBSCRIBES)
+public class DelSubs extends FJServlet {
    
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -29,15 +29,15 @@ import org.forumj.db.dao.TemaDao;
 import org.forumj.db.entity.*;
 import org.forumj.exception.InvalidKeyException;
 import org.forumj.tool.LocaleString;
+import org.forumj.web.servlet.FJServlet;
 
 /**
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
+@SuppressWarnings("serial")
 @WebServlet(urlPatterns = {"/" + FJUrl.VIEW_THREAD}, name = FJServletName.VIEW_THREAD)
-public class Tema extends HttpServlet {
-
-   private static final long serialVersionUID = 64298210092336195L;
+public class Tema extends FJServlet {
 
    /**
     * {@inheritDoc}

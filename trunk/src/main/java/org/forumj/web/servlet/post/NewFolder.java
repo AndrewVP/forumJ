@@ -33,7 +33,7 @@ import org.forumj.web.servlet.FJServlet;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = {FJUrl.NEW_FOLDER}, name = FJServletName.NEW_FOLDER)
+@WebServlet(urlPatterns = {"/" + FJUrl.NEW_FOLDER}, name = FJServletName.NEW_FOLDER)
 public class NewFolder extends FJServlet {
 
    @Override

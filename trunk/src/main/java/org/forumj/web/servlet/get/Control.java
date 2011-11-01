@@ -34,15 +34,15 @@ import org.forumj.db.dao.*;
 import org.forumj.db.entity.*;
 import org.forumj.exception.InvalidKeyException;
 import org.forumj.tool.LocaleString;
+import org.forumj.web.servlet.FJServlet;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
+@SuppressWarnings("serial")
 @WebServlet(urlPatterns = {"/" + FJUrl.SETTINGS}, name = FJServletName.SETTINGS)
-public class Control extends HttpServlet {
-
-   private static final long serialVersionUID = -6828786894000688297L;
+public class Control extends FJServlet {
 
    /**
     * {@inheritDoc}

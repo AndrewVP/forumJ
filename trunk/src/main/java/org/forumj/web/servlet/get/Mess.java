@@ -29,15 +29,15 @@ import org.forumj.common.*;
 import org.forumj.db.entity.User;
 import org.forumj.exception.InvalidKeyException;
 import org.forumj.tool.LocaleString;
+import org.forumj.web.servlet.FJServlet;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
+@SuppressWarnings("serial")
 @WebServlet(urlPatterns = {"/" + FJUrl.NEW_THREAD}, name = FJServletName.NEW_THREAD)
-public class Mess extends HttpServlet {
-
-   private static final long serialVersionUID = 4096046336659603136L;
+public class Mess extends FJServlet {
 
    /**
     * {@inheritDoc}

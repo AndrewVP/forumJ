@@ -10,9 +10,9 @@
 package org.forumj.web.servlet.post;
 
 import static org.forumj.tool.Diletant.*;
+import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.tool.PHP.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
-import static org.forumj.tool.FJServletTools.*;
 
 import java.io.*;
 import java.sql.SQLException;
@@ -23,19 +23,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.common.*;
 import org.forumj.db.dao.FJThreadDao;
 import org.forumj.db.entity.*;
 import org.forumj.exception.*;
 import org.forumj.tool.*;
+import org.forumj.web.servlet.FJServlet;
 
 /**
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {"/quest.php"}, name="quest")
-public class Quest extends HttpServlet {
-
-   private static final long serialVersionUID = 2187584014030756366L;
+@SuppressWarnings("serial")
+@WebServlet(urlPatterns = {"/" + FJUrl.ADD_QUESTION}, name = FJServletName.ADD_QUESTION)
+public class Quest extends FJServlet {
 
    /**
     * {@inheritDoc}

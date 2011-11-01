@@ -35,16 +35,16 @@ import org.forumj.db.dao.IndexDao;
 import org.forumj.db.entity.*;
 import org.forumj.exception.InvalidKeyException;
 import org.forumj.tool.LocaleString;
+import org.forumj.web.servlet.FJServlet;
 
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
+@SuppressWarnings("serial")
 @WebServlet(urlPatterns = {"/" + FJUrl.INDEX, "/"}, name = FJServletName.INDEX)
-public class Index extends HttpServlet {
-
-   private static final long serialVersionUID = 1828936989822948738L;
+public class Index extends FJServlet {
 
    /**
     * {@inheritDoc}

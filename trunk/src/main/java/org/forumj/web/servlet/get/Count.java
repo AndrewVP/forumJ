@@ -9,21 +9,24 @@
  */
 package org.forumj.web.servlet.get;
 
-import java.io.*;
+import java.io.IOException;
 import java.sql.SQLException;
 
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.common.*;
 import org.forumj.db.dao.*;
+import org.forumj.web.servlet.FJServlet;
 
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class Count extends HttpServlet {
-
-   private static final long serialVersionUID = 1191898521504540426L;
+@SuppressWarnings("serial")
+@WebServlet(urlPatterns = {"/" + FJUrl.COUNT}, name = FJServletName.COUNT)
+public class Count extends FJServlet {
    
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
