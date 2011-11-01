@@ -35,7 +35,7 @@ import org.forumj.db.entity.User;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebFilter(servletNames={INDEX, VIEW_THREAD, LOGIN, NEW_THREAD, NEW_QUESTION, SETTINGS})
+@WebFilter(servletNames={INDEX, VIEW_THREAD, LOGIN, NEW_THREAD, NEW_QUESTION, SETTINGS, REGISTRATION})
 public class LoginFilter implements Filter {
 
    /**
