@@ -26,7 +26,7 @@ import org.forumj.web.servlet.FJServlet;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = {FJUrl.ADD_IGNOR}, name=FJServletName.ADD_IGNOR)
+@WebServlet(urlPatterns = {"/" + FJUrl.ADD_IGNOR}, name=FJServletName.ADD_IGNOR)
 public class AddIgnor extends FJServlet {
 
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -24,17 +24,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
-import org.forumj.db.dao.*;
+import org.forumj.db.dao.FJFolderDao;
 import org.forumj.db.entity.User;
+import org.forumj.web.servlet.FJServlet;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {FJUrl.DELETE_FOLDER_FROM_VIEW}, name = FJServletName.DELETE_FOLDER_FROM_VIEW)
-public class DelVFolder extends HttpServlet {
-
-   private static final long serialVersionUID = 9093427147196842541L;
+@SuppressWarnings("serial")
+@WebServlet(urlPatterns = {"/" + FJUrl.DELETE_FOLDER_FROM_VIEW}, name = FJServletName.DELETE_FOLDER_FROM_VIEW)
+public class DelVFolder extends FJServlet {
 
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

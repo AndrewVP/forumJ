@@ -26,7 +26,7 @@ import org.forumj.web.servlet.FJServlet;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = {FJUrl.SET_LOCATION}, name=FJServletName.SET_LOCATION)
+@WebServlet(urlPatterns = {"/" + FJUrl.SET_LOCATION}, name=FJServletName.SET_LOCATION)
 public class SetLocation extends FJServlet {
 
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

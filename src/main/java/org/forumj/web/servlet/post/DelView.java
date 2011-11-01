@@ -24,17 +24,17 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
-import org.forumj.db.dao.*;
+import org.forumj.db.dao.FJInterfaceDao;
 import org.forumj.db.entity.User;
+import org.forumj.web.servlet.FJServlet;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {FJUrl.DELETE_VIEW}, name = FJServletName.DELETE_VIEW)
-public class DelView extends HttpServlet {
-
-   private static final long serialVersionUID = 9093427147196842541L;
+@SuppressWarnings("serial")
+@WebServlet(urlPatterns = {"/" + FJUrl.DELETE_VIEW}, name = FJServletName.DELETE_VIEW)
+public class DelView extends FJServlet {
 
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

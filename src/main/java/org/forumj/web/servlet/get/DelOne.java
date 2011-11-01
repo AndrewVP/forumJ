@@ -24,31 +24,31 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
-import org.forumj.db.dao.*;
+import org.forumj.db.dao.FJFolderDao;
 import org.forumj.db.entity.User;
+import org.forumj.web.servlet.FJServlet;
 
 /**
  * перенос темы в корзину 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {FJUrl.DELONE}, name=FJServletName.DELONE)
-public class DelOne extends HttpServlet {
-
-   private static final long serialVersionUID = 3767489881801866697L;
+@SuppressWarnings("serial")
+@WebServlet(urlPatterns = {"/" + FJUrl.MOVE_THREAD_TO_RECYCLE}, name=FJServletName.MOVE_THREAD_TO_RECYCLE)
+public class DelOne extends FJServlet {
 
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       try {
          StringBuffer buffer = new StringBuffer();
          HttpSession session = request.getSession();
-         String idParameter = request.getParameter("id");
+         String idThreadParameter = request.getParameter("id");
          String pageParameter = request.getParameter("page");
          User user = (User) session.getAttribute("user");
          FJFolderDao folderDao = new FJFolderDao();
          if (user != null && !user.isBanned() && user.isLogined()){
-            if (idParameter != null && !"".equals(idParameter)){
-               Long id = Long.valueOf(idParameter);
-               folderDao.moveToRecyclebin(id, user);
+            if (idThreadParameter != null && !"".equals(idThreadParameter)){
+               Long idThread = Long.valueOf(idThreadParameter);
+               folderDao.moveToRecyclebin(idThread, user);
             }
             String urlQuery = "";
             if (pageParameter != null && !"".equals(pageParameter)){

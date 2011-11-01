@@ -23,6 +23,7 @@ import org.forumj.common.*;
 import org.forumj.db.entity.User;
 import org.forumj.exception.InvalidKeyException;
 import org.forumj.tool.LocaleString;
+import org.forumj.web.servlet.FJServlet;
 
 /**
  *
@@ -30,7 +31,7 @@ import org.forumj.tool.LocaleString;
  */
 @SuppressWarnings("serial")
 @WebServlet(urlPatterns = {"/" + FJUrl.NEW_QUESTION}, name = FJServletName.NEW_QUESTION)
-public class Opr extends HttpServlet {
+public class Opr extends FJServlet {
 
    /**
     * {@inheritDoc}

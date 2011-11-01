@@ -20,13 +20,14 @@ import javax.servlet.http.*;
 import org.forumj.common.*;
 import org.forumj.db.dao.*;
 import org.forumj.db.entity.User;
+import org.forumj.web.servlet.FJServlet;
 
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = {FJUrl.ADD_VOTE}, name=FJServletName.ADD_VOTE)
-public class UserVoice extends HttpServlet {
+@WebServlet(urlPatterns = {"/" + FJUrl.ADD_VOTE}, name=FJServletName.ADD_VOTE)
+public class UserVoice extends FJServlet {
    
    //TODO Нет валидации параметра answerParameter - в случае пустого ничего не происходит
 

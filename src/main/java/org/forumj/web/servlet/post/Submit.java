@@ -8,7 +8,7 @@
  * License Agreement.
  */
 package org.forumj.web.servlet.post;
-import static org.forumj.web.servlet.tool.FJServletTools.setcookie;
+import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.*;
 import java.sql.SQLException;
@@ -19,17 +19,18 @@ import javax.servlet.http.*;
 
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.common.*;
 import org.forumj.db.dao.UserDao;
 import org.forumj.db.entity.User;
+import org.forumj.web.servlet.FJServlet;
 
 /**
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {"/submit.php"}, name="submit")
-public class Submit extends HttpServlet {
-
-   private static final long serialVersionUID = -4733196229093348352L;
+@SuppressWarnings("serial")
+@WebServlet(urlPatterns = {"/" + FJUrl.DO_LOGIN}, name = FJServletName.DO_LOGIN)
+public class Submit extends FJServlet {
 
    /**
     * {@inheritDoc}

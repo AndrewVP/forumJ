@@ -10,7 +10,7 @@
 package org.forumj.web.servlet.post;
 
 import static org.forumj.tool.Diletant.*;
-import static org.forumj.tool.FJServletTools.menu;
+import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.tool.PHP.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
 
@@ -24,18 +24,19 @@ import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
-import org.forumj.db.dao.*;
+import org.forumj.db.dao.FJPostDao;
 import org.forumj.db.entity.*;
 import org.forumj.exception.*;
 import org.forumj.tool.*;
+import org.forumj.web.servlet.FJServlet;
 
 /**
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/" + FJUrl.NEW_POST}, name = FJServletName.NEW_POST)
-public class Write extends HttpServlet {
+@WebServlet(urlPatterns = {"/" + FJUrl.ADD_POST}, name = FJServletName.ADD_POST)
+public class Write extends FJServlet {
 
    /**
     * {@inheritDoc}

@@ -29,19 +29,20 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.common.*;
 import org.forumj.db.dao.FJThreadDao;
 import org.forumj.db.entity.*;
 import org.forumj.exception.*;
 import org.forumj.tool.*;
+import org.forumj.web.servlet.FJServlet;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {"/new.php"}, name="new")
-public class New extends HttpServlet {
-
-   private static final long serialVersionUID = -1256025984434277731L;
+@SuppressWarnings("serial")
+@WebServlet(urlPatterns = {"/" + FJUrl.ADD_THREAD}, name = FJServletName.ADD_THREAD)
+public class New extends FJServlet {
 
    /**
     * {@inheritDoc}

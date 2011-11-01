@@ -33,7 +33,7 @@ import org.forumj.web.servlet.FJServlet;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = {FJUrl.MOVE_TITLE}, name = FJServletName.MOVE_TITLE)
+@WebServlet(urlPatterns = {"/" + FJUrl.MOVE_TITLE}, name = FJServletName.MOVE_TITLE)
 public class MoveTitle extends FJServlet {
 
    @Override

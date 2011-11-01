@@ -26,7 +26,7 @@ import org.forumj.web.servlet.FJServlet;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = {FJUrl.SET_FOOTER}, name=FJServletName.SET_FOOTER)
+@WebServlet(urlPatterns = {"/" + FJUrl.SET_FOOTER}, name=FJServletName.SET_FOOTER)
 public class SetFooter extends FJServlet {
 
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

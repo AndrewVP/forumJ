@@ -32,7 +32,7 @@ import org.forumj.web.servlet.FJServlet;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = {FJUrl.SEND_PIVATE_MESSAGE}, name=FJServletName.SEND_PIVATE_MESSAGE)
+@WebServlet(urlPatterns = {"/" + FJUrl.SEND_PIVATE_MESSAGE}, name=FJServletName.SEND_PIVATE_MESSAGE)
 public class Send extends FJServlet {
 
    @Override

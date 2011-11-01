@@ -19,17 +19,18 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import org.forumj.common.*;
 import org.forumj.db.dao.IgnorDao;
 import org.forumj.db.entity.*;
+import org.forumj.web.servlet.FJServlet;
 
 /**
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {"/amn.php"}, name="amn")
-public class Amn extends HttpServlet {
-
-   private static final long serialVersionUID = 8774201267891254625L;
+@SuppressWarnings("serial")
+@WebServlet(urlPatterns = {"/" + FJUrl.UPDATE_IGNORING}, name = FJServletName.UPDATE_IGNORING)
+public class Amn extends FJServlet {
 
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

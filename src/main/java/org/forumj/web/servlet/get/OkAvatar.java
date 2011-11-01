@@ -26,7 +26,7 @@ import org.forumj.web.servlet.FJServlet;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = {FJUrl.OK_AVATAR}, name=FJServletName.OK_AVATAR)
+@WebServlet(urlPatterns = {"/" + FJUrl.OK_AVATAR}, name=FJServletName.OK_AVATAR)
 public class OkAvatar extends FJServlet {
 
    @Override
