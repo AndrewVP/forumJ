@@ -35,23 +35,25 @@ public class LocaleResolver implements Filter {
       HttpServletRequest request = (HttpServletRequest) req;
       HttpSession session = request.getSession(true);
       String lang = request.getParameter("lang");
-      if (lang == null){
-         if(session.getAttribute("locale") == null){
-            try {
-               lang = FJConfiguration.getConfig().getString("lang.default");
-               LocaleString locale = new LocaleString(lang, null, lang);
-               session.setAttribute("locale", locale);
-            } catch (ConfigurationException e) {
-               e.printStackTrace();
-            }
-         }else{
-            LocaleString locale = new LocaleString(lang, null, lang);
+      try {
+         String defaultLanguage = FJConfiguration.getConfig().getString("lang.default"); 
+         if (lang == null){
+            lang = defaultLanguage; 
+         }
+         LocaleString locale = (LocaleString) session.getAttribute("locale"); 
+         if(locale == null){
+            locale = new LocaleString(lang, "messages", defaultLanguage);
+            session.setAttribute("locale", locale);
+         }else if (!locale.getLanguage().equalsIgnoreCase(lang)){
+            locale = new LocaleString(lang, "messages", defaultLanguage);
             session.setAttribute("locale", locale);
          }
+      } catch (ConfigurationException e) {
+         e.printStackTrace();
       }
       chain.doFilter(req, resp);
    }
-   
+
 
    @Override
    public void destroy() {}
