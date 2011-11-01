@@ -16,7 +16,6 @@ FROM
  LEFT JOIN users ON fdmail.rcvr = users.id
 WHERE
  fdmail.sndr= ?
- AND fdmail.del_r <> 1 
  AND fdmail.d_rcv IS NULL
 ORDER BY
  fdmail.d_snt DESC

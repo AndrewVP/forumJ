@@ -24,6 +24,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.common.*;
 import org.forumj.db.dao.TemaDao;
 import org.forumj.db.entity.*;
 import org.forumj.exception.InvalidKeyException;
@@ -33,7 +34,7 @@ import org.forumj.tool.LocaleString;
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {"/tema.php"}, name="tema")
+@WebServlet(urlPatterns = {"/" + FJUrl.VIEW_THREAD}, name = FJServletName.VIEW_THREAD)
 public class Tema extends HttpServlet {
 
    private static final long serialVersionUID = 64298210092336195L;

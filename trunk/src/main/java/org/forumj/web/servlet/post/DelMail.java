@@ -53,15 +53,17 @@ public class DelMail extends HttpServlet {
                   Integer id = Integer.valueOf(idParameter);
                   for (int nrwIndex = 0; nrwIndex < nrw; nrwIndex++) {
                      String mailIdParameter = request.getParameter(String.valueOf(nrwIndex));
-                     Long mailId = Long.valueOf(mailIdParameter);
-                     switch(id) {
-                     case 2:
-                        dao.deleteFromInbox(mailId, user);
-                        break;
-                     case 4:
-                        dao.deleteFromOutbox(mailId, user);
-                        break;
-                     }      
+                     if (mailIdParameter != null){
+                        Long mailId = Long.valueOf(mailIdParameter);
+                        switch(id) {
+                        case 2:
+                           dao.deleteFromInbox(mailId, user);
+                           break;
+                        case 4:
+                           dao.deleteFromOutbox(mailId, user);
+                           break;
+                        }      
+                     }
                   }
                }
             }

@@ -16,6 +16,7 @@
 package org.forumj.web.filter;
 
 import static org.forumj.web.servlet.tool.FJServletTools.*;
+import static org.forumj.common.FJServletName.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -34,7 +35,7 @@ import org.forumj.db.entity.User;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebFilter(servletNames={"index", "tema", "auth", "mess", "opr", "control"})
+@WebFilter(servletNames={INDEX, VIEW_THREAD, LOGIN, NEW_THREAD, NEW_QUESTION, SETTINGS})
 public class LoginFilter implements Filter {
 
    /**

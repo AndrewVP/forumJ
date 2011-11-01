@@ -298,7 +298,7 @@ public class IndexDao extends FJDao {
                if (isset(ignored)){
                   where+=" AND titles.id NOT IN "+moved+" ";
                }else{
-                  where=" WHERE titles.id NOT IN "+moved+" ";
+                  where=" WHERE titles.id IN "+moved+" ";
                }
             }
             folderName="IF (ISNULL(fdfolders.flname), 'Форум', fdfolders.flname) as _flname, ";

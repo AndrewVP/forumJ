@@ -32,7 +32,8 @@ public class SlctView extends FJServlet {
       String viewParameter = request.getParameter("VIEW");
       HttpSession session = request.getSession();
       if (!isEmptyParameter(viewParameter)){
-         session.setAttribute("view", viewParameter);
+         session.setAttribute("view", Integer.valueOf(viewParameter));
+         session.setAttribute("vname", null);
       }
       buffer.append(successPostOut("0", "index.php"));
       response.setContentType("text/html; charset=UTF-8");

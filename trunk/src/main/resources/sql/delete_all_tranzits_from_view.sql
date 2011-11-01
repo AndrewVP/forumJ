@@ -1,5 +1,5 @@
 DELETE FROM
- fdtranzit
+ fdvtranzit
 WHERE
  view = ?
  AND user = ?  

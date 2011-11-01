@@ -1,5 +1,5 @@
 DELETE FROM
- fdtranzit
+ fdvtranzit
 WHERE
  folder = ?
  AND user = ?  
