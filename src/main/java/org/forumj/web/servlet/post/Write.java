@@ -23,6 +23,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.common.*;
 import org.forumj.db.dao.*;
 import org.forumj.db.entity.*;
 import org.forumj.exception.*;
@@ -32,10 +33,9 @@ import org.forumj.tool.*;
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {"/write.php"}, name="write")
+@SuppressWarnings("serial")
+@WebServlet(urlPatterns = {"/" + FJUrl.NEW_POST}, name = FJServletName.NEW_POST)
 public class Write extends HttpServlet {
-
-   private static final long serialVersionUID = 7340185899083759578L;
 
    /**
     * {@inheritDoc}

@@ -8,6 +8,7 @@
  * License Agreement.
  */
 package org.forumj.web.filter;
+import static org.forumj.common.FJServletName.*;
 
 import java.io.IOException;
 
@@ -22,7 +23,7 @@ import org.forumj.tool.LocaleString;
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebFilter(servletNames={"index", "tema", "auth", "mess", "write", "new", "opr", "quest", "control"})
+@WebFilter(servletNames={INDEX, VIEW_THREAD, LOGIN, NEW_THREAD, NEW_POST, "new", NEW_QUESTION, "quest", SETTINGS})
 public class LocaleResolver implements Filter {
 
    protected static Configuration config = null;

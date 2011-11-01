@@ -53,16 +53,20 @@ public class DelFolder extends HttpServlet {
                if ("del".equalsIgnoreCase(actionParameter)){
                   for (int nrwIndex = 0; nrwIndex < nrw; nrwIndex++) {
                      String folderIdParameter = request.getParameter(String.valueOf(nrwIndex));
-                     Long folderId = Long.valueOf(folderIdParameter);
-                     folderDao.delete(folderId, user);
+                     if (folderIdParameter != null){
+                        Long folderId = Long.valueOf(folderIdParameter);
+                        folderDao.delete(folderId, user);
+                     }
                   }
                }else if ("add".equalsIgnoreCase(actionParameter)){
                   long viewId = Long.valueOf(viewIdParameter);
                   for (int nrwIndex = 0; nrwIndex < nrw; nrwIndex++) {
                      String folderIdParameter = request.getParameter(String.valueOf(nrwIndex));
-                     Long folderId = Long.valueOf(folderIdParameter);
-                     if (!interfaceDao.isInterfaceContainsFolder(viewId, folderId, user)){
-                        interfaceDao.addFolder(viewId, folderId, user, null);
+                     if (folderIdParameter != null){
+                        Long folderId = Long.valueOf(folderIdParameter);
+                        if (!interfaceDao.isInterfaceContainsFolder(viewId, folderId, user)){
+                           interfaceDao.addFolder(viewId, folderId, user, null);
+                        }
                      }
                   }
                }

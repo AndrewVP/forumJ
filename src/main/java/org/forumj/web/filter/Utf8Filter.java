@@ -1,5 +1,7 @@
 package org.forumj.web.filter;
 
+import static org.forumj.common.FJServletName.*;
+
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
@@ -14,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebFilter(servletNames={"new", "submit", "write", "quest"})
+@WebFilter(servletNames={NEW_POST, "submit", "write", "quest"})
 public class Utf8Filter implements Filter{
 
    /**

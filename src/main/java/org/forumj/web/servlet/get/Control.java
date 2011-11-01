@@ -29,6 +29,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.common.*;
 import org.forumj.db.dao.*;
 import org.forumj.db.entity.*;
 import org.forumj.exception.InvalidKeyException;
@@ -38,7 +39,7 @@ import org.forumj.tool.LocaleString;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {"/control.php", "/"}, name="control")
+@WebServlet(urlPatterns = {"/" + FJUrl.SETTINGS}, name = FJServletName.SETTINGS)
 public class Control extends HttpServlet {
 
    private static final long serialVersionUID = -6828786894000688297L;
@@ -588,8 +589,6 @@ public class Control extends HttpServlet {
          buffer.append("<option selected value='del'><span class='mnuprof'>" + locale.getString("mess70") + "&nbsp;&nbsp;</span></option>");
          buffer.append("</select>&nbsp;");
          buffer.append("<input type='hidden' value='" + mails.size() + "' name='NRW'>");
-         // Прередаем нужные пераметры...
-         // Автор
          buffer.append(fd_form_add(user));
          buffer.append("<input value='OK' type='submit'>");
          buffer.append("</td>");
@@ -734,6 +733,7 @@ public class Control extends HttpServlet {
          buffer.append("<select size='1' name='ACT'>");
          buffer.append("<option selected value='del'><span class=mnuprof>" + locale.getString("mess70") + "&nbsp;&nbsp;</span></option>");
          buffer.append("</select>&nbsp;");
+         buffer.append("<input type='hidden' value='" + mails.size() + "' name='NRW'>");
          buffer.append(fd_form_add(user));
          buffer.append("<input value='OK' type='submit'>");
          buffer.append("</td>");

@@ -25,6 +25,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import org.forumj.common.*;
 import org.forumj.db.entity.User;
 import org.forumj.exception.InvalidKeyException;
 import org.forumj.tool.LocaleString;
@@ -33,7 +34,7 @@ import org.forumj.tool.LocaleString;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {"/mess.php"}, name="mess")
+@WebServlet(urlPatterns = {"/" + FJUrl.NEW_THREAD}, name = FJServletName.NEW_THREAD)
 public class Mess extends HttpServlet {
 
    private static final long serialVersionUID = 4096046336659603136L;

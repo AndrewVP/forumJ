@@ -44,8 +44,10 @@ public class DelSubs extends HttpServlet {
                if ("del".equalsIgnoreCase(actionParameter)){
                   for (int nrwIndex = 0; nrwIndex < nrw; nrwIndex++) {
                      String subscribeIdParameter = request.getParameter(String.valueOf(nrwIndex));
-                     Long subscribeId = Long.valueOf(subscribeIdParameter);
-                     dao.deleteById(subscribeId, user);
+                     if (subscribeIdParameter != null){
+                        Long subscribeId = Long.valueOf(subscribeIdParameter);
+                        dao.deleteById(subscribeId, user);
+                     }
                   }
                }
             }

@@ -30,6 +30,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.common.*;
 import org.forumj.db.dao.IndexDao;
 import org.forumj.db.entity.*;
 import org.forumj.exception.InvalidKeyException;
@@ -40,7 +41,7 @@ import org.forumj.tool.LocaleString;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {"/index.php", "/"}, name="index")
+@WebServlet(urlPatterns = {"/" + FJUrl.INDEX, "/"}, name = FJServletName.INDEX)
 public class Index extends HttpServlet {
 
    private static final long serialVersionUID = 1828936989822948738L;
@@ -157,7 +158,7 @@ public class Index extends HttpServlet {
          buffer.append("<option selected class=mnuprof value='" + viewsList.get(0).get("id") + "'>");
          buffer.append(viewsList.get(0).get("name"));
          buffer.append("</option>");
-         for (int vw1=1; vw1< viewsList.size() -1; vw1++)
+         for (int vw1=1; vw1< viewsList.size(); vw1++)
          {
             buffer.append("<option class=mnuprof value='" + viewsList.get(vw1).get("id") + "'>");
             buffer.append(viewsList.get(vw1).get("name"));
@@ -285,6 +286,7 @@ public class Index extends HttpServlet {
          // Выводим строки
          for (int threadIndex = 0; threadIndex < threadsList.size(); threadIndex++) {
             FJThread thread = threadsList.get(threadIndex);
+            thread.setI(threadIndex);
             buffer.append(thread.toString());
          }
          // Главные ссылки внизу страницы

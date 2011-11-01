@@ -9,10 +9,11 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import org.forumj.common.*;
 import org.forumj.db.dao.FJSubscribeDao;
 import org.forumj.db.entity.*;
 
-@WebServlet(urlPatterns = {"/addsubs.php"}, name="AddSubscribe")
+@WebServlet(urlPatterns = {"/" + FJUrl.ADD_SUBSCRIBE}, name=FJServletName.ADD_SUBSCRIBE)
 public class AddSubscribe extends HttpServlet {
 
    private static final long serialVersionUID = -4232484548540853804L;

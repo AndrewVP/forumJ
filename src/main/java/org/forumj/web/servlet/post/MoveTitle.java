@@ -52,8 +52,10 @@ public class MoveTitle extends FJServlet {
                Integer nrw = Integer.valueOf(nrwParameter);
                for (int nrwIndex = 0; nrwIndex < nrw; nrwIndex++) {
                   String folderIdParameter = request.getParameter(String.valueOf(nrwIndex));
-                  Long folderId = Long.valueOf(folderIdParameter);
-                  dao.moveToFolder(folderId, newViewId, user);
+                  if (folderIdParameter != null){
+                     Long folderId = Long.valueOf(folderIdParameter);
+                     dao.moveToFolder(folderId, newViewId, user);
+                  }
                }
             }
             String page = "";

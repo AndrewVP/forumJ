@@ -18,6 +18,7 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import org.forumj.common.*;
 import org.forumj.db.entity.User;
 import org.forumj.exception.InvalidKeyException;
 import org.forumj.tool.LocaleString;
@@ -26,7 +27,7 @@ import org.forumj.tool.LocaleString;
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {"/auth.php"}, name="auth")
+@WebServlet(urlPatterns = {"/" + FJUrl.LOGIN}, name = FJServletName.LOGIN)
 public class Auth extends HttpServlet {
 
    private static final long serialVersionUID = 1651376978036223885L;

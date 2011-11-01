@@ -53,8 +53,10 @@ public class DelVFolder extends HttpServlet {
                if ("del".equalsIgnoreCase(actionParameter)){
                   for (int nrwIndex = 0; nrwIndex < nrw; nrwIndex++) {
                      String folderIdParameter = request.getParameter(String.valueOf(nrwIndex));
-                     Long folderId = Long.valueOf(folderIdParameter);
-                     dao.deleteFolderFromView(folderId, viewId, user);
+                     if (folderIdParameter != null){
+                        Long folderId = Long.valueOf(folderIdParameter);
+                        dao.deleteFolderFromView(folderId, viewId, user);
+                     }
                   }
                }
             }

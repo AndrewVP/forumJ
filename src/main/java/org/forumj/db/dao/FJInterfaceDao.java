@@ -171,7 +171,7 @@ public class FJInterfaceDao extends FJDao {
          conn.setAutoCommit(false);
          st = conn.prepareStatement(query);
          st.setString(1, name);
-         st.setLong(3, user.getId());
+         st.setLong(2, user.getId());
          st.executeUpdate();
          error = false;
       }finally{

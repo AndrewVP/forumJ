@@ -95,7 +95,7 @@ public class UserDao extends FJDao {
    }
 
    public void update(User user) throws IOException, ConfigurationException, SQLException {
-      String query = getCreateAnswerQuery();
+      String query = getUpdateUserQuery();
       Connection conn = null;
       PreparedStatement st = null;
       try{
@@ -107,7 +107,11 @@ public class UserDao extends FJDao {
          st.setString(4, user.getName());
          st.setString(5, user.getFam());
          st.setByte(6, user.getSex());
-         st.setDate(7, new java.sql.Date(user.getBith().getTime()));
+         java.sql.Date birhTime = null;
+         if (user.getBith() != null){
+            birhTime = new java.sql.Date(user.getBith().getTime());
+         }
+         st.setDate(7, birhTime);
          st.setString(8, user.getPass2());
          st.setInt(9, user.getShowMail() ? 1 : 0);
          st.setInt(10, user.getShowName() ? 1 : 0);
