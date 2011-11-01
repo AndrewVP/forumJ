@@ -17,28 +17,15 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
 
 import org.apache.commons.configuration.*;
+import org.forumj.common.FJConfiguration;
 import org.forumj.tool.LocaleString;
 
 /**
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebFilter(servletNames={INDEX, VIEW_THREAD, LOGIN, NEW_THREAD, ADD_POST, ADD_THREAD, NEW_QUESTION, ADD_QUESTION, SETTINGS})
+@WebFilter(servletNames={INDEX, VIEW_THREAD, LOGIN, NEW_THREAD, ADD_POST, ADD_THREAD, NEW_QUESTION, ADD_QUESTION, SETTINGS, REGISTRATION})
 public class LocaleResolver implements Filter {
-
-   protected static Configuration config = null;
-
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   public void init(FilterConfig filterConfig) throws ServletException {
-      try {
-         config = new PropertiesConfiguration("fj.properties");
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-      }
-   }
 
    /**
     * {@inheritDoc}
@@ -51,7 +38,7 @@ public class LocaleResolver implements Filter {
       if (lang == null){
          if(session.getAttribute("locale") == null){
             try {
-               lang = getConfig().getString("lang.default");
+               lang = FJConfiguration.getConfig().getString("lang.default");
                LocaleString locale = new LocaleString(lang, null, lang);
                session.setAttribute("locale", locale);
             } catch (ConfigurationException e) {
@@ -66,20 +53,10 @@ public class LocaleResolver implements Filter {
    }
    
 
-   /**
-    * {@inheritDoc}
-    */
    @Override
-   public void destroy() {
-      // TODO Auto-generated method stub
+   public void destroy() {}
 
-   }
-   
-   private Configuration getConfig() throws ConfigurationException{
-      if (config == null){
-         config = new PropertiesConfiguration("fj.properties");
-      }
-      return config;
-   }
 
+   @Override
+   public void init(FilterConfig filterConfig) throws ServletException {}
 }
