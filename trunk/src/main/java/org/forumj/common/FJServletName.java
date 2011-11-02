@@ -24,6 +24,7 @@ public interface FJServletName {
    public static final String LOGIN = "Auth";
    public static final String DO_LOGIN = "Submit";
    public static final String REGISTRATION = "Registration";
+   public static final String DO_REGISTRATION = "InsNew";
    public static final String UPDATE_IGNORING = "Amn";
    public static final String ADD_POST = "Write";
    public static final String DELETE_MAIL = "DelMail";

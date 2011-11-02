@@ -114,7 +114,7 @@ public class Registration extends FJServlet {
                buffer.append("Не используйте пустые пароли! :)");
                break;
             case 11:
-               buffer.append("Не используйте пустые идентификаторы! :)");
+               buffer.append("<b>Не введен E-mail!</b>");
                break;
             case 12:
                buffer.append("<b>Посетитель с таким почтовым ящиком уже зарегистрирован! :)</b>");

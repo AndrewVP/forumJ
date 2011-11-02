@@ -16,7 +16,7 @@ import javax.servlet.http.HttpServletRequest;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebFilter(servletNames={ADD_POST, DO_LOGIN, ADD_QUESTION, ADD_THREAD, NEW_FOLDER, NEW_VIEW, SEND_PIVATE_MESSAGE, SET_FOOTER, SET_LOCATION, ADD_VOTE})
+@WebFilter(servletNames={ADD_POST, DO_LOGIN, ADD_QUESTION, ADD_THREAD, NEW_FOLDER, NEW_VIEW, SEND_PIVATE_MESSAGE, SET_FOOTER, SET_LOCATION, ADD_VOTE, DO_REGISTRATION})
 public class Utf8Filter implements Filter{
 
    /**
