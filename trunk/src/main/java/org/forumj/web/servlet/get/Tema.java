@@ -28,7 +28,7 @@ import org.forumj.common.*;
 import org.forumj.db.dao.*;
 import org.forumj.db.entity.*;
 import org.forumj.exception.InvalidKeyException;
-import org.forumj.tool.LocaleString;
+import org.forumj.tool.*;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -59,6 +59,7 @@ public class Tema extends FJServlet {
          String replyPostId = request.getParameter("reply");
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          User user = (User) session.getAttribute("user");
+         List<Ignor> ignorList = new IgnorDao().loadAll(user.getId());
          TemaDao temaDao = new TemaDao(threadId, user);
          session.setAttribute("page", pageNumber);
          session.setAttribute("id", threadId);
@@ -391,5 +392,139 @@ public class Tema extends FJServlet {
       PrintWriter writer = response.getWriter();
       String out = buffer.toString();
       writer.write(out.replace("ъъ_ъ", format.format(allTime/1000)));
+   }
+   
+   private StringBuffer writePost(FJPost post, List<Ignor> ignorList, User user, Integer pageNumber, LocaleString locale){
+      StringBuffer buffer = new StringBuffer();
+      Time postTime = new Time(post.getHead().getCreateTime());
+      User author = post.getHead().getAuthor();
+      String result = "";
+      try {
+         String rp;
+         String domen = post.getHead().getDomen();
+         String ip = post.getHead().getIp();
+         if (trim(post.getHead().getIp()).equalsIgnoreCase(trim(domen))){
+            domen = substr(domen, 0, strrpos(domen, ".")+1) + "---";
+         }else{
+            domen = "---" + substr(domen, strpos(domen, ".") + 1);
+         }
+         result +="<tr class=heads>";
+         result += "<td  class=internal>";
+         if (post.isLastPost()) result += "<a name='end'></a>";
+         result += "<a name='this.str_id'>&nbsp;</a>";
+         result += "<a class=nik href='tema.php?id=" + post.getThreadId() + "&msg=" + post.getId() + "#" + post.getId() + "'><b>&nbsp;&nbsp;" + fd_head(htmlspecialchars(post.getHead().getTitle())) + "</b></a>";
+         result += "</td></tr>";
+         result += "<tr><td>";
+         int div = 0;
+         String div_ = "";
+         if (ignorList.size() > 0){
+            if (isIgnored(post.getHead().getAuth(), ignorList)) div = 1;
+         }
+         result += "<span class='tbtextnread'>" + author.getNick() + "</span>&nbsp;•";
+         result += "&nbsp;<img border='0' src='smiles/icon_minipost.gif'>&nbsp;<span class='posthead'>" + postTime.toString("dd.MM.yyyy HH:mm") + "</span>&nbsp;";
+         if (div != 0 && user.isLogined() && post.getHead().getAuth() != user.getId()){
+            result += chr(149) + "&nbsp;<a class=\"posthead\" href=\"ignor.php?idi=" + post.getHead().getAuth() + "&idt=" + post.getThreadId() + "&idp=" + post.getId() + "&pg=" + pageNumber + "\" rel=\"nofollow\">" + locale.getString("mess68") + "</a>";
+         }
+         result +="</td></tr>";
+         result +="<tr><td>";
+         if (div != 0){
+            result += "<a href='#' onclick='togglemsg(\"dd" + post.getId() + "\"); return false;' rel='nofollow'>" + locale.getString("mess142") + "</a>";
+            div_ =" style='visibility: hidden; display:none;'";
+         }
+         else {
+            div_ ="";
+         }
+         result += "<div id=dd" + post.getId().toString() + div_ + ">";
+         if (!(user.isLogined() && div > 0)){
+            result += "<table width='100%'><tr><td valign=top class='matras'>";
+            result += "<table style='table-layout:fixed;' width='170'><tr><td valign=top>";
+            result += "<div style='padding:10px;'>";
+            if (user.getShowAvatars() && author.getOk_avatar() && author.getAvatar() != null && author.getAvatar().trim().isEmpty() && author.getS_avatar()){
+               result += "<a href='control.php?id=9'><img border='0' src='" + author.getAvatar() + "' rel=\"nofollow\"></a>";
+            }else{
+               result += "<a href='control.php?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>";
+            }
+            result += "</div>";
+            result += "<span class='posthead'><u>" + locale.getString("mess111") + "</u></span><br>";
+            if (!author.getShowCountry() || author.getCountry() == null || author.getCountry().isEmpty()){
+               result += "<span class='posthead'>" + locale.getString("mess114") + "</span><br>";
+            }else{
+               result += "<span class='posthead'>" + author.getCountry() + "</span><br>";
+            }
+            result += "<span class='posthead'><u>" + locale.getString("mess112") + "</u></span><br>";
+            if (author.getShowCity() || author.getCity() == null || author.getCity().isEmpty()){
+               result += "<span class='posthead'>" + locale.getString("mess114") + "</span><br>";
+            }else{
+               result += "<span class='posthead'>" + author.getCity() + "</span><br>";
+            }
+            result += "</td></tr></table>";
+            result += "</td><td valign='top' width='100%'>";
+            result += "<table width='100%'>";
+//            if (this.isQuest){
+//               result += this.getQuest() ;
+//            }
+            result +="<tr><td>";
+            result +="<p class=post>" + fd_body(post.getBody().getBody()) + "</p>";
+            result +="</td></tr>";
+            result += "</table></td></tr>";
+            result +="<tr><td class='matras' colspan=2></td></tr>";
+            result +="<tr><td class='matras'></td><td>";
+            result +="<p class=post>" + fd_body(author.getFooter()) + "</p>";
+            result +="</td></tr>";
+            result +="<tr><td align='RIGHT' width='100%' colspan=2>";
+            if (post.getHead().getNred()>0){
+               Time postEditTime = new Time(post.getHead().getEditTime());
+
+               result += "<table class='matras' width='100%'>";
+               result += "<tr><td align='LEFT'>";
+               result += "<span class='posthead'>" + locale.getString("mess50") + post.getHead().getNred() + locale.getString("mess51") + postEditTime.toString("d.m.Y H:i") + "</span>";
+            }
+            else {
+               result += "<table class='matras'>";
+               result += "<tr><td align='LEFT'>";
+               result += " ";
+            }
+            result +="</td>";
+            if(user.isLogined()){
+//               if (this.isAdminForvard){
+//                  result += "<td align='CENTER' width='70'>";
+//                  result += "<span class='posthead'><a href='site.php?id=" + post.getThreadId() + "&post=" + this.id + "' rel=\"nofollow\">" + locale.getString("mess162") + "</a></span>";
+//                  result += "</td>";
+//               }
+               if (user.getId() == author.getId()) {
+                  result += "<td align='CENTER' width='70'>";
+                  result += "<span class='posthead'><a href='tema.php?id=" + post.getThreadId() + "&reply=" + post.getId() + "#edit' rel=\"nofollow\">" + locale.getString("mess141") + "</a></span>";
+                  result += "</td>";
+               }else{
+                  result += "<td align='CENTER' width='70'>";
+                  result += "<span class='posthead'><a href='tema.php?id=" + post.getThreadId() + "&reply=" + post.getId() + "#edit' rel=\"nofollow\">" + locale.getString("mess139") + "</a></span>";
+                  result += "</td>";
+                  result += "<td align='CENTER' width='70'>";
+                  result += "<span class='posthead'><a href='tema.php?id=" + post.getThreadId() + "&reply=" + post.getId() + "&ans=1#edit' rel=\"nofollow\">" + locale.getString("mess140") + "</a></span>";
+                  result += "</td>";
+               }
+            }
+            result += "</tr></table>";
+            result += "</td></tr>";
+            result += "</table>";
+         }else{
+            result += locale.getString("mess103");
+         }
+         result += "</div>";
+         result += "</td></tr>";
+      } catch (InvalidKeyException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
+      return buffer;
+   }
+
+   private boolean isIgnored(Long userId, List<Ignor> ignorList){
+      for(int arrIndex=0; arrIndex < ignorList.size(); arrIndex++) {
+         if(ignorList.get(arrIndex).getUser().getId().longValue() == userId.longValue()) {
+            return true;
+         }
+      }
+      return false;
    }
 }

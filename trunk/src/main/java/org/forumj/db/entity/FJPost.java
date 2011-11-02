@@ -28,6 +28,22 @@ public class FJPost implements IFJPost {
    private FJPostBody body = null;
    
    private FJPostHead head = null;
+   
+   private boolean lastPost = false;
+
+   /**
+    * @return the lastPost
+    */
+   public boolean isLastPost() {
+      return lastPost;
+   }
+
+   /**
+    * @param lastPost the lastPost to set
+    */
+   public void setLastPost(boolean lastPost) {
+      this.lastPost = lastPost;
+   }
 
    /**
     * @return the id

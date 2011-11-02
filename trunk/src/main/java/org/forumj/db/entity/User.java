@@ -37,7 +37,7 @@ public class User implements IUser {
 
    private int view = 0;
 
-   private Boolean swowAvatars = null;
+   private Boolean showAvatars = null;
 
    private int ban = 0;
 
@@ -105,8 +105,8 @@ public class User implements IUser {
       this.email = email;
    }
 
-   public Boolean getSwowAvatars() {
-      return swowAvatars;
+   public Boolean getShowAvatars() {
+      return showAvatars;
    }
 
    public User() {
@@ -119,8 +119,8 @@ public class User implements IUser {
       this.nick = nick;
    }
 
-   public void setSwowAvatars(Boolean swowAvatars) {
-      this.swowAvatars = swowAvatars;
+   public void setShowAvatars(Boolean showAvatars) {
+      this.showAvatars = showAvatars;
    }
 
    public String getName() {
@@ -317,14 +317,14 @@ public class User implements IUser {
      * @return the v_avatars
      */
     public Boolean getVavatars() {
-       return swowAvatars;
+       return showAvatars;
     }
 
     /**
      * @param v_avatars the v_avatars to set
      */
     public void setVavatars(boolean v_avatars) {
-       this.swowAvatars = v_avatars;
+       this.showAvatars = v_avatars;
     }
 
     /**

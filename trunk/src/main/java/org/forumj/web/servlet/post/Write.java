@@ -304,7 +304,7 @@ public class Write extends FJServlet {
       postHead.setNred(0);
       postHead.setTitle(head);
       postHead.setThreadId(threadId);
-      postHead.setCreateTime(new Date());
+      postHead.setCreateTime(new Date().getTime());
       FJPostDao postDao = new FJPostDao();
       postDao.create(post);
    }
@@ -317,7 +317,7 @@ public class Write extends FJServlet {
       postHead.setDomen(domen);
       postHead.setIp(ip);
       postHead.setNred(postHead.getNred() + 1);
-      postHead.setEditTime(new Date());
+      postHead.setEditTime(new Date().getTime());
       postHead.setTitle(head);
       postDao.update(post);
    }

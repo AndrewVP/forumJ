@@ -60,7 +60,7 @@ public class FJPostDao extends FJDao {
             st.setLong(3, postHead.getAuth());
             st.setLong(4, postHead.getThreadId());
             st.setString(5, postHead.getTitle());
-            st.setInt(6, (int) postHead.getCreateTime().getTime());
+            st.setLong(6, postHead.getCreateTime());
             st.setString(7, postHead.getIp());
             st.setString(8, postHead.getDomen());
             st.executeUpdate();
@@ -114,8 +114,8 @@ public class FJPostDao extends FJDao {
          st.setString(4, postHead.getDomen());
          st.setString(5, postHead.getOutd());
          st.setInt(6, postHead.getNred());
-         st.setInt(7, (int) postHead.getCreateTime().getTime());
-         st.setInt(8, (int) postHead.getEditTime().getTime());
+         st.setLong(7, postHead.getCreateTime());
+         st.setLong(8, postHead.getEditTime());
          st.setLong(9, postHead.getPostId());
          st.setLong(10, postHead.getThreadId());
          st.setLong(11, postHead.getId());
@@ -202,8 +202,8 @@ public class FJPostDao extends FJDao {
             result.setDomen(rs.getString(IFJPostHead.ATHOR_DOMEN_FIELD_NAME));
             result.setOutd(rs.getString(IFJPostHead.OUTD_FIELD_NAME));
             result.setNred(rs.getInt(IFJPostHead.NUMBER_OF_EDITS_FIELD_NAME));
-            result.setCreateTime(rs.getDate(IFJPostHead.CREATIN_DATE_FIELD_NAME));
-            result.setEditTime(rs.getDate(IFJPostHead.LAST_EDIT_DATE_FIELD_NAME));
+            result.setCreateTime(rs.getLong(IFJPostHead.CREATIN_DATE_FIELD_NAME));
+            result.setEditTime(rs.getLong(IFJPostHead.LAST_EDIT_DATE_FIELD_NAME));
             result.setPostId(rs.getLong(IFJPostHead.POST_ID_FIELD_NAME));
             result.setThreadId(rs.getLong(IFJPostHead.THREAD_ID_FIELD_NAME));
          }
