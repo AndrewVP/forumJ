@@ -25,6 +25,7 @@ public interface FJUrl {
    public static final String LOGIN = "auth.php";
    public static final String DO_LOGIN = "submit.php";
    public static final String REGISTRATION = "reg.php";
+   public static final String DO_REGISTRATION = "insnew.php";
    public static final String UPDATE_IGNORING = "amn.php";
    public static final String DELETE_MAIL = "delmail.php";
    public static final String MOVE_THREAD_TO_RECYCLE = "delone.php";

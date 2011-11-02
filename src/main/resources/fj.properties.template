@@ -10,3 +10,6 @@ mail.from=
 mail.admin.address.1=
 mail.admin.address.2=
 mail.admin.address.3=
+fj.default.threadsOnPage=30
+fj.default.postsOnPage=40
+fj.default.viewId=1

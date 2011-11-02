@@ -123,6 +123,8 @@ public class QueryBuilder {
 
    private static String updateUserQuery = null;
    
+   private static String createUserQuery = null;
+   
    private static String deleteFolderTranzitQuery = null;
    
    private static String deleteFolderFromViewQuery = null;
@@ -161,6 +163,13 @@ public class QueryBuilder {
          updateUserQuery = loadQuery("/sql/update_user.sql");
       }
       return updateUserQuery;
+   }
+   
+   public static String getCreateUserQuery() throws IOException{
+      if (createUserQuery == null){
+         createUserQuery = loadQuery("/sql/create_user.sql");
+      }
+      return createUserQuery;
    }
    
    public static String getCreateThreadQuery() throws IOException{

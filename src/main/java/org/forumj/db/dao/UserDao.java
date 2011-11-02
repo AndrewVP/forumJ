@@ -43,6 +43,11 @@ public class UserDao extends FJDao {
       return loadUser(query, null);
    }
    
+   public User readByMail(String mail) throws ConfigurationException, SQLException{
+      String query="SELECT * FROM users WHERE mail=\"" + mail + "\"";
+      return loadUser(query, null);
+   }
+   
    private User loadUser(String sql, Boolean firstPassword) throws ConfigurationException, SQLException{
       User result = null;
       Connection conn = null;
@@ -138,6 +143,55 @@ public class UserDao extends FJDao {
          st.setInt(31, user.getActivateCode());
          st.setInt(32, user.getIsActive() ? 1 : 0);
          st.setLong(33, user.getId());
+         st.executeUpdate();
+      }finally{
+         readFinally(null, st);
+      }
+   }
+   
+   public void create(User user) throws SQLException, ConfigurationException, IOException{
+      String query = getUpdateUserQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try{
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setString(1, user.getNick());
+         st.setString(2, user.getPass());
+         st.setString(3, user.getEmail());
+         st.setString(4, user.getName());
+         st.setString(5, user.getFam());
+         st.setByte(6, user.getSex());
+         java.sql.Date birhTime = null;
+         if (user.getBith() != null){
+            birhTime = new java.sql.Date(user.getBith().getTime());
+         }
+         st.setDate(7, birhTime);
+         st.setString(8, user.getPass2());
+         st.setInt(9, user.getShowMail() ? 1 : 0);
+         st.setInt(10, user.getShowName() ? 1 : 0);
+         st.setString(11, user.getCity());
+         st.setInt(12, user.getShowCity() ? 1 : 0);
+         st.setString(13, user.getCountry());
+         st.setInt(14, user.getShowCountry() ? 1 : 0);
+         st.setInt(15, user.getShowSex() ? 1 : 0);
+         st.setString(16, user.getIcq());
+         st.setInt(17, user.getShowIcq() ? 1 : 0);
+         st.setInt(18, user.getShowBithday() ? 1 : 0);
+         st.setInt(19, user.getLanguge());
+         st.setInt(20, user.getHideIp() ? 1 : 0);
+         st.setInt(21, user.getView());
+         st.setInt(22, user.getPp());
+         st.setInt(23, user.getPt());
+         st.setString(24, user.getAvatar());
+         st.setInt(25, user.getS_avatar() ? 1 : 0);
+         st.setInt(26, user.getOk_avatar() ? 1 : 0);
+         st.setInt(27, user.getVavatars() ? 1 : 0);
+         st.setInt(28, user.getTimeZone());
+         st.setString(29, user.getFooter());
+         st.setInt(30, user.getBan());
+         st.setInt(31, user.getActivateCode());
+         st.setInt(32, user.getIsActive() ? 1 : 0);
          st.executeUpdate();
       }finally{
          readFinally(null, st);
