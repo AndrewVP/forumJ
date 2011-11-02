@@ -31,13 +31,29 @@ public class FJPostHead implements IFJPostHead {
    
    private Integer nred = null;
    
-   private Date createTime = null;
+   private Long createTime = null;
    
-   private Date editTime = null;
+   private Long editTime = null;
    
    private Long postId = null;
    
    private Long threadId = null;
+   
+   private User author = null;
+
+   /**
+    * @return the author
+    */
+   public User getAuthor() {
+      return author;
+   }
+
+   /**
+    * @param author the author to set
+    */
+   public void setAuthor(User author) {
+      this.author = author;
+   }
 
    /**
     * @return the id
@@ -140,28 +156,28 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @return the createTime
     */
-   public Date getCreateTime() {
+   public Long getCreateTime() {
       return createTime;
    }
 
    /**
     * @param createTime the createTime to set
     */
-   public void setCreateTime(Date createTime) {
+   public void setCreateTime(Long createTime) {
       this.createTime = createTime;
    }
 
    /**
     * @return the editTime
     */
-   public Date getEditTime() {
+   public Long getEditTime() {
       return editTime;
    }
 
    /**
     * @param editTime the editTime to set
     */
-   public void setEditTime(Date editTime) {
+   public void setEditTime(Long editTime) {
       this.editTime = editTime;
    }
 

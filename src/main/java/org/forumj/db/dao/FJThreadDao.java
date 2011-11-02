@@ -50,7 +50,7 @@ public class FJThreadDao extends FJDao {
             thread.setId(threadId);
             post.setThreadId(threadId);
             post.getHead().setThreadId(threadId);
-            post.getHead().setCreateTime(date);
+            post.getHead().setCreateTime(date.getTime());
             FJPostDao postDao = new FJPostDao();
             Long postId = postDao.create(post, conn);
             thread.setLastPostId(postId);
