@@ -763,51 +763,6 @@ public class Post {
       this.isLastPost = true; 
    }
 
-   public void loadHeads(Map $arrFetch,long $add_hr, long $add_mn){
-      // 
-      this.nick = (String) $arrFetch.get("nick");
-      // 
-      this.idu = (Long) $arrFetch.get("auth");
-      // 
-      Time $time = new Time((Long) $arrFetch.get("post_time"));
-      $time.add($add_hr, Time.HOUR);
-      $time.add($add_mn, Time.MINUTE);
-      this.postTime =  $time;
-      // 
-      this.head = stripslashes((String)$arrFetch.get("tilte"));
-      // 
-      //      this.str_type = $arrFetch.get("type");
-      // 
-      this.nred = (Integer) $arrFetch.get("nred");
-      // 
-      Time $edTime = new Time((Long) $arrFetch.get("post_edit_time"));
-      $edTime.add($add_hr, Time.HOUR);
-      $edTime.add($add_mn, Time.MINUTE);
-      this.postEditTime = $edTime; 
-      // 
-      this.ip = (String) $arrFetch.get("ip");
-      // 
-      this.avatar = (String) $arrFetch.get("avatar");
-      // 
-      this.showAvatar = (Boolean) $arrFetch.get("s_avatar");
-      // 
-      this.showAvatarApproved = (Boolean) $arrFetch.get("ok_avatar");
-      // 
-      this.wantSeeAvatars = (Boolean) $arrFetch.get("v_avatars");
-      // 
-      this.country = (String) $arrFetch.get("country");
-      // 
-      this.showCountry = (Boolean) $arrFetch.get("scountry");
-      // 
-      this.city = (String) $arrFetch.get("city");
-      // 
-      this.showCity = (Boolean) $arrFetch.get("scity");
-      // 
-      this.postFooter = (String) $arrFetch.get("footer");
-      // 
-      this.domen = (String) $arrFetch.get("domen");
-   }
-
    /**
     * Устанавливает признак первого поста в опросе
     * 

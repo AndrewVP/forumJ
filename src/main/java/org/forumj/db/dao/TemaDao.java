@@ -131,29 +131,6 @@ public class TemaDao extends FJDao {
    }
 
    /**
-    * Возвращает заголовок ветки
-    * @throws SQLException 
-    * @throws ConfigurationException 
-    */
-   public String getTitle() throws ConfigurationException, SQLException{
-      String query="SELECT head FROM titles WHERE id=" +  this.getId();
-      String result = null;
-      Connection conn = null;
-      Statement st = null;
-      try {
-         conn = getConnection();
-         st = conn.createStatement();
-         ResultSet rs = st.executeQuery(query);
-         if (rs.next()){
-            result = rs.getString("head");
-         }
-      }finally{
-         readFinally(conn, st);
-      }
-      return result;
-   }
-
-   /**
     * Возвращает список постов на странице темы
     *
     * @param unknown_type $str_fd_timezone_hr
@@ -299,33 +276,6 @@ public class TemaDao extends FJDao {
    }
 
    /**
-    * Возвращает количество постов в ветке
-    * @throws SQLException 
-    * @throws ConfigurationException 
-    */
-   public Integer getPostsCountInThread(Long idMax) throws ConfigurationException, SQLException{
-      Integer result = null;
-      String addQuery = "";
-      if (idMax != null){
-         addQuery = " AND id < " +  idMax;
-      }
-      String query = "SELECT count(id) as kolvo FROM body WHERE head=" +  this.getId() + addQuery;
-      Connection conn = null;
-      Statement st = null;
-      try {
-         conn = getConnection();
-         st = conn.createStatement();
-         ResultSet rs = st.executeQuery(query);
-         if (rs.next()){
-            result = rs.getInt("kolvo");
-         }
-      }finally{
-         readFinally(conn, st);
-      }
-      return result;
-   }
-
-   /**
     * Возвращает игнор пользователя
     * TODO Этот метод должен быть у пользователя
     * @param unknown_type $idUser
@@ -338,53 +288,6 @@ public class TemaDao extends FJDao {
       return new IgnorDao().loadAll(this.getUser().getId());
    }
 
-   /**
-    * Возвращает id последнего поста в ветке
-    * @throws SQLException 
-    * @throws ConfigurationException 
-    */
-   public Integer getMaxId() throws ConfigurationException, SQLException{
-      Integer result = null;
-      String query = "SELECT MAX(id) as mx FROM body WHERE head=" +  this.getId();
-      Connection conn = null;
-      Statement st = null;
-      try {
-         conn = getConnection();
-         st = conn.createStatement();
-         ResultSet rs = st.executeQuery(query);
-         if (rs.next()){
-            result = rs.getInt("mx");
-         }
-      }finally{
-         readFinally(conn, st);
-      }
-      return result;
-   }
-
-   /**
-    * Возвращает подписан ли посетитель на ветку
-    *
-    * @param unknown_type $idUser
-    * @return unknown
-    * @throws SQLException 
-    * @throws ConfigurationException 
-    */
-   public Boolean isUserSubscribed(Long idUser) throws ConfigurationException, SQLException{
-      String query = "SELECT id FROM fd_subscribe WHERE user=" +  idUser  + " AND title=" +  this.getId();
-      Connection conn = null;
-      Statement st = null;
-      try {
-         conn = getConnection();
-         st = conn.createStatement();
-         ResultSet rs = st.executeQuery(query);
-         if (rs.next()){
-            return true;
-         }
-      }finally{
-         readFinally(conn, st);
-      }
-      return false;
-   }
 
    /**
     * Возвращает пост по его id
