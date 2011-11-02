@@ -25,7 +25,7 @@ import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
-import org.forumj.db.dao.TemaDao;
+import org.forumj.db.dao.*;
 import org.forumj.db.entity.*;
 import org.forumj.exception.InvalidKeyException;
 import org.forumj.tool.LocaleString;
@@ -53,6 +53,8 @@ public class Tema extends FJServlet {
          Integer pageNumber = request.getParameter("page") == null ? 1 : Integer.valueOf(request.getParameter("page"));
          // id Темы
          Long threadId = request.getParameter("id") == null ? 1 : Long.valueOf(request.getParameter("id"));
+         FJThreadDao dao = new FJThreadDao();
+         FJThread thread = dao.read(threadId);
          // Номер поста, на который отвечаем
          String replyPostId = request.getParameter("reply");
          LocaleString locale = (LocaleString) session.getAttribute("locale");
@@ -65,7 +67,7 @@ public class Tema extends FJServlet {
          String msg = request.getParameter("msg");
          int countPosts = 0;
          if (msg != null && !"".equals(msg.trim())){
-            countPosts = temaDao.getPostsCountInThread(new Long(msg));
+            countPosts = dao.getPostsCountInThread(threadId, new Long(msg));
             pageNumber=ceil(countPosts/user.getPt());
          }
          // Записываем счетчики
@@ -74,7 +76,6 @@ public class Tema extends FJServlet {
             // Нет
             temaDao.setSeen();
          }
-         String title = temaDao.getTitle();
          buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
          buffer.append("<html>");
          buffer.append("<head>");
@@ -94,7 +95,7 @@ public class Tema extends FJServlet {
          buffer.append("<link rel='icon' href='/favicon.ico' type='image/x-icon'>");
          buffer.append("<link rel='shortcut icon' href='/favicon.ico' type='image/x-icon'>");
          buffer.append("<title>");
-         buffer.append("форум Дилетантов :: "+title);
+         buffer.append("форум Дилетантов :: " + thread.getHead());
          buffer.append("</title>");
          buffer.append("</head>");
          // Цвет фона страницы
@@ -110,7 +111,7 @@ public class Tema extends FJServlet {
          // Главное "меню"
          buffer.append(menu(request, user, locale, false));
          // Сколько страниц?
-         Integer count = temaDao.getPostsCountInThread(null);
+         Integer count = thread.getPcount();
          Integer couP = ceil((double)count/user.getPt())+1;
          // Если цитирование или последний пост, то нам на последнюю
          boolean lastPost = false;
@@ -226,7 +227,8 @@ public class Tema extends FJServlet {
             //Мы уже подписаны?
             String action = "";
             String mess = "";
-            if (temaDao.isUserSubscribed(user.getId())){
+            FJSubscribeDao subscribeDao = new FJSubscribeDao(); 
+            if (subscribeDao.isUserSubscribed(threadId, user.getId())){
                //Подписка есть, предлагаем отказаться
                action="delonesubs.php?pg="+pageNumber;
                mess=locale.getString("mess90");
@@ -252,7 +254,7 @@ public class Tema extends FJServlet {
             buffer.append("</td>");
             buffer.append("</tr>");
             String re="";
-            String head=title;
+            String head = thread.getHead();
             Post replyPost = null;
             // Если цитируем/редактируем
             if (replyPostId != null && !"".equals(replyPostId.trim())) {

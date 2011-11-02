@@ -166,4 +166,31 @@ public class FJThreadDao extends FJDao {
       }
       return result;
    }
+
+   /**
+    * Возвращает количество постов в ветке
+    * @throws SQLException 
+    * @throws ConfigurationException 
+    */
+   public Integer getPostsCountInThread(Long threadId, Long idMax) throws ConfigurationException, SQLException{
+      Integer result = null;
+      String addQuery = "";
+      if (idMax != null){
+         addQuery = " AND id < " +  idMax;
+      }
+      String query = "SELECT count(id) as kolvo FROM body WHERE head=" +  threadId + addQuery;
+      Connection conn = null;
+      Statement st = null;
+      try {
+         conn = getConnection();
+         st = conn.createStatement();
+         ResultSet rs = st.executeQuery(query);
+         if (rs.next()){
+            result = rs.getInt("kolvo");
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
+   }
 }

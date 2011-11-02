@@ -140,4 +140,28 @@ public class FJSubscribeDao extends FJDao {
          readFinally(conn, st);
       }
    }
+   /**
+    * Возвращает подписан ли посетитель на ветку
+    *
+    * @param unknown_type $idUser
+    * @return unknown
+    * @throws SQLException 
+    * @throws ConfigurationException 
+    */
+   public Boolean isUserSubscribed(Long idUser, Long threadId) throws ConfigurationException, SQLException{
+      String query = "SELECT id FROM fd_subscribe WHERE user=" +  idUser  + " AND title=" +  threadId;
+      Connection conn = null;
+      Statement st = null;
+      try {
+         conn = getConnection();
+         st = conn.createStatement();
+         ResultSet rs = st.executeQuery(query);
+         if (rs.next()){
+            return true;
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return false;
+   }
 }
