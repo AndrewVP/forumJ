@@ -100,4 +100,28 @@ public class FJVoiceDao extends FJDao {
          writeFinally(connection == null ? conn : null, st, error);
       }
    }
+
+   /**
+    * Возвращает количество проголосовавших
+    * в опросе
+    * @throws SQLException 
+    * @throws ConfigurationException 
+    */
+   public int getVoicesAmount(Long threadId) throws ConfigurationException, SQLException{
+      String query = "SELECT COUNT(id) AS nvcs FROM voice WHERE head=" + threadId;
+      Connection conn = null;
+      Statement st = null;
+      int result = 0;
+      try {
+         conn = getConnection();
+         st = conn.createStatement();
+         ResultSet rs = st.executeQuery(query);
+         if (rs.next()){
+            result = rs.getInt("nvcs");
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
+   }
 }

@@ -234,7 +234,8 @@ public class TemaDao extends FJDao {
                   post.setIsUserCanAddAnswer(type == 2);
                   List<QuestNode> questNodes = questDao.loadNodes(getId());
                   post.setAnswerAmount(questNodes.size());
-                  post.setVoicesAmount(this.getVoicesAmount());
+                  FJVoiceDao voiceDao = new FJVoiceDao();
+                  post.setVoicesAmount(voiceDao.getVoicesAmount(getId()));
                   post.setNodes(questNodes);
                   post.setQuestion(questNodes.get(0).getNode());
                   post.setUserVote(this.isUserVote());
@@ -389,27 +390,4 @@ public class TemaDao extends FJDao {
       return false;
    }
 
-   /**
-    * Возвращает количество проголосовавших
-    * в опросе
-    * @throws SQLException 
-    * @throws ConfigurationException 
-    */
-   public int getVoicesAmount() throws ConfigurationException, SQLException{
-      String query = "SELECT COUNT(id) AS nvcs FROM voice WHERE head=" + this.getId();
-      Connection conn = null;
-      Statement st = null;
-      int result = 0;
-      try {
-         conn = getConnection();
-         st = conn.createStatement();
-         ResultSet rs = st.executeQuery(query);
-         if (rs.next()){
-            result = rs.getInt("nvcs");
-         }
-      }finally{
-         readFinally(conn, st);
-      }
-      return result;
-   }
 }

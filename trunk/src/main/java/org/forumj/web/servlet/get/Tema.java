@@ -398,120 +398,267 @@ public class Tema extends FJServlet {
       StringBuffer buffer = new StringBuffer();
       Time postTime = new Time(post.getHead().getCreateTime());
       User author = post.getHead().getAuthor();
-      String result = "";
       try {
-         String rp;
          String domen = post.getHead().getDomen();
          String ip = post.getHead().getIp();
-         if (trim(post.getHead().getIp()).equalsIgnoreCase(trim(domen))){
+         if (ip.trim().equalsIgnoreCase(trim(domen))){
             domen = substr(domen, 0, strrpos(domen, ".")+1) + "---";
          }else{
             domen = "---" + substr(domen, strpos(domen, ".") + 1);
          }
-         result +="<tr class=heads>";
-         result += "<td  class=internal>";
-         if (post.isLastPost()) result += "<a name='end'></a>";
-         result += "<a name='this.str_id'>&nbsp;</a>";
-         result += "<a class=nik href='tema.php?id=" + post.getThreadId() + "&msg=" + post.getId() + "#" + post.getId() + "'><b>&nbsp;&nbsp;" + fd_head(htmlspecialchars(post.getHead().getTitle())) + "</b></a>";
-         result += "</td></tr>";
-         result += "<tr><td>";
+         buffer.append("<tr class=heads>");
+         buffer.append("<td  class=internal>");
+         if (post.isLastPost()) buffer.append("<a name='end'></a>");
+         buffer.append("<a name='this.str_id'>&nbsp;</a>");
+         buffer.append("<a class=nik href='tema.php?id=" + post.getThreadId() + "&msg=" + post.getId() + "#" + post.getId() + "'><b>&nbsp;&nbsp;" + fd_head(htmlspecialchars(post.getHead().getTitle())) + "</b></a>");
+         buffer.append("</td></tr>");
+         buffer.append("<tr><td>");
          int div = 0;
          String div_ = "";
          if (ignorList.size() > 0){
             if (isIgnored(post.getHead().getAuth(), ignorList)) div = 1;
          }
-         result += "<span class='tbtextnread'>" + author.getNick() + "</span>&nbsp;•";
-         result += "&nbsp;<img border='0' src='smiles/icon_minipost.gif'>&nbsp;<span class='posthead'>" + postTime.toString("dd.MM.yyyy HH:mm") + "</span>&nbsp;";
+         buffer.append("<span class='tbtextnread'>" + author.getNick() + "</span>&nbsp;•");
+         buffer.append("&nbsp;<img border='0' src='smiles/icon_minipost.gif'>&nbsp;<span class='posthead'>" + postTime.toString("dd.MM.yyyy HH:mm") + "</span>&nbsp;");
          if (div != 0 && user.isLogined() && post.getHead().getAuth() != user.getId()){
-            result += chr(149) + "&nbsp;<a class=\"posthead\" href=\"ignor.php?idi=" + post.getHead().getAuth() + "&idt=" + post.getThreadId() + "&idp=" + post.getId() + "&pg=" + pageNumber + "\" rel=\"nofollow\">" + locale.getString("mess68") + "</a>";
+            buffer.append( chr(149) + "&nbsp;<a class=\"posthead\" href=\"ignor.php?idi=" + post.getHead().getAuth() + "&idt=" + post.getThreadId() + "&idp=" + post.getId() + "&pg=" + pageNumber + "\" rel=\"nofollow\">" + locale.getString("mess68") + "</a>");
          }
-         result +="</td></tr>";
-         result +="<tr><td>";
+         buffer.append("</td></tr>");
+         buffer.append("<tr><td>");
          if (div != 0){
-            result += "<a href='#' onclick='togglemsg(\"dd" + post.getId() + "\"); return false;' rel='nofollow'>" + locale.getString("mess142") + "</a>";
+            buffer.append("<a href='#' onclick='togglemsg(\"dd" + post.getId() + "\"); return false;' rel='nofollow'>" + locale.getString("mess142") + "</a>");
             div_ =" style='visibility: hidden; display:none;'";
          }
          else {
             div_ ="";
          }
-         result += "<div id=dd" + post.getId().toString() + div_ + ">";
+         buffer.append("<div id=dd" + post.getId().toString() + div_ + ">");
          if (!(user.isLogined() && div > 0)){
-            result += "<table width='100%'><tr><td valign=top class='matras'>";
-            result += "<table style='table-layout:fixed;' width='170'><tr><td valign=top>";
-            result += "<div style='padding:10px;'>";
+            buffer.append("<table width='100%'><tr><td valign=top class='matras'>");
+            buffer.append("<table style='table-layout:fixed;' width='170'><tr><td valign=top>");
+            buffer.append("<div style='padding:10px;'>");
             if (user.getShowAvatars() && author.getOk_avatar() && author.getAvatar() != null && author.getAvatar().trim().isEmpty() && author.getS_avatar()){
-               result += "<a href='control.php?id=9'><img border='0' src='" + author.getAvatar() + "' rel=\"nofollow\"></a>";
+               buffer.append("<a href='control.php?id=9'><img border='0' src='" + author.getAvatar() + "' rel=\"nofollow\"></a>");
             }else{
-               result += "<a href='control.php?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>";
+               buffer.append("<a href='control.php?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>");
             }
-            result += "</div>";
-            result += "<span class='posthead'><u>" + locale.getString("mess111") + "</u></span><br>";
+            buffer.append("</div>");
+            buffer.append("<span class='posthead'><u>" + locale.getString("mess111") + "</u></span><br>");
             if (!author.getShowCountry() || author.getCountry() == null || author.getCountry().isEmpty()){
-               result += "<span class='posthead'>" + locale.getString("mess114") + "</span><br>";
+               buffer.append("<span class='posthead'>" + locale.getString("mess114") + "</span><br>");
             }else{
-               result += "<span class='posthead'>" + author.getCountry() + "</span><br>";
+               buffer.append("<span class='posthead'>" + author.getCountry() + "</span><br>");
             }
-            result += "<span class='posthead'><u>" + locale.getString("mess112") + "</u></span><br>";
+            buffer.append("<span class='posthead'><u>" + locale.getString("mess112") + "</u></span><br>");
             if (author.getShowCity() || author.getCity() == null || author.getCity().isEmpty()){
-               result += "<span class='posthead'>" + locale.getString("mess114") + "</span><br>";
+               buffer.append("<span class='posthead'>" + locale.getString("mess114") + "</span><br>");
             }else{
-               result += "<span class='posthead'>" + author.getCity() + "</span><br>";
+               buffer.append("<span class='posthead'>" + author.getCity() + "</span><br>");
             }
-            result += "</td></tr></table>";
-            result += "</td><td valign='top' width='100%'>";
-            result += "<table width='100%'>";
+            buffer.append("</td></tr></table>");
+            buffer.append("</td><td valign='top' width='100%'>");
+            buffer.append("<table width='100%'>");
 //            if (this.isQuest){
-//               result += this.getQuest() ;
+//               buffer.append( this.getQuest() ;
 //            }
-            result +="<tr><td>";
-            result +="<p class=post>" + fd_body(post.getBody().getBody()) + "</p>";
-            result +="</td></tr>";
-            result += "</table></td></tr>";
-            result +="<tr><td class='matras' colspan=2></td></tr>";
-            result +="<tr><td class='matras'></td><td>";
-            result +="<p class=post>" + fd_body(author.getFooter()) + "</p>";
-            result +="</td></tr>";
-            result +="<tr><td align='RIGHT' width='100%' colspan=2>";
+            buffer.append("<tr><td>");
+            buffer.append("<p class=post>" + fd_body(post.getBody().getBody()) + "</p>");
+            buffer.append("</td></tr>");
+            buffer.append("</table></td></tr>");
+            buffer.append("<tr><td class='matras' colspan=2></td></tr>");
+            buffer.append("<tr><td class='matras'></td><td>");
+            buffer.append("<p class=post>" + fd_body(author.getFooter()) + "</p>");
+            buffer.append("</td></tr>");
+            buffer.append("<tr><td align='RIGHT' width='100%' colspan=2>");
             if (post.getHead().getNred()>0){
                Time postEditTime = new Time(post.getHead().getEditTime());
 
-               result += "<table class='matras' width='100%'>";
-               result += "<tr><td align='LEFT'>";
-               result += "<span class='posthead'>" + locale.getString("mess50") + post.getHead().getNred() + locale.getString("mess51") + postEditTime.toString("d.m.Y H:i") + "</span>";
+               buffer.append("<table class='matras' width='100%'>");
+               buffer.append("<tr><td align='LEFT'>");
+               buffer.append("<span class='posthead'>" + locale.getString("mess50") + post.getHead().getNred() + locale.getString("mess51") + postEditTime.toString("d.m.Y H:i") + "</span>");
             }
             else {
-               result += "<table class='matras'>";
-               result += "<tr><td align='LEFT'>";
-               result += " ";
+               buffer.append("<table class='matras'>");
+               buffer.append("<tr><td align='LEFT'>");
+               buffer.append(" ");
             }
-            result +="</td>";
+            buffer.append("</td>");
             if(user.isLogined()){
 //               if (this.isAdminForvard){
-//                  result += "<td align='CENTER' width='70'>";
-//                  result += "<span class='posthead'><a href='site.php?id=" + post.getThreadId() + "&post=" + this.id + "' rel=\"nofollow\">" + locale.getString("mess162") + "</a></span>";
-//                  result += "</td>";
+//                  buffer.append("<td align='CENTER' width='70'>");
+//                  buffer.append("<span class='posthead'><a href='site.php?id=" + post.getThreadId() + "&post=" + this.id + "' rel=\"nofollow\">" + locale.getString("mess162") + "</a></span>");
+//                  buffer.append("</td>");
 //               }
                if (user.getId() == author.getId()) {
-                  result += "<td align='CENTER' width='70'>";
-                  result += "<span class='posthead'><a href='tema.php?id=" + post.getThreadId() + "&reply=" + post.getId() + "#edit' rel=\"nofollow\">" + locale.getString("mess141") + "</a></span>";
-                  result += "</td>";
+                  buffer.append("<td align='CENTER' width='70'>");
+                  buffer.append("<span class='posthead'><a href='tema.php?id=" + post.getThreadId() + "&reply=" + post.getId() + "#edit' rel=\"nofollow\">" + locale.getString("mess141") + "</a></span>");
+                  buffer.append("</td>");
                }else{
-                  result += "<td align='CENTER' width='70'>";
-                  result += "<span class='posthead'><a href='tema.php?id=" + post.getThreadId() + "&reply=" + post.getId() + "#edit' rel=\"nofollow\">" + locale.getString("mess139") + "</a></span>";
-                  result += "</td>";
-                  result += "<td align='CENTER' width='70'>";
-                  result += "<span class='posthead'><a href='tema.php?id=" + post.getThreadId() + "&reply=" + post.getId() + "&ans=1#edit' rel=\"nofollow\">" + locale.getString("mess140") + "</a></span>";
-                  result += "</td>";
+                  buffer.append("<td align='CENTER' width='70'>");
+                  buffer.append("<span class='posthead'><a href='tema.php?id=" + post.getThreadId() + "&reply=" + post.getId() + "#edit' rel=\"nofollow\">" + locale.getString("mess139") + "</a></span>");
+                  buffer.append("</td>");
+                  buffer.append("<td align='CENTER' width='70'>");
+                  buffer.append("<span class='posthead'><a href='tema.php?id=" + post.getThreadId() + "&reply=" + post.getId() + "&ans=1#edit' rel=\"nofollow\">" + locale.getString("mess140") + "</a></span>");
+                  buffer.append("</td>");
                }
             }
-            result += "</tr></table>";
-            result += "</td></tr>";
-            result += "</table>";
+            buffer.append("</tr></table>");
+            buffer.append("</td></tr>");
+            buffer.append("</table>");
          }else{
-            result += locale.getString("mess103");
+            buffer.append( locale.getString("mess103"));
          }
-         result += "</div>";
-         result += "</td></tr>";
+         buffer.append("</div>");
+         buffer.append("</td></tr>");
+      } catch (InvalidKeyException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
+      return buffer;
+   }
+   
+   private StringBuffer writeQuest(){
+      StringBuffer buffer = new StringBuffer(); 
+      String result="";
+      try {
+         int $nvcs = this.getVoicesAmount();
+         result +=("<tr><td>");
+         result += "<p align=\"CENTER\"><font size=4><b>" + this.getQuestion() + "</b></font></p><br>";
+         result +=("</td></tr>");
+         result +=("<tr><td align=\"CENTER\">");
+         List<QuestNode> $nodes = this.getNodes();
+         if (isset(this.currentUser.getNick()) && !this.isUserVote()){
+            result +=("<form  action='voice.php' method='POST'><table class=content>");
+            boolean first = true;
+            for (Iterator<QuestNode> iterator = $nodes.iterator(); iterator.hasNext();) {
+               QuestNode questNode = iterator.next();
+               result +=("<tr><td class=voice_left align='right'>");
+               String $check = "";
+               if (first){
+                  first = false;
+                  $check=" CHECKED";
+               }
+               if (questNode.getUserId() == 0){
+                  result += this.locale.getString("mess143");
+                  if (questNode.getType() == 1){
+                     result += "<b>" + questNode.getUserNick() + "</b>";
+                  }
+                  else{
+                     result += "<b>" + this.locale.getString("mess144") + "</b>";
+                  }
+                  result += "</td><td class=voice_right align='left'>";
+                  result +=("<input type='radio' name='ANSWER' value='$in1'>&nbsp;" + fd_smiles(fd_href(stripslashes(questNode.getNode()))) + "<br>");
+               }
+               else {
+                  result += "</td><td class=voice_right align='left'>";
+                  result +=("<input type='radio' name='ANSWER' value='$in1'" + $check + ">&nbsp;" + fd_smiles(fd_href(stripslashes(questNode.getNode()))) + "<br>");
+               }
+               result +=("</td></tr>");
+            }
+            result +=("<tr><td colspan='2' align='CENTER'>");
+            result += "<input type=hidden name=\"IDU1\" size=\"20\" value=\"" + this.currentUser.getId() + "\">";
+            result += "<input type=hidden name=\"AUT1\" size=\"20\" value=\"" + this.currentUser.getNick() + "\">";
+            result += "<input type=hidden name=\"IDT1\" size=\"20\" value=\"" + this.idThread + "\">";
+            if (isset(this.currentUser.getPass2())) {
+               result += "<input type=hidden name=\"PS21\" size=\"20\" value=\"" + this.currentUser.getPass2() + "\">";
+            }
+            else {
+               result += "<input type=hidden name=\"PS11\" size=\"20\" value=\"" + this.currentUser.getPass() + "\">";
+            }
+            result +="<input type='submit' value='" + this.locale.getString("mess145") + "' name='OK'>";
+            result +=("</td></tr>");
+            result +=("</table></form>");
+            result +=("</td></tr>");
+            if (this.isUserCanAddAnswer){
+               boolean userVotes = false;
+               for (Iterator<QuestNode> iterator = $nodes.iterator(); iterator.hasNext();) {
+                  QuestNode questNode = iterator.next();
+                  if (questNode.getUserId() == this.currentUser.getId()) userVotes = true;
+               }
+               if (!userVotes){
+                  result +=("<tr><td>");
+                  result +=("<form  action=\"uservoice.php\" method=\"POST\"><table align=\"CENTER\">");
+                  result +=("<tr><td>");
+                  result +=this.locale.getString("mess153") + ":<br>";
+                  result +=("<input type=\"text\" name=\"P\" size=\"100\">");
+                  result += "<input type=hidden name=\"IDU2\" size=\"20\" value=\"" + this.currentUser.getId() + "\">";
+                  result += "<input type=hidden name=\"AUT2\" size=\"20\" value=\"" + this.currentUser.getNick() + "\">";
+                  result += "<input type=hidden name=\"IDT2\" size=\"20\" value=\"" + this.idThread + "\">";
+                  if (isset(this.currentUser.getPass2())) {
+                     result += "<input type=hidden name=\"PS22\" size=\"20\" value=\"" + this.currentUser.getPass2() + "\">";
+                  }
+                  else {
+                     result += "<input type=hidden name=\"PS12\" size=\"20\" value=\"" + this.currentUser.getPass() + "\">";
+                  }
+                  result +=("</td></tr>");
+                  result +=("<tr><td align=\"CENTER\">");
+                  result +="<input type='checkbox' name='HD' value='1' checked>&nbsp;" + this.locale.getString("mess146") + "<br>";
+                  result +="<input type='submit' value='" + this.locale.getString("mess145") + "' name='OK'>";
+                  result +=("</td></tr>");
+                  result +=("</table></form>");
+                  result +=("</td></tr>");
+               }
+            }
+         }
+         if ($nvcs > 0) $nvcs=1/10000000;
+         result +=("<tr><td align=\"CENTER\">");
+         result += "<b>" + this.locale.getString("mess152") + ": " + round($nvcs,0) + "</b>";
+         result +=("</td></tr>");
+         result +=("<tr><td align=\"CENTER\">");
+         result += "<table align='CENTER' class=control>";
+         result +=("<tr class=heads><th class='internal'>");
+         result += this.locale.getString("mess147");
+         result +=("</th><th class='internal'>");
+         result += this.locale.getString("mess148");
+         result +=("</th><th class='internal'>");
+         result += this.locale.getString("mess149");
+         result +=("</th><th class='internal' width='350'>");
+         result += this.locale.getString("mess150");
+         result +=("</th><th class='internal'>");
+         result += this.locale.getString("mess151");
+         result +=("</th></tr><tr>");
+         for (Iterator<QuestNode> iterator = $nodes.iterator(); iterator.hasNext();) {
+            QuestNode questNode = iterator.next();
+            if (questNode.getUserId() == 0){
+               if (questNode.getType() == 1){
+                  result += "<td align='LEFT' class='internal'>" + questNode.getUserNick() + "</td>";
+               }
+               else{
+                  result += "<td align='LEFT' class='internal'>" + this.locale.getString("mess144") + "</td>";
+               }
+            }
+            else
+            {
+               result += "<td align='LEFT' class='internal'></td>";
+            }
+            result +=("<td class='internal'>" + fd_body(stripslashes(questNode.getNode())) + "</td>");
+
+            result +=("<td align='CENTER' class='internal'>");
+            result +=(questNode.getGol() + "</td>");
+            result += "<td class='internal'><TABLE cellSpacing=0 cellPadding=0 width='" + round((questNode.getGol()/($nvcs == 0 ? 1 : $nvcs))*300,0) + "' border=0><TR><TD align=left bgColor=red><FONT size=-3>&nbsp;</FONT></TD></TR></TABLE>";
+            result +=("</td>");
+            result +=("<td class='internal'>");
+            result +=(round((questNode.getGol()/($nvcs == 0 ? 1 : $nvcs))*100, 2)) + "%";
+            result +=("</td></tr>");
+
+         }
+         result += "</table>";
+         if (isset(this.currentUser.getId()) && this.isUserVote()){
+            result += "<form method=\"POST\" action=\"delvoice.php\" align=\"CENTER\">";
+            result += "<input type=hidden name=\"IDU\" size=\"20\" value=\"" + this.currentUser.getId() + "\">";
+            result += "<input type=hidden name=\"AUT\" size=\"20\" value=\"" + this.currentUser.getNick() + "\">";
+            result += "<input type=hidden name=\"IDT\" size=\"20\" value=\"" + this.idThread + "\">";
+            if (isset(this.currentUser.getPass2())) {
+               result += "<input type=hidden name=\"PS2\" size=\"20\" value=\"" + this.currentUser.getPass2() + "\">";
+            }
+            else {
+               result += "<input type=hidden name=\"PS1\" size=\"20\" value=\"" + this.currentUser.getPass() + "\">";
+            }
+
+            result += "<input type='submit' value='" + this.locale.getString("mess161") + "'>";
+            result += "</form>";
+         }
+         result +=("</td></tr>");
       } catch (InvalidKeyException e) {
          // TODO Auto-generated catch block
          e.printStackTrace();
