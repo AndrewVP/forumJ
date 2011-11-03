@@ -9,6 +9,8 @@
   */
 package org.forumj.db.entity;
 
+import java.util.*;
+
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
@@ -42,6 +44,8 @@ public class QuestNode {
    private String userNick;
 
    private String node;
+   
+   private List<FJVoice> voices = new ArrayList<FJVoice>();
    
    
    /**
