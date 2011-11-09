@@ -14,10 +14,13 @@ import static org.forumj.db.entity.IFJPost.*;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.*;
+import java.util.Map.Entry;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.db.entity.*;
 import org.forumj.exception.DBException;
+import org.forumj.tool.LocaleString;
 
 /**
  *
@@ -270,4 +273,156 @@ public class FJPostDao extends FJDao {
       }
       return result;
    }
+
+   /**
+    * Возвращает список постов на странице темы
+    * 
+    * @param user
+    * @param threadId
+    * @param nfirstpost
+    * @param count
+    * @param page
+    * @param lastPost
+    * @return
+    * @throws IOException
+    * @throws SQLException
+    * @throws ConfigurationException
+    */
+   public List<FJPost> getPostsList(User user, Long threadId, long nfirstpost, int count, int page, boolean lastPost) throws IOException, SQLException, ConfigurationException{
+      String query="SELECT * FROM body WHERE body.head=" +  threadId + " ORDER BY body.id ASC LIMIT " + nfirstpost + ", " +  count;
+      List<FJPost> result = new ArrayList<FJPost>();
+      Map<Long, FJPost> postsMap = new HashMap<Long, FJPost>();
+      boolean isQuest = false;
+      boolean isFirst;
+      int nPost = 0;
+      Map<String, String> bodiesId = new HashMap<String, String>();
+      Map<String, String> headsId = new HashMap<String, String>();
+      Long lastPostId = null;
+      Connection conn = null;
+      Statement st = null;
+      QuestNodeDao questDao = new QuestNodeDao();
+      try {
+         conn = getConnection();
+         st = conn.createStatement();
+         ResultSet rs = st.executeQuery(query);
+         while (rs.next()){
+            isFirst = page == 1 && ++nPost == 1;
+            lastPostId = rs.getLong("id");
+            FJPost post = new FJPost();
+            post.setId(lastPostId);
+            post.setFirstPost(isFirst);
+            if (lastPost){
+               //TODO All of them??????????
+               post.setLastPost(true);
+            }
+            result.add(post);
+            postsMap.put(lastPostId, post);
+            String tablePost = rs.getString("table_post");
+            String tablePostIds = bodiesId.get(tablePost);
+            if (tablePostIds != null){
+               tablePostIds += ", " + lastPostId.toString();
+            }else{
+               tablePostIds = lastPostId.toString();
+            }
+            bodiesId.put(tablePost, tablePostIds);
+            String tableHead = rs.getString("table_head");
+            String tableHeadIds = headsId.get(tableHead);
+            if (tableHeadIds != null){
+               tableHeadIds += ", " + lastPostId.toString();
+            }else{
+               tableHeadIds = lastPostId.toString();
+            }
+            headsId.put(tableHead, tableHeadIds);
+         }
+         //Загружаем заголовки постов
+         for (Iterator<Entry<String, String>> iterator = headsId.entrySet().iterator(); iterator.hasNext();) {
+            Entry<String, String> entry = iterator.next();
+            String table = entry.getKey();
+            String ids = entry.getValue();
+            query = "SELECT "+
+            table + ".id, "+
+            table + ".ip, "+
+            table + ".auth, "+
+            table + ".domen, "+
+            table + ".tilte, "+
+            table + ".fd_post_time as post_time, "+
+            table + ".nred, "+
+            table + ".fd_post_edit_time as post_edit_time, "+
+            "users.nick, "+
+            "users.avatar, "+
+            "users.s_avatar, "+
+            "users.ok_avatar, "+
+            "users.v_avatars, "+
+            "users.h_ip, "+
+            "users.city, "+
+            "users.scity, "+
+            "users.country, "+
+            "users.scountry, "+
+            "users.footer, "+
+            "titles.head, "+
+            "titles.type "+
+            "FROM "+
+            "(" + table + 
+            " LEFT JOIN users ON " + table + ".auth = users.id) "+
+            " LEFT JOIN titles ON " + table + ".thread_id = titles.id "+
+            " WHERE " + table + ".id IN (" + ids + ") ";
+            rs = st.executeQuery(query);
+            while (rs.next()){
+               Long postId = rs.getLong("id");
+               int type = rs.getInt("type");
+               isQuest = (type == 1 || type == 2);
+               FJPost post = postsMap.get(postId);
+               FJPostHead postHead = new FJPostHead();
+               post.setHead(postHead);
+               if (post.isFirstPost() && isQuest){
+                  post.setAnswers(new ArrayList<QuestNode>());
+                  List<QuestNode> questNodes = questDao.loadNodes(threadId);
+                  FJVoiceDao voiceDao = new FJVoiceDao();
+                  post.setVoicesAmount(voiceDao.getVoicesAmount(threadId));
+                  post.setAnswers(questNodes);
+                  post.setQuestion(questNodes.get(0));
+               }
+               User author = new User();
+               postHead.setAuthor(author);
+               author.setNick(rs.getString("nick"));
+               author.setId(rs.getLong("auth"));
+               postHead.setAuth(author.getId());
+               postHead.setIp(rs.getString("ip"));
+               author.setAvatar(rs.getString("avatar"));
+               author.setShowAvatar(rs.getInt("users.s_avatar") == 1);
+               author.setAvatarApproved(rs.getInt("ok_avatar") == 1);
+               author.setWantSeeAvatars(rs.getInt("v_avatars") == 1);
+               author.setCountry(rs.getString("country"));
+               author.setShowCountry(rs.getInt("scountry") == 1);
+               postHead.setCreateTime(rs.getLong("post_time"));
+               author.setCity(rs.getString("city"));
+               author.setShowCity(rs.getInt("scity") == 1);
+               author.setFooter(rs.getString("footer"));
+               postHead.setDomen(rs.getString("domen"));
+               postHead.setTitle(rs.getString("tilte"));
+               postHead.setNred(rs.getInt("nred"));
+               postHead.setEditTime(rs.getLong("post_edit_time"));
+            }
+         }
+         //Загружаем посты
+         for (Iterator<Entry<String, String>> iterator = bodiesId.entrySet().iterator(); iterator.hasNext();) {
+            Entry<String, String> entry = iterator.next();
+            String table = entry.getKey();
+            String ids = entry.getValue();
+            query = "SELECT id, body FROM " + table + " WHERE id IN (" + ids + ")";
+            rs = st.executeQuery(query);
+            while (rs.next()){
+               Long postId = rs.getLong("id");
+               FJPost post = postsMap.get(postId);
+               FJPostBody postBody = new FJPostBody();
+               post.setBody(postBody);
+               postBody.setBody(rs.getString("body"));
+            }
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
+   }
+   
 }

@@ -9,6 +9,8 @@
   */
 package org.forumj.db.entity;
 
+import java.util.*;
+
 /**
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
@@ -30,6 +32,22 @@ public class FJPost implements IFJPost {
    private FJPostHead head = null;
    
    private boolean lastPost = false;
+   
+   private boolean firstPost = false;
+   
+   private QuestNode question = null; 
+   
+   private List<QuestNode> answers = null;
+   
+   private int voicesAmount = 0; 
+   
+   public int getVoicesAmount() {
+      return voicesAmount;
+   }
+
+   public void setVoicesAmount(int voicesAmount) {
+      this.voicesAmount = voicesAmount;
+   }
 
    /**
     * @return the lastPost
@@ -141,6 +159,30 @@ public class FJPost implements IFJPost {
     */
    public void setHead(FJPostHead head) {
       this.head = head;
+   }
+
+   public QuestNode getQuestion() {
+      return question;
+   }
+
+   public void setQuestion(QuestNode question) {
+      this.question = question;
+   }
+
+   public List<QuestNode> getAnswers() {
+      return answers;
+   }
+
+   public void setAnswers(List<QuestNode> answers) {
+      this.answers = answers;
+   }
+
+   public boolean isFirstPost() {
+      return firstPost;
+   }
+
+   public void setFirstPost(boolean firstPost) {
+      this.firstPost = firstPost;
    }
 
 }

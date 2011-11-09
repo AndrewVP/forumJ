@@ -37,15 +37,15 @@ public class User implements IUser {
 
    private int view = 0;
 
-   private Boolean showAvatars = null;
+   private Boolean wantSeeAvatars = null;
 
    private int ban = 0;
 
    private String avatar = null;
 
-   private Boolean ok_avatar = null;
+   private Boolean avatarApproved = null;
 
-   private Boolean s_avatar = null;
+   private Boolean showAvatar = null;
 
    private String name = null;
 
@@ -105,8 +105,8 @@ public class User implements IUser {
       this.email = email;
    }
 
-   public Boolean getShowAvatars() {
-      return showAvatars;
+   public Boolean getWantSeeAvatars() {
+      return wantSeeAvatars;
    }
 
    public User() {
@@ -119,8 +119,8 @@ public class User implements IUser {
       this.nick = nick;
    }
 
-   public void setShowAvatars(Boolean showAvatars) {
-      this.showAvatars = showAvatars;
+   public void setWantSeeAvatars(Boolean wantSeeAvatars) {
+      this.wantSeeAvatars = wantSeeAvatars;
    }
 
    public String getName() {
@@ -291,12 +291,12 @@ public class User implements IUser {
       this.isActive = isActive;
    }
 
-   public Boolean getS_avatar() {
-      return s_avatar;
+   public Boolean getShowAvatar() {
+      return showAvatar;
    }
 
-   public void setS_avatar(Boolean s_avatar) {
-      this.s_avatar = s_avatar;
+   public void setShowAvatar(Boolean s_avatar) {
+      this.showAvatar = s_avatar;
    }
 
    /**
@@ -311,20 +311,6 @@ public class User implements IUser {
      */
     public void setBan(int ban) {
        this.ban = ban;
-    }
-
-    /**
-     * @return the v_avatars
-     */
-    public Boolean getVavatars() {
-       return showAvatars;
-    }
-
-    /**
-     * @param v_avatars the v_avatars to set
-     */
-    public void setVavatars(boolean v_avatars) {
-       this.showAvatars = v_avatars;
     }
 
     /**
@@ -444,11 +430,11 @@ public class User implements IUser {
        this.avatar = avatar;
     }
 
-    public Boolean getOk_avatar() {
-       return ok_avatar;
+    public Boolean getAvatarApproved() {
+       return avatarApproved;
     }
 
-    public void setOk_avatar(Boolean ok_avatar) {
-       this.ok_avatar = ok_avatar;
+    public void setAvatarApproved(Boolean ok_avatar) {
+       this.avatarApproved = ok_avatar;
     }
 }

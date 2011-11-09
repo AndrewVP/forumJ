@@ -124,4 +124,27 @@ public class FJVoiceDao extends FJDao {
       }
       return result;
    }
+
+   /**
+    * Возвращает, есть ли уже голос текущего юзера
+    * в опросе
+    * @throws SQLException 
+    * @throws ConfigurationException 
+    */
+   public boolean isUserVote(Long threadId, User user) throws ConfigurationException, SQLException{
+      String query="SELECT user FROM voice WHERE head=" + threadId + " AND user=" + user.getId().toString();
+      Connection conn = null;
+      Statement st = null;
+      try {
+         conn = getConnection();
+         st = conn.createStatement();
+         ResultSet rs = st.executeQuery(query);
+         if (rs.next()){
+            return true;
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return false;
+   }
 }

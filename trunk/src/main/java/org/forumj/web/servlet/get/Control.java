@@ -1110,7 +1110,7 @@ public class Control extends FJServlet {
    private StringBuffer case9(LocaleString locale, User user)
          throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
-      if (user.getAvatar() != null && user.getOk_avatar()) {
+      if (user.getAvatar() != null && user.getAvatarApproved()) {
          buffer.append("<div class='mnuprof' align='CENTER'>");
          buffer.append("<b>");
          buffer.append(locale.getString("mess93"));
@@ -1141,7 +1141,7 @@ public class Control extends FJServlet {
       buffer.append("<input type=text size=100 name='avatar' value='" + htmlspecialchars(user.getAvatar()) + "'>");
       buffer.append("<br>");
       buffer.append("<br>");
-      if (user.getS_avatar()) {
+      if (user.getShowAvatar()) {
          buffer.append("<input type=checkbox checked  name='s_avatar'>");
          buffer.append("&nbsp;" + locale.getString("mess94"));
          buffer.append("<br>");

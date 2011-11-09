@@ -193,4 +193,28 @@ public class FJThreadDao extends FJDao {
       }
       return result;
    }
+   /**
+    * Записывает состояние счетчиков просмотров ветки
+    *
+    * @param $isLogin Авторизован ли посетитель
+    * @throws SQLException 
+    * @throws ConfigurationException 
+    */
+   public void setSeen(User user, Long threadId) throws ConfigurationException, SQLException{
+      String query = "";
+      if (user.isLogined()){
+         query = "UPDATE titles SET seenid=seenid + 1, seenall=seenall+1 WHERE id=" +  threadId;
+      }else{
+         query = "UPDATE titles SET seenall=seenall+1 WHERE id=" +  threadId;
+      }
+      Connection conn = null;
+      Statement st = null;
+      try {
+         conn = getConnection();
+         st = conn.createStatement();
+         st.executeUpdate(query);
+      }finally{
+         readFinally(conn, st);
+      }
+   }
 }
