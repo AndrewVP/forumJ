@@ -37,7 +37,7 @@ public class VAvatar extends FJServlet {
          User user = (User) session.getAttribute("user");
          UserDao dao = new UserDao();
          if (user != null && !user.isBanned() && user.isLogined()){
-            user.setVavatars(vAvatar);
+            user.setWantSeeAvatars(vAvatar);
             dao.update(user);
             //TODO Magic integer!
             buffer.append(successPostOut("0", "control.php?id=11"));

@@ -41,8 +41,8 @@ public class SetAvatar extends FJServlet {
          UserDao dao = new UserDao();
          if (user != null && !user.isBanned() && user.isLogined()){
             user.setAvatar(avatarParameter);
-            user.setOk_avatar(false);
-            user.setS_avatar(sAvatar);
+            user.setAvatarApproved(false);
+            user.setShowAvatar(sAvatar);
             dao.update(user);
             // TODO NLS!
             String text="Изменена Аватара <a href='http://www.diletant.com.ua/forum/ok_avatar.php?qqnn=" + user.getId() + "'>" + user.getNick() + "</a>";

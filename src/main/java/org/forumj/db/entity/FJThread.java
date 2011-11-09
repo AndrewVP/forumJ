@@ -558,6 +558,9 @@ public class FJThread implements IFJThread{
    public void setFolderId(Long folderId) {
       this.folderId = folderId;
    }
-   
+
+   public boolean isQuest(){
+      return type == 1 || type == 2;
+   }
    
 }

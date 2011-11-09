@@ -39,8 +39,8 @@ public class SAvatar extends FJServlet {
             UserDao dao = new UserDao();
             User user = dao.read(userId);
             user.setAvatar(avatarParameter);
-            user.setOk_avatar(true);
-            user.setS_avatar(true);
+            user.setAvatarApproved(true);
+            user.setShowAvatar(true);
             dao.update(user);
             buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
             buffer.append("<html><head><title></title><meta http-equiv='content-type' content='text/html; charset=UTF-8'></head><body>");
