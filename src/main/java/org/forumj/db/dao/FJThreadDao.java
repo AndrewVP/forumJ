@@ -11,6 +11,7 @@ package org.forumj.db.dao;
 
 import static org.forumj.db.dao.tool.QueryBuilder.*;
 import static org.forumj.db.entity.IFJThread.*;
+import static org.forumj.tool.PHP.*;
 
 import java.io.IOException;
 import java.sql.*;
@@ -20,6 +21,7 @@ import java.util.Date;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.db.entity.*;
 import org.forumj.exception.DBException;
+import org.forumj.tool.LocaleString;
 
 /**
  *
@@ -216,5 +218,217 @@ public class FJThreadDao extends FJDao {
       }finally{
          readFinally(conn, st);
       }
+   }
+   public List<FJThread> getThreads(Long viewId, long nfirstpost, LocaleString locale, User user, List<Ignor> ignorList) throws SQLException, ConfigurationException{
+      List<FJThread> result = new ArrayList<FJThread>();
+      String sql_views="SELECT folder FROM fdvtranzit WHERE (user=" + user.getId() + " OR user=0) AND view=" + viewId;
+      Connection conn = null;
+      Statement st = null;
+      int xRow=0;
+      int isForum=0;
+      String folders="(";
+      try {
+         conn = getConnection();
+         st = conn.createStatement();
+         ResultSet rs = st.executeQuery(sql_views);
+         while (rs.next()){
+            Long folder = rs.getLong("folder"); 
+            if (folder.longValue() == 1){
+               isForum = 1;
+            }else{
+               folders+=" "+folder.toString()+",";
+            }
+            xRow++;
+         }
+         if (xRow == 1 && isForum == 1){
+            /*есть только форум*/
+         }else if(xRow == 0){
+            // TODO ошибку надо отловить!
+            folders = "(1)";
+            isForum = 1;
+         }else{
+            /*другое*/
+            folders=substr(folders, 0, strlen(folders)-1)+")";
+         }
+         String ignored = null;
+         /*выбираем минусы игнора*/
+         if (ignorList.size() > 0){
+            ignored = "("+implode(", ", new ArrayList<Object>(ignorList))+")";
+         }
+         String where = "";
+         if (isset(ignored)){
+            where = " WHERE titles.auth NOT IN " + ignored + " ";
+         }
+         String join=null;
+         String sqlTmpJoinTable = null;
+         String sqlTmpJoinTableInsert = null;
+         String folderName = null;
+         if (isForum > 0){
+            /*Есть форум*/
+            if (xRow == 1){
+               /*Есть только форум*/
+               /*Определяем минусы - все перемещенное*/
+               String sqlMoved=" SELECT title FROM fdtranzit WHERE user="+user.getId() + " ";
+               rs = st.executeQuery(sqlMoved);
+               String moved = null;
+               while (rs.next()){
+                  /*перемещения есть*/
+                  if (moved == null){
+                     moved="(";
+                  }
+                  moved+=" "+rs.getLong("title")+",";
+               }
+               if (moved != null){
+                  moved=substr(moved, 0, strlen(moved)-1)+")";
+               }
+               /*Собираем запросы*/
+               if (isset(moved)){
+                  if (isset(ignored)){
+                     where+=" AND titles.id NOT IN "+moved+" ";
+                  }else{
+                     where=" WHERE titles.id NOT IN "+moved+" ";
+                  }
+               }
+               folderName="'Форум' as _flname, ";
+               join="";
+            }else{
+               /*кроме форума есть что-то еще*/
+               /*Находим минусы - перемещенные в другие папки*/
+               String sqlMoved=" SELECT title FROM fdtranzit WHERE user="+user.getId()+" AND folder NOT IN "+folders + " ";
+               rs = st.executeQuery(sqlMoved);
+               String moved = null;
+               while (rs.next()){
+                  /*перемещения есть*/
+                  if (moved == null){
+                     moved="(";
+                  }
+                  moved+=" "+rs.getLong("title")+",";
+               }
+               if (moved != null){
+                  moved=substr(moved, 0, strlen(moved)-1)+")";
+               }
+               /*Собираем запросы*/
+               if (isset(moved)){
+                  if (isset(ignored)){
+                     where+=" AND titles.id NOT IN "+moved+" ";
+                  }else{
+                     where=" WHERE titles.id NOT IN "+moved+" ";
+                  }
+               }
+               folderName="IF (ISNULL(fdfolders.flname), 'Форум', fdfolders.flname) as _flname, ";
+               // Временная таблица
+               sqlTmpJoinTable="CREATE TEMPORARY TABLE fdutranzit LIKE fdtranzit";
+               sqlTmpJoinTableInsert="INSERT INTO fdutranzit (title, folder) SELECT fdtranzit.title, fdtranzit.folder FROM fdtranzit WHERE fdtranzit.user=" + user.getId() + ";";
+               join=" LEFT JOIN fdutranzit on titles.id=fdutranzit.title LEFT JOIN fdfolders ON fdutranzit.folder=fdfolders.id ";
+            }
+         }else{
+            /*форума в интерфейсе нет*/
+            /*Определяем плюсы - все перемещенное в папки*/
+            String sqlMoved="SELECT title FROM fdtranzit WHERE user=" + user.getId() + " AND folder IN " + folders + " ";
+            rs = st.executeQuery(sqlMoved);
+            String moved = null;
+            while (rs.next()){
+               /*перемещения есть*/
+               if (moved == null){
+                  moved="(";
+               }
+               moved+=" "+rs.getLong("title")+",";
+            }
+            if (moved != null){
+               moved=substr(moved, 0, strlen(moved)-1)+")";
+            }
+            /*Собираем запросы*/
+            if (isset(moved)){
+               if (isset(ignored)){
+                  where+=" AND titles.id NOT IN "+moved+" ";
+               }else{
+                  where=" WHERE titles.id IN "+moved+" ";
+               }
+            }else{
+               //Ничего нет
+               if (isset(ignored)){
+                  where+=" AND 0=1";
+               }else{
+                  where=" WHERE 0=1";
+               }
+               
+            }
+            folderName="IF (ISNULL(fdfolders.flname), 'Форум', fdfolders.flname) as _flname, ";
+            // Временная таблица
+            sqlTmpJoinTable="CREATE TEMPORARY TABLE fdutranzit LIKE fdtranzit";
+            sqlTmpJoinTableInsert="INSERT INTO fdutranzit (title, folder) SELECT fdtranzit.title, fdtranzit.folder FROM fdtranzit WHERE fdtranzit.user=" + user.getId() + ";";
+            join="LEFT JOIN fdutranzit on titles.id=fdutranzit.title LEFT JOIN fdfolders ON fdutranzit.folder=fdfolders.id ";
+         }
+         String sql_main="SELECT "+
+         "titles.id, "+
+         "titles.dock, "+
+         "DATE_ADD(DATE_ADD(titles.lposttime,INTERVAL 0 HOUR), INTERVAL 0 MINUTE) as lposttime_, "+
+         "titles.type, "+
+         "titles.npost, "+
+         "titles.seenid, "+
+         "titles.seenall, "+
+         "DATE_FORMAT(titles.reg, '%d.%m %H:%i') as reg_, "+
+         "titles.head, "+
+         "titles.lpostuser, "+
+         "titles.lpostnick, "+
+         "titles.id_last_post, "+
+         folderName + 
+         "users.nick "+
+         "FROM "+
+         "titles force index(titles0001) "+
+         "LEFT JOIN users ON titles.auth=users.id "+
+         join + 
+         where + 
+         " ORDER BY "+
+         "titles.dock desc, "+
+         "titles.lposttime desc "+
+         "LIMIT " + nfirstpost + ", " + user.getPt() + " ";
+         // Добавляем временную таблицу
+         if (isset(sqlTmpJoinTable)){
+            String query = "DROP TEMPORARY TABLE IF EXISTS fdutranzit;";
+            st.executeUpdate(query);
+            st.executeUpdate(sqlTmpJoinTable);
+            st.executeUpdate(sqlTmpJoinTableInsert);
+         }
+         rs = st.executeQuery(sql_main) ;
+         int disain = -1;
+         int i = 0;
+         Statement st1 = conn.createStatement();
+         ResultSet rs1;
+         while (rs.next()){
+            Long id = rs.getLong("id");
+            Long idLastPost = rs.getLong("id_last_post"); 
+            if (idLastPost.longValue() == 0){
+               String query="SELECT MAX(id) as id_post FROM body WHERE head=" + id.toString();
+               rs1 = st1.executeQuery(query);
+               if (rs1.next()){
+                  idLastPost = rs1.getLong("id_post");
+               }
+               query="UPDATE titles SET id_last_post=" + idLastPost.toString() + " WHERE id=" + id.toString();
+               st1.executeUpdate(query);
+            }
+            FJThread thr = new FJThread();
+            thr.setLocale(locale);
+            thr.setDisain(disain);
+            thr.setCurrentUser(user);
+            thr.setId(id);
+            thr.setDock(rs.getInt("dock"));
+            thr.setLastPostTime(rs.getDate("lposttime_"));
+            thr.setHead(rs.getString("head"));
+            thr.setNick(rs.getString("nick"));
+            thr.setLastPostNick(rs.getString("lpostnick"));
+            thr.setPcount(rs.getInt("npost")-1);
+            thr.setSnid(rs.getInt("seenid"));
+            thr.setSnall(rs.getInt("seenall"));
+            thr.setType(rs.getInt("type"));
+            thr.setFolder(rs.getString("_flname"));
+            thr.setI(i);
+            result.add(thr);
+            disain = disain * -1;
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
    }
 }

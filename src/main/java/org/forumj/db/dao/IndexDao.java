@@ -22,7 +22,6 @@ import java.util.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.db.entity.*;
-import org.forumj.exception.DBException;
 import org.forumj.tool.LocaleString;
 
 
@@ -213,7 +212,7 @@ public class IndexDao extends FJDao {
          String ignored = null;
          /*выбираем минусы игнора*/
          if (this.getArrIgnorId().size() > 0){
-            ignored = "("+implode(", ", this.getArrIgnorId())+")";
+//            ignored = "("+implode(", ", this.getArrIgnorId())+")";
          }
          String where = "";
          if (isset(ignored)){

@@ -9,7 +9,6 @@
   */
 package org.forumj.db.entity;
 
-import java.util.Date;
 
 /**
  *
