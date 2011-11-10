@@ -19,6 +19,8 @@ import java.net.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import org.forumj.db.entity.Ignor;
+
 import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 
 /**
@@ -178,11 +180,16 @@ public class PHP {
       return result;
    }
 
-   public static String implode(String glue, List<Long> pieces){
+   public static String implode(String glue, List<Object> pieces){
       String result = "";
       for (int piecesIndex = 0; piecesIndex < pieces.size(); piecesIndex++) {
          Object object = pieces.get(piecesIndex);
-         result += object.toString();
+         if (object instanceof Ignor){
+            Ignor ignor = (Ignor) object; 
+            result += ignor.getUser().getId();
+         }else{
+            result += object.toString();
+         }
          if (piecesIndex < pieces.size() -1){
             result += glue;
          }

@@ -24,8 +24,6 @@ import org.apache.commons.dbcp.*;
 import org.apache.commons.pool.ObjectPool;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.forumj.common.FJConfiguration;
-import org.forumj.email.FJEMail;
-import org.forumj.exception.DBException;
 
 
 /**
@@ -33,13 +31,6 @@ import org.forumj.exception.DBException;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 public class FJDao {
-
-   /**
-    * E-mail класс для отправки сообщений об ошибах
-    *
-    * @var Email
-    */
-   private FJEMail mail = new FJEMail();
 
    public static DataSource dataSource = null;
 

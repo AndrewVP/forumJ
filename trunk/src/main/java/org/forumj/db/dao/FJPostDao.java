@@ -20,7 +20,6 @@ import java.util.Map.Entry;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.db.entity.*;
 import org.forumj.exception.DBException;
-import org.forumj.tool.LocaleString;
 
 /**
  *

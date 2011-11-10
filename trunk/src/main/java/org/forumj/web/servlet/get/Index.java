@@ -31,10 +31,10 @@ import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
-import org.forumj.db.dao.IndexDao;
+import org.forumj.db.dao.*;
 import org.forumj.db.entity.*;
 import org.forumj.exception.InvalidKeyException;
-import org.forumj.tool.LocaleString;
+import org.forumj.tool.*;
 import org.forumj.web.servlet.FJServlet;
 
 
@@ -65,6 +65,7 @@ public class Index extends FJServlet {
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          User user = (User) session.getAttribute("user");
          Long userId = user.getId();
+         FJThreadDao threadDao = new FJThreadDao();
          IndexDao dao = new IndexDao(user);  
          // Собираем статистику
          buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
@@ -102,11 +103,15 @@ public class Index extends FJServlet {
          buffer.append(logo(request));
          // соединяемся и определяем кол-во страниц
          long nfirstpost=(pageNumber-1)*user.getPp();
+         if (nfirstpost < 0){
+            nfirstpost = 0;
+         }
          // Интерфейс по умолчанию
          if (session.getAttribute("view") == null){
             session.setAttribute("view", user.getView());
          }
-         List<FJThread> threadsList = dao.getThreads(Long.valueOf((Integer) session.getAttribute("view")), user.getPp(), nfirstpost, locale, user.isLogined(), pageNumber, user.getPt());
+         List<Ignor> ignorList = new IgnorDao().loadAll(user.getId());
+         List<FJThread> threadsList = threadDao.getThreads(Long.valueOf((Integer) session.getAttribute("view")), nfirstpost, locale, user, ignorList);
          int threadsCount = dao.getThreadCount();
          // кол-во страниц с заголовками
          int couP = ceil(threadsCount/user.getPp())+1;
@@ -287,7 +292,7 @@ public class Index extends FJServlet {
          for (int threadIndex = 0; threadIndex < threadsList.size(); threadIndex++) {
             FJThread thread = threadsList.get(threadIndex);
             thread.setI(threadIndex);
-            buffer.append(thread.toString());
+            buffer.append(writeThread(thread, user, locale));
          }
          // Главные ссылки внизу страницы
          buffer.append("</table>");
@@ -424,7 +429,112 @@ public class Index extends FJServlet {
       PrintWriter writer = response.getWriter();
       String out = buffer.toString();
       writer.write(out.replace("ъъ_ъ", format.format(allTime/1000)));
-   }   
+   }
+
+   private StringBuffer writeThread(FJThread thread, User user, LocaleString locale) throws InvalidKeyException{
+      StringBuffer buffer = new StringBuffer();
+      if (thread.getDisain() == 1) { 
+         buffer.append("<tr class=trees >");
+      }else {
+         buffer.append("<tr class=matras>");   
+      }
+      // Картинки
+      // Пиктограммка опроса
+      buffer.append("<td width='10' align='center' style='padding:0px 5px 0px 5px'>");
+      if (thread.getType() == 1 || thread.getType() == 2){
+         buffer.append("<img border='0' src='smiles/quest.gif'>");
+      }else{
+         if (thread.getDock()==5){
+            buffer.append("<img border='0' src='smiles/icon4.gif'>");
+         }else if(thread.getDock() == 10) {
+            buffer.append("<img border='0' src='picts/f_pinned.gif'>");
+         }else {
+            buffer.append("<img border='0' src='smiles/icon1.gif'>");
+         }
+      }
+      buffer.append("</td>");
+      buffer.append("<td width='1'></td>");
+      // Тема
+      buffer.append("<td><p>");
+      String str_head = htmlspecialchars(stripslashes(thread.getHead()));
+      // Добавляем смайлики
+      str_head = Diletant.fd_head(str_head);
+      // Опрос? Добавляем "метку"
+      if (thread.getType() == 1 || thread.getType() == 2){
+         str_head="<b>" +locale.getString("mess9")+ "</b> " +str_head;
+      }
+      // Подписываем прикрепленные
+      switch (thread.getDock()){
+      case 10:
+         buffer.append("<font class=trforum><b>" +locale.getString("mess7")+ " </b><a href='tema.php?id=" +thread.getId().toString() + "'>" +str_head+ "</a></font>");
+         break;
+      case 5:
+         buffer.append("<font class=trforum><b>" +locale.getString("mess8")+ " </b><a href='tema.php?id=" +thread.getId().toString() + "'>" +str_head+ "</a></font>");
+         break;
+      case 3:
+         buffer.append("<font class=trforum><b>" +locale.getString("mess163")+ " </b><a href='tema.php?id=" +thread.getId().toString() + "'>" +str_head+ "</a></font>");
+         break;
+      case 0:
+         buffer.append("<font class=trforum><a href='tema.php?id=" +thread.getId().toString()+ "'>" +str_head+ "</a></font>");
+         break;
+      }
+      // Cсылки на страницы в ветке
+      int pcount = thread.getPcount();
+      if (pcount+1>user.getPt()) {
+         buffer.append("<br><font size=1>" +locale.getString("mess10")+ ":&nbsp");
+         int k1=0;
+         int k2=0;
+         for (int k=1; k<=ceil((pcount+1)/user.getPt()); k++) {
+            k1=k1+1;
+            if (k1==10){
+               buffer.append("<a href='tema.php?page=" +k+ "&id=" +thread.getId().toString()+ "'>" +k+ "</a>");
+               if (k != ceil((pcount+1)/user.getPt())) buffer.append(",&nbsp;&nbsp;");
+               k1=0;
+               k2=k2+1;
+            }
+            if (k==1){
+               buffer.append("<a href='tema.php?page=" +k+ "&id=" +thread.getId().toString()+ "'>" +k+ "</a>,&nbsp;&nbsp;");
+            }
+            if ((ceil((pcount+1)/user.getPt())-k2*10)< 10 && (k-k2*10) != 0 && k!=1){
+               buffer.append("<a href='tema.php?page=" +k+ "&id=" +thread.getId().toString()+ "'>" +k+ "</a>");
+               if (k != ceil((pcount+1)/user.getPt())) buffer.append(",&nbsp;&nbsp;");
+            }
+
+         }
+         buffer.append("</font>");
+      }
+      buffer.append("</p></td>");
+      // Количество постов
+      buffer.append("<td width='20' align='center' valign='middle'><span class='mnuforum' style='{color: purple}'>" +pcount);
+      buffer.append("</span><span id='posts" +thread.getId().toString()+ "' class='mnuforum' style='{color: red}'>&nbsp</span></td>");
+      // кол-во просмотров
+      buffer.append("<td width='80' align='center' valign='middle'>");
+      // Количество просмотров участников
+      buffer.append("<div class='mnuforum'><font size='1' color='green'>" + thread.getSnid() + "</font><br>");
+      // Количество просмотров всего
+      buffer.append("<font size='1' color='purple'>" + thread.getSnall() + "</font></div></td>");
+      // Автор
+      buffer.append("<td width='120' align='center' valign='middle'><div class='trforum'><font size='1'>" +htmlspecialchars(thread.getNick())+ "</font></div></td>");
+      // Автор последнего поста
+      buffer.append("<td width='120' align=center><div class='mnuforum'><font size='1'>" +htmlspecialchars(thread.getLastPostNick())+ "</font></div>");
+      // Время последнего поста
+      buffer.append("<div class='mnuforum'><a href='tema.php?id=" + thread.getId().toString() + "&end=1#end' rel='nofollow'><font size='1'>" + date("dd.MM.yy HH:mm",thread.getLastPostTime().getTime()) + "</font></a></div>");
+      buffer.append("</td>");
+      // Папка
+      buffer.append("<td align='center' valign='middle'>");
+      buffer.append("<div class='mnuforum'><font size='1'>" +thread.getFolder()+ "</font></div>");
+      buffer.append("</td>");
+      // Флажок (только для зарегистрированых)
+      if (user.isLogined()){
+         buffer.append("<td align='center' valign='middle'>");
+         buffer.append("<input type='checkbox' id='ch" +thread.getI()+ "' name='" +thread.getI()+ "' value='" +thread.getId().toString()+ "'>");
+         buffer.append("</td>");
+         buffer.append("<td style='padding:0px 5px 0px 5px' align='right'>");
+         buffer.append("<a href='delone.php?id=" +thread.getId().toString()+ "&usr=" +String.valueOf(user.getId())+ "&page=" +thread.getPg()+ "'><img border='0' src='picts/del1.gif'></a>");
+         buffer.append("</td>");
+      }
+      return buffer;
+   }
 }
 
 
