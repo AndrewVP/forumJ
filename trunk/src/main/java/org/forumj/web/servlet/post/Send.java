@@ -50,7 +50,7 @@ public class Send extends FJServlet {
          String receiverNickParameter = request.getParameter("RCVR");
          Date currentDate = new Date();
          FJMail mail = new FJMail();
-         UserDao userDao = new UserDao();
+         FJUserDao userDao = new FJUserDao();
          User receiver = userDao.read(receiverNickParameter);
          mail.setSender(user);
          mail.setReceiver(receiver);

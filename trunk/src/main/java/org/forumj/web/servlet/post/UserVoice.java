@@ -43,7 +43,7 @@ public class UserVoice extends FJServlet {
          if (user != null && !user.isBanned() && user.isLogined()){
             if (threadIdParameter != null && !"".equals(threadIdParameter)){
                if (answerParameter != null && !"".equals(answerParameter)){
-                  QuestNodeDao questDao = new QuestNodeDao();
+                  FJQuestNodeDao questDao = new FJQuestNodeDao();
                   Long threadId = Long.valueOf(threadIdParameter);
                   FJVoiceDao voteDao = new FJVoiceDao();
                   // TODO Magic integer!

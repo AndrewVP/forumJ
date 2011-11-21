@@ -43,7 +43,7 @@ public class Voice extends FJServlet {
                Long threadId = Long.valueOf(threadIdParameter);
                if (!voteDao.isUserVoted(threadId, user)){
                   Long answerId = Long.valueOf(answerIdParameter);
-                  QuestNodeDao questDao = new QuestNodeDao();
+                  FJQuestNodeDao questDao = new FJQuestNodeDao();
                   questDao.addVote(threadId, answerId, user, null);
                }
                String urlQuery = "?id=" + threadIdParameter;

@@ -65,8 +65,12 @@ public class Index extends FJServlet {
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          User user = (User) session.getAttribute("user");
          Long userId = user.getId();
+         FJPostDao postDao = new FJPostDao();
          FJThreadDao threadDao = new FJThreadDao();
-         IndexDao dao = new IndexDao(user);  
+         FJMailDao mailDao = new FJMailDao();
+         FJInterfaceDao interfaceDao = new FJInterfaceDao();
+         FJFolderDao folderDao = new FJFolderDao();
+         FJActionDao actionDao = new FJActionDao();
          // Собираем статистику
          buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
          buffer.append("<html>");
@@ -76,8 +80,8 @@ public class Index extends FJServlet {
          buffer.append(loadCSS("/css/style.css"));
          // Скрипты (флажки)
          buffer.append(loadJavaScript("/js/jsmain_chek.js"));
-         Long m_xb = dao.getMaxPostId();
-         Long m_xt = dao.getMaxThreadId();
+         Long m_xb = postDao.getMaxPostId();
+         Long m_xt = threadDao.getMaxThreadId();
          buffer.append("<script language='javascript' type='text/javascript'>");
          buffer.append("// <!-- \n");
          buffer.append("var m_xb=" + m_xb + ";");
@@ -110,15 +114,16 @@ public class Index extends FJServlet {
          if (session.getAttribute("view") == null){
             session.setAttribute("view", user.getView());
          }
-         List<Ignor> ignorList = new IgnorDao().loadAll(user.getId());
-         List<FJThread> threadsList = threadDao.getThreads(Long.valueOf((Integer) session.getAttribute("view")), nfirstpost, locale, user, ignorList);
-         int threadsCount = dao.getThreadCount();
+         List<Ignor> ignorList = new FJIgnorDao().loadAll(user.getId());
+         FJThreads threads = threadDao.getThreads(Long.valueOf((Integer) session.getAttribute("view")), nfirstpost, locale, user, ignorList);
+         List<FJThread> threadsList = threads.getThreads();
+         long threadsCount = threads.getThreadCount();
          // кол-во страниц с заголовками
          int couP = ceil(threadsCount/user.getPp())+1;
          // Проверяем наличие почты
          String newMail = "";
          if (user.isLogined()) {
-            int mailCount = dao.getNewMailCount(user.getId());
+            int mailCount = mailDao.getNewMailCount(user.getId());
             if (mailCount > 0) {
                newMail="<a class=hdforum href='control.php?id=2' rel='nofollow'><font color=red>" + locale.getString("mess66") + " " + mailCount +" " + locale.getString("mess67") + "</font></a>";
             }
@@ -132,9 +137,9 @@ public class Index extends FJServlet {
          // Интерфейс
          // Имя текущего
          if (session.getAttribute("vname") == null){
-            session.setAttribute("vname", dao.getCurrentViewName(Long.valueOf((Integer)session.getAttribute("view"))));
+            session.setAttribute("vname", interfaceDao.getCurrentViewName(Long.valueOf((Integer)session.getAttribute("view"))));
          }
-         viewsList = dao.getViewsArray(userId);
+         viewsList = interfaceDao.getViewsArray(userId);
          buffer.append("<tr><td>");
 
          buffer.append("<table class=control>");
@@ -282,7 +287,7 @@ public class Index extends FJServlet {
          }
          buffer.append("</tr>");
          // Определяем кол-во строк таблицы
-         int i5=pageNumber*user.getPp();
+         long i5=pageNumber*user.getPp();
          if (i5>threadsCount) {
             i5=threadsCount-(pageNumber-1)*user.getPp();
          }else{
@@ -298,10 +303,10 @@ public class Index extends FJServlet {
          buffer.append("</table>");
          buffer.append("<script type='text/javascript'>");
          buffer.append("if (request){");
-         if(dao.getIndctrIds() == null || dao.getIndctrIds().trim().length() == 0){
+         if(threads.getIndctrIds() == null || threads.getIndctrIds().trim().length() == 0){
             buffer.append("var idss = '0';");
          }else{
-            buffer.append("var idss = '" + substr(dao.getIndctrIds(), 1) + "';");
+            buffer.append("var idss = '" + substr(threads.getIndctrIds(), 1) + "';");
          }
          buffer.append("getIndicatorInfo();");
          buffer.append("}");
@@ -336,7 +341,7 @@ public class Index extends FJServlet {
          // Сервис интерфейса
          if (user.isLogined()) {
             // Выбираем доступные папки
-            List<Map<String, Object>> foldersList = dao.getFoldersArray(userId);
+            List<Map<String, Object>> foldersList = folderDao.getFoldersArray(userId);
             buffer.append("<tr>");
             buffer.append("<table class=control>");        
             buffer.append("<tr>");
@@ -386,7 +391,7 @@ public class Index extends FJServlet {
          buffer.append("</tr>");
          // Таблица активных пользователей
          // Выбираем Активных юзеров
-         List<Map<String, Object>> userList = dao.getUsersArray();
+         List<Map<String, Object>> userList = actionDao.getUsersArray();
          buffer.append("<tr>");
          buffer.append("<td width=\"100%\">");
          buffer.append("<table width='100%'><tr><td>");
@@ -404,7 +409,7 @@ public class Index extends FJServlet {
          buffer.append("</font>");
          buffer.append("<font class=nick>");
          // Выводим количество гостей
-         buffer.append(dao.getGuestCount());
+         buffer.append(actionDao.getGuestCount());
          buffer.append("</font>");
          buffer.append("</td>");
          buffer.append("</tr>");

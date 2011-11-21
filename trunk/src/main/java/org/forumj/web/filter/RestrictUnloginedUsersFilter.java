@@ -25,7 +25,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.db.dao.UserDao;
+import org.forumj.db.dao.FJUserDao;
 import org.forumj.db.entity.User;
 
 /**
@@ -53,7 +53,7 @@ public class RestrictUnloginedUsersFilter implements Filter {
             String password2 = request.getParameter("PS2");
             if (idu != null && (password1 != null || password2 != null)){
                Long userId = Long.valueOf(idu);
-               UserDao dao = new UserDao();
+               FJUserDao dao = new FJUserDao();
                boolean firstPassword = password1 != null;
                String password = password1 == null ? password1 : password2;
                user = dao.read(userId, password, firstPassword);

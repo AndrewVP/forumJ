@@ -29,7 +29,7 @@ import org.forumj.db.entity.*;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class IgnorDao extends FJDao {
+public class FJIgnorDao extends FJDao {
 
    public List<Ignor> loadAll(Long userId) throws IOException, ConfigurationException, SQLException{
       List<Ignor> result = new ArrayList<Ignor>();
