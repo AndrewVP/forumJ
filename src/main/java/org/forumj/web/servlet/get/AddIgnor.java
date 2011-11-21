@@ -18,7 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
-import org.forumj.db.dao.IgnorDao;
+import org.forumj.db.dao.FJIgnorDao;
 import org.forumj.db.entity.User;
 import org.forumj.web.servlet.FJServlet;
 
@@ -43,7 +43,7 @@ public class AddIgnor extends FJServlet {
                   && !isEmptyParameter(postIdParameter)
                   && !isEmptyParameter(ignoredUserIdParameter)){
                Long ignoredUserId = Long.valueOf(ignoredUserIdParameter);
-               IgnorDao dao = new IgnorDao();
+               FJIgnorDao dao = new FJIgnorDao();
                dao.create(ignoredUserId, user);
                String add = "";
                if (pageParameter != null){

@@ -58,7 +58,7 @@ public class FJThreadDao extends FJDao {
             thread.setLastPostId(postId);
             update(thread, conn);
             if (thread instanceof FJQuestionThread){
-               QuestNodeDao answersDao = new QuestNodeDao();
+               FJQuestNodeDao answersDao = new FJQuestNodeDao();
                FJQuestionThread questionThread = (FJQuestionThread) thread;
                List<QuestNode> answers = questionThread.getAnswers();
                QuestNode question = new QuestNode();
@@ -219,8 +219,9 @@ public class FJThreadDao extends FJDao {
          readFinally(conn, st);
       }
    }
-   public List<FJThread> getThreads(Long viewId, long nfirstpost, LocaleString locale, User user, List<Ignor> ignorList) throws SQLException, ConfigurationException{
-      List<FJThread> result = new ArrayList<FJThread>();
+
+   public FJThreads getThreads(Long viewId, long nfirstpost, LocaleString locale, User user, List<Ignor> ignorList) throws SQLException, ConfigurationException{
+      FJThreads result = new FJThreads();
       String sql_views="SELECT folder FROM fdvtranzit WHERE (user=" + user.getId() + " OR user=0) AND view=" + viewId;
       Connection conn = null;
       Statement st = null;
@@ -383,6 +384,11 @@ public class FJThreadDao extends FJDao {
          "titles.dock desc, "+
          "titles.lposttime desc "+
          "LIMIT " + nfirstpost + ", " + user.getPt() + " ";
+
+         String sql_count="SELECT "+
+         "COUNT(id) as kolvo "+
+         "FROM "+
+         "titles " + where + ";";
          // Добавляем временную таблицу
          if (isset(sqlTmpJoinTable)){
             String query = "DROP TEMPORARY TABLE IF EXISTS fdutranzit;";
@@ -390,11 +396,18 @@ public class FJThreadDao extends FJDao {
             st.executeUpdate(sqlTmpJoinTable);
             st.executeUpdate(sqlTmpJoinTableInsert);
          }
-         rs = st.executeQuery(sql_main) ;
+         rs = st.executeQuery(sql_count);
+         long count = 0;
+         if (rs.next()){
+            count = rs.getLong("kolvo");
+         }
+         rs = st.executeQuery(sql_main);
+         result.setThreadCount(count);
          int disain = -1;
          int i = 0;
          Statement st1 = conn.createStatement();
          ResultSet rs1;
+         StringBuffer indctrIds = new StringBuffer();
          while (rs.next()){
             Long id = rs.getLong("id");
             Long idLastPost = rs.getLong("id_last_post"); 
@@ -407,6 +420,7 @@ public class FJThreadDao extends FJDao {
                query="UPDATE titles SET id_last_post=" + idLastPost.toString() + " WHERE id=" + id.toString();
                st1.executeUpdate(query);
             }
+            indctrIds.append(";" + id.toString() + "," + idLastPost.toString());
             FJThread thr = new FJThread();
             thr.setLocale(locale);
             thr.setDisain(disain);
@@ -423,8 +437,34 @@ public class FJThreadDao extends FJDao {
             thr.setType(rs.getInt("type"));
             thr.setFolder(rs.getString("_flname"));
             thr.setI(i);
-            result.add(thr);
+            result.getThreads().add(thr);
             disain = disain * -1;
+         }
+         result.setIndctrIds(indctrIds.toString());
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
+   }
+
+   /**
+    * Возвращает id последней ветки в форуме
+    *
+    * @return unknown
+    * @throws SQLException 
+    * @throws ConfigurationException 
+    */
+   public Long getMaxThreadId() throws ConfigurationException, SQLException{
+      Long result = 0l;
+      String query="SELECT max(id) as mx FROM titles";
+      Connection conn = null;
+      Statement st = null;
+      try {
+         conn = getConnection();
+         st = conn.createStatement();
+         ResultSet rs = st.executeQuery(query);
+         if (rs.next()){
+            result = rs.getLong("mx");
          }
       }finally{
          readFinally(conn, st);

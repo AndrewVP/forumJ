@@ -20,7 +20,7 @@ import javax.servlet.http.*;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
-import org.forumj.db.dao.UserDao;
+import org.forumj.db.dao.FJUserDao;
 import org.forumj.db.entity.User;
 import org.forumj.web.servlet.FJServlet;
 
@@ -41,7 +41,7 @@ public class Submit extends FJServlet {
       // принимаем ник, пароль
       String $t1 = request.getParameter("T1");
       String $t2 = request.getParameter("T2");
-      UserDao dao = new UserDao();
+      FJUserDao dao = new FJUserDao();
       try {
          User user = dao.read($t1, $t2, true);
          if(user != null) {

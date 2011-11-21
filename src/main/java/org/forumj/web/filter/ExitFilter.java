@@ -28,7 +28,7 @@ import javax.servlet.http.*;
 
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.db.dao.UserDao;
+import org.forumj.db.dao.FJUserDao;
 import org.forumj.db.entity.User;
 
 /**
@@ -49,7 +49,7 @@ public class ExitFilter implements Filter {
       User user = (User) request.getSession().getAttribute("user");
       try {
          if (exitParam != null && user != null && user.isLogined()){
-            UserDao dao = new UserDao();
+            FJUserDao dao = new FJUserDao();
             request.getSession().setAttribute("user", dao.read(0l));
             setcookie(response, "idu", "", 0, request.getContextPath(), request.getServerName());
             setcookie(response, "pass2", "", 0, request.getContextPath(), request.getServerName());

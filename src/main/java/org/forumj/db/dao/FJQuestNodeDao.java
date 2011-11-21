@@ -22,7 +22,7 @@ import org.forumj.db.entity.*;
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class QuestNodeDao extends FJDao {
+public class FJQuestNodeDao extends FJDao {
 
    public List<QuestNode> loadNodes(Long threadId) throws IOException, ConfigurationException, SQLException{
       List<QuestNode> result = new ArrayList<QuestNode>();

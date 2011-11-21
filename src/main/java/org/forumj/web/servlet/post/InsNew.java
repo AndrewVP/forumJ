@@ -17,7 +17,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
-import org.forumj.db.dao.UserDao;
+import org.forumj.db.dao.FJUserDao;
 import org.forumj.db.entity.User;
 import org.forumj.web.servlet.FJServlet;
 
@@ -55,7 +55,7 @@ public class InsNew extends FJServlet {
             response.sendRedirect("reg.php?id=7");
          }else{
             String nick = prepareNick(nickParameter);
-            UserDao userDao = new UserDao();
+            FJUserDao userDao = new FJUserDao();
             User user = userDao.read(nick);
             if (user != null){
                session.setAttribute("nick", nick);

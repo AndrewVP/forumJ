@@ -299,7 +299,7 @@ public class FJPostDao extends FJDao {
       Long lastPostId = null;
       Connection conn = null;
       Statement st = null;
-      QuestNodeDao questDao = new QuestNodeDao();
+      FJQuestNodeDao questDao = new FJQuestNodeDao();
       try {
          conn = getConnection();
          st = conn.createStatement();
@@ -424,4 +424,28 @@ public class FJPostDao extends FJDao {
       return result;
    }
    
+   /**
+    * Возвращает id последнего поста в форуме
+    *
+    * @return unknown
+    * @throws SQLException 
+    * @throws ConfigurationException 
+    */
+   public Long getMaxPostId() throws ConfigurationException, SQLException{
+      Long result = 0l;
+      String query="SELECT max(id) as mx FROM body";
+      Connection conn = null;
+      Statement st = null;
+      try {
+         conn = getConnection();
+         st = conn.createStatement();
+         ResultSet rs = st.executeQuery(query);
+         if (rs.next()){
+            result = rs.getLong("mx");
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
+   }
 }

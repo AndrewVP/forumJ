@@ -59,7 +59,7 @@ public class Tema extends FJServlet {
          String replyPostId = request.getParameter("reply");
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          User user = (User) session.getAttribute("user");
-         List<Ignor> ignorList = new IgnorDao().loadAll(user.getId());
+         List<Ignor> ignorList = new FJIgnorDao().loadAll(user.getId());
          int nfirstpost = (pageNumber-1)*user.getPt();
          int i3=pageNumber*user.getPt();
          // Сколько страниц?

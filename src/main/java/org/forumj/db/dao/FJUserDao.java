@@ -9,7 +9,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.db.entity.User;
 
 
-public class UserDao extends FJDao {
+public class FJUserDao extends FJDao {
 
    public User read(Long userId, String password, boolean firstPassword) throws ConfigurationException, SQLException{
       String query="SELECT * FROM users WHERE id=" + userId.toString();

@@ -401,7 +401,7 @@ public class Control extends FJServlet {
    private StringBuffer case1(User user, LocaleString locale) throws InvalidKeyException, IOException, ConfigurationException, SQLException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список Игнорируемых
-      List<Ignor> ignorList = new IgnorDao().loadAll(user.getId());
+      List<Ignor> ignorList = new FJIgnorDao().loadAll(user.getId());
       if (ignorList.size() == 0) {
          // Нет.
          buffer.append("<span class='mnuprof'>" + locale.getString("mess25") + "</span>");

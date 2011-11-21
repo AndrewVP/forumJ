@@ -24,7 +24,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
-import org.forumj.db.dao.QuestNodeDao;
+import org.forumj.db.dao.FJQuestNodeDao;
 import org.forumj.db.entity.User;
 import org.forumj.web.servlet.FJServlet;
 
@@ -46,7 +46,7 @@ public class DelVoice extends FJServlet {
          if (user != null && !user.isBanned() && user.isLogined()){
             if (threadIdParameter != null && !"".equals(threadIdParameter)){
                Long threadId = Long.valueOf(threadIdParameter);
-               QuestNodeDao dao = new QuestNodeDao();
+               FJQuestNodeDao dao = new FJQuestNodeDao();
                dao.repealVote(threadId, user);
                buffer.append(successPostOut("0", "tema.php?id=" + threadIdParameter));
             }

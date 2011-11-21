@@ -16,7 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
-import org.forumj.db.dao.UserDao;
+import org.forumj.db.dao.FJUserDao;
 import org.forumj.db.entity.User;
 import org.forumj.web.servlet.FJServlet;
 
@@ -36,7 +36,7 @@ public class SAvatar extends FJServlet {
          String okAvatarPass = FJConfiguration.getConfig().getString("okAvatar.password");
          if (!isEmptyParameter(passParameter) && passParameter.equalsIgnoreCase(okAvatarPass)){
             Long userId = Long.valueOf(userIdParameter);
-            UserDao dao = new UserDao();
+            FJUserDao dao = new FJUserDao();
             User user = dao.read(userId);
             user.setAvatar(avatarParameter);
             user.setAvatarApproved(true);

@@ -18,7 +18,7 @@ import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
-import org.forumj.db.dao.UserDao;
+import org.forumj.db.dao.FJUserDao;
 import org.forumj.db.entity.User;
 import org.forumj.web.servlet.FJServlet;
 
@@ -34,7 +34,7 @@ public class OkAvatar extends FJServlet {
       StringBuffer buffer = new StringBuffer();
       String userIdParameter = request.getParameter("qqnn");
       Long userId = Long.valueOf(userIdParameter);
-      UserDao dao = new UserDao();
+      FJUserDao dao = new FJUserDao();
       try {
          User user = dao.read(userId);
          buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
