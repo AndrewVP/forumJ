@@ -79,7 +79,7 @@ public class Index extends FJServlet {
          buffer.append(loadCSS("/css/style.css"));
          // Скрипты (флажки)
          buffer.append(loadJavaScript("/js/jsmain_chek.js"));
-         Long m_xb = postDao.getMaxPostId();
+         Long m_xb = postDao.getLastPostId();
          Long m_xt = threadDao.getMaxThreadId();
          buffer.append("<script language='javascript' type='text/javascript'>");
          buffer.append("// <!-- \n");
