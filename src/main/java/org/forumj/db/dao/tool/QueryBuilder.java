@@ -161,6 +161,8 @@ public class QueryBuilder {
    
    private static String loadUserViewsQuery = null;
    
+   private static String newMailCountQuery = null;
+   
    public static String getLoadConfigQuery() throws IOException{
       if (loadConfigQuery == null){
          loadConfigQuery = loadQuery("/sql/load_config.sql");
@@ -656,6 +658,13 @@ public class QueryBuilder {
          loadViewNameQuery = loadQuery("/sql/load_view_name.sql");
       }
       return loadViewNameQuery;
+   }
+   
+   public static String getNewMailCountQuery() throws IOException{
+      if (newMailCountQuery == null){
+         newMailCountQuery = loadQuery("/sql/new_mail_count.sql");
+      }
+      return newMailCountQuery;
    }
    
    private static String loadQuery(String path) throws IOException{
