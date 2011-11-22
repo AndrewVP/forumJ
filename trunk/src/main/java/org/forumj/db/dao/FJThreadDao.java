@@ -453,10 +453,11 @@ public class FJThreadDao extends FJDao {
     * @return unknown
     * @throws SQLException 
     * @throws ConfigurationException 
+    * @throws IOException 
     */
-   public Long getMaxThreadId() throws ConfigurationException, SQLException{
+   public Long getMaxThreadId() throws ConfigurationException, SQLException, IOException{
       Long result = 0l;
-      String query="SELECT max(id) as mx FROM titles";
+      String query = getLastThreadIdQuery();
       Connection conn = null;
       Statement st = null;
       try {
