@@ -171,6 +171,20 @@ public class QueryBuilder {
    
    private static String voicesAmountQuery = null;
    
+   private static String readUserByFirstPasswordQuery = null;
+   
+   private static String readUserBySecondPasswordQuery = null;
+   
+   private static String readUserByNickAndFirstPasswordQuery = null;
+   
+   private static String readUserByNickAndSecondPasswordQuery = null;
+   
+   private static String readUserByIdQuery = null;
+   
+   private static String readUserByNickQuery = null;
+   
+   private static String readUserByMailQuery = null;
+   
    public static String getLoadConfigQuery() throws IOException{
       if (loadConfigQuery == null){
          loadConfigQuery = loadQuery("/sql/load_config.sql");
@@ -701,6 +715,55 @@ public class QueryBuilder {
          voicesAmountQuery = loadQuery("/sql/voices_amount.sql");
       }
       return voicesAmountQuery;
+   }
+   
+   public static String getReadUserByFirstPasswordQuery() throws IOException{
+      if (readUserByFirstPasswordQuery == null){
+         readUserByFirstPasswordQuery = loadQuery("/sql/read_user_by_first_password.sql");
+      }
+      return readUserByFirstPasswordQuery;
+   }
+   
+   public static String getReadUserBySecondPasswordQuery() throws IOException{
+      if (readUserBySecondPasswordQuery == null){
+         readUserBySecondPasswordQuery = loadQuery("/sql/read_user_by_second_password.sql");
+      }
+      return readUserBySecondPasswordQuery;
+   }
+   
+   public static String getReadUserByNickAndFirstPasswordQuery() throws IOException{
+      if (readUserByNickAndFirstPasswordQuery == null){
+         readUserByNickAndFirstPasswordQuery = loadQuery("/sql/read_user_by_nick_and_first_password.sql");
+      }
+      return readUserByNickAndFirstPasswordQuery;
+   }
+   
+   public static String getReadUserByNickAndSecondPasswordQuery() throws IOException{
+      if (readUserByNickAndSecondPasswordQuery == null){
+         readUserByNickAndSecondPasswordQuery = loadQuery("/sql/read_user_by_nick_and_second_password.sql");
+      }
+      return readUserByNickAndSecondPasswordQuery;
+   }
+   
+   public static String getReadUserByIdQuery() throws IOException{
+      if (readUserByIdQuery == null){
+         readUserByIdQuery = loadQuery("/sql/read_user_by_id.sql");
+      }
+      return readUserByIdQuery;
+   }
+   
+   public static String getReadUserByNickQuery() throws IOException{
+      if (readUserByNickQuery == null){
+         readUserByNickQuery = loadQuery("/sql/read_user_by_nick.sql");
+      }
+      return readUserByNickQuery;
+   }
+   
+   public static String getReadUserByMailQuery() throws IOException{
+      if (readUserByMailQuery == null){
+         readUserByMailQuery = loadQuery("/sql/read_user_by_mail.sql");
+      }
+      return readUserByMailQuery;
    }
    
    private static String loadQuery(String path) throws IOException{
