@@ -430,10 +430,11 @@ public class FJPostDao extends FJDao {
     * @return unknown
     * @throws SQLException 
     * @throws ConfigurationException 
+    * @throws IOException 
     */
-   public Long getMaxPostId() throws ConfigurationException, SQLException{
+   public Long getLastPostId() throws ConfigurationException, SQLException, IOException{
       Long result = 0l;
-      String query="SELECT max(id) as mx FROM body";
+      String query = getLastPostIdQuery();
       Connection conn = null;
       Statement st = null;
       try {

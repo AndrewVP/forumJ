@@ -163,6 +163,8 @@ public class QueryBuilder {
    
    private static String newMailCountQuery = null;
    
+   private static String lastPostIdQuery = null;
+   
    public static String getLoadConfigQuery() throws IOException{
       if (loadConfigQuery == null){
          loadConfigQuery = loadQuery("/sql/load_config.sql");
@@ -665,6 +667,13 @@ public class QueryBuilder {
          newMailCountQuery = loadQuery("/sql/new_mail_count.sql");
       }
       return newMailCountQuery;
+   }
+   
+   public static String getLastPostIdQuery() throws IOException{
+      if (lastPostIdQuery == null){
+         lastPostIdQuery = loadQuery("/sql/last_post_id.sql");
+      }
+      return lastPostIdQuery;
    }
    
    private static String loadQuery(String path) throws IOException{
