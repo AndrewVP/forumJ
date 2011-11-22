@@ -288,7 +288,7 @@ public class FJPostDao extends FJDao {
     * @throws ConfigurationException
     */
    public List<FJPost> getPostsList(IUser user, Long threadId, long nfirstpost, int count, int page, boolean lastPost) throws IOException, SQLException, ConfigurationException{
-      String query="SELECT * FROM body WHERE body.head=" +  threadId + " ORDER BY body.id ASC LIMIT " + nfirstpost + ", " +  count;
+      String query = getReadPostsQuery();
       List<FJPost> result = new ArrayList<FJPost>();
       Map<Long, FJPost> postsMap = new HashMap<Long, FJPost>();
       boolean isQuest = false;
@@ -298,11 +298,14 @@ public class FJPostDao extends FJDao {
       Map<String, String> headsId = new HashMap<String, String>();
       Long lastPostId = null;
       Connection conn = null;
-      Statement st = null;
+      PreparedStatement st = null;
       FJQuestNodeDao questDao = new FJQuestNodeDao();
       try {
          conn = getConnection();
-         st = conn.createStatement();
+         st = conn.prepareStatement(query);
+         st.setLong(1, threadId);
+         st.setLong(2, nfirstpost);
+         st.setInt(3, count);
          ResultSet rs = st.executeQuery(query);
          while (rs.next()){
             isFirst = page == 1 && ++nPost == 1;
@@ -338,34 +341,9 @@ public class FJPostDao extends FJDao {
             Entry<String, String> entry = iterator.next();
             String table = entry.getKey();
             String ids = entry.getValue();
-            query = "SELECT "+
-            table + ".id, "+
-            table + ".ip, "+
-            table + ".auth, "+
-            table + ".domen, "+
-            table + ".tilte, "+
-            table + ".fd_post_time as post_time, "+
-            table + ".nred, "+
-            table + ".fd_post_edit_time as post_edit_time, "+
-            "users.nick, "+
-            "users.avatar, "+
-            "users.s_avatar, "+
-            "users.ok_avatar, "+
-            "users.v_avatars, "+
-            "users.h_ip, "+
-            "users.city, "+
-            "users.scity, "+
-            "users.country, "+
-            "users.scountry, "+
-            "users.footer, "+
-            "titles.head, "+
-            "titles.type "+
-            "FROM "+
-            "(" + table + 
-            " LEFT JOIN users ON " + table + ".auth = users.id) "+
-            " LEFT JOIN titles ON " + table + ".thread_id = titles.id "+
-            " WHERE " + table + ".id IN (" + ids + ") ";
-            rs = st.executeQuery(query);
+            query = getReadPostsHeadsQuery(table, ids);
+            st = conn.prepareStatement(query);
+            rs = st.executeQuery();
             while (rs.next()){
                Long postId = rs.getLong("id");
                int type = rs.getInt("type");
@@ -408,8 +386,9 @@ public class FJPostDao extends FJDao {
             Entry<String, String> entry = iterator.next();
             String table = entry.getKey();
             String ids = entry.getValue();
-            query = "SELECT id, body FROM " + table + " WHERE id IN (" + ids + ")";
-            rs = st.executeQuery(query);
+            query = getReadPostsBodiesQuery(table, ids);
+            st = conn.prepareStatement(query);
+            rs = st.executeQuery();
             while (rs.next()){
                Long postId = rs.getLong("id");
                FJPost post = postsMap.get(postId);
