@@ -26,7 +26,7 @@ public class Ignor implements IIgnor {
    private Long id = null;
    private Integer type = null;
    private Long userId = null;
-   private User user = null;
+   private IUser user = null;
    private Date start = null;
    private Date end = null;
    
@@ -69,13 +69,13 @@ public class Ignor implements IIgnor {
    /**
     * @return the user
     */
-   public User getUser() {
+   public IUser getUser() {
       return user;
    }
    /**
     * @param user the user to set
     */
-   public void setUser(User user) {
+   public void setUser(IUser user) {
       this.user = user;
    }
    /**

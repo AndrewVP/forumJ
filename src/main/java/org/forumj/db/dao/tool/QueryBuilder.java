@@ -613,6 +613,20 @@ public class QueryBuilder {
       return createSubscribeQuery;
    }
    
+   public static String getConnectedUsersQuery() throws IOException{
+      if (createSubscribeQuery == null){
+         createSubscribeQuery = loadQuery("/sql/connected_users.sql");
+      }
+      return createSubscribeQuery;
+   }
+   
+   public static String getConnectedGuestsAmountQuery() throws IOException{
+      if (createSubscribeQuery == null){
+         createSubscribeQuery = loadQuery("/sql/connected_guests_amount.sql");
+      }
+      return createSubscribeQuery;
+   }
+   
    private static String loadQuery(String path) throws IOException{
       ClassLoader classLoader = FJServletTools.class.getClassLoader();
       InputStream stream = classLoader.getResourceAsStream(path);

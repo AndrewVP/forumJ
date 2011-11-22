@@ -31,7 +31,7 @@ import org.forumj.db.entity.*;
  */
 public class FJInterfaceDao extends FJDao {
 
-   public List<IFJInterface> findAll(User user) throws IOException, SQLException, ConfigurationException{
+   public List<IFJInterface> findAll(IUser user) throws IOException, SQLException, ConfigurationException{
       List<IFJInterface> result = new ArrayList<IFJInterface>();
       String query = getLoadInterfacesQuery();
       Connection conn = null;
@@ -57,7 +57,7 @@ public class FJInterfaceDao extends FJDao {
       return result;
    }
 
-   public IFJInterface find(User user, Long id) throws IOException, SQLException, ConfigurationException{
+   public IFJInterface find(IUser user, Long id) throws IOException, SQLException, ConfigurationException{
       IFJInterface result = new FJInterface();
       String query = getLoadInterfaceQuery();
       Connection conn = null;
@@ -82,7 +82,7 @@ public class FJInterfaceDao extends FJDao {
       return result;
    }
    
-   public boolean isInterfaceContainsFolder(long interfaceId, long folderId, User user) throws IOException, ConfigurationException, SQLException{
+   public boolean isInterfaceContainsFolder(long interfaceId, long folderId, IUser user) throws IOException, ConfigurationException, SQLException{
       boolean result = false;
       String query = getIsInterfaceContainsFolderQuery();
       Connection conn = null;
@@ -103,7 +103,7 @@ public class FJInterfaceDao extends FJDao {
       return result;
    }
    
-   public void addFolder(long interfaceId, long folderId, User user, Connection connection) throws ConfigurationException, SQLException, IOException{
+   public void addFolder(long interfaceId, long folderId, IUser user, Connection connection) throws ConfigurationException, SQLException, IOException{
       String query = getAddFolderQuery();
       Connection conn = null;
       PreparedStatement st = null;
@@ -121,7 +121,7 @@ public class FJInterfaceDao extends FJDao {
       }
    }
 
-   public void delete(long interfaceId, User user) throws ConfigurationException, SQLException, IOException{
+   public void delete(long interfaceId, IUser user) throws ConfigurationException, SQLException, IOException{
       String deleteFoldersQuery = getDeleteAllFoldersFromViewQuery();
       String deleteViewQuery = getDeleteViewQuery();
       Connection conn = null;
@@ -141,7 +141,7 @@ public class FJInterfaceDao extends FJDao {
       }
    }
    
-   public boolean isExist(String name, User user) throws SQLException, ConfigurationException, IOException{
+   public boolean isExist(String name, IUser user) throws SQLException, ConfigurationException, IOException{
       boolean result = false;
       String query = getIsInterfaceExistQuery();
       Connection conn = null;
@@ -161,7 +161,7 @@ public class FJInterfaceDao extends FJDao {
       return result;
    }
    
-   public void create(String name, User user) throws SQLException, ConfigurationException, IOException{
+   public void create(String name, IUser user) throws SQLException, ConfigurationException, IOException{
       String query = getCreateInterfaceQuery();
       PreparedStatement st = null;
       Connection conn = null;

@@ -19,7 +19,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.db.dao.FJSubscribeDao;
-import org.forumj.db.entity.User;
+import org.forumj.db.entity.IUser;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -36,7 +36,7 @@ public class DelOneSubs extends FJServlet {
          HttpSession session = request.getSession();
          String threadIdParameter = request.getParameter("IDT");
          String pageParameter = request.getParameter("pg");
-         User user = (User) session.getAttribute("user");
+         IUser user = (IUser) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             if (threadIdParameter != null && !"".equals(threadIdParameter)){
                Long subscribeId = Long.valueOf(threadIdParameter);

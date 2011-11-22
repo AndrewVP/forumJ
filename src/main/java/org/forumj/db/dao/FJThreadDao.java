@@ -202,7 +202,7 @@ public class FJThreadDao extends FJDao {
     * @throws SQLException 
     * @throws ConfigurationException 
     */
-   public void setSeen(User user, Long threadId) throws ConfigurationException, SQLException{
+   public void setSeen(IUser user, Long threadId) throws ConfigurationException, SQLException{
       String query = "";
       if (user.isLogined()){
          query = "UPDATE titles SET seenid=seenid + 1, seenall=seenall+1 WHERE id=" +  threadId;
@@ -220,7 +220,7 @@ public class FJThreadDao extends FJDao {
       }
    }
 
-   public FJThreads getThreads(Long viewId, long nfirstpost, LocaleString locale, User user, List<Ignor> ignorList) throws SQLException, ConfigurationException{
+   public FJThreads getThreads(Long viewId, long nfirstpost, LocaleString locale, IUser user, List<Ignor> ignorList) throws SQLException, ConfigurationException{
       FJThreads result = new FJThreads();
       String sql_views="SELECT folder FROM fdvtranzit WHERE (user=" + user.getId() + " OR user=0) AND view=" + viewId;
       Connection conn = null;

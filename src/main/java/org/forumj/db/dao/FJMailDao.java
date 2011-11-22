@@ -56,31 +56,31 @@ public class FJMailDao extends FJDao {
       }
    }
    
-   public List<FJMail> loadInbox(User user) throws IOException, ConfigurationException, SQLException{
+   public List<FJMail> loadInbox(IUser user) throws IOException, ConfigurationException, SQLException{
       String query = getLoadInboxQuery();
       List<FJMail> result = loadMails(user, query, true);
       return result;
    }
    
-   public List<FJMail> loadOutNotReceivedBox(User user) throws IOException, ConfigurationException, SQLException{
+   public List<FJMail> loadOutNotReceivedBox(IUser user) throws IOException, ConfigurationException, SQLException{
       String query = getLoadOutNotReceivedBoxQuery();
       List<FJMail> result = loadMails(user, query, false);
       return result;
    }
 
-   public List<FJMail> loadOutReceivedBox(User user) throws IOException, ConfigurationException, SQLException{
+   public List<FJMail> loadOutReceivedBox(IUser user) throws IOException, ConfigurationException, SQLException{
       String query = getLoadOutReceivedBoxQuery();
       List<FJMail> result = loadMails(user, query, false);
       return result;
    }
    
-   public List<FJMail> loadDraftBox(User user) throws IOException, ConfigurationException, SQLException{
+   public List<FJMail> loadDraftBox(IUser user) throws IOException, ConfigurationException, SQLException{
       String query = getLoadDraftBoxQuery();
       List<FJMail> result = loadMails(user, query, false);
       return result;
    }
    
-   public List<FJMail> loadMails(User user, String query, boolean isInbox) throws IOException, ConfigurationException, SQLException{
+   public List<FJMail> loadMails(IUser user, String query, boolean isInbox) throws IOException, ConfigurationException, SQLException{
       List<FJMail> result = new ArrayList<FJMail>();
       Connection conn = null;
       PreparedStatement st = null;
@@ -116,7 +116,7 @@ public class FJMailDao extends FJDao {
       return result;
    }
    
-   public FJMail loadMail(User user, Long mailId, boolean userIsSender) throws IOException, ConfigurationException, SQLException{
+   public FJMail loadMail(IUser user, Long mailId, boolean userIsSender) throws IOException, ConfigurationException, SQLException{
       FJMail result = null;
       String loadMailQuery = getLoadMailQuery();
       Connection conn = null;
@@ -154,7 +154,7 @@ public class FJMailDao extends FJDao {
       return result;
    }
    
-   public void deleteFromOutbox(Long mailId, User user) throws ConfigurationException, SQLException, IOException{
+   public void deleteFromOutbox(Long mailId, IUser user) throws ConfigurationException, SQLException, IOException{
       String query = getDeleteFromOutboxQuery();
       Connection conn = null;
       PreparedStatement st = null;
@@ -169,7 +169,7 @@ public class FJMailDao extends FJDao {
       }
    }
 
-   public void deleteFromInbox(Long mailId, User user) throws ConfigurationException, SQLException, IOException{
+   public void deleteFromInbox(Long mailId, IUser user) throws ConfigurationException, SQLException, IOException{
       String query = getDeleteFromInboxQuery();
       Connection conn = null;
       PreparedStatement st = null;

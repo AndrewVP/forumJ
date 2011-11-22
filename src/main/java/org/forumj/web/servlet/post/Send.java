@@ -40,7 +40,7 @@ public class Send extends FJServlet {
       try {
          StringBuffer buffer = new StringBuffer();
          HttpSession session = request.getSession();
-         User user = (User) session.getAttribute("user");
+         IUser user = (IUser) session.getAttribute("user");
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          String comandParameter = request.getParameter("comand");
          // TODO parameter must be added!
@@ -51,7 +51,7 @@ public class Send extends FJServlet {
          Date currentDate = new Date();
          FJMail mail = new FJMail();
          FJUserDao userDao = new FJUserDao();
-         User receiver = userDao.read(receiverNickParameter);
+         IUser receiver = userDao.read(receiverNickParameter);
          mail.setSender(user);
          mail.setReceiver(receiver);
          mail.setBody(bodyParameter);

@@ -6,12 +6,12 @@ import java.io.IOException;
 import java.sql.*;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.db.entity.User;
+import org.forumj.db.entity.*;
 
 
 public class FJUserDao extends FJDao {
 
-   public User read(Long userId, String password, boolean firstPassword) throws ConfigurationException, SQLException{
+   public IUser read(Long userId, String password, boolean firstPassword) throws ConfigurationException, SQLException{
       String query="SELECT * FROM users WHERE id=" + userId.toString();
       String add = "";
       if(firstPassword){
@@ -22,7 +22,7 @@ public class FJUserDao extends FJDao {
       return loadUser(query + add, firstPassword);
    }
 
-   public User read(String nick, String password, Boolean firstPassword) throws ConfigurationException, SQLException{
+   public IUser read(String nick, String password, Boolean firstPassword) throws ConfigurationException, SQLException{
       String query="SELECT * FROM users WHERE nick='" + nick + "' AND pass='" + password + "'";
       String add = "";
       if(firstPassword){

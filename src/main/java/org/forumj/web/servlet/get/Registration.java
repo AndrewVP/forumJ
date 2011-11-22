@@ -19,7 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
-import org.forumj.db.entity.User;
+import org.forumj.db.entity.IUser;
 import org.forumj.exception.InvalidKeyException;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
@@ -47,7 +47,7 @@ public class Registration extends FJServlet {
             id = Integer.valueOf(idParameter);
          }
          LocaleString locale = (LocaleString) session.getAttribute("locale");
-         User user = (User) session.getAttribute("user");
+         IUser user = (IUser) session.getAttribute("user");
          if (!user.isLogined()){
             StringBuffer buffer = new StringBuffer();
             buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");

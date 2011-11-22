@@ -21,7 +21,7 @@ import org.apache.commons.codec.EncoderException;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
 import org.forumj.db.dao.FJUserDao;
-import org.forumj.db.entity.User;
+import org.forumj.db.entity.IUser;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -43,7 +43,7 @@ public class Submit extends FJServlet {
       String $t2 = request.getParameter("T2");
       FJUserDao dao = new FJUserDao();
       try {
-         User user = dao.read($t1, $t2, true);
+         IUser user = dao.read($t1, $t2, true);
          if(user != null) {
             session.setAttribute("user", user);
             Long $idu=user.getId();

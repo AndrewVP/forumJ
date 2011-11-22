@@ -32,7 +32,7 @@ import org.forumj.db.entity.*;
  */
 public class FJFolderDao extends FJDao {
 
-   public List<IFJFolder> findAll(User user, IFJInterface interf) throws SQLException, ConfigurationException, IOException{
+   public List<IFJFolder> findAll(IUser user, IFJInterface interf) throws SQLException, ConfigurationException, IOException{
       List<IFJFolder> result = new ArrayList<IFJFolder>();
       String query = getLoadFoldersInQuery();
       Connection conn = null;
@@ -59,7 +59,7 @@ public class FJFolderDao extends FJDao {
       return result;
    }
 
-   public List<IFJFolder> findAllNotIn(User user, IFJInterface interf) throws SQLException, ConfigurationException, IOException{
+   public List<IFJFolder> findAllNotIn(IUser user, IFJInterface interf) throws SQLException, ConfigurationException, IOException{
       List<IFJFolder> result = new ArrayList<IFJFolder>();
       String query = getLoadFoldersNotInQuery();
       Connection conn = null;
@@ -87,7 +87,7 @@ public class FJFolderDao extends FJDao {
       return result;
    }
    
-   public List<IFJFolder> findAll(User user) throws SQLException, ConfigurationException, IOException{
+   public List<IFJFolder> findAll(IUser user) throws SQLException, ConfigurationException, IOException{
       List<IFJFolder> result = new ArrayList<IFJFolder>();
       String query = getLoadFoldersQuery();
       Connection conn = null;
@@ -113,7 +113,7 @@ public class FJFolderDao extends FJDao {
       return result;
    }
    
-   public void delete(Long folderId, User user) throws ConfigurationException, SQLException, IOException{
+   public void delete(Long folderId, IUser user) throws ConfigurationException, SQLException, IOException{
       String deleteTranzitQuery = getDeleteFolderTranzitQuery();
       String deleteVTranzitQuery = getDeleteVTranzitQuery();
       String deleteFolderQuery = getDeleteFolderQuery();
@@ -141,7 +141,7 @@ public class FJFolderDao extends FJDao {
       }
    }
    
-   public void deleteFolderFromView(Long folderId, Long viewId, User user) throws ConfigurationException, SQLException, IOException{
+   public void deleteFolderFromView(Long folderId, Long viewId, IUser user) throws ConfigurationException, SQLException, IOException{
       String deleteTranzitQuery = getDeleteFolderFromViewQuery();
       Connection conn = null;
       PreparedStatement st = null;
@@ -160,12 +160,12 @@ public class FJFolderDao extends FJDao {
       }
    }
    
-   public void moveToRecyclebin(long threadId, User user) throws IOException, ConfigurationException, SQLException{
+   public void moveToRecyclebin(long threadId, IUser user) throws IOException, ConfigurationException, SQLException{
       // TODO Magic integer!
       moveToFolder(threadId, 3, user);
    }
 
-   public void moveToFolder(long threadId, long folderId, User user) throws IOException, ConfigurationException, SQLException{
+   public void moveToFolder(long threadId, long folderId, IUser user) throws IOException, ConfigurationException, SQLException{
       String deleteTranzitQuery = getDeleteThreadTranzitQuery();
       String appendQuery = getAppendThreadInFolderQuery();
       Connection conn = null;
@@ -189,7 +189,7 @@ public class FJFolderDao extends FJDao {
       }
    }
    
-   public boolean isExist(String name, User user) throws SQLException, ConfigurationException, IOException{
+   public boolean isExist(String name, IUser user) throws SQLException, ConfigurationException, IOException{
       boolean result = false;
       String query = getIsFolderExistQuery();
       Connection conn = null;
@@ -209,7 +209,7 @@ public class FJFolderDao extends FJDao {
       return result;
    }
    
-   public Long create(String folderName, User user) throws SQLException, ConfigurationException, IOException{
+   public Long create(String folderName, IUser user) throws SQLException, ConfigurationException, IOException{
       Long result = null; 
       String query = getCreateFolderQuery();
       PreparedStatement st = null;

@@ -53,7 +53,7 @@ public class New extends FJServlet {
          StringBuffer buffer = new StringBuffer();
          HttpSession session = request.getSession();
          LocaleString locale = (LocaleString) session.getAttribute("locale");
-         User user = (User) session.getAttribute("user");
+         IUser user = (IUser) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             // Все нормально
             String head = request.getParameter("NHEAD");
@@ -153,7 +153,7 @@ public class New extends FJServlet {
       }
    }
 
-   public StringBuffer new_view(LocaleString locale, String head, User user, String $rgtime, String $str_ip, String $str_dom, String body, HttpServletRequest request) throws IOException, InvalidKeyException{
+   public StringBuffer new_view(LocaleString locale, String head, IUser user, String $rgtime, String $str_ip, String $str_dom, String body, HttpServletRequest request) throws IOException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
       buffer.append("<html>");

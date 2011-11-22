@@ -30,8 +30,8 @@ public interface IFJFolder {
    public Date getCreateDate();
    public void setName(String name);
    public String getName();
-   public void setUser(User user);
-   public User getUser();
+   public void setUser(IUser user);
+   public IUser getUser();
    public void setId(Long id);
    public Long getId();
 }

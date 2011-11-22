@@ -94,6 +94,7 @@ public class User implements IUser {
    /**
     * @return the eMail
     */
+   @Override
    public String getEmail() {
       return email;
    }
@@ -101,10 +102,12 @@ public class User implements IUser {
    /**
     * @param eMail the eMail to set
     */
+   @Override
    public void setEmail(String email) {
       this.email = email;
    }
 
+   @Override
    public Boolean getWantSeeAvatars() {
       return wantSeeAvatars;
    }
@@ -119,182 +122,227 @@ public class User implements IUser {
       this.nick = nick;
    }
 
+   @Override
    public void setWantSeeAvatars(Boolean wantSeeAvatars) {
       this.wantSeeAvatars = wantSeeAvatars;
    }
 
+   @Override
    public String getName() {
       return name;
    }
 
+   @Override
    public void setName(String name) {
       this.name = name;
    }
 
+   @Override
    public String getFam() {
       return fam;
    }
 
+   @Override
    public void setFam(String fam) {
       this.fam = fam;
    }
 
+   @Override
    public Byte getSex() {
       return sex;
    }
 
+   @Override
    public void setSex(Byte sex) {
       this.sex = sex;
    }
 
+   @Override
    public Date getBith() {
       return bith;
    }
 
+   @Override
    public void setBith(Date bith) {
       this.bith = bith;
    }
 
+   @Override
    public Date getReg() {
       return reg;
    }
 
+   @Override
    public void setReg(Date reg) {
       this.reg = reg;
    }
 
+   @Override
    public Boolean getShowMail() {
       return showMail;
    }
 
+   @Override
    public void setShowMail(Boolean showMail) {
       this.showMail = showMail;
    }
 
+   @Override
    public Boolean getShowName() {
       return showName;
    }
 
+   @Override
    public void setShowName(Boolean showName) {
       this.showName = showName;
    }
 
+   @Override
    public String getCity() {
       return city;
    }
 
+   @Override
    public void setCity(String city) {
       this.city = city;
    }
 
+   @Override
    public Boolean getShowCity() {
       return showCity;
    }
 
+   @Override
    public void setShowCity(Boolean showCity) {
       this.showCity = showCity;
    }
 
+   @Override
    public String getCountry() {
       return country;
    }
 
+   @Override
    public void setCountry(String country) {
       this.country = country;
    }
 
+   @Override
    public Boolean getShowCountry() {
       return showCountry;
    }
 
+   @Override
    public void setShowCountry(Boolean showCountry) {
       this.showCountry = showCountry;
    }
 
+   @Override
    public Boolean getShowSex() {
       return showSex;
    }
 
+   @Override
    public void setShowSex(Boolean showSex) {
       this.showSex = showSex;
    }
 
+   @Override
    public Boolean getShowBithday() {
       return showBithday;
    }
 
+   @Override
    public void setShowBithday(Boolean showBithday) {
       this.showBithday = showBithday;
    }
 
+   @Override
    public String getIcq() {
       return icq;
    }
 
+   @Override
    public void setIcq(String icq) {
       this.icq = icq;
    }
 
+   @Override
    public Boolean getShowIcq() {
       return showIcq;
    }
 
+   @Override
    public void setShowIcq(Boolean showIcq) {
       this.showIcq = showIcq;
    }
 
+   @Override
    public Boolean getHideIp() {
       return hideIp;
    }
 
+   @Override
    public void setHideIp(Boolean hideIp) {
       this.hideIp = hideIp;
    }
 
+   @Override
    public Integer getLanguge() {
       return languge;
    }
 
+   @Override
    public void setLanguge(Integer languge) {
       this.languge = languge;
    }
 
+   @Override
    public Integer getTimeZone() {
       return timeZone;
    }
 
+   @Override
    public void setTimeZone(Integer timeZone) {
       this.timeZone = timeZone;
    }
 
+   @Override
    public String getFooter() {
       return footer;
    }
 
+   @Override
    public void setFooter(String footer) {
       this.footer = footer;
    }
 
+   @Override
    public Integer getActivateCode() {
       return activateCode;
    }
 
+   @Override
    public void setActivateCode(Integer activateCode) {
       this.activateCode = activateCode;
    }
 
+   @Override
    public Boolean getIsActive() {
       return isActive;
    }
 
+   @Override
    public void setIsActive(Boolean isActive) {
       this.isActive = isActive;
    }
 
+   @Override
    public Boolean getShowAvatar() {
       return showAvatar;
    }
 
+   @Override
    public void setShowAvatar(Boolean s_avatar) {
       this.showAvatar = s_avatar;
    }
@@ -302,139 +350,161 @@ public class User implements IUser {
    /**
     * @return the ban
     */
-    public int getBan() {
+    @Override
+   public int getBan() {
        return ban;
     }
 
     /**
      * @param ban the ban to set
      */
-    public void setBan(int ban) {
+    @Override
+   public void setBan(int ban) {
        this.ban = ban;
     }
 
     /**
      * @return the view
      */
-    public int getView() {
+    @Override
+   public int getView() {
        return view;
     }
 
     /**
      * @param view the view to set
      */
-    public void setView(int view) {
+    @Override
+   public void setView(int view) {
        this.view = view;
     }
 
     /**
      * @return the pg
      */
-    public int getPp() {
+    @Override
+   public int getPp() {
        return pp;
     }
 
     /**
      * @param pg the pg to set
      */
-    public void setPp(int pp) {
+    @Override
+   public void setPp(int pp) {
        this.pp = pp;
     }
 
     /**
      * @return the pt
      */
-    public int getPt() {
+    @Override
+   public int getPt() {
        return pt;
     }
 
     /**
      * @param pt the pt to set
      */
-    public void setPt(int pt) {
+    @Override
+   public void setPt(int pt) {
        this.pt = pt;
     }
 
     /**
      * @return the logined
      */
-    public boolean isLogined() {
+    @Override
+   public boolean isLogined() {
        return id != 0;
     }
 
     /**
      * @return the pass
      */
-    public String getPass() {
+    @Override
+   public String getPass() {
        return pass;
     }
 
     /**
      * @param pass the pass to set
      */
-    public void setPass(String pass) {
+    @Override
+   public void setPass(String pass) {
        this.pass = pass;
     }
 
     /**
      * @return the pass2
      */
-    public String getPass2() {
+    @Override
+   public String getPass2() {
        return pass2;
     }
 
     /**
      * @param pass2 the pass2 to set
      */
-    public void setPass2(String pass2) {
+    @Override
+   public void setPass2(String pass2) {
        this.pass2 = pass2;
     }
 
     /**
      * @return the nick
      */
-    public String getNick() {
+    @Override
+   public String getNick() {
        return nick;
     }
 
     /**
      * @param nick the nick to set
      */
-    public void setNick(String nick) {
+    @Override
+   public void setNick(String nick) {
        this.nick = nick;
     }
 
     /**
      * @return the id
      */
-    public Long getId() {
+    @Override
+   public Long getId() {
        return id;
     }
 
     /**
      * @param id the id to set
      */
-    public void setId(Long id) {
+    @Override
+   public void setId(Long id) {
        this.id = id;
     }
 
-    public boolean isBanned(){
+    @Override
+   public boolean isBanned(){
        return ban != 0;
     }
 
-    public String getAvatar() {
+    @Override
+   public String getAvatar() {
        return avatar;
     }
 
-    public void setAvatar(String avatar) {
+    @Override
+   public void setAvatar(String avatar) {
        this.avatar = avatar;
     }
 
-    public Boolean getAvatarApproved() {
+    @Override
+   public Boolean getAvatarApproved() {
        return avatarApproved;
     }
 
-    public void setAvatarApproved(Boolean ok_avatar) {
+    @Override
+   public void setAvatarApproved(Boolean ok_avatar) {
        this.avatarApproved = ok_avatar;
     }
 }

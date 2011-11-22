@@ -25,7 +25,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.db.dao.*;
-import org.forumj.db.entity.User;
+import org.forumj.db.entity.IUser;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -43,7 +43,7 @@ public class MoveTitle extends FJServlet {
          HttpSession session = request.getSession();
          String newViewIdParameter = request.getParameter("VIEW");
          String pageParameter = request.getParameter("page");
-         User user = (User) session.getAttribute("user");
+         IUser user = (IUser) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             if (!isEmptyParameter(newViewIdParameter)){
                Long newViewId = Long.valueOf(newViewIdParameter);

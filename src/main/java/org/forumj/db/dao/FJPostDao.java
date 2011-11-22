@@ -287,7 +287,7 @@ public class FJPostDao extends FJDao {
     * @throws SQLException
     * @throws ConfigurationException
     */
-   public List<FJPost> getPostsList(User user, Long threadId, long nfirstpost, int count, int page, boolean lastPost) throws IOException, SQLException, ConfigurationException{
+   public List<FJPost> getPostsList(IUser user, Long threadId, long nfirstpost, int count, int page, boolean lastPost) throws IOException, SQLException, ConfigurationException{
       String query="SELECT * FROM body WHERE body.head=" +  threadId + " ORDER BY body.id ASC LIMIT " + nfirstpost + ", " +  count;
       List<FJPost> result = new ArrayList<FJPost>();
       Map<Long, FJPost> postsMap = new HashMap<Long, FJPost>();
@@ -381,7 +381,7 @@ public class FJPostDao extends FJDao {
                   post.setAnswers(questNodes);
                   post.setQuestion(questNodes.get(0));
                }
-               User author = new User();
+               IUser author = new User();
                postHead.setAuthor(author);
                author.setNick(rs.getString("nick"));
                author.setId(rs.getLong("auth"));

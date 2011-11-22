@@ -19,7 +19,7 @@ import javax.servlet.http.*;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
 import org.forumj.db.dao.FJUserDao;
-import org.forumj.db.entity.User;
+import org.forumj.db.entity.IUser;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -36,7 +36,7 @@ public class OkAvatar extends FJServlet {
       Long userId = Long.valueOf(userIdParameter);
       FJUserDao dao = new FJUserDao();
       try {
-         User user = dao.read(userId);
+         IUser user = dao.read(userId);
          buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
          buffer.append("<html><head><title></title><meta http-equiv='content-type' content='text/html; charset=UTF-8'></head><body><table><tr><td>");
          buffer.append("<form action='s_avatar.php?qqnn=" + userIdParameter + "' method='post'>");

@@ -63,7 +63,7 @@ public class Index extends FJServlet {
          Integer pageNumber = request.getParameter("page") == null ? 1 : Integer.valueOf(request.getParameter("page"));
          // Загружаем локализацию
          LocaleString locale = (LocaleString) session.getAttribute("locale");
-         User user = (User) session.getAttribute("user");
+         IUser user = (IUser) session.getAttribute("user");
          Long userId = user.getId();
          FJPostDao postDao = new FJPostDao();
          FJThreadDao threadDao = new FJThreadDao();
@@ -391,7 +391,7 @@ public class Index extends FJServlet {
          buffer.append("</tr>");
          // Таблица активных пользователей
          // Выбираем Активных юзеров
-         List<Map<String, Object>> userList = actionDao.getUsersArray();
+         List<IUser> userList = actionDao.getUsersArray();
          buffer.append("<tr>");
          buffer.append("<td width=\"100%\">");
          buffer.append("<table width='100%'><tr><td>");
@@ -400,7 +400,7 @@ public class Index extends FJServlet {
          buffer.append("</font>");
          buffer.append("<font class=nick>");
          for (int userIndex=0 ; userIndex<userList.size()-1; userIndex++){
-            buffer.append(str_replace(" ", "&nbsp;", (String)userList.get(userIndex).get("nick")));
+            buffer.append(str_replace(" ", "&nbsp;", userList.get(userIndex).getNick()));
             if (userIndex != userList.size()-2) buffer.append("; ");
          }
          buffer.append("</font>");
@@ -409,7 +409,7 @@ public class Index extends FJServlet {
          buffer.append("</font>");
          buffer.append("<font class=nick>");
          // Выводим количество гостей
-         buffer.append(actionDao.getGuestCount());
+         buffer.append(actionDao.getGuestsAmount());
          buffer.append("</font>");
          buffer.append("</td>");
          buffer.append("</tr>");
@@ -436,7 +436,7 @@ public class Index extends FJServlet {
       writer.write(out.replace("ъъ_ъ", format.format(allTime/1000)));
    }
 
-   private StringBuffer writeThread(FJThread thread, User user, LocaleString locale) throws InvalidKeyException{
+   private StringBuffer writeThread(FJThread thread, IUser user, LocaleString locale) throws InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       if (thread.getDisain() == 1) { 
          buffer.append("<tr class=trees >");

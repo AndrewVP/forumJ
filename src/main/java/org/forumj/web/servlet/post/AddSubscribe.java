@@ -30,7 +30,7 @@ public class AddSubscribe extends FJServlet {
          HttpSession session = request.getSession();
          String threadIdParameter = request.getParameter("IDT");
          String pageParameter = request.getParameter("pg");
-         User user = (User) session.getAttribute("user");
+         IUser user = (IUser) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             if (threadIdParameter != null && !"".equals(threadIdParameter)){
                Long threadId = Long.valueOf(threadIdParameter);

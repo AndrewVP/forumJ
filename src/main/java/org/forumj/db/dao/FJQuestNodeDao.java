@@ -75,7 +75,7 @@ public class FJQuestNodeDao extends FJDao {
       return result;
    }
 
-   public void repealVote(Long threadId, User user) throws ConfigurationException, IOException, SQLException{
+   public void repealVote(Long threadId, IUser user) throws ConfigurationException, IOException, SQLException{
       FJVoiceDao voiceDao = new FJVoiceDao();
       FJVoice voice = voiceDao.read(threadId, user);
       if (voice != null){
@@ -97,7 +97,7 @@ public class FJQuestNodeDao extends FJDao {
       }
    }
 
-   public void addVote(Long threadId, Long answerId, User user, Connection connection) throws ConfigurationException, IOException, SQLException{
+   public void addVote(Long threadId, Long answerId, IUser user, Connection connection) throws ConfigurationException, IOException, SQLException{
       FJVoiceDao voiceDao = new FJVoiceDao();
       FJVoice voice = new FJVoice();
       String query = getIncreaseVoiceNumbersQuery();
@@ -117,7 +117,7 @@ public class FJQuestNodeDao extends FJDao {
       }
    }
    
-   public void addCustomAnswer(long threadId, String node, int type, User user) throws ConfigurationException, IOException, SQLException{
+   public void addCustomAnswer(long threadId, String node, int type, IUser user) throws ConfigurationException, IOException, SQLException{
       QuestNode answer = new QuestNode();
       String maxAnswerNumberQuery = getMaxAnswerNumberQuery();
       Connection conn = null;

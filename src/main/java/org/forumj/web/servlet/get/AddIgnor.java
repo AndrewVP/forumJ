@@ -19,7 +19,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.db.dao.FJIgnorDao;
-import org.forumj.db.entity.User;
+import org.forumj.db.entity.IUser;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -37,7 +37,7 @@ public class AddIgnor extends FJServlet {
          String pageParameter = request.getParameter("pg");
          String postIdParameter = request.getParameter("idp");
          String ignoredUserIdParameter = request.getParameter("idi");
-         User user = (User) session.getAttribute("user");
+         IUser user = (IUser) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             if (!isEmptyParameter(threadIdParameter)
                   && !isEmptyParameter(postIdParameter)

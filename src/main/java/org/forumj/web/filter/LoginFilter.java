@@ -29,7 +29,7 @@ import org.apache.commons.codec.*;
 import org.apache.commons.codec.net.QuotedPrintableCodec;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.db.dao.FJUserDao;
-import org.forumj.db.entity.User;
+import org.forumj.db.entity.IUser;
 
 /**
  * 
@@ -46,7 +46,7 @@ public class LoginFilter implements Filter {
       boolean ok = true;
       HttpServletRequest request = (HttpServletRequest) req;
       HttpServletResponse response = (HttpServletResponse) resp;
-      User user = (User) request.getSession(true).getAttribute("user");
+      IUser user = (IUser) request.getSession(true).getAttribute("user");
       FJUserDao dao = new FJUserDao();
       QuotedPrintableCodec codec = new QuotedPrintableCodec();
       try {

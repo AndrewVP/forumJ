@@ -31,7 +31,7 @@ import org.forumj.db.entity.*;
  */
 public class FJSubscribeDao extends FJDao {
 
-   public List<IFJSubscribe> findAll(User user, Integer active) throws SQLException, ConfigurationException, IOException{
+   public List<IFJSubscribe> findAll(IUser user, Integer active) throws SQLException, ConfigurationException, IOException{
       List<IFJSubscribe> result = new ArrayList<IFJSubscribe>();
       String query = getLoadSubscribesQuery();
       Connection conn = null;
@@ -78,7 +78,7 @@ public class FJSubscribeDao extends FJDao {
       }
    }
    
-   public void deleteByTitleId(long titleId, User user) throws ConfigurationException, SQLException, IOException{
+   public void deleteByTitleId(long titleId, IUser user) throws ConfigurationException, SQLException, IOException{
       String query = getDeleteSubscribeByTitleIdQuery();
       Connection conn = null;
       PreparedStatement st = null;
@@ -93,7 +93,7 @@ public class FJSubscribeDao extends FJDao {
       }
    }
    
-   public void deleteById(long id, User user) throws ConfigurationException, SQLException, IOException{
+   public void deleteById(long id, IUser user) throws ConfigurationException, SQLException, IOException{
       String query = getDeleteSubscribeByIdQuery();
       Connection conn = null;
       PreparedStatement st = null;

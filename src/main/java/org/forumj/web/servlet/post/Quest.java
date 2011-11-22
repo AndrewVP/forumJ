@@ -46,7 +46,7 @@ public class Quest extends FJServlet {
       StringBuffer buffer = new StringBuffer();
       HttpSession session = request.getSession();
       LocaleString locale = (LocaleString) session.getAttribute("locale");
-      User user = (User) session.getAttribute("user");
+      IUser user = (IUser) session.getAttribute("user");
       try {
          if (user != null && !user.isBanned() && user.isLogined()){
             String body = request.getParameter("A2");
@@ -133,7 +133,7 @@ public class Quest extends FJServlet {
       }
    }
 
-   private StringBuffer view(LocaleString locale, String head, String question, User user, String $rgtime, String $str_ip, String $str_dom, List<QuestNode> answers, boolean usersCanAddAnswers, String body, HttpServletRequest request) throws InvalidKeyException, IOException{
+   private StringBuffer view(LocaleString locale, String head, String question, IUser user, String $rgtime, String $str_ip, String $str_dom, List<QuestNode> answers, boolean usersCanAddAnswers, String body, HttpServletRequest request) throws InvalidKeyException, IOException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
       buffer.append("<html>");

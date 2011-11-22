@@ -58,7 +58,7 @@ public class Tema extends FJServlet {
          // Номер поста, на который отвечаем
          String replyPostId = request.getParameter("reply");
          LocaleString locale = (LocaleString) session.getAttribute("locale");
-         User user = (User) session.getAttribute("user");
+         IUser user = (IUser) session.getAttribute("user");
          List<Ignor> ignorList = new FJIgnorDao().loadAll(user.getId());
          int nfirstpost = (pageNumber-1)*user.getPt();
          int i3=pageNumber*user.getPt();
@@ -393,10 +393,10 @@ public class Tema extends FJServlet {
       writer.write(out.replace("ъъ_ъ", format.format(allTime/1000)));
    }
 
-   private StringBuffer writePost(FJPost post, List<Ignor> ignorList, User user, Integer pageNumber, LocaleString locale, FJThread thread) throws InvalidKeyException, ConfigurationException, SQLException{
+   private StringBuffer writePost(FJPost post, List<Ignor> ignorList, IUser user, Integer pageNumber, LocaleString locale, FJThread thread) throws InvalidKeyException, ConfigurationException, SQLException{
       StringBuffer buffer = new StringBuffer();
       Time postTime = new Time(post.getHead().getCreateTime());
-      User author = post.getHead().getAuthor();
+      IUser author = post.getHead().getAuthor();
       String domen = post.getHead().getDomen();
       String ip = post.getHead().getIp();
       if (ip.trim().equalsIgnoreCase(trim(domen))){
@@ -514,7 +514,7 @@ public class Tema extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer writeQuest(FJPost post, User user, LocaleString locale, FJThread thread) throws ConfigurationException, SQLException, InvalidKeyException{
+   private StringBuffer writeQuest(FJPost post, IUser user, LocaleString locale, FJThread thread) throws ConfigurationException, SQLException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer(); 
       int $nvcs = post.getAnswers().size();
       buffer.append("<tr><td>");

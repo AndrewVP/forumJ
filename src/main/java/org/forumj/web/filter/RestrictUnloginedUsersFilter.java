@@ -26,7 +26,7 @@ import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.db.dao.FJUserDao;
-import org.forumj.db.entity.User;
+import org.forumj.db.entity.IUser;
 
 /**
  * 
@@ -45,7 +45,7 @@ public class RestrictUnloginedUsersFilter implements Filter {
       HttpServletRequest request = (HttpServletRequest) req;
       HttpServletResponse response = (HttpServletResponse) resp;
       HttpSession session = request.getSession(true);
-      User user = (User) session.getAttribute("user");
+      IUser user = (IUser) session.getAttribute("user");
       if (user == null || !user.isLogined()){
          try {
             String idu = request.getParameter("IDU");
