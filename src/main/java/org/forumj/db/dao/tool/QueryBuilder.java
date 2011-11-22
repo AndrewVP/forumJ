@@ -150,6 +150,10 @@ public class QueryBuilder {
    private static String isInterfaceContainsFolderQuery = null;
    
    private static String addFolderQuery = null;
+
+   private static String connectedUsersQuery = null;
+
+   private static String connectedGuestsAmountQuery = null;
    
    public static String getLoadConfigQuery() throws IOException{
       if (loadConfigQuery == null){
@@ -614,17 +618,17 @@ public class QueryBuilder {
    }
    
    public static String getConnectedUsersQuery() throws IOException{
-      if (createSubscribeQuery == null){
-         createSubscribeQuery = loadQuery("/sql/connected_users.sql");
+      if (connectedUsersQuery == null){
+         connectedUsersQuery = loadQuery("/sql/connected_users.sql");
       }
-      return createSubscribeQuery;
+      return connectedUsersQuery;
    }
    
    public static String getConnectedGuestsAmountQuery() throws IOException{
-      if (createSubscribeQuery == null){
-         createSubscribeQuery = loadQuery("/sql/connected_guests_amount.sql");
+      if (connectedGuestsAmountQuery == null){
+         connectedGuestsAmountQuery = loadQuery("/sql/connected_guests_amount.sql");
       }
-      return createSubscribeQuery;
+      return connectedGuestsAmountQuery;
    }
    
    private static String loadQuery(String path) throws IOException{
