@@ -237,20 +237,21 @@ public class FJFolderDao extends FJDao {
       return result;
    }
 
-   public List<Map<String, Object>> getFoldersArray(Long idUser) throws ConfigurationException, SQLException{
-      List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
-      String sql_views="SELECT id, flname FROM fdfolders WHERE user=0 OR user=" + idUser.toString() + " ORDER BY id ";
+   public List<IFJFolder> getFoldersArray(Long idUser) throws ConfigurationException, SQLException, IOException{
+      List<IFJFolder> result = new ArrayList<IFJFolder>();
+      String query = getLoadUserFoldersQuery();
       Connection conn = null;
-      Statement st = null;
+      PreparedStatement st = null;
       try {
          conn = getConnection();
-         st = conn.createStatement();
-         ResultSet rs = st.executeQuery(sql_views);
+         st = conn.prepareStatement(query);
+         st.setLong(1, idUser);
+         ResultSet rs = st.executeQuery(query);
          while (rs.next()){
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("id", rs.getLong("id")) ;
-            map.put("flname", rs.getString("flname")) ;
-            result.add(map);
+            IFJFolder folder = new FJFolder();
+            folder.setId(rs.getLong("id")) ;
+            folder.setName(rs.getString("flname")) ;
+            result.add(folder);
          }
       }finally{
          readFinally(conn, st);

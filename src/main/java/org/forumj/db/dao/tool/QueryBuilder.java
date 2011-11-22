@@ -155,6 +155,8 @@ public class QueryBuilder {
 
    private static String connectedGuestsAmountQuery = null;
    
+   private static String loadUserFoldersQuery = null;
+   
    public static String getLoadConfigQuery() throws IOException{
       if (loadConfigQuery == null){
          loadConfigQuery = loadQuery("/sql/load_config.sql");
@@ -629,6 +631,13 @@ public class QueryBuilder {
          connectedGuestsAmountQuery = loadQuery("/sql/connected_guests_amount.sql");
       }
       return connectedGuestsAmountQuery;
+   }
+   
+   public static String getLoadUserFoldersQuery() throws IOException{
+      if (loadUserFoldersQuery == null){
+         loadUserFoldersQuery = loadQuery("/sql/load_user_folders.sql");
+      }
+      return loadUserFoldersQuery;
    }
    
    private static String loadQuery(String path) throws IOException{

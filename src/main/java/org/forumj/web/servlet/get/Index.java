@@ -341,7 +341,7 @@ public class Index extends FJServlet {
          // Сервис интерфейса
          if (user.isLogined()) {
             // Выбираем доступные папки
-            List<Map<String, Object>> foldersList = folderDao.getFoldersArray(userId);
+            List<IFJFolder> foldersList = folderDao.getFoldersArray(userId);
             buffer.append("<tr>");
             buffer.append("<table class=control>");        
             buffer.append("<tr>");
@@ -358,9 +358,9 @@ public class Index extends FJServlet {
             // Выводим папки
             buffer.append("<span class=mnuforum>" + locale.getString("mess83") + "</span>");
             buffer.append("<select class='mnuforumSm' size='1' name='VIEW'>");
-            buffer.append("<option selected value='" + foldersList.get(0).get("id") + "'><span class=mnuprof>" + foldersList.get(0).get("flname") + "</span></option>");
+            buffer.append("<option selected value='" + foldersList.get(0).getId() + "'><span class=mnuprof>" + foldersList.get(0).getName() + "</span></option>");
             for (int fl1=1; fl1< foldersList.size()-1; fl1++){
-               buffer.append("<option value='" + foldersList.get(fl1).get("id") + "'><span class=mnuprof>" + foldersList.get(fl1).get("flname") + "</span></option>");
+               buffer.append("<option value='" + foldersList.get(fl1).getId() + "'><span class=mnuprof>" + foldersList.get(fl1).getName() + "</span></option>");
             }        
             buffer.append("</select>");
             // Прередаем нужные пераметры...
