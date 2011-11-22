@@ -393,7 +393,7 @@ public class Tema extends FJServlet {
       writer.write(out.replace("ъъ_ъ", format.format(allTime/1000)));
    }
 
-   private StringBuffer writePost(FJPost post, List<Ignor> ignorList, IUser user, Integer pageNumber, LocaleString locale, FJThread thread) throws InvalidKeyException, ConfigurationException, SQLException{
+   private StringBuffer writePost(FJPost post, List<Ignor> ignorList, IUser user, Integer pageNumber, LocaleString locale, FJThread thread) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
       StringBuffer buffer = new StringBuffer();
       Time postTime = new Time(post.getHead().getCreateTime());
       IUser author = post.getHead().getAuthor();
@@ -514,7 +514,7 @@ public class Tema extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer writeQuest(FJPost post, IUser user, LocaleString locale, FJThread thread) throws ConfigurationException, SQLException, InvalidKeyException{
+   private StringBuffer writeQuest(FJPost post, IUser user, LocaleString locale, FJThread thread) throws ConfigurationException, SQLException, InvalidKeyException, IOException{
       StringBuffer buffer = new StringBuffer(); 
       int $nvcs = post.getAnswers().size();
       buffer.append("<tr><td>");
@@ -523,7 +523,7 @@ public class Tema extends FJServlet {
       buffer.append("<tr><td align=\"CENTER\">");
       List<QuestNode> $nodes = post.getAnswers();
       FJVoiceDao voiceDao = new FJVoiceDao();
-      boolean userVoted = voiceDao.isUserVote(thread.getId(), user);
+      boolean userVoted = voiceDao.isUserVoted(thread.getId(), user);
       if (user.isLogined() && !userVoted){
          buffer.append("<form  action='voice.php' method='POST'><table class=content>");
          for (int nodeIndex = 1; nodeIndex < $nodes.size(); nodeIndex++) {
