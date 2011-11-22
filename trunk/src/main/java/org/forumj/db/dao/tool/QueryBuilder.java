@@ -169,6 +169,8 @@ public class QueryBuilder {
    
    private static String lastThreadIdQuery = null;
    
+   private static String voicesAmountQuery = null;
+   
    public static String getLoadConfigQuery() throws IOException{
       if (loadConfigQuery == null){
          loadConfigQuery = loadQuery("/sql/load_config.sql");
@@ -692,6 +694,13 @@ public class QueryBuilder {
          lastThreadIdQuery = loadQuery("/sql/last_thread_id.sql");
       }
       return lastThreadIdQuery;
+   }
+   
+   public static String getVoicesAmountQuery() throws IOException{
+      if (voicesAmountQuery == null){
+         voicesAmountQuery = loadQuery("/sql/voices_amount.sql");
+      }
+      return voicesAmountQuery;
    }
    
    private static String loadQuery(String path) throws IOException{

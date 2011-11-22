@@ -106,15 +106,17 @@ public class FJVoiceDao extends FJDao {
     * в опросе
     * @throws SQLException 
     * @throws ConfigurationException 
+    * @throws IOException 
     */
-   public int getVoicesAmount(Long threadId) throws ConfigurationException, SQLException{
-      String query = "SELECT COUNT(id) AS nvcs FROM voice WHERE head=" + threadId;
-      Connection conn = null;
-      Statement st = null;
+   public int getVoicesAmount(Long threadId) throws ConfigurationException, SQLException, IOException{
       int result = 0;
+      String query = getVoicesAmountQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
       try {
          conn = getConnection();
-         st = conn.createStatement();
+         st = conn.prepareStatement(query) ;
+         st.setLong(1, threadId);
          ResultSet rs = st.executeQuery(query);
          if (rs.next()){
             result = rs.getInt("nvcs");
@@ -125,26 +127,4 @@ public class FJVoiceDao extends FJDao {
       return result;
    }
 
-   /**
-    * Возвращает, есть ли уже голос текущего юзера
-    * в опросе
-    * @throws SQLException 
-    * @throws ConfigurationException 
-    */
-   public boolean isUserVote(Long threadId, IUser user) throws ConfigurationException, SQLException{
-      String query="SELECT user FROM voice WHERE head=" + threadId + " AND user=" + user.getId().toString();
-      Connection conn = null;
-      Statement st = null;
-      try {
-         conn = getConnection();
-         st = conn.createStatement();
-         ResultSet rs = st.executeQuery(query);
-         if (rs.next()){
-            return true;
-         }
-      }finally{
-         readFinally(conn, st);
-      }
-      return false;
-   }
 }
