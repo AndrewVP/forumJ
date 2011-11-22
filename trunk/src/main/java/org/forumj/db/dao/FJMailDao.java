@@ -201,15 +201,16 @@ public class FJMailDao extends FJDao {
       }
    }
 
-   public int getNewMailCount(Long idUser) throws ConfigurationException, SQLException{
+   public int getNewMailCount(Long idUser) throws ConfigurationException, SQLException, IOException{
       int result = 0;
-      String sql_newmail="SELECT COUNT(*) as nmail FROM fdmail WHERE rcvr=" + idUser + " AND d_rcv IS NULL ";
+      String query = getCreateMailQuery();
       Connection conn = null;
-      Statement st = null;
+      PreparedStatement st = null;
       try {
          conn = getConnection();
-         st = conn.createStatement();
-         ResultSet rs = st.executeQuery(sql_newmail);
+         st = conn.prepareStatement(query);
+         st.setLong(1, idUser);
+         ResultSet rs = st.executeQuery();
          if (rs.next()){
             result = rs.getInt("nmail");
          }
