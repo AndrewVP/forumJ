@@ -29,7 +29,7 @@ import javax.servlet.http.*;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.db.dao.FJUserDao;
-import org.forumj.db.entity.User;
+import org.forumj.db.entity.IUser;
 
 /**
  * 
@@ -46,7 +46,7 @@ public class ExitFilter implements Filter {
       HttpServletRequest request = (HttpServletRequest) req;
       HttpServletResponse response = (HttpServletResponse)resp;
       String exitParam = request.getParameter("exit");
-      User user = (User) request.getSession().getAttribute("user");
+      IUser user = (IUser) request.getSession().getAttribute("user");
       try {
          if (exitParam != null && user != null && user.isLogined()){
             FJUserDao dao = new FJUserDao();

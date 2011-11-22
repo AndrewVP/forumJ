@@ -22,7 +22,7 @@ import org.forumj.db.entity.*;
  */
 public class FJVoiceDao extends FJDao {
 
-   public FJVoice read(Long threadId, User user) throws IOException, ConfigurationException, SQLException{
+   public FJVoice read(Long threadId, IUser user) throws IOException, ConfigurationException, SQLException{
       FJVoice result = new FJVoice();
       String query = getReadVoiceQuery();
       Connection conn = null;
@@ -62,7 +62,7 @@ public class FJVoiceDao extends FJDao {
       }
    }
    
-   public boolean isUserVoted(long threadId, User user) throws SQLException, ConfigurationException, IOException{
+   public boolean isUserVoted(long threadId, IUser user) throws SQLException, ConfigurationException, IOException{
       boolean result = false;
       String query = getIsUserVotedQuery();
       Connection conn = null;
@@ -131,7 +131,7 @@ public class FJVoiceDao extends FJDao {
     * @throws SQLException 
     * @throws ConfigurationException 
     */
-   public boolean isUserVote(Long threadId, User user) throws ConfigurationException, SQLException{
+   public boolean isUserVote(Long threadId, IUser user) throws ConfigurationException, SQLException{
       String query="SELECT user FROM voice WHERE head=" + threadId + " AND user=" + user.getId().toString();
       Connection conn = null;
       Statement st = null;

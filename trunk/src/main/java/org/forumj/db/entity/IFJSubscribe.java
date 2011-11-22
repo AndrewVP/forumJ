@@ -46,12 +46,12 @@ public interface IFJSubscribe {
    /**
     * @return the user
     */
-   public User getUser();
+   public IUser getUser();
 
    /**
     * @param user the user to set
     */
-   public void setUser(User user);
+   public void setUser(IUser user);
 
    /**
     * @return the start

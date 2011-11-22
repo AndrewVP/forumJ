@@ -19,7 +19,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.db.dao.*;
-import org.forumj.db.entity.User;
+import org.forumj.db.entity.IUser;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -39,7 +39,7 @@ public class UserVoice extends FJServlet {
          String threadIdParameter = request.getParameter("IDT1");
          String anonymouslyParameter = request.getParameter("HD");
          String answerParameter = request.getParameter("P");
-         User user = (User) session.getAttribute("user");
+         IUser user = (IUser) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             if (threadIdParameter != null && !"".equals(threadIdParameter)){
                if (answerParameter != null && !"".equals(answerParameter)){

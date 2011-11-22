@@ -20,7 +20,7 @@ import static org.forumj.tool.PHP.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.forumj.db.entity.User;
+import org.forumj.db.entity.IUser;
 
 /**
  * Diletant custom php functions 
@@ -313,7 +313,7 @@ public class Diletant {
       "</table>  ";
       return $button;
    }
-   public static String fd_form_add(User user) {
+   public static String fd_form_add(IUser user) {
       String $result="";
       //Команда для обработки
       $result+="<input type=hidden name='comand'>";
@@ -577,12 +577,12 @@ public class Diletant {
    }
 
    @Deprecated
-   public static boolean fd_ban(User user){
+   public static boolean fd_ban(IUser user){
       return user.getBan() == 1;
    }
 
    @Deprecated
-   public static String fd_nick(User user){
+   public static String fd_nick(IUser user){
       return user.getNick();
    }
    

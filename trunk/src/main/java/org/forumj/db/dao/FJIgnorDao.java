@@ -46,7 +46,7 @@ public class FJIgnorDao extends FJDao {
             ignor.setId(rs.getLong(ID_FIELD_NAME));
             ignor.setType(rs.getInt(TYPE_FIELD_NAME));
             ignor.setUserId(userId);
-            User ignoredUser = new User();
+            IUser ignoredUser = new User();
             ignoredUser.setId(rs.getLong(IGNORED_USER_ID_FIELD_NAME));
             ignoredUser.setNick(rs.getString("nick"));
             ignor.setUser(ignoredUser);
@@ -77,7 +77,7 @@ public class FJIgnorDao extends FJDao {
       }
    }
    
-   public void create(long ignoredUserId, User user) throws SQLException, ConfigurationException, IOException{
+   public void create(long ignoredUserId, IUser user) throws SQLException, ConfigurationException, IOException{
       String query = getCreateIgnorQuery();
       Connection conn = null;
       PreparedStatement st = null;

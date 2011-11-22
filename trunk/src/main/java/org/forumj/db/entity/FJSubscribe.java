@@ -25,7 +25,7 @@ public class FJSubscribe implements IFJSubscribe {
 
    private Long id = null;
    
-   private User user = null;
+   private IUser user = null;
    
    private Long titleId = null;
    
@@ -90,14 +90,14 @@ public class FJSubscribe implements IFJSubscribe {
    /**
     * {@inheritDoc}
     */
-   public User getUser() {
+   public IUser getUser() {
       return user;
    }
 
    /**
     * {@inheritDoc}
     */
-   public void setUser(User user) {
+   public void setUser(IUser user) {
       this.user = user;
    }
 

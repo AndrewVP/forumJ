@@ -128,7 +128,7 @@ public class FJThread implements IFJThread{
    /**
     * Текущий пользователь
     */
-   private User currentUser = null;
+   private IUser currentUser = null;
    
    /**
     * Registration date
@@ -506,14 +506,14 @@ public class FJThread implements IFJThread{
    /**
     * @return the currentUser
     */
-   public User getCurrentUser() {
+   public IUser getCurrentUser() {
       return currentUser;
    }
 
    /**
     * @param currentUser the currentUser to set
     */
-   public void setCurrentUser(User currentUser) {
+   public void setCurrentUser(IUser currentUser) {
       this.currentUser = currentUser;
    }
 

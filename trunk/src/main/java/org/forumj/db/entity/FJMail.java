@@ -19,9 +19,9 @@ public class FJMail implements IFJMail {
    
    private Long id = null;
    
-   private User sender = null;
+   private IUser sender = null;
    
-   private User receiver = null;
+   private IUser receiver = null;
    
    private Date createDate = null;
    
@@ -42,28 +42,28 @@ public class FJMail implements IFJMail {
    /**
     * @return the sender
     */
-   public User getSender() {
+   public IUser getSender() {
       return sender;
    }
 
    /**
     * @param sender the sender to set
     */
-   public void setSender(User sender) {
+   public void setSender(IUser sender) {
       this.sender = sender;
    }
 
    /**
     * @return the receiver
     */
-   public User getReceiver() {
+   public IUser getReceiver() {
       return receiver;
    }
 
    /**
     * @param receiver the receiver to set
     */
-   public void setReceiver(User receiver) {
+   public void setReceiver(IUser receiver) {
       this.receiver = receiver;
    }
 

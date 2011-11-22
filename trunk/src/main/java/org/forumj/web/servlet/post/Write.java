@@ -47,7 +47,7 @@ public class Write extends FJServlet {
          StringBuffer buffer = new StringBuffer();
          HttpSession session = request.getSession();
          LocaleString locale = (LocaleString) session.getAttribute("locale");
-         User user = (User) session.getAttribute("user");
+         IUser user = (IUser) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             String head = request.getParameter("NHEAD");
             String body = request.getParameter("A2");
@@ -117,7 +117,7 @@ public class Write extends FJServlet {
       }
    }
 
-   private StringBuffer view(LocaleString locale, HttpServletRequest request, User user, String head, String $str_ip, String $str_dom, String idt, String $lptime, String body) throws IOException, InvalidKeyException{
+   private StringBuffer view(LocaleString locale, HttpServletRequest request, IUser user, String head, String $str_ip, String $str_dom, String idt, String $lptime, String body) throws IOException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
       buffer.append("<html>");
@@ -289,7 +289,7 @@ public class Write extends FJServlet {
       return buffer;
    }
    
-   private void write_new(String body, User user, String domen, String ip, String head, Long threadId) throws DBException, ConfigurationException, IOException, SQLException{
+   private void write_new(String body, IUser user, String domen, String ip, String head, Long threadId) throws DBException, ConfigurationException, IOException, SQLException{
       FJPost post = new FJPost();
       FJPostBody postBody = new FJPostBody();
       FJPostHead postHead = new FJPostHead();
@@ -308,7 +308,7 @@ public class Write extends FJServlet {
       FJPostDao postDao = new FJPostDao();
       postDao.create(post);
    }
-   private void write_edit(String body, User user, String domen, String ip, String head, Long threadId, Long postId) throws DBException, ConfigurationException, IOException, SQLException{
+   private void write_edit(String body, IUser user, String domen, String ip, String head, Long threadId, Long postId) throws DBException, ConfigurationException, IOException, SQLException{
       FJPostDao postDao = new FJPostDao();
       FJPost post = postDao.read(postId);
       FJPostBody postBody = post.getBody();

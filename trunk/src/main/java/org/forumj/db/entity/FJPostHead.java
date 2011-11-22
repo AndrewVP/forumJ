@@ -38,19 +38,19 @@ public class FJPostHead implements IFJPostHead {
    
    private Long threadId = null;
    
-   private User author = null;
+   private IUser author = null;
 
    /**
     * @return the author
     */
-   public User getAuthor() {
+   public IUser getAuthor() {
       return author;
    }
 
    /**
     * @param author the author to set
     */
-   public void setAuthor(User author) {
+   public void setAuthor(IUser author) {
       this.author = author;
    }
 

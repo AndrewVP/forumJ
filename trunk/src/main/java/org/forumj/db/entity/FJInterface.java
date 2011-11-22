@@ -25,7 +25,7 @@ public class FJInterface implements IFJInterface {
    
    private Long id = null;
    
-   private User user = null;
+   private IUser user = null;
    
    private String name = null;
    
@@ -51,7 +51,7 @@ public class FJInterface implements IFJInterface {
     * @return the user
     */
    @Override
-   public User getUser() {
+   public IUser getUser() {
       return user;
    }
 
@@ -59,7 +59,7 @@ public class FJInterface implements IFJInterface {
     * @param user the user to set
     */
    @Override
-   public void setUser(User user) {
+   public void setUser(IUser user) {
       this.user = user;
    }
 

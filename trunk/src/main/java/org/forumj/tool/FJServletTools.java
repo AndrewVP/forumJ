@@ -6,7 +6,7 @@ import java.util.*;
 
 import javax.servlet.http.*;
 
-import org.forumj.db.entity.User;
+import org.forumj.db.entity.IUser;
 import org.forumj.exception.InvalidKeyException;
 
 
@@ -19,7 +19,7 @@ public class FJServletTools {
       response.setHeader("Pragma", "no-cache");
    }
 
-   public static StringBuffer menu(HttpServletRequest request, User user, LocaleString locale, boolean index) throws InvalidKeyException{
+   public static StringBuffer menu(HttpServletRequest request, IUser user, LocaleString locale, boolean index) throws InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       Enumeration<String> parameters = request.getParameterNames();
       boolean first = true;

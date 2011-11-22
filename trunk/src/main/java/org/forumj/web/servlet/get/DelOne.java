@@ -25,7 +25,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.db.dao.FJFolderDao;
-import org.forumj.db.entity.User;
+import org.forumj.db.entity.IUser;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -43,7 +43,7 @@ public class DelOne extends FJServlet {
          HttpSession session = request.getSession();
          String idThreadParameter = request.getParameter("id");
          String pageParameter = request.getParameter("page");
-         User user = (User) session.getAttribute("user");
+         IUser user = (IUser) session.getAttribute("user");
          FJFolderDao folderDao = new FJFolderDao();
          if (user != null && !user.isBanned() && user.isLogined()){
             if (idThreadParameter != null && !"".equals(idThreadParameter)){

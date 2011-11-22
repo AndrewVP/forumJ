@@ -37,7 +37,7 @@ public class Amn extends FJServlet {
       try {
          StringBuffer buffer = new StringBuffer();
          HttpSession session = request.getSession();
-         User user = (User) session.getAttribute("user");
+         IUser user = (IUser) session.getAttribute("user");
          String ignorTypeParameter = request.getParameter("C1");
          String ignorIdParameter = request.getParameter("IDZ");
          String ignorYearParameter = request.getParameter("Y");

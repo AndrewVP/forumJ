@@ -61,7 +61,7 @@ public class Control extends FJServlet {
          Long view = request.getParameter("view") == null ? null : Long.valueOf(request.getParameter("view"));
          // Загружаем локализацию
          LocaleString locale = (LocaleString) session.getAttribute("locale");
-         User user = (User) session.getAttribute("user");
+         IUser user = (IUser) session.getAttribute("user");
          // Собираем статистику
          buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
          buffer.append("<html>");
@@ -398,7 +398,7 @@ public class Control extends FJServlet {
       writer.write(out);
    }
 
-   private StringBuffer case1(User user, LocaleString locale) throws InvalidKeyException, IOException, ConfigurationException, SQLException{
+   private StringBuffer case1(IUser user, LocaleString locale) throws InvalidKeyException, IOException, ConfigurationException, SQLException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список Игнорируемых
       List<Ignor> ignorList = new FJIgnorDao().loadAll(user.getId());
@@ -531,7 +531,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case2(LocaleString locale, User user, Long msg) throws ConfigurationException, SQLException, IOException, InvalidKeyException{
+   private StringBuffer case2(LocaleString locale, IUser user, Long msg) throws ConfigurationException, SQLException, IOException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess17") + "</b></div>");
       buffer.append("<form method='POST' class='content' action='delmail.php?id=2'>");
@@ -624,7 +624,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case3(LocaleString locale, User user, Long msg) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
+   private StringBuffer case3(LocaleString locale, IUser user, Long msg) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess15") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
@@ -680,7 +680,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case4(LocaleString locale, User user, Long msg) throws ConfigurationException, IOException, SQLException, InvalidKeyException{
+   private StringBuffer case4(LocaleString locale, IUser user, Long msg) throws ConfigurationException, IOException, SQLException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess16") + "</b></div>");
       buffer.append("<form method='POST' class=content action='delmail.php?id=4'>");
@@ -763,7 +763,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case5(LocaleString locale, User user, Long msg) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
+   private StringBuffer case5(LocaleString locale, IUser user, Long msg) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess62") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
@@ -821,7 +821,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case6(LocaleString locale, User user, Long viewId) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
+   private StringBuffer case6(LocaleString locale, IUser user, Long viewId) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список интерфейсов
       FJInterfaceDao dao = new FJInterfaceDao();
@@ -1004,7 +1004,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case7(LocaleString locale, User user) throws ConfigurationException, SQLException, IOException, InvalidKeyException{
+   private StringBuffer case7(LocaleString locale, IUser user) throws ConfigurationException, SQLException, IOException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список папок
       FJFolderDao folderDao = new FJFolderDao();
@@ -1060,7 +1060,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case8(LocaleString locale, User user) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
+   private StringBuffer case8(LocaleString locale, IUser user) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список подписаных веток
       FJSubscribeDao dao = new FJSubscribeDao();
@@ -1107,7 +1107,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case9(LocaleString locale, User user)
+   private StringBuffer case9(LocaleString locale, IUser user)
          throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
       if (user.getAvatar() != null && user.getAvatarApproved()) {
@@ -1173,7 +1173,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case10(LocaleString locale, User user) throws InvalidKeyException {
+   private StringBuffer case10(LocaleString locale, IUser user) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class=mnuprof align='CENTER'>");
       buffer.append("<b>" + locale.getString("mess105") + "</b>");
@@ -1242,7 +1242,7 @@ public class Control extends FJServlet {
    }
 
    /*подпись*/
-   private StringBuffer case11(LocaleString locale, User user) throws InvalidKeyException {
+   private StringBuffer case11(LocaleString locale, IUser user) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class=mnuprof align='CENTER'>");
       buffer.append("<b>");
