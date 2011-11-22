@@ -53,7 +53,6 @@ public class Index extends FJServlet {
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       long startTime = new Date().getTime();
       StringBuffer buffer = new StringBuffer();
-      List<Map<String, Object>> viewsList = null;
       try {
          HttpSession session = request.getSession();
          //Предотвращаем кеширование
@@ -137,9 +136,9 @@ public class Index extends FJServlet {
          // Интерфейс
          // Имя текущего
          if (session.getAttribute("vname") == null){
-            session.setAttribute("vname", interfaceDao.getCurrentViewName(Long.valueOf((Integer)session.getAttribute("view"))));
+            session.setAttribute("vname", interfaceDao.getViewName(Long.valueOf((Integer)session.getAttribute("view"))));
          }
-         viewsList = interfaceDao.getViewsArray(userId);
+         List<IFJInterface> viewsList = interfaceDao.getViewsArray(userId);
          buffer.append("<tr><td>");
 
          buffer.append("<table class=control>");
@@ -165,13 +164,15 @@ public class Index extends FJServlet {
          buffer.append(locale.getString("mess80"));
          buffer.append("</span>");
          buffer.append("<select class='mnuforumSm'  size='1' name='VIEW'>");
-         buffer.append("<option selected class=mnuprof value='" + viewsList.get(0).get("id") + "'>");
-         buffer.append(viewsList.get(0).get("name"));
+         IFJInterface fjinterface = viewsList.get(0);
+         buffer.append("<option selected class=mnuprof value='" + fjinterface.getId() + "'>");
+         buffer.append(fjinterface.getName());
          buffer.append("</option>");
          for (int vw1=1; vw1< viewsList.size(); vw1++)
          {
-            buffer.append("<option class=mnuprof value='" + viewsList.get(vw1).get("id") + "'>");
-            buffer.append(viewsList.get(vw1).get("name"));
+            fjinterface = viewsList.get(vw1);
+            buffer.append("<option class=mnuprof value='" + fjinterface.getId() + "'>");
+            buffer.append(fjinterface.getName());
             buffer.append("</option>");
          }
          buffer.append("</select>");
@@ -341,7 +342,7 @@ public class Index extends FJServlet {
          // Сервис интерфейса
          if (user.isLogined()) {
             // Выбираем доступные папки
-            List<IFJFolder> foldersList = folderDao.getFoldersArray(userId);
+            List<IFJFolder> foldersList = folderDao.getUserFolders(userId);
             buffer.append("<tr>");
             buffer.append("<table class=control>");        
             buffer.append("<tr>");

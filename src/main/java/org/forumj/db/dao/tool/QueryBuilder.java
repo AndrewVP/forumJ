@@ -157,6 +157,10 @@ public class QueryBuilder {
    
    private static String loadUserFoldersQuery = null;
    
+   private static String loadViewNameQuery = null;
+   
+   private static String loadUserViewsQuery = null;
+   
    public static String getLoadConfigQuery() throws IOException{
       if (loadConfigQuery == null){
          loadConfigQuery = loadQuery("/sql/load_config.sql");
@@ -638,6 +642,20 @@ public class QueryBuilder {
          loadUserFoldersQuery = loadQuery("/sql/load_user_folders.sql");
       }
       return loadUserFoldersQuery;
+   }
+   
+   public static String getLoadUserViewsQuery() throws IOException{
+      if (loadUserViewsQuery == null){
+         loadUserViewsQuery = loadQuery("/sql/load_user_views.sql");
+      }
+      return loadUserViewsQuery;
+   }
+   
+   public static String getLoadViewNameQuery() throws IOException{
+      if (loadViewNameQuery == null){
+         loadViewNameQuery = loadQuery("/sql/load_view_name.sql");
+      }
+      return loadViewNameQuery;
    }
    
    private static String loadQuery(String path) throws IOException{

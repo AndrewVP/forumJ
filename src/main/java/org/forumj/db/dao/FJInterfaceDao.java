@@ -179,15 +179,16 @@ public class FJInterfaceDao extends FJDao {
       }
    }
 
-   public String getCurrentViewName(Long idView) throws ConfigurationException, SQLException{
+   public String getViewName(Long idView) throws ConfigurationException, SQLException, IOException{
       String result = null;
-      String sql_vname="SELECT name FROM fdviews WHERE id=" + idView.toString();
+      String query = getLoadViewNameQuery();
       Connection conn = null;
-      Statement st = null;
+      PreparedStatement st = null;
       try {
          conn = getConnection();
-         st = conn.createStatement();
-         ResultSet rs = st.executeQuery(sql_vname);
+         st = conn.prepareStatement(query);
+         st.setLong(1, idView);
+         ResultSet rs = st.executeQuery();
          if (rs.next()){
             result = rs.getString("name");
          }
@@ -197,20 +198,21 @@ public class FJInterfaceDao extends FJDao {
       return result;
    }
 
-   public List<Map<String, Object>> getViewsArray(Long idUser) throws ConfigurationException, SQLException{
-      List<Map<String, Object>> result = new ArrayList<Map<String,Object>>();
-      String sql_views="SELECT id, name FROM fdviews WHERE user=0 OR user=" + idUser.toString() + " ORDER BY id ";
+   public List<IFJInterface> getViewsArray(Long idUser) throws ConfigurationException, SQLException, IOException{
+      List<IFJInterface> result = new ArrayList<IFJInterface>();
+      String query = getLoadViewNameQuery();
       Connection conn = null;
-      Statement st = null;
+      PreparedStatement st = null;
       try {
          conn = getConnection();
-         st = conn.createStatement();
-         ResultSet rs = st.executeQuery(sql_views);
+         st = conn.prepareStatement(query);
+         st.setLong(1, idUser);
+         ResultSet rs = st.executeQuery();
          while (rs.next()){
-            Map<String, Object> map = new HashMap<String, Object>();
-            map.put("id", rs.getLong("id")) ;
-            map.put("name", rs.getString("name")) ;
-            result.add(map);
+            IFJInterface fjinterface = new FJInterface();
+            fjinterface.setId(rs.getLong("id"));
+            fjinterface.setName(rs.getString("name")) ;
+            result.add(fjinterface);
          }
       }finally{
          readFinally(conn, st);
