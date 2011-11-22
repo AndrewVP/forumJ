@@ -165,6 +165,8 @@ public class QueryBuilder {
    
    private static String lastPostIdQuery = null;
    
+   private static String isUserSubscribedQuery = null;
+   
    public static String getLoadConfigQuery() throws IOException{
       if (loadConfigQuery == null){
          loadConfigQuery = loadQuery("/sql/load_config.sql");
@@ -674,6 +676,13 @@ public class QueryBuilder {
          lastPostIdQuery = loadQuery("/sql/last_post_id.sql");
       }
       return lastPostIdQuery;
+   }
+   
+   public static String getIsUserSubscribedQuery() throws IOException{
+      if (isUserSubscribedQuery == null){
+         isUserSubscribedQuery = loadQuery("/sql/is_user_subscribed.sql");
+      }
+      return isUserSubscribedQuery;
    }
    
    private static String loadQuery(String path) throws IOException{

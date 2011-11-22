@@ -147,15 +147,18 @@ public class FJSubscribeDao extends FJDao {
     * @return unknown
     * @throws SQLException 
     * @throws ConfigurationException 
+    * @throws IOException 
     */
-   public Boolean isUserSubscribed(Long idUser, Long threadId) throws ConfigurationException, SQLException{
-      String query = "SELECT id FROM fd_subscribe WHERE user=" +  idUser  + " AND title=" +  threadId;
+   public Boolean isUserSubscribed(Long idUser, Long threadId) throws ConfigurationException, SQLException, IOException{
+      String query = getIsUserSubscribedQuery();
       Connection conn = null;
-      Statement st = null;
+      PreparedStatement st = null;
       try {
          conn = getConnection();
-         st = conn.createStatement();
-         ResultSet rs = st.executeQuery(query);
+         st = conn.prepareStatement(query);
+         st.setLong(1, idUser);
+         st.setLong(2, threadId);
+         ResultSet rs = st.executeQuery();
          if (rs.next()){
             return true;
          }
