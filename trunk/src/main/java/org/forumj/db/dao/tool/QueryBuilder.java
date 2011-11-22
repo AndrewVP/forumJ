@@ -10,6 +10,7 @@
 package org.forumj.db.dao.tool;
 
 import java.io.*;
+import java.util.*;
 
 import org.forumj.web.servlet.tool.FJServletTools;
 
@@ -184,6 +185,12 @@ public class QueryBuilder {
    private static String readUserByNickQuery = null;
    
    private static String readUserByMailQuery = null;
+   
+   private static String readPostsQuery = null;
+   
+   private static Map<String, String> readPostsHeadsQuery = new HashMap<String, String>();
+   
+   private static Map<String, String> readPostsBodiesQuery = new HashMap<String, String>();
    
    public static String getLoadConfigQuery() throws IOException{
       if (loadConfigQuery == null){
@@ -764,6 +771,35 @@ public class QueryBuilder {
          readUserByMailQuery = loadQuery("/sql/read_user_by_mail.sql");
       }
       return readUserByMailQuery;
+   }
+   
+   public static String getReadPostsQuery() throws IOException{
+      if (readPostsQuery == null){
+         readPostsQuery = loadQuery("/sql/read_posts.sql");
+      }
+      return readPostsQuery;
+   }
+   
+   public static String getReadPostsHeadsQuery(String table, String ids) throws IOException{
+      String query = readPostsHeadsQuery.get(table);
+      if (query == null){
+         query = loadQuery("/sql/read_post_heads.sql").replace("@@TABLE@@", table);
+         synchronized (readPostHeadQuery) {
+            readPostsHeadsQuery.put(table, query); 
+         }
+      }
+      return query + " (" + ids + ")";
+   }
+   
+   public static String getReadPostsBodiesQuery(String table, String ids) throws IOException{
+      String query = readPostsBodiesQuery.get(table);
+      if (query == null){
+         query = loadQuery("/sql/read_post_bodies.sql").replace("@@TABLE@@", table);
+         synchronized (readPostsBodiesQuery) {
+            readPostsBodiesQuery.put(table, query); 
+         }
+      }
+      return query + " (" + ids + ")";
    }
    
    private static String loadQuery(String path) throws IOException{
