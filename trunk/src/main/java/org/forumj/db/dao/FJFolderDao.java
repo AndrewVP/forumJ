@@ -237,7 +237,7 @@ public class FJFolderDao extends FJDao {
       return result;
    }
 
-   public List<IFJFolder> getFoldersArray(Long idUser) throws ConfigurationException, SQLException, IOException{
+   public List<IFJFolder> getUserFolders(Long idUser) throws ConfigurationException, SQLException, IOException{
       List<IFJFolder> result = new ArrayList<IFJFolder>();
       String query = getLoadUserFoldersQuery();
       Connection conn = null;
@@ -246,7 +246,7 @@ public class FJFolderDao extends FJDao {
          conn = getConnection();
          st = conn.prepareStatement(query);
          st.setLong(1, idUser);
-         ResultSet rs = st.executeQuery(query);
+         ResultSet rs = st.executeQuery();
          while (rs.next()){
             IFJFolder folder = new FJFolder();
             folder.setId(rs.getLong("id")) ;
