@@ -188,9 +188,15 @@ public class QueryBuilder {
    
    private static String readPostsQuery = null;
    
+   private static String postsCountInThreadQuery = null;
+   
    private static Map<String, String> readPostsHeadsQuery = new HashMap<String, String>();
    
    private static Map<String, String> readPostsBodiesQuery = new HashMap<String, String>();
+   
+   private static String seenByUserQuery = null;
+   
+   private static String seenByGuestQuery = null;
    
    public static String getLoadConfigQuery() throws IOException{
       if (loadConfigQuery == null){
@@ -800,6 +806,27 @@ public class QueryBuilder {
          }
       }
       return query + " (" + ids + ")";
+   }
+
+   public static String getPostsCountInThreadQuery() throws IOException{
+      if (postsCountInThreadQuery == null){
+         postsCountInThreadQuery = loadQuery("/sql/posts_count_in_thread.sql");
+      }
+      return postsCountInThreadQuery;
+   }
+   
+   public static String getSeenByUserQuery() throws IOException{
+      if (seenByUserQuery == null){
+         seenByUserQuery = loadQuery("/sql/seen_by_user.sql");
+      }
+      return seenByUserQuery;
+   }
+   
+   public static String getSeenByGuestQuery() throws IOException{
+      if (seenByGuestQuery == null){
+         seenByGuestQuery = loadQuery("/sql/seen_by_guest.sql");
+      }
+      return seenByGuestQuery;
    }
    
    private static String loadQuery(String path) throws IOException{
