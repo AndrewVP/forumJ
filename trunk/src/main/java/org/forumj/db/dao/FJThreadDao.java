@@ -173,20 +173,19 @@ public class FJThreadDao extends FJDao {
     * Возвращает количество постов в ветке
     * @throws SQLException 
     * @throws ConfigurationException 
+    * @throws IOException 
     */
-   public Integer getPostsCountInThread(Long threadId, Long idMax) throws ConfigurationException, SQLException{
+   public Integer getPostsCountInThread(Long threadId, Long idMax) throws ConfigurationException, SQLException, IOException{
       Integer result = null;
-      String addQuery = "";
-      if (idMax != null){
-         addQuery = " AND id < " +  idMax;
-      }
-      String query = "SELECT count(id) as kolvo FROM body WHERE head=" +  threadId + addQuery;
+      String query = getPostsCountInThreadQuery();
+      PreparedStatement st = null;
       Connection conn = null;
-      Statement st = null;
       try {
          conn = getConnection();
-         st = conn.createStatement();
-         ResultSet rs = st.executeQuery(query);
+         st = conn.prepareStatement(query);
+         st.setLong(1, threadId);
+         st.setLong(2, idMax);
+         ResultSet rs = st.executeQuery();
          if (rs.next()){
             result = rs.getInt("kolvo");
          }
@@ -195,26 +194,29 @@ public class FJThreadDao extends FJDao {
       }
       return result;
    }
+   
    /**
     * Записывает состояние счетчиков просмотров ветки
     *
     * @param $isLogin Авторизован ли посетитель
     * @throws SQLException 
     * @throws ConfigurationException 
+    * @throws IOException 
     */
-   public void setSeen(IUser user, Long threadId) throws ConfigurationException, SQLException{
+   public void setSeen(IUser user, Long threadId) throws ConfigurationException, SQLException, IOException{
       String query = "";
       if (user.isLogined()){
-         query = "UPDATE titles SET seenid=seenid + 1, seenall=seenall+1 WHERE id=" +  threadId;
+         query = getSeenByUserQuery();
       }else{
-         query = "UPDATE titles SET seenall=seenall+1 WHERE id=" +  threadId;
+         query = getSeenByGuestQuery();
       }
+      PreparedStatement st = null;
       Connection conn = null;
-      Statement st = null;
       try {
          conn = getConnection();
-         st = conn.createStatement();
-         st.executeUpdate(query);
+         st = conn.prepareStatement(query);
+         st.setLong(1, threadId);
+         st.executeUpdate();
       }finally{
          readFinally(conn, st);
       }
