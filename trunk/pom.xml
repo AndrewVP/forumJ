@@ -2,7 +2,7 @@
    <modelVersion>4.0.0</modelVersion>
    <groupId>org.forumj</groupId>
    <artifactId>forumj</artifactId>
-   <packaging>war</packaging>
+   <packaging>pom</packaging>
    <version>0.0.1-SNAPSHOT</version>
    <name>forumj</name>
    <dependencies>
@@ -75,4 +75,7 @@
       </plugins>
       <finalName>fj</finalName>
    </build>
+   <modules>
+   	<module>fj-web-extreme</module>
+   </modules>
 </project>
