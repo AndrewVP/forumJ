@@ -20,7 +20,7 @@ import static org.forumj.tool.PHP.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import org.forumj.db.entity.IUser;
+import org.forumj.common.db.entity.IUser;
 
 /**
  * Diletant custom php functions 

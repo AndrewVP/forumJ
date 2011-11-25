@@ -6,7 +6,7 @@ import java.util.*;
 
 import javax.servlet.http.*;
 
-import org.forumj.db.entity.IUser;
+import org.forumj.common.db.entity.IUser;
 import org.forumj.exception.InvalidKeyException;
 
 

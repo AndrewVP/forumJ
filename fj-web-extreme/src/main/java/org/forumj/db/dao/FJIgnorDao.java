@@ -15,14 +15,15 @@
  */
 package org.forumj.db.dao;
 
+import static org.forumj.common.db.entity.IIgnor.*;
 import static org.forumj.db.dao.tool.QueryBuilder.*;
-import static org.forumj.db.entity.IIgnor.*;
 
 import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.common.db.entity.IUser;
 import org.forumj.db.entity.*;
 
 /**

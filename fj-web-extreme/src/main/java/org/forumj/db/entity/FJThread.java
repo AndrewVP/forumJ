@@ -19,6 +19,7 @@ import static org.forumj.tool.PHP.*;
 
 import java.util.Date;
 
+import org.forumj.common.db.entity.*;
 import org.forumj.exception.InvalidKeyException;
 import org.forumj.tool.*;
 

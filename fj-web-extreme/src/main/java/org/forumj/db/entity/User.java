@@ -17,6 +17,8 @@ package org.forumj.db.entity;
 
 import java.util.Date;
 
+import org.forumj.common.db.entity.IUser;
+
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>

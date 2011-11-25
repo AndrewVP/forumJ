@@ -11,6 +11,8 @@ package org.forumj.db.entity;
 
 import java.util.*;
 
+import org.forumj.common.db.entity.IFJPost;
+
 /**
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>

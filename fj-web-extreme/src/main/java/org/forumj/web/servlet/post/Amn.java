@@ -20,6 +20,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
+import org.forumj.common.db.entity.IUser;
 import org.forumj.db.dao.FJIgnorDao;
 import org.forumj.db.entity.*;
 import org.forumj.web.servlet.FJServlet;
