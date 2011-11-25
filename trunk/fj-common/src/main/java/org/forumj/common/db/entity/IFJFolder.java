@@ -13,19 +13,25 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.forumj.db.entity;
+package org.forumj.common.db.entity;
+
+import java.util.Date;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public interface IIgnor {
-   
+public interface IFJFolder {
    public static final String ID_FIELD_NAME = "id";
-   public static final String TYPE_FIELD_NAME = "type";
+   public static final String DATE_CREATE_FIELD_NAME = "d_cr";
    public static final String USER_ID_FIELD_NAME = "user";
-   public static final String IGNORED_USER_ID_FIELD_NAME = "ignor";
-   public static final String IGNOR_START_FIELD_NAME = "begin";
-   public static final String IGNOR_END_FIELD_NAME = "end";
-
+   public static final String NAME_FIELD_NAME = "flname";
+   public void setCreateDate(Date createDate);
+   public Date getCreateDate();
+   public void setName(String name);
+   public String getName();
+   public void setUser(IUser user);
+   public IUser getUser();
+   public void setId(Long id);
+   public Long getId();
 }

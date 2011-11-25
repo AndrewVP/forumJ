@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.forumj.db.entity;
+package org.forumj.common.db.entity;
 
 import java.util.Date;
 
@@ -21,11 +21,11 @@ import java.util.Date;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public interface IFJFolder {
+public interface IFJInterface {
    public static final String ID_FIELD_NAME = "id";
    public static final String DATE_CREATE_FIELD_NAME = "d_cr";
    public static final String USER_ID_FIELD_NAME = "user";
-   public static final String NAME_FIELD_NAME = "flname";
+   public static final String NAME_FIELD_NAME = "name";
    public void setCreateDate(Date createDate);
    public Date getCreateDate();
    public void setName(String name);
@@ -34,4 +34,5 @@ public interface IFJFolder {
    public IUser getUser();
    public void setId(Long id);
    public Long getId();
+
 }

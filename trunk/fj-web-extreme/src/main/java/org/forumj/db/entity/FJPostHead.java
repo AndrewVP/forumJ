@@ -9,6 +9,8 @@
   */
 package org.forumj.db.entity;
 
+import org.forumj.common.db.entity.*;
+
 
 /**
  *

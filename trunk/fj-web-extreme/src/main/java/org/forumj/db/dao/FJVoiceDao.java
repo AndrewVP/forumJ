@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.sql.*;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.common.db.entity.IUser;
 import org.forumj.db.entity.*;
 
 /**

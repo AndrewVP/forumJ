@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.forumj.db.entity;
+package org.forumj.common.db.entity;
 
 import java.util.Date;
 

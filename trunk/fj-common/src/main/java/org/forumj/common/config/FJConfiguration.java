@@ -7,7 +7,7 @@
  * You shall use it and distribute only in accordance with the terms of the 
  * License Agreement.
  */
-package org.forumj.common;
+package org.forumj.common.config;
 
 import org.apache.commons.configuration.*;
 

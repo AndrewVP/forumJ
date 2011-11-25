@@ -9,6 +9,8 @@
   */
 package org.forumj.db.entity;
 
+import org.forumj.common.db.entity.IFJPostBody;
+
 /**
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>

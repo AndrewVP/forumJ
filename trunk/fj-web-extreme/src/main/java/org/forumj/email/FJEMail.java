@@ -21,7 +21,7 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.FJConfiguration;
+import org.forumj.common.config.FJConfiguration;
 
 /**
  * 

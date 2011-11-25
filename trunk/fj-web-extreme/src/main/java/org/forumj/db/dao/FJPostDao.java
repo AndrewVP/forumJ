@@ -9,8 +9,8 @@
  */
 package org.forumj.db.dao;
 
+import static org.forumj.common.db.entity.IFJPost.*;
 import static org.forumj.db.dao.tool.QueryBuilder.*;
-import static org.forumj.db.entity.IFJPost.*;
 
 import java.io.IOException;
 import java.sql.*;
@@ -18,6 +18,7 @@ import java.util.*;
 import java.util.Map.Entry;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.common.db.entity.*;
 import org.forumj.db.entity.*;
 import org.forumj.exception.DBException;
 

@@ -1,4 +1,4 @@
-package org.forumj.db.entity;
+package org.forumj.common.db.entity;
 
 public interface IFJVoice {
 

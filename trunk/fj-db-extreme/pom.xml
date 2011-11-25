@@ -8,4 +8,11 @@
   </parent>
   <groupId>org.forumj.db</groupId>
   <artifactId>fj-db-extreme</artifactId>
+   <dependencies>
+      <dependency>
+         <groupId>org.forumj.common</groupId>
+         <artifactId>fj-common</artifactId>
+         <version>${project.version}</version>
+      </dependency>
+   </dependencies>
 </project>

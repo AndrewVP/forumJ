@@ -7,16 +7,18 @@
  * You shall use it and distribute only in accordance with the terms of the 
  * License Agreement.
  */
-package org.forumj.db.entity;
+package org.forumj.common.db.entity;
 
 /**
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public interface IFJPostBody {
+public interface IFJPost {
    
    public static final String ID_FIELD_NAME = "id";
-   public static final String BODY_FIELD_NAME = "body";
-   public static final String POST_ID_FIELD_NAME = "id_post";
+   public static final String THREAT_ID_FIELD_NAME = "head";
+   public static final String STATE_FIELD_NAME = "fd_state";
+   public static final String TABLE_POST_FIELD_NAME = "table_post";
+   public static final String TABLE_HEAD_FIELD_NAME = "table_head";
 
 }

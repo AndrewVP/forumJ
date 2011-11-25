@@ -18,8 +18,8 @@ import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
+import org.forumj.common.db.entity.IUser;
 import org.forumj.db.dao.FJUserDao;
-import org.forumj.db.entity.IUser;
 import org.forumj.web.servlet.FJServlet;
 
 /**
