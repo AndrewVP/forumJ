@@ -12,8 +12,6 @@ package org.forumj.db.dao.tool;
 import java.io.*;
 import java.util.*;
 
-import org.forumj.web.servlet.tool.FJServletTools;
-
 /**
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
@@ -830,7 +828,7 @@ public class QueryBuilder {
    }
    
    private static String loadQuery(String path) throws IOException{
-      ClassLoader classLoader = FJServletTools.class.getClassLoader();
+      ClassLoader classLoader = QueryBuilder.class.getClassLoader();
       InputStream stream = classLoader.getResourceAsStream(path);
       BufferedReader br = new BufferedReader(new InputStreamReader(stream));
       StringBuffer result = new StringBuffer();
