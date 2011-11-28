@@ -407,7 +407,6 @@ public class FJThreadDao extends FJDao {
          rs = st.executeQuery(sql_main);
          result.setThreadCount(count);
          int disain = -1;
-         int i = 0;
          Statement st1 = conn.createStatement();
          ResultSet rs1;
          StringBuffer indctrIds = new StringBuffer();
@@ -425,9 +424,7 @@ public class FJThreadDao extends FJDao {
             }
             indctrIds.append(";" + id.toString() + "," + idLastPost.toString());
             FJThread thr = new FJThread();
-            thr.setLocale(locale);
             thr.setDisain(disain);
-            thr.setCurrentUser(user);
             thr.setId(id);
             thr.setDock(rs.getInt("dock"));
             thr.setLastPostTime(rs.getDate("lposttime_"));
@@ -439,7 +436,6 @@ public class FJThreadDao extends FJDao {
             thr.setSnall(rs.getInt("seenall"));
             thr.setType(rs.getInt("type"));
             thr.setFolder(rs.getString("_flname"));
-            thr.setI(i);
             result.getThreads().add(thr);
             disain = disain * -1;
          }
