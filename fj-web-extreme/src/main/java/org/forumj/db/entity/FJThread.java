@@ -15,13 +15,9 @@
  */
 package org.forumj.db.entity;
 
-import static org.forumj.tool.PHP.*;
-
 import java.util.Date;
 
-import org.forumj.common.db.entity.*;
-import org.forumj.exception.InvalidKeyException;
-import org.forumj.tool.*;
+import org.forumj.common.db.entity.IFJThread;
 
 /**
  * 
@@ -30,11 +26,6 @@ import org.forumj.tool.*;
 public class FJThread implements IFJThread{
    
    private Long lastPostId = null;
-
-   /**
-    * Локализация
-    */
-   private LocaleString locale;
 
    /**
     * Тип прикрепления
@@ -122,16 +113,6 @@ public class FJThread implements IFJThread{
    private int pg;
 
    /**
-    * номер позиции
-    */
-   private int i;
-
-   /**
-    * Текущий пользователь
-    */
-   private IUser currentUser = null;
-   
-   /**
     * Registration date
     */
    private Date regDate = null;
@@ -162,136 +143,6 @@ public class FJThread implements IFJThread{
     */
    public void setRegDate(Date regDate) {
       this.regDate = regDate;
-   }
-
-   public String toString(){
-      String result = "";
-      if (this.disain == 1) { 
-         result += "<tr class=trees >";
-      }else {
-         result += "<tr class=matras>";   
-      }
-      // Картинки
-      // Пиктограммка опроса
-      result += "<td width='10' align='center' style='padding:0px 5px 0px 5px'>";
-      if (this.type == 1 || this.type == 2){
-         result += "<img border='0' src='smiles/quest.gif'>";
-      }else{
-         if (this.dock==5){
-            result += "<img border='0' src='smiles/icon4.gif'>";
-         }else if(this.dock==10) {
-            result+="<img border='0' src='picts/f_pinned.gif'>";
-         }else {
-            result+="<img border='0' src='smiles/icon1.gif'>";
-         }
-      }
-      result+="</td>";
-      result+="<td width='1'></td>";
-      // Тема
-      result+="<td><p>";
-      String str_head = htmlspecialchars(stripslashes(this.head));
-      // Добавляем смайлики
-      str_head = Diletant.fd_head(str_head);
-      // Опрос? Добавляем "метку"
-      try {
-         if (this.type==1 || this.type==2){
-            str_head="<b>" +this.locale.getString("mess9")+ "</b> " +str_head;
-         }
-         // Подписываем прикрепленные
-         switch (this.dock){
-         case 10:
-            result+="<font class=trforum><b>" +this.locale.getString("mess7")+ " </b><a href='tema.php?id=" +this.id.toString() + "'>" +str_head+ "</a></font>";
-            break;
-         case 5:
-            result+="<font class=trforum><b>" +this.locale.getString("mess8")+ " </b><a href='tema.php?id=" +this.id.toString() + "'>" +str_head+ "</a></font>";
-            break;
-         case 3:
-            result+="<font class=trforum><b>" +this.locale.getString("mess163")+ " </b><a href='tema.php?id=" +this.id.toString() + "'>" +str_head+ "</a></font>";
-            break;
-         case 0:
-            result+="<font class=trforum><a href='tema.php?id=" +this.id.toString()+ "'>" +str_head+ "</a></font>";
-            break;
-         }
-         // Cсылки на страницы в ветке
-         if (this.pcount+1>this.pt) {
-            result+="<br><font size=1>" +this.locale.getString("mess10")+ ":&nbsp";
-            int k1=0;
-            int k2=0;
-            for (int k=1; k<=ceil((this.pcount+1)/this.pt); k++) {
-               k1=k1+1;
-               if (k1==10){
-                  result+="<a href='tema.php?page=" +k+ "&id=" +this.id.toString()+ "'>" +k+ "</a>";
-                  if (k != ceil((this.pcount+1)/this.pt)) result+=",&nbsp;&nbsp;";
-                  k1=0;
-                  k2=k2+1;
-               }
-               if (k==1){
-                  result+="<a href='tema.php?page=" +k+ "&id=" +this.id.toString()+ "'>" +k+ "</a>,&nbsp;&nbsp;";
-               }
-               if ((ceil((this.pcount+1)/this.pt)-k2*10)< 10 && (k-k2*10) != 0 && k!=1){
-                  result+="<a href='tema.php?page=" +k+ "&id=" +this.id.toString()+ "'>" +k+ "</a>";
-                  if (k != ceil((this.pcount+1)/this.pt)) result+=",&nbsp;&nbsp;";
-               }
-
-            }
-            result+="</font>";
-         }
-         result+="</p></td>";
-         // Количество постов
-         result+="<td width='20' align='center' valign='middle'><span class='mnuforum' style='{color: purple}'>" +this.pcount;
-         result+="</span><span id='posts" +this.id.toString()+ "' class='mnuforum' style='{color: red}'>&nbsp</span></td>";
-         // кол-во просмотров
-         result+="<td width='80' align='center' valign='middle'>";
-         // Количество просмотров участников
-         result+="<div class='mnuforum'><font size='1' color='green'>" + this.snid + "</font><br>";
-         // Количество просмотров всего
-         result+="<font size='1' color='purple'>" + this.snall + "</font></div></td>";
-         // Автор
-         result+="<td width='120' align='center' valign='middle'><div class='trforum'><font size='1'>" +htmlspecialchars(this.nick)+ "</font></div></td>";
-         // Автор последнего поста
-         result+="<td width='120' align=center><div class='mnuforum'><font size='1'>" +htmlspecialchars(this.lastPostNick)+ "</font></div>";
-         // Время последнего поста
-         result+="<div class='mnuforum'><a href='tema.php?id=" + this.id.toString() + "&end=1#end' rel='nofollow'><font size='1'>" + date("dd.MM.yy HH:mm", getLastPostTime().getTime()) + "</font></a></div>";
-         result+="</td>";
-         // Папка
-         result+="<td align='center' valign='middle'>";
-         result+="<div class='mnuforum'><font size='1'>" +this.folder+ "</font></div>";
-         result+="</td>";
-         // Флажок (только для зарегистрированых)
-         if (this.isLogin()){
-            result+="<td align='center' valign='middle'>";
-            result+="<input type='checkbox' id='ch" +this.i+ "' name='" +this.i+ "' value='" +this.id.toString()+ "'>";
-            result+="</td>";
-            result+="<td style='padding:0px 5px 0px 5px' align='right'>";
-            result+="<a href='delone.php?id=" +this.id.toString()+ "&usr=" +String.valueOf(currentUser.getId())+ "&page=" +this.pg+ "'><img border='0' src='picts/del1.gif'></a>";
-            result+="</td>";
-         }
-      } catch (InvalidKeyException e) {
-         // TODO Доделать!
-         e.printStackTrace();
-      }
-      return result;
-   }
-
-   /**
-    * @return
-    */
-   private boolean isLogin() {
-      return currentUser.isLogined();
-   }
-
-   /**
-    * @return the locale
-    */
-   public LocaleString getLocale() {
-      return locale;
-   }
-
-   /**
-    * @param locale the locale to set
-    */
-   public void setLocale(LocaleString locale) {
-      this.locale = locale;
    }
 
    /**
@@ -488,34 +339,6 @@ public class FJThread implements IFJThread{
     */
    public void setPg(int pg) {
       this.pg = pg;
-   }
-
-   /**
-    * @return the i
-    */
-   public int getI() {
-      return i;
-   }
-
-   /**
-    * @param i the i to set
-    */
-   public void setI(int i) {
-      this.i = i;
-   }
-
-   /**
-    * @return the currentUser
-    */
-   public IUser getCurrentUser() {
-      return currentUser;
-   }
-
-   /**
-    * @param currentUser the currentUser to set
-    */
-   public void setCurrentUser(IUser currentUser) {
-      this.currentUser = currentUser;
    }
 
    /**

@@ -298,8 +298,7 @@ public class Index extends FJServlet {
          // Выводим строки
          for (int threadIndex = 0; threadIndex < threadsList.size(); threadIndex++) {
             FJThread thread = threadsList.get(threadIndex);
-            thread.setI(threadIndex);
-            buffer.append(writeThread(thread, user, locale));
+            buffer.append(writeThread(thread, user, locale, threadIndex));
          }
          // Главные ссылки внизу страницы
          buffer.append("</table>");
@@ -438,7 +437,7 @@ public class Index extends FJServlet {
       writer.write(out.replace("ъъ_ъ", format.format(allTime/1000)));
    }
 
-   private StringBuffer writeThread(FJThread thread, IUser user, LocaleString locale) throws InvalidKeyException{
+   private StringBuffer writeThread(FJThread thread, IUser user, LocaleString locale, int threadIndex) throws InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       if (thread.getDisain() == 1) { 
          buffer.append("<tr class=trees >");
@@ -534,7 +533,7 @@ public class Index extends FJServlet {
       // Флажок (только для зарегистрированых)
       if (user.isLogined()){
          buffer.append("<td align='center' valign='middle'>");
-         buffer.append("<input type='checkbox' id='ch" +thread.getI()+ "' name='" +thread.getI()+ "' value='" +thread.getId().toString()+ "'>");
+         buffer.append("<input type='checkbox' id='ch" +threadIndex+ "' name='" +threadIndex+ "' value='" +thread.getId().toString()+ "'>");
          buffer.append("</td>");
          buffer.append("<td style='padding:0px 5px 0px 5px' align='right'>");
          buffer.append("<a href='delone.php?id=" +thread.getId().toString()+ "&usr=" +String.valueOf(user.getId())+ "&page=" +thread.getPg()+ "'><img border='0' src='picts/del1.gif'></a>");
