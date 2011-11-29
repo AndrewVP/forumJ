@@ -1,13 +1,13 @@
 package org.forumj.tool;
 
-import static org.forumj.tool.PHP.*;
+import static org.forumj.common.tool.PHP.*;
 
 import java.util.*;
 
 import javax.servlet.http.*;
 
 import org.forumj.common.db.entity.IUser;
-import org.forumj.exception.InvalidKeyException;
+import org.forumj.common.exception.InvalidKeyException;
 
 
 public class FJServletTools {

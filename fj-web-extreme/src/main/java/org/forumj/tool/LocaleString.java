@@ -16,7 +16,7 @@
 package org.forumj.tool;
 
 import org.apache.commons.configuration.*;
-import org.forumj.exception.InvalidKeyException;
+import org.forumj.common.exception.InvalidKeyException;
 
 
 /**

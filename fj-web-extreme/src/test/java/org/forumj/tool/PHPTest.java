@@ -17,7 +17,7 @@ package org.forumj.tool;
 
 import junit.framework.Assert;
 
-import org.forumj.tool.PHP;
+import org.forumj.common.tool.PHP;
 import org.junit.*;
 
 /**

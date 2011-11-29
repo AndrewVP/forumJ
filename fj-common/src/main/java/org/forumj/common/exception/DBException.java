@@ -13,27 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.forumj.exception;
+package org.forumj.common.exception;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FJException extends Exception {
+public class DBException extends FJException {
 
-   private static final long serialVersionUID = 5653276547940504429L;
-
-   public FJException(String message, Throwable cause) {
+   public DBException(String message, Throwable cause) {
       super(message, cause);
    }
 
-   public FJException(String message) {
-      super(message);
-   }
-
-   public FJException(Throwable cause) {
+   public DBException(Throwable cause) {
       super(cause);
    }
 
+   public DBException(String message) {
+      super(message);
+   }
+
+   private static final long serialVersionUID = -4325554039653089828L;
 
 }

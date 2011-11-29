@@ -10,8 +10,8 @@
 package org.forumj.db.dao;
 
 import static org.forumj.common.db.entity.IFJThread.*;
+import static org.forumj.common.tool.PHP.*;
 import static org.forumj.db.dao.tool.QueryBuilder.*;
-import static org.forumj.tool.PHP.*;
 
 import java.io.IOException;
 import java.sql.*;
@@ -20,8 +20,8 @@ import java.util.Date;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.exception.DBException;
 import org.forumj.db.entity.*;
-import org.forumj.exception.DBException;
 import org.forumj.tool.LocaleString;
 
 /**

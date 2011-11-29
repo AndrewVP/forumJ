@@ -13,13 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.forumj.tool;
+package org.forumj.common.tool;
 
 import java.net.*;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-import org.forumj.db.entity.Ignor;
+import org.forumj.common.db.entity.IIgnor;
 
 import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 
@@ -184,8 +184,8 @@ public class PHP {
       String result = "";
       for (int piecesIndex = 0; piecesIndex < pieces.size(); piecesIndex++) {
          Object object = pieces.get(piecesIndex);
-         if (object instanceof Ignor){
-            Ignor ignor = (Ignor) object; 
+         if (object instanceof IIgnor){
+            IIgnor ignor = (IIgnor) object; 
             result += ignor.getUser().getId();
          }else{
             result += object.toString();

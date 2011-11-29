@@ -15,6 +15,8 @@
  */
 package org.forumj.common.db.entity;
 
+import java.util.Date;
+
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
@@ -27,5 +29,17 @@ public interface IIgnor {
    public static final String IGNORED_USER_ID_FIELD_NAME = "ignor";
    public static final String IGNOR_START_FIELD_NAME = "begin";
    public static final String IGNOR_END_FIELD_NAME = "end";
+   public abstract void setEnd(Date end);
+   public abstract Date getEnd();
+   public abstract void setStart(Date start);
+   public abstract Date getStart();
+   public abstract void setUser(IUser user);
+   public abstract IUser getUser();
+   public abstract void setType(Integer type);
+   public abstract Integer getType();
+   public abstract void setId(Long id);
+   public abstract Long getId();
+   public abstract void setUserId(Long userId);
+   public abstract Long getUserId();
 
 }
