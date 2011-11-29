@@ -22,9 +22,9 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.db.dao.*;
 import org.forumj.db.entity.*;
-import org.forumj.exception.InvalidKeyException;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 

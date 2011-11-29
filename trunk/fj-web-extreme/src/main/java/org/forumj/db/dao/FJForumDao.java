@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.sql.*;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.common.exception.DBException;
 import org.forumj.db.dao.tool.QueryBuilder;
-import org.forumj.exception.DBException;
 
 /**
  *

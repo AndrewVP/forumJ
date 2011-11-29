@@ -9,9 +9,9 @@
  */
 package org.forumj.web.servlet.post;
 
+import static org.forumj.common.tool.PHP.*;
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
-import static org.forumj.tool.PHP.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.*;
@@ -25,6 +25,8 @@ import javax.servlet.http.*;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.exception.*;
+import org.forumj.common.tool.Time;
 import org.forumj.db.dao.FJThreadDao;
 import org.forumj.db.entity.*;
 import org.forumj.exception.*;

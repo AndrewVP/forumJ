@@ -15,12 +15,13 @@
  */
 package org.forumj.tool;
 
-import static org.forumj.tool.PHP.*;
+import static org.forumj.common.tool.PHP.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.tool.PHP;
 
 /**
  * Diletant custom php functions 

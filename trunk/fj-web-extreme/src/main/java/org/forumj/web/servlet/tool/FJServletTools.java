@@ -7,7 +7,7 @@ import javax.servlet.http.*;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.codec.net.*;
-import org.forumj.exception.InvalidKeyException;
+import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.tool.LocaleString;
 
 public class FJServletTools {
