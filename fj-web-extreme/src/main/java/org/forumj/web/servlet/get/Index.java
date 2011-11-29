@@ -19,6 +19,7 @@ import static org.forumj.common.tool.PHP.*;
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
+import static org.forumj.db.service.IndexService.*;
 
 import java.io.*;
 import java.sql.SQLException;
@@ -65,12 +66,6 @@ public class Index extends FJServlet {
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          IUser user = (IUser) session.getAttribute("user");
          Long userId = user.getId();
-         FJPostDao postDao = new FJPostDao();
-         FJThreadDao threadDao = new FJThreadDao();
-         FJMailDao mailDao = new FJMailDao();
-         FJInterfaceDao interfaceDao = new FJInterfaceDao();
-         FJFolderDao folderDao = new FJFolderDao();
-         FJActionDao actionDao = new FJActionDao();
          // Собираем статистику
          buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
          buffer.append("<html>");
@@ -80,8 +75,8 @@ public class Index extends FJServlet {
          buffer.append(loadCSS("/css/style.css"));
          // Скрипты (флажки)
          buffer.append(loadJavaScript("/js/jsmain_chek.js"));
-         Long m_xb = postDao.getLastPostId();
-         Long m_xt = threadDao.getMaxThreadId();
+         Long m_xb = getLastPostId();
+         Long m_xt = getMaxThreadId();
          buffer.append("<script language='javascript' type='text/javascript'>");
          buffer.append("// <!-- \n");
          buffer.append("var m_xb=" + m_xb + ";");
@@ -115,7 +110,7 @@ public class Index extends FJServlet {
             session.setAttribute("view", user.getView());
          }
          List<Ignor> ignorList = new FJIgnorDao().loadAll(user.getId());
-         FJThreads threads = threadDao.getThreads(Long.valueOf((Integer) session.getAttribute("view")), nfirstpost, locale, user, ignorList);
+         FJThreads threads = getThreads(Long.valueOf((Integer) session.getAttribute("view")), nfirstpost, locale, user, ignorList);
          List<FJThread> threadsList = threads.getThreads();
          long threadsCount = threads.getThreadCount();
          // кол-во страниц с заголовками
@@ -123,7 +118,7 @@ public class Index extends FJServlet {
          // Проверяем наличие почты
          String newMail = "";
          if (user.isLogined()) {
-            int mailCount = mailDao.getNewMailCount(user.getId());
+            int mailCount = getNewMailCount(user.getId());
             if (mailCount > 0) {
                newMail="<a class=hdforum href='control.php?id=2' rel='nofollow'><font color=red>" + locale.getString("mess66") + " " + mailCount +" " + locale.getString("mess67") + "</font></a>";
             }
@@ -137,9 +132,9 @@ public class Index extends FJServlet {
          // Интерфейс
          // Имя текущего
          if (session.getAttribute("vname") == null){
-            session.setAttribute("vname", interfaceDao.getViewName(Long.valueOf((Integer)session.getAttribute("view"))));
+            session.setAttribute("vname", getViewName(Long.valueOf((Integer)session.getAttribute("view"))));
          }
-         List<IFJInterface> viewsList = interfaceDao.getViewsArray(userId);
+         List<IFJInterface> viewsList = getViewsArray(userId);
          buffer.append("<tr><td>");
 
          buffer.append("<table class=control>");
@@ -342,7 +337,7 @@ public class Index extends FJServlet {
          // Сервис интерфейса
          if (user.isLogined()) {
             // Выбираем доступные папки
-            List<IFJFolder> foldersList = folderDao.getUserFolders(userId);
+            List<IFJFolder> foldersList = getUserFolders(userId);
             buffer.append("<tr>");
             buffer.append("<table class=control>");        
             buffer.append("<tr>");
@@ -392,7 +387,7 @@ public class Index extends FJServlet {
          buffer.append("</tr>");
          // Таблица активных пользователей
          // Выбираем Активных юзеров
-         List<IUser> userList = actionDao.getUsersArray();
+         List<IUser> userList = getUsersArray();
          buffer.append("<tr>");
          buffer.append("<td width=\"100%\">");
          buffer.append("<table width='100%'><tr><td>");
@@ -410,7 +405,7 @@ public class Index extends FJServlet {
          buffer.append("</font>");
          buffer.append("<font class=nick>");
          // Выводим количество гостей
-         buffer.append(actionDao.getGuestsAmount());
+         buffer.append(getGuestsAmount());
          buffer.append("</font>");
          buffer.append("</td>");
          buffer.append("</tr>");
