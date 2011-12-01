@@ -10,6 +10,7 @@
 package org.forumj.web.servlet.get;
 
 import static org.forumj.common.tool.PHP.*;
+import static org.forumj.db.service.TemaService.*;
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
@@ -28,9 +29,8 @@ import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.common.tool.Time;
-import org.forumj.db.dao.*;
 import org.forumj.db.entity.*;
-import org.forumj.tool.*;
+import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -55,13 +55,12 @@ public class Tema extends FJServlet {
          Integer pageNumber = request.getParameter("page") == null ? 1 : Integer.valueOf(request.getParameter("page"));
          // id Темы
          Long threadId = request.getParameter("id") == null ? 1 : Long.valueOf(request.getParameter("id"));
-         FJThreadDao dao = new FJThreadDao();
-         FJThread thread = dao.read(threadId);
+         FJThread thread = readThread(threadId);
          // Номер поста, на который отвечаем
          String replyPostId = request.getParameter("reply");
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          IUser user = (IUser) session.getAttribute("user");
-         List<Ignor> ignorList = new FJIgnorDao().loadAll(user.getId());
+         List<Ignor> ignorList = readUserIgnor(user.getId());
          int nfirstpost = (pageNumber-1)*user.getPt();
          int i3=pageNumber*user.getPt();
          // Сколько страниц?
@@ -74,8 +73,7 @@ public class Tema extends FJServlet {
             pageNumber = couP-1;
             lastPost = true;
          }
-         FJPostDao postDao = new FJPostDao();
-         List<FJPost> posts = postDao.getPostsList(user, threadId, nfirstpost, i3, pageNumber, lastPost);
+         List<FJPost> posts = readPosts(user, threadId, nfirstpost, i3, pageNumber, lastPost);
          // Получаем массив постов
          session.setAttribute("page", pageNumber);
          session.setAttribute("id", threadId);
@@ -84,14 +82,14 @@ public class Tema extends FJServlet {
          String msg = request.getParameter("msg");
          int countPosts = 0;
          if (msg != null && !"".equals(msg.trim())){
-            countPosts = dao.getPostsCountInThread(threadId, new Long(msg));
+            countPosts = getPostsCountInThread(threadId, new Long(msg));
             pageNumber=ceil(countPosts/user.getPt());
          }
          // Записываем счетчики
          // Робот?
          if (!isRobot(request)){
             // Нет
-            dao.setSeen(user, threadId);
+            setSeen(user, threadId);
          }
          buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
          buffer.append("<html>");
@@ -229,8 +227,7 @@ public class Tema extends FJServlet {
             //Мы уже подписаны?
             String action = "";
             String mess = "";
-            FJSubscribeDao subscribeDao = new FJSubscribeDao(); 
-            if (subscribeDao.isUserSubscribed(threadId, user.getId())){
+            if (isUserSubscribed(threadId, user.getId())){
                //Подписка есть, предлагаем отказаться
                action="delonesubs.php?pg="+pageNumber;
                mess=locale.getString("mess90");
@@ -260,7 +257,7 @@ public class Tema extends FJServlet {
             FJPost replyPost = null;
             // Если цитируем/редактируем
             if (replyPostId != null && !"".equals(replyPostId.trim())) {
-               replyPost = postDao.read(Long.valueOf(replyPostId));
+               replyPost = readPost(Long.valueOf(replyPostId));
                // Редактируем?
                head=stripslashes(replyPost.getHead().getTitle());
                if (replyPost.getHead().getAuthor().getNick().equalsIgnoreCase(user.getNick())) {
@@ -524,8 +521,7 @@ public class Tema extends FJServlet {
       buffer.append("</td></tr>");
       buffer.append("<tr><td align=\"CENTER\">");
       List<QuestNode> $nodes = post.getAnswers();
-      FJVoiceDao voiceDao = new FJVoiceDao();
-      boolean userVoted = voiceDao.isUserVoted(thread.getId(), user);
+      boolean userVoted = isUserVoted(thread.getId(), user);
       if (user.isLogined() && !userVoted){
          buffer.append("<form  action='voice.php' method='POST'><table class=content>");
          for (int nodeIndex = 1; nodeIndex < $nodes.size(); nodeIndex++) {

@@ -36,8 +36,35 @@ public class FJService {
    private static final FJFolderDao folderDao = new FJFolderDao();
    
    private static final FJActionDao actionDao = new FJActionDao();
+
+   private static final FJIgnorDao ignorDao = new FJIgnorDao();
+
+   private static final FJSubscribeDao subscribeDao = new FJSubscribeDao();
+
+   private static final FJVoiceDao voiceDao = new FJVoiceDao();
    
    
+   /**
+    * @return the voicedao
+    */
+   public static FJVoiceDao getVoiceDao() {
+      return voiceDao;
+   }
+
+   /**
+    * @return the subscribedao
+    */
+   public static FJSubscribeDao getSubscribedao() {
+      return subscribeDao;
+   }
+
+   /**
+    * @return the ignordao
+    */
+   public static FJIgnorDao getIgnorDao() {
+      return ignorDao;
+   }
+
    /**
     * @return the actiondao
     */
