@@ -17,43 +17,31 @@ package org.forumj.db.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
-import org.forumj.db.entity.Ignor;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FJCommonService extends FJService {
-
-   /**
-    * 
-    * @param userId
-    * @return
-    * @throws IOException
-    * @throws ConfigurationException
-    * @throws SQLException
-    */
-   public static List<Ignor> readUserIgnor(Long userId) throws IOException, ConfigurationException, SQLException{
-      return getIgnorDao().loadAll(userId);
-   }
-
-   /**
-    * 
-    * @param idUser
-    * @return
-    * @throws ConfigurationException
-    * @throws SQLException
-    * @throws IOException
-    */
-   public static List<IFJFolder> getUserFolders(IUser user) throws ConfigurationException, SQLException, IOException{
-      return getFolderDao().findAll(user);
+public class SubscribeService extends FJCommonService {
+   
+   public static boolean isKeyPresent(Integer key) throws SQLException, ConfigurationException, IOException{
+      return getSubscribedao().isKeyPresent(key);
    }
    
-   public static IUser readUser(String nick) throws ConfigurationException, SQLException, IOException{
-      return getUserDao().read(nick);
+   public static void createSubscribe(IFJSubscribe subscribe) throws ConfigurationException, SQLException, IOException{
+      getSubscribedao().create(subscribe);
+   }
+
+   public static void deleteSubscribeByTitleId(long titleId, IUser user) throws ConfigurationException, SQLException, IOException{
+      getSubscribedao().deleteByTitleId(titleId, user);
+   }
+   public static void deleteSubscribeByKey(long key) throws ConfigurationException, SQLException, IOException{
+      getSubscribedao().deleteByKey(key);
+   }
+   public static void deleteSuscribeById(long id, IUser user) throws ConfigurationException, SQLException, IOException{
+      getSubscribedao().deleteById(id, user);
    }
 }

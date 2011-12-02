@@ -17,43 +17,23 @@ package org.forumj.db.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.*;
+import org.forumj.common.db.entity.IUser;
 import org.forumj.db.entity.Ignor;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FJCommonService extends FJService {
+public class IgnorService extends FJCommonService {
 
-   /**
-    * 
-    * @param userId
-    * @return
-    * @throws IOException
-    * @throws ConfigurationException
-    * @throws SQLException
-    */
-   public static List<Ignor> readUserIgnor(Long userId) throws IOException, ConfigurationException, SQLException{
-      return getIgnorDao().loadAll(userId);
+   public static void createIgnor(long ignoredUserId, IUser user) throws SQLException, ConfigurationException, IOException{
+      getIgnorDao().create(ignoredUserId, user);
    }
 
-   /**
-    * 
-    * @param idUser
-    * @return
-    * @throws ConfigurationException
-    * @throws SQLException
-    * @throws IOException
-    */
-   public static List<IFJFolder> getUserFolders(IUser user) throws ConfigurationException, SQLException, IOException{
-      return getFolderDao().findAll(user);
+   public static void updateIgnor(Ignor ignor) throws IOException, ConfigurationException, SQLException{
+      getIgnorDao().update(ignor);
    }
-   
-   public static IUser readUser(String nick) throws ConfigurationException, SQLException, IOException{
-      return getUserDao().read(nick);
-   }
+
 }

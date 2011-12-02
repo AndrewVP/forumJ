@@ -9,6 +9,7 @@
  */
 package org.forumj.web.servlet.post;
 
+import static org.forumj.db.service.IgnorService.*;
 import static org.forumj.tool.Diletant.*;
 
 import java.io.IOException;
@@ -21,8 +22,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
-import org.forumj.db.dao.FJIgnorDao;
-import org.forumj.db.entity.*;
+import org.forumj.db.entity.Ignor;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -50,13 +50,12 @@ public class Amn extends FJServlet {
             String strDate = ignorDayParameter+ "." + ignorMounthParameter + "." + ignorYearParameter + "." + ignorHourParameter + "." + ignorMinuteParameter;
             SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy.HH.mm");
             Date newEndDate = format.parse(strDate);
-            FJIgnorDao dao = new FJIgnorDao();
             Ignor ignor = new Ignor();
             ignor.setId(Long.valueOf(ignorIdParameter));
             ignor.setUserId(user.getId());
             ignor.setType(Integer.valueOf(ignorTypeParameter));
             ignor.setEnd(newEndDate);
-            dao.update(ignor);
+            updateIgnor(ignor);
             buffer.append(successPostOut("0", "control.php?id=1"));
          }else{
             // Вошли незарегистрировавшись

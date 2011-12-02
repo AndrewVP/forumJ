@@ -9,6 +9,8 @@
  */
 package org.forumj.web.servlet.get;
 
+import static org.forumj.db.service.CountService.*;
+
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -18,7 +20,6 @@ import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
-import org.forumj.db.dao.*;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -34,14 +35,12 @@ public class Count extends FJServlet {
       String m_xbParameter = request.getParameter("idb");
       String m_xtParameter = request.getParameter("idt");
       String idsParameter = request.getParameter("ids");
-      FJPostDao postDao = new FJPostDao();
-      FJThreadDao threadDao = new FJThreadDao(); 
       StringBuffer result = new StringBuffer();
       try {
-         long m_xb = postDao.getAddedPostsAmount(Long.valueOf(m_xbParameter));
+         long m_xb = getAddedPostsAmount(Long.valueOf(m_xbParameter));
          result.append(m_xb);
          result.append(";");
-         long m_xt = threadDao.getAddedThreadsAmount(Long.valueOf(m_xtParameter));
+         long m_xt = getAddedThreadsAmount(Long.valueOf(m_xtParameter));
          result.append(m_xt);
          result.append(";");
          String[] threads = idsParameter.split(";");
@@ -53,7 +52,7 @@ public class Count extends FJServlet {
             }
             result.append(threadId);
             result.append(",");
-            result.append(postDao.getAddedPostsAmount(Long.valueOf(threadId), Long.valueOf(lastPostId)));
+            result.append(getAddedPostsAmount(Long.valueOf(threadId), Long.valueOf(lastPostId)));
          }
          response.setContentType("text/html; charset=UTF-8");
          response.getWriter().write(buffer.toString());

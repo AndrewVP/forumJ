@@ -42,8 +42,26 @@ public class FJService {
    private static final FJSubscribeDao subscribeDao = new FJSubscribeDao();
 
    private static final FJVoiceDao voiceDao = new FJVoiceDao();
+
+   private static final FJUserDao userDao = new FJUserDao();
+
+   private static final FJQuestNodeDao questNodeDao = new FJQuestNodeDao();
    
    
+   /**
+    * @return the questnodedao
+    */
+   public static FJQuestNodeDao getQuestnodedao() {
+      return questNodeDao;
+   }
+
+   /**
+    * @return the userdao
+    */
+   public static FJUserDao getUserDao() {
+      return userDao;
+   }
+
    /**
     * @return the voicedao
     */

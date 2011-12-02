@@ -9,6 +9,7 @@
  */
 package org.forumj.web.servlet.post;
 
+import static org.forumj.db.service.SubscribeService.*;
 import static org.forumj.tool.Diletant.*;
 
 import java.io.IOException;
@@ -18,7 +19,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
-import org.forumj.db.dao.FJSubscribeDao;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -35,8 +35,7 @@ public class DelOneSubsByMail extends FJServlet {
          String keyParameter = request.getParameter("id");
          if (keyParameter != null && !"".equals(keyParameter)){
             Long key = Long.valueOf(keyParameter);
-            FJSubscribeDao dao = new FJSubscribeDao();
-            dao.deleteByKey(key);
+            deleteSubscribeByKey(key);
             buffer.append(successPostOut("0", "index.php"));
          }
          response.setContentType("text/html; charset=UTF-8");
