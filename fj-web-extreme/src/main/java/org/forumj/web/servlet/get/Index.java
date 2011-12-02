@@ -134,7 +134,7 @@ public class Index extends FJServlet {
          if (session.getAttribute("vname") == null){
             session.setAttribute("vname", getViewName(Long.valueOf((Integer)session.getAttribute("view"))));
          }
-         List<IFJInterface> viewsList = getViewsArray(userId);
+         List<IFJInterface> viewsList = getViews(userId);
          buffer.append("<tr><td>");
 
          buffer.append("<table class=control>");
@@ -337,7 +337,7 @@ public class Index extends FJServlet {
          // Сервис интерфейса
          if (user.isLogined()) {
             // Выбираем доступные папки
-            List<IFJFolder> foldersList = getUserFolders(userId);
+            List<IFJFolder> foldersList = getUserFolders(user);
             buffer.append("<tr>");
             buffer.append("<table class=control>");        
             buffer.append("<tr>");

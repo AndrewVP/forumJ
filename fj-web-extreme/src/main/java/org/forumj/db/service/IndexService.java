@@ -28,7 +28,7 @@ import org.forumj.tool.LocaleString;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class IndexService extends FJService{
+public class IndexService extends FJCommonService{
    
    /**
     * Возвращает id последнего поста в форуме
@@ -99,21 +99,10 @@ public class IndexService extends FJService{
     * @throws SQLException
     * @throws IOException
     */
-   public static List<IFJInterface> getViewsArray(Long idUser) throws ConfigurationException, SQLException, IOException{
+   public static List<IFJInterface> getViews(Long idUser) throws ConfigurationException, SQLException, IOException{
       return getInterfaceDao().getViewsArray(idUser);
    }
    
-   /**
-    * 
-    * @param idUser
-    * @return
-    * @throws ConfigurationException
-    * @throws SQLException
-    * @throws IOException
-    */
-   public static List<IFJFolder> getUserFolders(Long idUser) throws ConfigurationException, SQLException, IOException{
-      return getFolderDao().getUserFolders(idUser);
-   }
    
    /**
     * 
