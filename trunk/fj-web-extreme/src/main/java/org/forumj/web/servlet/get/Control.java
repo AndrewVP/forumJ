@@ -16,6 +16,7 @@
 package org.forumj.web.servlet.get;
 
 import static org.forumj.common.tool.PHP.*;
+import static org.forumj.db.service.ControlService.*;
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
@@ -32,7 +33,6 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.exception.InvalidKeyException;
-import org.forumj.db.dao.*;
 import org.forumj.db.entity.*;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
@@ -402,7 +402,7 @@ public class Control extends FJServlet {
    private StringBuffer case1(IUser user, LocaleString locale) throws InvalidKeyException, IOException, ConfigurationException, SQLException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список Игнорируемых
-      List<Ignor> ignorList = new FJIgnorDao().loadAll(user.getId());
+      List<Ignor> ignorList = readUserIgnor(user.getId());
       if (ignorList.size() == 0) {
          // Нет.
          buffer.append("<span class='mnuprof'>" + locale.getString("mess25") + "</span>");
@@ -537,10 +537,9 @@ public class Control extends FJServlet {
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess17") + "</b></div>");
       buffer.append("<form method='POST' class='content' action='delmail.php?id=2'>");
       buffer.append("<table class='control'><tr class='heads'>");
-      FJMailDao mailDao = new FJMailDao();
-      mailDao.receiveMail(user.getId());
+      receiveMail(user.getId());
       // Выбираем почту
-      List<FJMail> mails = mailDao.loadInbox(user);
+      List<FJMail> mails = loadInbox(user);
       if (mails.size() > 0){
          // Заголовки таблицы
          buffer.append("<th class='internal' width='120'><div class='tbtext' width='120'>" + locale.getString("mess58") + "</div></th>");
@@ -603,11 +602,11 @@ public class Control extends FJServlet {
       //Выводим письмо
       if (msg != null){
          // Находим его
-         FJMail mail = mailDao.loadMail(user, msg, false);
+         FJMail mail = loadMail(user, msg, false);
          if (mail != null){ 
             // Помечаем как прочитанное.
             if (mail.getReadDate() == null){
-               mailDao.markMailAsRead(user.getId(), msg);
+               markMailAsRead(user.getId(), msg);
             }
             buffer.append("<tr class='heads'><td colspan=5 class='internal'>");
             // От кого.
@@ -630,8 +629,7 @@ public class Control extends FJServlet {
       buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess15") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
       // Выбираем почту
-      FJMailDao mailDao = new FJMailDao();
-      List<FJMail> mails = mailDao.loadOutNotReceivedBox(user);
+      List<FJMail> mails = loadOutNotReceivedBox(user);
       if (mails.size() > 0){
          // Заголовки таблицы
          buffer.append("<th class='internal' width='120'><div class=tbtext>" + locale.getString("mess19") + "</div></th>");
@@ -663,7 +661,7 @@ public class Control extends FJServlet {
       // Выводим письмо.
       if (msg != null){
          // Находим его
-         FJMail mail = mailDao.loadMail(user, msg, false);
+         FJMail mail = loadMail(user, msg, false);
          if (mail != null){
             buffer.append("<tr class=heads><td colspan=3 class=internal>");
             // Кому.
@@ -687,8 +685,7 @@ public class Control extends FJServlet {
       buffer.append("<form method='POST' class=content action='delmail.php?id=4'>");
       buffer.append("<table class='control'><tr class=heads>");
       // Выбираем почту
-      FJMailDao mailDao = new FJMailDao();
-      List<FJMail> mails = mailDao.loadOutReceivedBox(user);
+      List<FJMail> mails = loadOutReceivedBox(user);
       if (mails.size() > 0){
          // Заголовки таблицы
          // Кому
@@ -746,7 +743,7 @@ public class Control extends FJServlet {
       //Выводим письмо
       if (msg != null){
          // Находим его
-         FJMail mail = mailDao.loadMail(user, msg, false);
+         FJMail mail = loadMail(user, msg, false);
          if (mail != null){
             buffer.append("<tr class=heads><td colspan=4 class=internal>");
             // Кому.
@@ -769,8 +766,7 @@ public class Control extends FJServlet {
       buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess62") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
       // Выбираем почту
-      FJMailDao mailDao = new FJMailDao();
-      List<FJMail> mails = mailDao.loadDraftBox(user);
+      List<FJMail> mails = loadDraftBox(user);
       if (mails.size() > 0){
          // Заголовки таблицы
          // Кому
@@ -805,7 +801,7 @@ public class Control extends FJServlet {
       //Выводим письмо
       if (msg != null){
          // Находим его
-         FJMail mail = mailDao.loadMail(user, msg, false);
+         FJMail mail = loadMail(user, msg, false);
          if (mail != null){
             buffer.append("<tr class=heads><td colspan=3 class=internal>");
             // Кому.
@@ -825,8 +821,7 @@ public class Control extends FJServlet {
    private StringBuffer case6(LocaleString locale, IUser user, Long viewId) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список интерфейсов
-      FJInterfaceDao dao = new FJInterfaceDao();
-      List<IFJInterface> interfaces = dao.findAll(user);
+      List<IFJInterface> interfaces = findAllInterfaces(user);
       // "Список Ваших интерфейсов"
       buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess76") + "</b></div>");
       // Интерфейс по умолчанию
@@ -905,10 +900,9 @@ public class Control extends FJServlet {
       buffer.append("</form>");  
       // Настройки интерфейса
       if (viewId != null) {
-         IFJInterface interf = dao.find(user, viewId);
+         IFJInterface interf = findInterface(user, viewId);
          // Выбираем список папок в интерфейсе
-         FJFolderDao folderDao = new FJFolderDao();
-         List<IFJFolder> folders = folderDao.findAll(user, interf);
+         List<IFJFolder> folders = findAllFolders(user, interf);
          buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess78") + "<u>" + interf.getName() + "</u></b></div>");
          buffer.append("<form method='POST' class=content action='delvfolder.php'>");
          buffer.append("<table class='control'><tr class=heads>");
@@ -952,7 +946,7 @@ public class Control extends FJServlet {
          buffer.append("</tr>");
          buffer.append("</table>");
          buffer.append("</form>");
-         List<IFJFolder> foldersNotIn = folderDao.findAllNotIn(user, interf);
+         List<IFJFolder> foldersNotIn = findAllFoldersNotIn(user, interf);
          int foldersAmount = foldersNotIn.size();
          buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess73") + "</b></div>");
          buffer.append("<form method='POST' class=content action='delfolder.php?id=6&view=" + viewId + "'>");
@@ -1008,8 +1002,7 @@ public class Control extends FJServlet {
    private StringBuffer case7(LocaleString locale, IUser user) throws ConfigurationException, SQLException, IOException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список папок
-      FJFolderDao folderDao = new FJFolderDao();
-      List<IFJFolder> folders = folderDao.findAll(user);
+      List<IFJFolder> folders = getUserFolders(user);
       int foldersAmount = folders.size();
       buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess73") + "</b></div>");
       buffer.append("<form method='POST' class=content action='delfolder.php?id=7'>");
@@ -1064,8 +1057,7 @@ public class Control extends FJServlet {
    private StringBuffer case8(LocaleString locale, IUser user) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список подписаных веток
-      FJSubscribeDao dao = new FJSubscribeDao();
-      List<IFJSubscribe> subscribes = dao.findAll(user, new Integer(1));
+      List<IFJSubscribe> subscribes = findAllSubscribes(user, new Integer(1));
       buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess87") + "</b></div>");
       buffer.append("<form method='POST' class=content action='delsubs.php?id=8'>");
       buffer.append("<table class='control'><tr class=heads>");

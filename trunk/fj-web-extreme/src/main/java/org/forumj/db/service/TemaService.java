@@ -27,7 +27,7 @@ import org.forumj.db.entity.*;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class TemaService extends FJService {
+public class TemaService extends FJCommonService {
 
    /**
     * 
@@ -66,18 +66,6 @@ public class TemaService extends FJService {
       getThreadDao().setSeen(user, threadId);
    }
 
-   /**
-    * 
-    * @param userId
-    * @return
-    * @throws IOException
-    * @throws ConfigurationException
-    * @throws SQLException
-    */
-   public static List<Ignor> readUserIgnor(Long userId) throws IOException, ConfigurationException, SQLException{
-      return getIgnorDao().loadAll(userId);
-   }
-   
    /**
     * 
     * @param user

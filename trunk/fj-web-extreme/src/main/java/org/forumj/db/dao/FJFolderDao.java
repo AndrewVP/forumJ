@@ -87,31 +87,6 @@ public class FJFolderDao extends FJDao {
       return result;
    }
    
-   public List<IFJFolder> findAll(IUser user) throws SQLException, ConfigurationException, IOException{
-      List<IFJFolder> result = new ArrayList<IFJFolder>();
-      String query = getLoadFoldersQuery();
-      Connection conn = null;
-      PreparedStatement st = null;
-      try {
-         conn = getConnection();
-         st = conn.prepareStatement(query);
-         st.setLong(1, user.getId());
-         ResultSet rs = st.executeQuery();
-         while (rs.next()){
-            IFJFolder folder = new FJFolder();
-            folder.setId(rs.getLong(ID_FIELD_NAME));
-            folder.setCreateDate(rs.getDate(DATE_CREATE_FIELD_NAME));
-            if (rs.getLong(USER_ID_FIELD_NAME) != 0){
-               folder.setUser(user);
-            }
-            folder.setName(rs.getString(NAME_FIELD_NAME));
-            result.add(folder);
-         }
-      }finally{
-         readFinally(conn, st);
-      }
-      return result;
-   }
    
    public void delete(Long folderId, IUser user) throws ConfigurationException, SQLException, IOException{
       String deleteTranzitQuery = getDeleteFolderTranzitQuery();
@@ -237,20 +212,24 @@ public class FJFolderDao extends FJDao {
       return result;
    }
 
-   public List<IFJFolder> getUserFolders(Long idUser) throws ConfigurationException, SQLException, IOException{
+   public List<IFJFolder> findAll(IUser user) throws SQLException, ConfigurationException, IOException{
       List<IFJFolder> result = new ArrayList<IFJFolder>();
-      String query = getLoadUserFoldersQuery();
+      String query = getLoadFoldersQuery();
       Connection conn = null;
       PreparedStatement st = null;
       try {
          conn = getConnection();
          st = conn.prepareStatement(query);
-         st.setLong(1, idUser);
+         st.setLong(1, user.getId());
          ResultSet rs = st.executeQuery();
          while (rs.next()){
             IFJFolder folder = new FJFolder();
-            folder.setId(rs.getLong("id")) ;
-            folder.setName(rs.getString("flname")) ;
+            folder.setId(rs.getLong(ID_FIELD_NAME));
+            folder.setCreateDate(rs.getDate(DATE_CREATE_FIELD_NAME));
+            if (rs.getLong(USER_ID_FIELD_NAME) != 0){
+               folder.setUser(user);
+            }
+            folder.setName(rs.getString(NAME_FIELD_NAME));
             result.add(folder);
          }
       }finally{

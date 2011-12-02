@@ -154,8 +154,6 @@ public class QueryBuilder {
 
    private static String connectedGuestsAmountQuery = null;
    
-   private static String loadUserFoldersQuery = null;
-   
    private static String loadViewNameQuery = null;
    
    private static String loadUserViewsQuery = null;
@@ -670,13 +668,6 @@ public class QueryBuilder {
          connectedGuestsAmountQuery = loadQuery("/sql/connected_guests_amount.sql");
       }
       return connectedGuestsAmountQuery;
-   }
-   
-   public static String getLoadUserFoldersQuery() throws IOException{
-      if (loadUserFoldersQuery == null){
-         loadUserFoldersQuery = loadQuery("/sql/load_user_folders.sql");
-      }
-      return loadUserFoldersQuery;
    }
    
    public static String getLoadUserViewsQuery() throws IOException{
