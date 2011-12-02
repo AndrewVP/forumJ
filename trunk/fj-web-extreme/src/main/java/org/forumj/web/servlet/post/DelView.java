@@ -15,6 +15,7 @@
  */
 package org.forumj.web.servlet.post;
 
+import static org.forumj.db.service.InterfaceService.*;
 import static org.forumj.tool.Diletant.*;
 
 import java.io.IOException;
@@ -25,7 +26,6 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
-import org.forumj.db.dao.FJInterfaceDao;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -45,7 +45,6 @@ public class DelView extends FJServlet {
          IUser user = (IUser) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             if (actionParameter != null && !"".equals(actionParameter)){
-               FJInterfaceDao dao = new FJInterfaceDao();
                String nrwParameter = request.getParameter("NRW");
                Integer nrw = Integer.valueOf(nrwParameter);
                if ("del".equalsIgnoreCase(actionParameter)){
@@ -53,7 +52,7 @@ public class DelView extends FJServlet {
                      String folderIdParameter = request.getParameter(String.valueOf(nrwIndex));
                      if (folderIdParameter != null){
                         Long folderId = Long.valueOf(folderIdParameter);
-                        dao.delete(folderId, user);
+                        deleteInterface(folderId, user);
                      }
                   }
                }

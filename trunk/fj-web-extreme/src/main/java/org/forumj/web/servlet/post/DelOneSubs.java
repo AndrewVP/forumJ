@@ -9,6 +9,7 @@
  */
 package org.forumj.web.servlet.post;
 
+import static org.forumj.db.service.SubscribeService.*;
 import static org.forumj.tool.Diletant.*;
 
 import java.io.IOException;
@@ -19,7 +20,6 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
-import org.forumj.db.dao.FJSubscribeDao;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -40,8 +40,7 @@ public class DelOneSubs extends FJServlet {
          if (user != null && !user.isBanned() && user.isLogined()){
             if (threadIdParameter != null && !"".equals(threadIdParameter)){
                Long subscribeId = Long.valueOf(threadIdParameter);
-               FJSubscribeDao dao = new FJSubscribeDao();
-               dao.deleteByTitleId(subscribeId, user);
+               deleteSubscribeByTitleId(subscribeId, user);
                String urlQuery = "?id=" + threadIdParameter;
                if (pageParameter != null && !"".equals(pageParameter)){
                   urlQuery += "&page=" + pageParameter;

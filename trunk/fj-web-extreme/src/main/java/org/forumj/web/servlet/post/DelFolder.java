@@ -15,6 +15,8 @@
  */
 package org.forumj.web.servlet.post;
 
+import static org.forumj.db.service.FolderService.*;
+import static org.forumj.db.service.InterfaceService.*;
 import static org.forumj.tool.Diletant.*;
 
 import java.io.IOException;
@@ -25,7 +27,6 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
-import org.forumj.db.dao.*;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -45,8 +46,6 @@ public class DelFolder extends FJServlet {
          String viewIdParameter = request.getParameter("view");
          String actionParameter = request.getParameter("ACT");
          IUser user = (IUser) session.getAttribute("user");
-         FJFolderDao folderDao = new FJFolderDao();
-         FJInterfaceDao interfaceDao = new FJInterfaceDao();
          if (user != null && !user.isBanned() && user.isLogined()){
             if (actionParameter != null && !"".equals(actionParameter)){
                String nrwParameter = request.getParameter("NRW");
@@ -56,7 +55,7 @@ public class DelFolder extends FJServlet {
                      String folderIdParameter = request.getParameter(String.valueOf(nrwIndex));
                      if (folderIdParameter != null){
                         Long folderId = Long.valueOf(folderIdParameter);
-                        folderDao.delete(folderId, user);
+                        deleteFolder(folderId, user);
                      }
                   }
                }else if ("add".equalsIgnoreCase(actionParameter)){
@@ -65,8 +64,8 @@ public class DelFolder extends FJServlet {
                      String folderIdParameter = request.getParameter(String.valueOf(nrwIndex));
                      if (folderIdParameter != null){
                         Long folderId = Long.valueOf(folderIdParameter);
-                        if (!interfaceDao.isInterfaceContainsFolder(viewId, folderId, user)){
-                           interfaceDao.addFolder(viewId, folderId, user, null);
+                        if (!isInterfaceContainsFolder(viewId, folderId, user)){
+                           addFolder(viewId, folderId, user, null);
                         }
                      }
                   }

@@ -9,6 +9,7 @@
  */
 package org.forumj.web.servlet.post;
 
+import static org.forumj.db.service.UserService.*;
 import static org.forumj.tool.Diletant.*;
 
 import java.io.IOException;
@@ -20,7 +21,6 @@ import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
-import org.forumj.db.dao.FJUserDao;
 import org.forumj.db.entity.User;
 import org.forumj.web.servlet.FJServlet;
 
@@ -41,8 +41,7 @@ public class Defview extends FJServlet {
          if (user != null && !user.isBanned() && user.isLogined()){
             if (defaultViewParameter != null && !"".equals(defaultViewParameter)){
                user.setView(Integer.valueOf(defaultViewParameter));
-               FJUserDao dao = new FJUserDao();
-               dao.update(user);
+               updateUser(user);
             }
             buffer.append(successPostOut("0", "control.php?id=6"));
          }else{

@@ -9,6 +9,7 @@
  */
 package org.forumj.web.servlet.get;
 
+import static org.forumj.db.service.IgnorService.*;
 import static org.forumj.tool.Diletant.*;
 
 import java.io.IOException;
@@ -19,7 +20,6 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
-import org.forumj.db.dao.FJIgnorDao;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -43,8 +43,7 @@ public class AddIgnor extends FJServlet {
                   && !isEmptyParameter(postIdParameter)
                   && !isEmptyParameter(ignoredUserIdParameter)){
                Long ignoredUserId = Long.valueOf(ignoredUserIdParameter);
-               FJIgnorDao dao = new FJIgnorDao();
-               dao.create(ignoredUserId, user);
+               createIgnor(ignoredUserId, user);
                String add = "";
                if (pageParameter != null){
                   add = "&page=" + pageParameter;
