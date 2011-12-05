@@ -16,7 +16,7 @@
 package org.forumj.web.servlet.get;
 
 import static org.forumj.common.tool.PHP.*;
-import static org.forumj.db.service.ControlService.*;
+import static org.forumj.db.service.ControlServiceImpl.*;
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
@@ -32,8 +32,10 @@ import javax.servlet.http.*;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
 import org.forumj.common.db.entity.*;
+import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.db.entity.*;
+import org.forumj.db.service.ControlServiceImpl;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
@@ -63,7 +65,7 @@ public class Control extends FJServlet {
          // Загружаем локализацию
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          IUser user = (IUser) session.getAttribute("user");
-         // Собираем статистику
+         ControlService service = FJServiceHolder.getControlService();
          buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
          buffer.append("<html>");
          buffer.append("<head>");
@@ -204,23 +206,23 @@ public class Control extends FJServlet {
             break;
          case 2:
             // Inbox
-            buffer.append(case2(locale, user, msg));
+            buffer.append(case2(locale, user, msg, service));
             break;
          case 3:
             // Отправлено, но не доставлено
-            buffer.append(case3(locale, user, msg));
+            buffer.append(case3(locale, user, msg, service));
             break;
          case 4:
             // Отправлено, и доставлено
-            buffer.append(case4(locale, user, msg));
+            buffer.append(case4(locale, user, msg, service));
             break;
          case 5:
             //  Черновики
-            buffer.append(case5(locale, user, msg));
+            buffer.append(case5(locale, user, msg, service));
             break;
          case 6:
             // Интерфейсы
-            buffer.append(case6(locale, user, view));
+            buffer.append(case6(locale, user, view, service));
             break;
          case 7:
             // Папки
@@ -228,7 +230,7 @@ public class Control extends FJServlet {
             break;
          case 8:
             // Подписка
-            buffer.append(case8(locale, user));
+            buffer.append(case8(locale, user, service));
             break;
          case 9:
             // Аватара
@@ -532,14 +534,14 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case2(LocaleString locale, IUser user, Long msg) throws ConfigurationException, SQLException, IOException, InvalidKeyException{
+   private StringBuffer case2(LocaleString locale, IUser user, Long msg, ControlService service) throws ConfigurationException, SQLException, IOException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess17") + "</b></div>");
       buffer.append("<form method='POST' class='content' action='delmail.php?id=2'>");
       buffer.append("<table class='control'><tr class='heads'>");
-      receiveMail(user.getId());
+      service.receiveMail(user.getId());
       // Выбираем почту
-      List<FJMail> mails = loadInbox(user);
+      List<IFJMail> mails = service.loadInbox(user);
       if (mails.size() > 0){
          // Заголовки таблицы
          buffer.append("<th class='internal' width='120'><div class='tbtext' width='120'>" + locale.getString("mess58") + "</div></th>");
@@ -550,7 +552,7 @@ public class Control extends FJServlet {
          buffer.append("</tr>");
          // Выводим сообщения
          for (int mailIndex=0; mailIndex < mails.size(); mailIndex++){
-            FJMail mail = mails.get(mailIndex);
+            IFJMail mail = mails.get(mailIndex);
             buffer.append("<tr>");
             // От.
             buffer.append("<td class='internal'><div align='center' class='tbtext'>");
@@ -602,11 +604,11 @@ public class Control extends FJServlet {
       //Выводим письмо
       if (msg != null){
          // Находим его
-         FJMail mail = loadMail(user, msg, false);
+         IFJMail mail = service.loadMail(user, msg, false);
          if (mail != null){ 
             // Помечаем как прочитанное.
             if (mail.getReadDate() == null){
-               markMailAsRead(user.getId(), msg);
+               service.markMailAsRead(user.getId(), msg);
             }
             buffer.append("<tr class='heads'><td colspan=5 class='internal'>");
             // От кого.
@@ -624,12 +626,12 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case3(LocaleString locale, IUser user, Long msg) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
+   private StringBuffer case3(LocaleString locale, IUser user, Long msg, ControlService service) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess15") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
       // Выбираем почту
-      List<FJMail> mails = loadOutNotReceivedBox(user);
+      List<IFJMail> mails = service.loadOutNotReceivedBox(user);
       if (mails.size() > 0){
          // Заголовки таблицы
          buffer.append("<th class='internal' width='120'><div class=tbtext>" + locale.getString("mess19") + "</div></th>");
@@ -638,7 +640,7 @@ public class Control extends FJServlet {
          buffer.append("</tr>");
          // Выводим сообщения
          for (int mailIndex=0; mailIndex < mails.size(); mailIndex++){
-            FJMail mail = mails.get(mailIndex);
+            IFJMail mail = mails.get(mailIndex);
             buffer.append("<tr>");
             // Кому
             buffer.append("<td class='internal' width='120'><div class=tbtext>");
@@ -661,7 +663,7 @@ public class Control extends FJServlet {
       // Выводим письмо.
       if (msg != null){
          // Находим его
-         FJMail mail = loadMail(user, msg, false);
+         IFJMail mail = service.loadMail(user, msg, false);
          if (mail != null){
             buffer.append("<tr class=heads><td colspan=3 class=internal>");
             // Кому.
@@ -679,13 +681,13 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case4(LocaleString locale, IUser user, Long msg) throws ConfigurationException, IOException, SQLException, InvalidKeyException{
+   private StringBuffer case4(LocaleString locale, IUser user, Long msg, ControlService service) throws ConfigurationException, IOException, SQLException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess16") + "</b></div>");
       buffer.append("<form method='POST' class=content action='delmail.php?id=4'>");
       buffer.append("<table class='control'><tr class=heads>");
       // Выбираем почту
-      List<FJMail> mails = loadOutReceivedBox(user);
+      List<IFJMail> mails = service.loadOutReceivedBox(user);
       if (mails.size() > 0){
          // Заголовки таблицы
          // Кому
@@ -700,7 +702,7 @@ public class Control extends FJServlet {
          buffer.append("</tr>");
          // Выводим сообщения
          for (int mailIndex=0; mailIndex < mails.size(); mailIndex++){
-            FJMail mail = mails.get(mailIndex);
+            IFJMail mail = mails.get(mailIndex);
             buffer.append("<tr>");
             // Кому
             buffer.append("<td class='internal' width='120'><div class=tbtext>");
@@ -743,7 +745,7 @@ public class Control extends FJServlet {
       //Выводим письмо
       if (msg != null){
          // Находим его
-         FJMail mail = loadMail(user, msg, false);
+         IFJMail mail = service.loadMail(user, msg, false);
          if (mail != null){
             buffer.append("<tr class=heads><td colspan=4 class=internal>");
             // Кому.
@@ -761,12 +763,12 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case5(LocaleString locale, IUser user, Long msg) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
+   private StringBuffer case5(LocaleString locale, IUser user, Long msg, ControlService service) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess62") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
       // Выбираем почту
-      List<FJMail> mails = loadDraftBox(user);
+      List<IFJMail> mails = service.loadDraftBox(user);
       if (mails.size() > 0){
          // Заголовки таблицы
          // Кому
@@ -778,7 +780,7 @@ public class Control extends FJServlet {
          buffer.append("</tr>");
          // Выводим сообщения
          for (int mailIndex=0; mailIndex < mails.size(); mailIndex++){
-            FJMail mail = mails.get(mailIndex);
+            IFJMail mail = mails.get(mailIndex);
             buffer.append("<tr>");
             // Кому
             buffer.append("<td class='internal' width='120'><div class=tbtext>");
@@ -801,7 +803,7 @@ public class Control extends FJServlet {
       //Выводим письмо
       if (msg != null){
          // Находим его
-         FJMail mail = loadMail(user, msg, false);
+         IFJMail mail = service.loadMail(user, msg, false);
          if (mail != null){
             buffer.append("<tr class=heads><td colspan=3 class=internal>");
             // Кому.
@@ -818,10 +820,10 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case6(LocaleString locale, IUser user, Long viewId) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
+   private StringBuffer case6(LocaleString locale, IUser user, Long viewId, ControlService service) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список интерфейсов
-      List<IFJInterface> interfaces = findAllInterfaces(user);
+      List<IFJInterface> interfaces = service.findAllInterfaces(user);
       // "Список Ваших интерфейсов"
       buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess76") + "</b></div>");
       // Интерфейс по умолчанию
@@ -900,9 +902,9 @@ public class Control extends FJServlet {
       buffer.append("</form>");  
       // Настройки интерфейса
       if (viewId != null) {
-         IFJInterface interf = findInterface(user, viewId);
+         IFJInterface interf = service.findInterface(user, viewId);
          // Выбираем список папок в интерфейсе
-         List<IFJFolder> folders = findAllFolders(user, interf);
+         List<IFJFolder> folders = service.findAllFolders(user, interf);
          buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess78") + "<u>" + interf.getName() + "</u></b></div>");
          buffer.append("<form method='POST' class=content action='delvfolder.php'>");
          buffer.append("<table class='control'><tr class=heads>");
@@ -946,7 +948,7 @@ public class Control extends FJServlet {
          buffer.append("</tr>");
          buffer.append("</table>");
          buffer.append("</form>");
-         List<IFJFolder> foldersNotIn = findAllFoldersNotIn(user, interf);
+         List<IFJFolder> foldersNotIn = service.findAllFoldersNotIn(user, interf);
          int foldersAmount = foldersNotIn.size();
          buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess73") + "</b></div>");
          buffer.append("<form method='POST' class=content action='delfolder.php?id=6&view=" + viewId + "'>");
@@ -1054,10 +1056,10 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case8(LocaleString locale, IUser user) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
+   private StringBuffer case8(LocaleString locale, IUser user, ControlService service) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список подписаных веток
-      List<IFJSubscribe> subscribes = findAllSubscribes(user, new Integer(1));
+      List<IFJSubscribe> subscribes = service.findAllSubscribes(user, new Integer(1));
       buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess87") + "</b></div>");
       buffer.append("<form method='POST' class=content action='delsubs.php?id=8'>");
       buffer.append("<table class='control'><tr class=heads>");

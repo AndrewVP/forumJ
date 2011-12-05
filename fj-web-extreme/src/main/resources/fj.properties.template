@@ -13,3 +13,4 @@ mail.admin.address.3=
 fj.default.threadsOnPage=30
 fj.default.postsOnPage=40
 fj.default.viewId=1
+service.controlService.class=org.forumj.db.service.ControlServiceImpl

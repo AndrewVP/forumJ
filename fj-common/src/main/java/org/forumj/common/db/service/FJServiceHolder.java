@@ -14,6 +14,7 @@ public class FJServiceHolder {
    
    private static ControlService controlService = null;
    
+   @SuppressWarnings("unused")
    private FJServiceHolder instance = new FJServiceHolder();
    
    private FJServiceHolder() throws ConfigurationException, InstantiationException, IllegalAccessException, ClassNotFoundException{

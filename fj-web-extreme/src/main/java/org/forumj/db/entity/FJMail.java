@@ -44,6 +44,7 @@ public class FJMail implements IFJMail {
    /**
     * @return the sender
     */
+   @Override
    public IUser getSender() {
       return sender;
    }
@@ -51,6 +52,7 @@ public class FJMail implements IFJMail {
    /**
     * @param sender the sender to set
     */
+   @Override
    public void setSender(IUser sender) {
       this.sender = sender;
    }
@@ -58,6 +60,7 @@ public class FJMail implements IFJMail {
    /**
     * @return the receiver
     */
+   @Override
    public IUser getReceiver() {
       return receiver;
    }
@@ -65,6 +68,7 @@ public class FJMail implements IFJMail {
    /**
     * @param receiver the receiver to set
     */
+   @Override
    public void setReceiver(IUser receiver) {
       this.receiver = receiver;
    }
@@ -72,6 +76,7 @@ public class FJMail implements IFJMail {
    /**
     * @return the id
     */
+   @Override
    public Long getId() {
       return id;
    }
@@ -79,6 +84,7 @@ public class FJMail implements IFJMail {
    /**
     * @param id the id to set
     */
+   @Override
    public void setId(Long id) {
       this.id = id;
    }
@@ -86,6 +92,7 @@ public class FJMail implements IFJMail {
    /**
     * @return the createDate
     */
+   @Override
    public Date getCreateDate() {
       return createDate;
    }
@@ -93,6 +100,7 @@ public class FJMail implements IFJMail {
    /**
     * @param createDate the createDate to set
     */
+   @Override
    public void setCreateDate(Date createDate) {
       this.createDate = createDate;
    }
@@ -100,6 +108,7 @@ public class FJMail implements IFJMail {
    /**
     * @return the sentDate
     */
+   @Override
    public Date getSentDate() {
       return sentDate;
    }
@@ -107,6 +116,7 @@ public class FJMail implements IFJMail {
    /**
     * @param sentDate the sentDate to set
     */
+   @Override
    public void setSentDate(Date sentDate) {
       this.sentDate = sentDate;
    }
@@ -114,6 +124,7 @@ public class FJMail implements IFJMail {
    /**
     * @return the receiveDate
     */
+   @Override
    public Date getReceiveDate() {
       return receiveDate;
    }
@@ -121,6 +132,7 @@ public class FJMail implements IFJMail {
    /**
     * @param receiveDate the receiveDate to set
     */
+   @Override
    public void setReceiveDate(Date receiveDate) {
       this.receiveDate = receiveDate;
    }
@@ -128,6 +140,7 @@ public class FJMail implements IFJMail {
    /**
     * @return the readDate
     */
+   @Override
    public Date getReadDate() {
       return readDate;
    }
@@ -135,6 +148,7 @@ public class FJMail implements IFJMail {
    /**
     * @param readDate the readDate to set
     */
+   @Override
    public void setReadDate(Date readDate) {
       this.readDate = readDate;
    }
@@ -142,6 +156,7 @@ public class FJMail implements IFJMail {
    /**
     * @return the subject
     */
+   @Override
    public String getSubject() {
       return subject;
    }
@@ -149,6 +164,7 @@ public class FJMail implements IFJMail {
    /**
     * @param subject the subject to set
     */
+   @Override
    public void setSubject(String subject) {
       this.subject = subject;
    }
@@ -156,6 +172,7 @@ public class FJMail implements IFJMail {
    /**
     * @return the body
     */
+   @Override
    public String getBody() {
       return body;
    }
@@ -163,6 +180,7 @@ public class FJMail implements IFJMail {
    /**
     * @param body the body to set
     */
+   @Override
    public void setBody(String body) {
       this.body = body;
    }
@@ -170,6 +188,7 @@ public class FJMail implements IFJMail {
    /**
     * @return the deletedBySender
     */
+   @Override
    public Integer getDeletedBySender() {
       return deletedBySender;
    }
@@ -177,6 +196,7 @@ public class FJMail implements IFJMail {
    /**
     * @param deletedBySender the deletedBySender to set
     */
+   @Override
    public void setDeletedBySender(Integer deletedBySender) {
       this.deletedBySender = deletedBySender;
    }
@@ -184,6 +204,7 @@ public class FJMail implements IFJMail {
    /**
     * @return the deletedByReceiver
     */
+   @Override
    public Integer getDeletedByReceiver() {
       return deletedByReceiver;
    }
@@ -191,6 +212,7 @@ public class FJMail implements IFJMail {
    /**
     * @param deletedByReceiver the deletedByReceiver to set
     */
+   @Override
    public void setDeletedByReceiver(Integer deletedByReceiver) {
       this.deletedByReceiver = deletedByReceiver;
    }
