@@ -13,21 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.forumj.db.service;
+package org.forumj.common.db.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.IUser;
-import org.forumj.db.entity.*;
+import org.forumj.common.db.entity.*;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class TemaService extends FJCommonService {
+public interface TemaService {
 
    /**
     * 
@@ -37,10 +36,9 @@ public class TemaService extends FJCommonService {
     * @throws SQLException
     * @throws IOException
     */
-   public static FJThread readThread(Long id) throws ConfigurationException, SQLException, IOException{
-      return getThreadDao().read(id);
-   }
-   
+   public IFJThread readThread(Long id) throws ConfigurationException,
+         SQLException, IOException;
+
    /**
     * 
     * @param threadId
@@ -50,10 +48,9 @@ public class TemaService extends FJCommonService {
     * @throws SQLException
     * @throws IOException
     */
-   public static Integer getPostsCountInThread(Long threadId, Long idMax) throws ConfigurationException, SQLException, IOException{
-      return getThreadDao().getPostsCountInThread(threadId, idMax);
-   }
-   
+   public Integer getPostsCountInThread(Long threadId, Long idMax)
+         throws ConfigurationException, SQLException, IOException;
+
    /**
     * 
     * @param user
@@ -62,9 +59,8 @@ public class TemaService extends FJCommonService {
     * @throws SQLException
     * @throws IOException
     */
-   public static void setSeen(IUser user, Long threadId) throws ConfigurationException, SQLException, IOException{
-      getThreadDao().setSeen(user, threadId);
-   }
+   public void setSeen(IUser user, Long threadId)
+         throws ConfigurationException, SQLException, IOException;
 
    /**
     * 
@@ -79,10 +75,10 @@ public class TemaService extends FJCommonService {
     * @throws SQLException
     * @throws ConfigurationException
     */
-   public static List<FJPost> readPosts(IUser user, Long threadId, long nfirstpost, int count, int page, boolean lastPost) throws IOException, SQLException, ConfigurationException{
-      return getPostDao().getPostsList(user, threadId, nfirstpost, count, page, lastPost);
-   }
-   
+   public List<IFJPost> readPosts(IUser user, Long threadId, long nfirstpost,
+         int count, int page, boolean lastPost) throws IOException,
+         SQLException, ConfigurationException;
+
    /**
     * 
     * @param id
@@ -91,9 +87,8 @@ public class TemaService extends FJCommonService {
     * @throws ConfigurationException
     * @throws SQLException
     */
-   public static FJPost readPost(Long id) throws IOException, ConfigurationException, SQLException{
-      return getPostDao().read(id);
-   }
+   public IFJPost readPost(Long id) throws IOException, ConfigurationException,
+         SQLException;
 
    /**
     * 
@@ -104,10 +99,9 @@ public class TemaService extends FJCommonService {
     * @throws SQLException
     * @throws IOException
     */
-   public static Boolean isUserSubscribed(Long idUser, Long threadId) throws ConfigurationException, SQLException, IOException{
-      return getSubscribedao().isUserSubscribed(idUser, threadId);
-   }
-   
+   public Boolean isUserSubscribed(Long idUser, Long threadId)
+         throws ConfigurationException, SQLException, IOException;
+
    /**
     * 
     * @param threadId
@@ -117,9 +111,7 @@ public class TemaService extends FJCommonService {
     * @throws ConfigurationException
     * @throws IOException
     */
-   public static boolean isUserVoted(long threadId, IUser user) throws SQLException, ConfigurationException, IOException{
-      return getVoiceDao().isUserVoted(threadId, user);
-   }
-   
-   
+   public boolean isUserVoted(long threadId, IUser user) throws SQLException,
+         ConfigurationException, IOException;
+
 }

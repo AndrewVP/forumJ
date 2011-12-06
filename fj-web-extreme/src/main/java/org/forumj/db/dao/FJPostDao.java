@@ -50,14 +50,14 @@ public class FJPostDao extends FJDao {
             post.setId(postId);
             st.close();
             st = conn.prepareStatement(createPostBodyQuery);
-            FJPostBody postBody = post.getBody();
+            IFJPostBody postBody = post.getBody();
             st.setLong(1, postId);
             st.setLong(2, postId);
             st.setString(3, postBody.getBody());
             st.executeUpdate();
             st.close();
             st = conn.prepareStatement(createPostHeadQuery);
-            FJPostHead postHead = post.getHead();
+            IFJPostHead postHead = post.getHead();
             st.setLong(1, postId);
             st.setLong(2, postId);
             st.setLong(3, postHead.getAuth());
@@ -90,7 +90,7 @@ public class FJPostDao extends FJDao {
       }
    }
 
-   public void update(FJPost post) throws IOException, SQLException, ConfigurationException{
+   public void update(IFJPost post) throws IOException, SQLException, ConfigurationException{
       String updatePostQuery = getUpdatePostQuery();
       String updatePostHeadQuery = getUpdatePostHeadQuery(post.getTableHead());
       String updatePostBodyQuery = getUpdatePostBodyQuery(post.getTablePost());
@@ -109,7 +109,7 @@ public class FJPostDao extends FJDao {
          st.setLong(5, post.getId());
          st.executeUpdate();
          
-         FJPostHead postHead = post.getHead();
+         IFJPostHead postHead = post.getHead();
          st = conn.prepareStatement(updatePostHeadQuery);
          st.setLong(1, postHead.getAuth());
          st.setString(2, postHead.getTitle());
@@ -124,7 +124,7 @@ public class FJPostDao extends FJDao {
          st.setLong(11, postHead.getId());
          st.executeUpdate();
          
-         FJPostBody postBody = post.getBody();
+         IFJPostBody postBody = post.getBody();
          st = conn.prepareStatement(updatePostBodyQuery);
          st.setLong(1, postBody.getPostId());
          st.setString(2, postBody.getBody());
@@ -288,9 +288,9 @@ public class FJPostDao extends FJDao {
     * @throws SQLException
     * @throws ConfigurationException
     */
-   public List<FJPost> getPostsList(IUser user, Long threadId, long nfirstpost, int count, int page, boolean lastPost) throws IOException, SQLException, ConfigurationException{
+   public List<IFJPost> getPostsList(IUser user, Long threadId, long nfirstpost, int count, int page, boolean lastPost) throws IOException, SQLException, ConfigurationException{
       String query = getReadPostsQuery();
-      List<FJPost> result = new ArrayList<FJPost>();
+      List<IFJPost> result = new ArrayList<IFJPost>();
       Map<Long, FJPost> postsMap = new HashMap<Long, FJPost>();
       boolean isQuest = false;
       boolean isFirst;
@@ -353,8 +353,8 @@ public class FJPostDao extends FJDao {
                FJPostHead postHead = new FJPostHead();
                post.setHead(postHead);
                if (post.isFirstPost() && isQuest){
-                  post.setAnswers(new ArrayList<QuestNode>());
-                  List<QuestNode> questNodes = questDao.loadNodes(threadId);
+                  post.setAnswers(new ArrayList<IQuestNode>());
+                  List<IQuestNode> questNodes = questDao.loadNodes(threadId);
                   FJVoiceDao voiceDao = new FJVoiceDao();
                   post.setVoicesAmount(voiceDao.getVoicesAmount(threadId));
                   post.setAnswers(questNodes);

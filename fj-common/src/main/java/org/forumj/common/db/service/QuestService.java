@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.forumj.db.service;
+package org.forumj.common.db.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -25,10 +25,9 @@ import org.forumj.common.db.entity.IUser;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FJCommonService extends FJService {
+public interface QuestService {
 
-   
-   public static IUser readUser(String nick) throws ConfigurationException, SQLException, IOException{
-      return getUserDao().read(nick);
-   }
+   public void repealVote(Long threadId, IUser user)
+         throws ConfigurationException, IOException, SQLException;
+
 }

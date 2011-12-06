@@ -24,7 +24,7 @@ import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
-import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.entity.*;
 import org.forumj.common.exception.*;
 import org.forumj.common.tool.Time;
 import org.forumj.db.dao.FJPostDao;
@@ -312,9 +312,9 @@ public class Write extends FJServlet {
    }
    private void write_edit(String body, IUser user, String domen, String ip, String head, Long threadId, Long postId) throws DBException, ConfigurationException, IOException, SQLException{
       FJPostDao postDao = new FJPostDao();
-      FJPost post = postDao.read(postId);
-      FJPostBody postBody = post.getBody();
-      FJPostHead postHead = post.getHead();
+      IFJPost post = postDao.read(postId);
+      IFJPostBody postBody = post.getBody();
+      IFJPostHead postHead = post.getHead();
       postBody.setBody(body);
       postHead.setDomen(domen);
       postHead.setIp(ip);

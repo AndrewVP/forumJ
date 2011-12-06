@@ -45,6 +45,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @return the author
     */
+   @Override
    public IUser getAuthor() {
       return author;
    }
@@ -52,6 +53,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @param author the author to set
     */
+   @Override
    public void setAuthor(IUser author) {
       this.author = author;
    }
@@ -59,6 +61,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @return the id
     */
+   @Override
    public Long getId() {
       return id;
    }
@@ -66,6 +69,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @param id the id to set
     */
+   @Override
    public void setId(Long id) {
       this.id = id;
    }
@@ -73,6 +77,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @return the auth
     */
+   @Override
    public Long getAuth() {
       return auth;
    }
@@ -80,6 +85,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @param auth the auth to set
     */
+   @Override
    public void setAuth(Long auth) {
       this.auth = auth;
    }
@@ -87,6 +93,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @return the title
     */
+   @Override
    public String getTitle() {
       return title;
    }
@@ -94,6 +101,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @param title the title to set
     */
+   @Override
    public void setTitle(String title) {
       this.title = title;
    }
@@ -101,6 +109,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @return the ip
     */
+   @Override
    public String getIp() {
       return ip;
    }
@@ -108,6 +117,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @param ip the ip to set
     */
+   @Override
    public void setIp(String ip) {
       this.ip = ip;
    }
@@ -115,6 +125,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @return the domen
     */
+   @Override
    public String getDomen() {
       return domen;
    }
@@ -122,6 +133,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @param domen the domen to set
     */
+   @Override
    public void setDomen(String domen) {
       this.domen = domen;
    }
@@ -129,6 +141,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @return the outd
     */
+   @Override
    public String getOutd() {
       return outd;
    }
@@ -136,6 +149,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @param outd the outd to set
     */
+   @Override
    public void setOutd(String outd) {
       this.outd = outd;
    }
@@ -143,6 +157,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @return the nred
     */
+   @Override
    public Integer getNred() {
       return nred;
    }
@@ -150,6 +165,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @param nred the nred to set
     */
+   @Override
    public void setNred(Integer nred) {
       this.nred = nred;
    }
@@ -157,6 +173,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @return the createTime
     */
+   @Override
    public Long getCreateTime() {
       return createTime;
    }
@@ -164,6 +181,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @param createTime the createTime to set
     */
+   @Override
    public void setCreateTime(Long createTime) {
       this.createTime = createTime;
    }
@@ -171,6 +189,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @return the editTime
     */
+   @Override
    public Long getEditTime() {
       return editTime;
    }
@@ -178,6 +197,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @param editTime the editTime to set
     */
+   @Override
    public void setEditTime(Long editTime) {
       this.editTime = editTime;
    }
@@ -185,6 +205,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @return the postId
     */
+   @Override
    public Long getPostId() {
       return postId;
    }
@@ -192,6 +213,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @param postId the postId to set
     */
+   @Override
    public void setPostId(Long postId) {
       this.postId = postId;
    }
@@ -199,6 +221,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @return the threadId
     */
+   @Override
    public Long getThreadId() {
       return threadId;
    }
@@ -206,6 +229,7 @@ public class FJPostHead implements IFJPostHead {
    /**
     * @param threadId the threadId to set
     */
+   @Override
    public void setThreadId(Long threadId) {
       this.threadId = threadId;
    }

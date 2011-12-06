@@ -18,5 +18,11 @@ public interface IFJPostBody {
    public static final String ID_FIELD_NAME = "id";
    public static final String BODY_FIELD_NAME = "body";
    public static final String POST_ID_FIELD_NAME = "id_post";
+   public abstract void setBody(String body);
+   public abstract String getBody();
+   public abstract void setPostId(Long postId);
+   public abstract Long getPostId();
+   public abstract void setId(Long id);
+   public abstract Long getId();
 
 }

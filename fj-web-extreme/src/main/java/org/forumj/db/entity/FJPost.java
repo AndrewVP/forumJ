@@ -9,9 +9,9 @@
   */
 package org.forumj.db.entity;
 
-import java.util.*;
+import java.util.List;
 
-import org.forumj.common.db.entity.IFJPost;
+import org.forumj.common.db.entity.*;
 
 /**
  *
@@ -29,24 +29,26 @@ public class FJPost implements IFJPost {
    
    private String tableHead = null;
    
-   private FJPostBody body = null;
+   private IFJPostBody body = null;
    
-   private FJPostHead head = null;
+   private IFJPostHead head = null;
    
    private boolean lastPost = false;
    
    private boolean firstPost = false;
    
-   private QuestNode question = null; 
+   private IQuestNode question = null; 
    
-   private List<QuestNode> answers = null;
+   private List<IQuestNode> answers = null;
    
    private int voicesAmount = 0; 
    
+   @Override
    public int getVoicesAmount() {
       return voicesAmount;
    }
 
+   @Override
    public void setVoicesAmount(int voicesAmount) {
       this.voicesAmount = voicesAmount;
    }
@@ -54,6 +56,7 @@ public class FJPost implements IFJPost {
    /**
     * @return the lastPost
     */
+   @Override
    public boolean isLastPost() {
       return lastPost;
    }
@@ -61,6 +64,7 @@ public class FJPost implements IFJPost {
    /**
     * @param lastPost the lastPost to set
     */
+   @Override
    public void setLastPost(boolean lastPost) {
       this.lastPost = lastPost;
    }
@@ -68,6 +72,7 @@ public class FJPost implements IFJPost {
    /**
     * @return the id
     */
+   @Override
    public Long getId() {
       return id;
    }
@@ -75,6 +80,7 @@ public class FJPost implements IFJPost {
    /**
     * @param id the id to set
     */
+   @Override
    public void setId(Long id) {
       this.id = id;
    }
@@ -82,6 +88,7 @@ public class FJPost implements IFJPost {
    /**
     * @return the headId
     */
+   @Override
    public Long getThreadId() {
       return threadId;
    }
@@ -89,6 +96,7 @@ public class FJPost implements IFJPost {
    /**
     * @param headId the headId to set
     */
+   @Override
    public void setThreadId(Long headId) {
       this.threadId = headId;
    }
@@ -96,6 +104,7 @@ public class FJPost implements IFJPost {
    /**
     * @return the state
     */
+   @Override
    public Integer getState() {
       return state;
    }
@@ -103,6 +112,7 @@ public class FJPost implements IFJPost {
    /**
     * @param state the state to set
     */
+   @Override
    public void setState(Integer state) {
       this.state = state;
    }
@@ -110,6 +120,7 @@ public class FJPost implements IFJPost {
    /**
     * @return the tablePost
     */
+   @Override
    public String getTablePost() {
       return tablePost;
    }
@@ -117,6 +128,7 @@ public class FJPost implements IFJPost {
    /**
     * @param tablePost the tablePost to set
     */
+   @Override
    public void setTablePost(String tablePost) {
       this.tablePost = tablePost;
    }
@@ -124,6 +136,7 @@ public class FJPost implements IFJPost {
    /**
     * @return the tableHead
     */
+   @Override
    public String getTableHead() {
       return tableHead;
    }
@@ -131,6 +144,7 @@ public class FJPost implements IFJPost {
    /**
     * @param tableHead the tableHead to set
     */
+   @Override
    public void setTableHead(String tableHead) {
       this.tableHead = tableHead;
    }
@@ -138,51 +152,61 @@ public class FJPost implements IFJPost {
    /**
     * @return the body
     */
-   public FJPostBody getBody() {
+   @Override
+   public IFJPostBody getBody() {
       return body;
    }
 
    /**
     * @param body the body to set
     */
-   public void setBody(FJPostBody body) {
+   @Override
+   public void setBody(IFJPostBody body) {
       this.body = body;
    }
 
    /**
     * @return the head
     */
-   public FJPostHead getHead() {
+   @Override
+   public IFJPostHead getHead() {
       return head;
    }
 
    /**
     * @param head the head to set
     */
-   public void setHead(FJPostHead head) {
+   @Override
+   public void setHead(IFJPostHead head) {
       this.head = head;
    }
 
-   public QuestNode getQuestion() {
+   @Override
+   public IQuestNode getQuestion() {
       return question;
    }
 
-   public void setQuestion(QuestNode question) {
+   @Override
+   public void setQuestion(IQuestNode question) {
       this.question = question;
    }
 
-   public List<QuestNode> getAnswers() {
+   @Override
+   public List<IQuestNode> getAnswers() {
       return answers;
    }
 
-   public void setAnswers(List<QuestNode> answers) {
+   @Override
+   public void setAnswers(List<IQuestNode> answers) {
       this.answers = answers;
    }
 
+   @Override
    public boolean isFirstPost() {
       return firstPost;
    }
 
+   @Override
    public void setFirstPost(boolean firstPost) {
       this.firstPost = firstPost;
    }

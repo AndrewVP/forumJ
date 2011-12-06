@@ -26,6 +26,7 @@ public class FJPostBody implements IFJPostBody {
    /**
     * @return the id
     */
+   @Override
    public Long getId() {
       return id;
    }
@@ -33,6 +34,7 @@ public class FJPostBody implements IFJPostBody {
    /**
     * @param id the id to set
     */
+   @Override
    public void setId(Long id) {
       this.id = id;
    }
@@ -40,6 +42,7 @@ public class FJPostBody implements IFJPostBody {
    /**
     * @return the postId
     */
+   @Override
    public Long getPostId() {
       return postId;
    }
@@ -47,6 +50,7 @@ public class FJPostBody implements IFJPostBody {
    /**
     * @param postId the postId to set
     */
+   @Override
    public void setPostId(Long postId) {
       this.postId = postId;
    }
@@ -54,6 +58,7 @@ public class FJPostBody implements IFJPostBody {
    /**
     * @return the body
     */
+   @Override
    public String getBody() {
       return body;
    }
@@ -61,6 +66,7 @@ public class FJPostBody implements IFJPostBody {
    /**
     * @param body the body to set
     */
+   @Override
    public void setBody(String body) {
       this.body = body;
    }

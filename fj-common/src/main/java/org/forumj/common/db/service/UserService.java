@@ -13,29 +13,33 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.forumj.db.service;
+package org.forumj.common.db.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.service.CountService;
+import org.forumj.common.db.entity.IUser;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class CountServiceImpl extends FJService implements CountService {
+public interface UserService {
 
-   public long getAddedPostsAmount(long lastPostId) throws SQLException, ConfigurationException, IOException{
-      return getPostDao().getAddedPostsAmount(lastPostId);
-   }
-   
-   public long getAddedThreadsAmount(long lastThreadId) throws SQLException, ConfigurationException, IOException{
-      return getThreadDao().getAddedThreadsAmount(lastThreadId);
-   }
-   
-   public long getAddedPostsAmount(long threadId, long lastPostId) throws SQLException, ConfigurationException, IOException{
-      return getPostDao().getAddedPostsAmount(threadId, lastPostId);
-   }
+   public IUser readUser(Long userId) throws ConfigurationException,
+         SQLException, IOException;
+
+   public void updateUser(IUser user) throws IOException,
+         ConfigurationException, SQLException;
+
+   public IUser readUserByMail(String mail) throws ConfigurationException,
+         SQLException, IOException;
+
+   public void createUser(IUser user) throws SQLException,
+         ConfigurationException, IOException;
+
+   public abstract IUser readUser(String nick) throws ConfigurationException,
+         SQLException, IOException;
+
 }

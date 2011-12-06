@@ -27,7 +27,7 @@ import org.forumj.common.db.service.InterfaceService;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class InterfaceServiceImpl extends FJCommonService implements InterfaceService {
+public class InterfaceServiceImpl extends FJService implements InterfaceService {
 
    public boolean isInterfaceContainsFolder(long interfaceId, long folderId, IUser user) throws IOException, ConfigurationException, SQLException{
       return getInterfaceDao().isInterfaceContainsFolder(interfaceId, folderId, user);
