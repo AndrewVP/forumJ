@@ -30,7 +30,11 @@ public class FJServiceHolder {
    
    private static UserService userService = null;
 
-   private static TemaService temaService = null;
+   private static ThreadService threadService = null;
+
+   private static VoiceService voiceService = null;
+   
+   private static PostService postService = null;
    
    static{
       try {
@@ -43,7 +47,9 @@ public class FJServiceHolder {
          subscribeService = (SubscribeService) Class.forName(FJConfiguration.getConfig().getString("service.subscribeService.class")).newInstance();
          questService = (QuestService) Class.forName(FJConfiguration.getConfig().getString("service.questService.class")).newInstance();
          userService = (UserService) Class.forName(FJConfiguration.getConfig().getString("service.userService.class")).newInstance();
-         temaService = (TemaService) Class.forName(FJConfiguration.getConfig().getString("service.temaService.class")).newInstance();
+         threadService = (ThreadService) Class.forName(FJConfiguration.getConfig().getString("service.threadService.class")).newInstance();
+         voiceService = (VoiceService) Class.forName(FJConfiguration.getConfig().getString("service.voiceService.class")).newInstance();
+         postService = (PostService) Class.forName(FJConfiguration.getConfig().getString("service.postService.class")).newInstance();
       } catch (ConfigurationException e) {
          // TODO Auto-generated catch block
          e.printStackTrace();
@@ -95,7 +101,15 @@ public class FJServiceHolder {
       return userService;
    }
 
-   public static TemaService getTemaService(){
-      return temaService;
+   public static ThreadService getThreadService(){
+      return threadService;
+   }
+   
+   public static VoiceService getVoiceService(){
+      return voiceService;
+   }
+   
+   public static PostService getPostService(){
+      return postService;
    }
 }

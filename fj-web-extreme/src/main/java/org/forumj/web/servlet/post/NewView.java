@@ -25,7 +25,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
-import org.forumj.db.dao.*;
+import org.forumj.common.db.service.*;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -45,9 +45,9 @@ public class NewView extends FJServlet {
          IUser user = (IUser) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             if (!isEmptyParameter(vewNameParameter)){
-               FJInterfaceDao dao = new FJInterfaceDao();
-               if (!dao.isExist(vewNameParameter, user)){
-                  dao.create(vewNameParameter, user);
+               InterfaceService interfaceService = FJServiceHolder.getInterfaceService();
+               if (!interfaceService.isExist(vewNameParameter, user)){
+                  interfaceService.create(vewNameParameter, user);
                }
             }
             //TODO Magic integer!

@@ -13,24 +13,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.forumj.common.db.service;
+package org.forumj.db.service;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.SQLException;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.service.VoiceService;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public interface QuestService {
+public class VoiceServiceImpl extends FJService implements VoiceService {
 
-   public void repealVote(Long threadId, IUser user) throws ConfigurationException, IOException, SQLException;
-   
-   public void addCustomAnswer(long threadId, String node, int type, IUser user) throws ConfigurationException, IOException, SQLException;
-   
-   public void addVote(Long threadId, Long answerId, IUser user, Connection connection) throws ConfigurationException, IOException, SQLException;
-
+   /**
+    * 
+    * @param threadId
+    * @param user
+    * @return
+    * @throws SQLException
+    * @throws ConfigurationException
+    * @throws IOException
+    */
+   public boolean isUserVoted(long threadId, IUser user) throws SQLException, ConfigurationException, IOException{
+      return getVoiceDao().isUserVoted(threadId, user);
+   }
 }

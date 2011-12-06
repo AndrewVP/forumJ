@@ -54,8 +54,11 @@ public class Tema extends FJServlet {
          Integer pageNumber = request.getParameter("page") == null ? 1 : Integer.valueOf(request.getParameter("page"));
          // id Темы
          Long threadId = request.getParameter("id") == null ? 1 : Long.valueOf(request.getParameter("id"));
-         TemaService service = FJServiceHolder.getTemaService();
-         IFJThread thread = service.readThread(threadId);
+         VoiceService voiceService = FJServiceHolder.getVoiceService();
+         PostService postService = FJServiceHolder.getPostService();
+         SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
+         ThreadService treadService = FJServiceHolder.getThreadService();
+         IFJThread thread = treadService.readThread(threadId);
          // Номер поста, на который отвечаем
          String replyPostId = request.getParameter("reply");
          LocaleString locale = (LocaleString) session.getAttribute("locale");
@@ -74,7 +77,7 @@ public class Tema extends FJServlet {
             pageNumber = couP-1;
             lastPost = true;
          }
-         List<IFJPost> posts = service.readPosts(user, threadId, nfirstpost, i3, pageNumber, lastPost);
+         List<IFJPost> posts = postService.readPosts(user, threadId, nfirstpost, i3, pageNumber, lastPost);
          // Получаем массив постов
          session.setAttribute("page", pageNumber);
          session.setAttribute("id", threadId);
@@ -83,14 +86,14 @@ public class Tema extends FJServlet {
          String msg = request.getParameter("msg");
          int countPosts = 0;
          if (msg != null && !"".equals(msg.trim())){
-            countPosts = service.getPostsCountInThread(threadId, new Long(msg));
+            countPosts = postService.getPostsCountInThread(threadId, new Long(msg));
             pageNumber=ceil(countPosts/user.getPt());
          }
          // Записываем счетчики
          // Робот?
          if (!isRobot(request)){
             // Нет
-            service.setSeen(user, threadId);
+            treadService.setSeen(user, threadId);
          }
          buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
          buffer.append("<html>");
@@ -180,7 +183,7 @@ public class Tema extends FJServlet {
          // Выводим строки
          for (int postIndex = 0; postIndex < posts.size(); postIndex++) {
             IFJPost post = posts.get(postIndex);
-            buffer.append(writePost(post, ignorList, user, pageNumber, locale, thread, service));
+            buffer.append(writePost(post, ignorList, user, pageNumber, locale, thread, voiceService));
          }
          // /Таблица форума
          buffer.append("</table>");
@@ -228,7 +231,7 @@ public class Tema extends FJServlet {
             //Мы уже подписаны?
             String action = "";
             String mess = "";
-            if (service.isUserSubscribed(threadId, user.getId())){
+            if (subscribeService.isUserSubscribed(threadId, user.getId())){
                //Подписка есть, предлагаем отказаться
                action="delonesubs.php?pg="+pageNumber;
                mess=locale.getString("mess90");
@@ -258,7 +261,7 @@ public class Tema extends FJServlet {
             IFJPost replyPost = null;
             // Если цитируем/редактируем
             if (replyPostId != null && !"".equals(replyPostId.trim())) {
-               replyPost = service.readPost(Long.valueOf(replyPostId));
+               replyPost = postService.read(Long.valueOf(replyPostId));
                // Редактируем?
                head=stripslashes(replyPost.getHead().getTitle());
                if (replyPost.getHead().getAuthor().getNick().equalsIgnoreCase(user.getNick())) {
@@ -393,7 +396,7 @@ public class Tema extends FJServlet {
       writer.write(out.replace("ъъ_ъ", format.format(allTime/1000)));
    }
 
-   private StringBuffer writePost(IFJPost post, List<IIgnor> ignorList, IUser user, Integer pageNumber, LocaleString locale, IFJThread thread, TemaService service) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
+   private StringBuffer writePost(IFJPost post, List<IIgnor> ignorList, IUser user, Integer pageNumber, LocaleString locale, IFJThread thread, VoiceService voiceService) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
       StringBuffer buffer = new StringBuffer();
       Time postTime = new Time(post.getHead().getCreateTime());
       IUser author = post.getHead().getAuthor();
@@ -457,10 +460,10 @@ public class Tema extends FJServlet {
          buffer.append("</td><td valign='top' width='100%'>");
          buffer.append("<table width='100%'>");
          if (post.getAnswers() != null){
-            buffer.append(writeQuest(post, user, locale, thread, service));
+            buffer.append(writeQuest(post, user, locale, thread, voiceService));
          }
          if (thread.isQuest()){
-            buffer.append( writeQuest(post, user, locale, thread, service));
+            buffer.append( writeQuest(post, user, locale, thread, voiceService));
          }
          buffer.append("<tr><td>");
          buffer.append("<p class=post>" + fd_body(post.getBody().getBody()) + "</p>");
@@ -514,7 +517,7 @@ public class Tema extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer writeQuest(IFJPost post, IUser user, LocaleString locale, IFJThread thread, TemaService service) throws ConfigurationException, SQLException, InvalidKeyException, IOException{
+   private StringBuffer writeQuest(IFJPost post, IUser user, LocaleString locale, IFJThread thread, VoiceService voiceService) throws ConfigurationException, SQLException, InvalidKeyException, IOException{
       StringBuffer buffer = new StringBuffer(); 
       int $nvcs = post.getAnswers().size();
       buffer.append("<tr><td>");
@@ -522,7 +525,7 @@ public class Tema extends FJServlet {
       buffer.append("</td></tr>");
       buffer.append("<tr><td align=\"CENTER\">");
       List<IQuestNode> $nodes = post.getAnswers();
-      boolean userVoted = service.isUserVoted(thread.getId(), user);
+      boolean userVoted = voiceService.isUserVoted(thread.getId(), user);
       if (user.isLogined() && !userVoted){
          buffer.append("<form  action='voice.php' method='POST'><table class=content>");
          for (int nodeIndex = 1; nodeIndex < $nodes.size(); nodeIndex++) {

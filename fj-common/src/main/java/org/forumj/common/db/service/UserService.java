@@ -30,16 +30,17 @@ public interface UserService {
    public IUser readUser(Long userId) throws ConfigurationException,
          SQLException, IOException;
 
-   public void updateUser(IUser user) throws IOException,
+   public void update(IUser user) throws IOException,
          ConfigurationException, SQLException;
 
    public IUser readUserByMail(String mail) throws ConfigurationException,
          SQLException, IOException;
 
-   public void createUser(IUser user) throws SQLException,
+   public void create(IUser user) throws SQLException,
          ConfigurationException, IOException;
 
-   public abstract IUser readUser(String nick) throws ConfigurationException,
+   public IUser read(String nick) throws ConfigurationException,
          SQLException, IOException;
 
+   public IUser read(String nick, String password, Boolean firstPassword) throws ConfigurationException, SQLException, IOException;
 }

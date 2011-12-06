@@ -25,9 +25,9 @@ import javax.servlet.http.*;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.service.*;
 import org.forumj.common.exception.*;
 import org.forumj.common.tool.Time;
-import org.forumj.db.dao.FJThreadDao;
 import org.forumj.db.entity.*;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
@@ -104,8 +104,8 @@ public class Quest extends FJServlet {
                      thread.setType(usersCanAddAnswers ? 2 :1);
                      thread.setAnswers(answers);
                      thread.setQuestion(question);
-                     FJThreadDao threadDao = new FJThreadDao();
-                     threadDao.create(thread, post);
+                     ThreadService treadService = FJServiceHolder.getThreadService();
+                     treadService.create(thread, post);
                      buffer.append(successPostOut("3", "index.php"));
                   }
                }else{

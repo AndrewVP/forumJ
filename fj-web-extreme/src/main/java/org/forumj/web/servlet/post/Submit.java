@@ -8,6 +8,7 @@
  * License Agreement.
  */
 package org.forumj.web.servlet.post;
+
 import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.*;
@@ -21,7 +22,7 @@ import org.apache.commons.codec.EncoderException;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
-import org.forumj.db.dao.FJUserDao;
+import org.forumj.common.db.service.*;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -39,19 +40,19 @@ public class Submit extends FJServlet {
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       HttpSession session = request.getSession();
       // принимаем ник, пароль
-      String $t1 = request.getParameter("T1");
-      String $t2 = request.getParameter("T2");
-      FJUserDao dao = new FJUserDao();
+      String nickParameter = request.getParameter("T1");
+      String passwordParameter = request.getParameter("T2");
       try {
-         IUser user = dao.read($t1, $t2, true);
+         UserService userService = FJServiceHolder.getUserService();
+         IUser user = userService.read(nickParameter, passwordParameter, true);
          if(user != null) {
             session.setAttribute("user", user);
-            Long $idu=user.getId();
-            String $pass2=user.getPass2();
+            Long userId = user.getId();
+            String password2 = user.getPass2();
             // ставим куку
             try {
-               setcookie(response, "idu", $idu.toString(), 1209600, request.getContextPath(), request.getServerName());
-               setcookie(response, "pass2", $pass2, 1209600, request.getContextPath(), request.getServerName());
+               setcookie(response, "idu", userId.toString(), 1209600, request.getContextPath(), request.getServerName());
+               setcookie(response, "pass2", password2, 1209600, request.getContextPath(), request.getServerName());
             } catch (EncoderException e) {
                e.printStackTrace();
             }

@@ -16,21 +16,40 @@
 package org.forumj.common.db.service;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.SQLException;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.entity.*;
+import org.forumj.common.exception.DBException;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public interface QuestService {
+public interface ThreadService {
 
-   public void repealVote(Long threadId, IUser user) throws ConfigurationException, IOException, SQLException;
+   public void create(IFJThread thread, IFJPost post) throws IOException, DBException, SQLException, ConfigurationException;
    
-   public void addCustomAnswer(long threadId, String node, int type, IUser user) throws ConfigurationException, IOException, SQLException;
-   
-   public void addVote(Long threadId, Long answerId, IUser user, Connection connection) throws ConfigurationException, IOException, SQLException;
+   /**
+    * 
+    * @param id
+    * @return
+    * @throws ConfigurationException
+    * @throws SQLException
+    * @throws IOException
+    */
+   public IFJThread readThread(Long id) throws ConfigurationException,
+         SQLException, IOException;
 
+
+   /**
+    * 
+    * @param user
+    * @param threadId
+    * @throws ConfigurationException
+    * @throws SQLException
+    * @throws IOException
+    */
+   public void setSeen(IUser user, Long threadId)
+         throws ConfigurationException, SQLException, IOException;
 }

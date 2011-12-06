@@ -21,26 +21,35 @@ import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
-import org.forumj.common.db.service.TemaService;
+import org.forumj.common.db.service.PostService;
+import org.forumj.common.exception.DBException;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class TemaServiceImpl extends FJService implements TemaService {
+public class PostServiceImpl extends FJService implements PostService {
 
+   public Long create(IFJPost post) throws IOException, DBException, ConfigurationException, SQLException{
+      return getPostDao().create(post);
+   }
+
+   public void update(IFJPost post) throws IOException, SQLException, ConfigurationException{
+      getPostDao().update(post);
+   }
+   
    /**
     * 
     * @param id
     * @return
+    * @throws IOException
     * @throws ConfigurationException
     * @throws SQLException
-    * @throws IOException
     */
-   public IFJThread readThread(Long id) throws ConfigurationException, SQLException, IOException{
-      return getThreadDao().read(id);
+   public IFJPost read(Long id) throws IOException, ConfigurationException, SQLException{
+      return getPostDao().read(id);
    }
-   
+
    /**
     * 
     * @param threadId
@@ -54,17 +63,6 @@ public class TemaServiceImpl extends FJService implements TemaService {
       return getThreadDao().getPostsCountInThread(threadId, idMax);
    }
    
-   /**
-    * 
-    * @param user
-    * @param threadId
-    * @throws ConfigurationException
-    * @throws SQLException
-    * @throws IOException
-    */
-   public void setSeen(IUser user, Long threadId) throws ConfigurationException, SQLException, IOException{
-      getThreadDao().setSeen(user, threadId);
-   }
 
    /**
     * 
@@ -82,44 +80,4 @@ public class TemaServiceImpl extends FJService implements TemaService {
    public List<IFJPost> readPosts(IUser user, Long threadId, long nfirstpost, int count, int page, boolean lastPost) throws IOException, SQLException, ConfigurationException{
       return getPostDao().getPostsList(user, threadId, nfirstpost, count, page, lastPost);
    }
-   
-   /**
-    * 
-    * @param id
-    * @return
-    * @throws IOException
-    * @throws ConfigurationException
-    * @throws SQLException
-    */
-   public IFJPost readPost(Long id) throws IOException, ConfigurationException, SQLException{
-      return getPostDao().read(id);
-   }
-
-   /**
-    * 
-    * @param idUser
-    * @param threadId
-    * @return
-    * @throws ConfigurationException
-    * @throws SQLException
-    * @throws IOException
-    */
-   public Boolean isUserSubscribed(Long idUser, Long threadId) throws ConfigurationException, SQLException, IOException{
-      return getSubscribedao().isUserSubscribed(idUser, threadId);
-   }
-   
-   /**
-    * 
-    * @param threadId
-    * @param user
-    * @return
-    * @throws SQLException
-    * @throws ConfigurationException
-    * @throws IOException
-    */
-   public boolean isUserVoted(long threadId, IUser user) throws SQLException, ConfigurationException, IOException{
-      return getVoiceDao().isUserVoted(threadId, user);
-   }
-   
-   
 }

@@ -64,4 +64,18 @@ public interface FolderService {
    public List<IFJFolder> findAllFoldersNotIn(IUser user, IFJInterface interf)
          throws SQLException, ConfigurationException, IOException;
    
+   public void moveToFolder(long threadId, long folderId, IUser user) throws IOException, ConfigurationException, SQLException;
+
+   /**
+    * @param folderNameParameter
+    * @param user
+    */
+   public void create(String folderNameParameter, IUser user) throws ConfigurationException, SQLException, IOException ;
+
+   /**
+    * @param folderNameParameter
+    * @param user
+    * @return
+    */
+   public boolean isExist(String name, IUser user) throws ConfigurationException, SQLException, IOException ;
 }

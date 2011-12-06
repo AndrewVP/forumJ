@@ -18,7 +18,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
-import org.forumj.db.dao.FJUserDao;
+import org.forumj.common.db.service.*;
 import org.forumj.db.entity.User;
 import org.forumj.web.servlet.FJServlet;
 
@@ -40,14 +40,14 @@ public class SetLocation extends FJServlet {
          int timeZone = Integer.valueOf(timezoneParameter); 
          HttpSession session = request.getSession();
          User user = (User) session.getAttribute("user");
-         FJUserDao dao = new FJUserDao();
          if (user != null && !user.isBanned() && user.isLogined()){
             user.setShowCity(scity);
             user.setShowCountry(scountry);
             user.setCity(cityParameter);
             user.setCountry(countryParameter);
             user.setTimeZone(timeZone);
-            dao.update(user);
+            UserService userService = FJServiceHolder.getUserService();
+            userService.update(user);
             //TODO Magic integer!
             buffer.append(successPostOut("0", "control.php?id=10"));
          }else{

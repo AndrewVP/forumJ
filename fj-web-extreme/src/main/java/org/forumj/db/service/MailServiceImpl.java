@@ -65,4 +65,8 @@ public class MailServiceImpl extends FJService implements MailService {
    public List<IFJMail> loadDraftBox(IUser user) throws IOException, ConfigurationException, SQLException{
       return getMailDao().loadDraftBox(user);
    }
+
+   public void create(IFJMail mail) throws ConfigurationException, SQLException, IOException {
+      getMailDao().create(mail);
+   }
 }

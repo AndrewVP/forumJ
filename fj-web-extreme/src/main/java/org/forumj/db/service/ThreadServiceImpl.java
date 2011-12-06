@@ -13,57 +13,47 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.forumj.common.db.service;
+package org.forumj.db.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
+import org.forumj.common.db.service.ThreadService;
+import org.forumj.common.exception.DBException;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public interface SubscribeService {
+public class ThreadServiceImpl extends FJService implements ThreadService {
 
-   public boolean isKeyPresent(Integer key) throws SQLException,
-         ConfigurationException, IOException;
+   public void create(IFJThread thread, IFJPost post) throws IOException, DBException, SQLException, ConfigurationException {
+      getThreadDao().create(thread, post);
+   }
 
-   public void createSubscribe(IFJSubscribe subscribe)
-         throws ConfigurationException, SQLException, IOException;
-
-   public void deleteSubscribeByTitleId(long titleId, IUser user)
-         throws ConfigurationException, SQLException, IOException;
-
-   public void deleteSubscribeByKey(long key) throws ConfigurationException,
-         SQLException, IOException;
-
-   public void deleteSuscribeById(long id, IUser user)
-         throws ConfigurationException, SQLException, IOException;
-
+   /**
+    * 
+    * @param id
+    * @return
+    * @throws ConfigurationException
+    * @throws SQLException
+    * @throws IOException
+    */
+   public IFJThread readThread(Long id) throws ConfigurationException, SQLException, IOException{
+      return getThreadDao().read(id);
+   }
+   
    /**
     * 
     * @param user
-    * @param active
-    * @return
-    * @throws SQLException
-    * @throws ConfigurationException
-    * @throws IOException
-    */
-   public List<IFJSubscribe> findAllSubscribes(IUser user, Integer active)
-         throws SQLException, ConfigurationException, IOException;
-   
-   /**
-    * 
-    * @param idUser
     * @param threadId
-    * @return
     * @throws ConfigurationException
     * @throws SQLException
     * @throws IOException
     */
-   public Boolean isUserSubscribed(Long idUser, Long threadId) throws ConfigurationException, SQLException, IOException;
-   
+   public void setSeen(IUser user, Long threadId) throws ConfigurationException, SQLException, IOException{
+      getThreadDao().setSeen(user, threadId);
+   }
 }

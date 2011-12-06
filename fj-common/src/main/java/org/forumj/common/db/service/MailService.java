@@ -112,4 +112,9 @@ public interface MailService {
    public List<IFJMail> loadDraftBox(IUser user) throws IOException,
          ConfigurationException, SQLException;
 
+   /**
+    * @param mail
+    */
+   public void create(IFJMail mail) throws ConfigurationException, SQLException, IOException ;
+
 }

@@ -16,62 +16,57 @@
 package org.forumj.common.db.service;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.SQLException;
 import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
+import org.forumj.common.exception.DBException;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public interface InterfaceService {
+public interface PostService {
+
+   public Long create(IFJPost post) throws IOException, DBException, ConfigurationException, SQLException;
+   
+   public void update(IFJPost post) throws IOException, SQLException, ConfigurationException;
 
    /**
     * 
-    * @param user
-    * @return
-    * @throws IOException
-    * @throws SQLException
-    * @throws ConfigurationException
-    */
-   public List<IFJInterface> findAllInterfaces(IUser user) throws IOException,
-         SQLException, ConfigurationException;
-
-   /**
-    * 
-    * @param user
     * @param id
     * @return
     * @throws IOException
+    * @throws ConfigurationException
+    * @throws SQLException
+    */
+   public IFJPost read(Long id) throws IOException, ConfigurationException, SQLException;
+
+   /**
+    * 
+    * @param user
+    * @param threadId
+    * @param nfirstpost
+    * @param count
+    * @param page
+    * @param lastPost
+    * @return
+    * @throws IOException
     * @throws SQLException
     * @throws ConfigurationException
     */
-   public IFJInterface findInterface(IUser user, Long id) throws IOException,
-         SQLException, ConfigurationException;
-
-   public boolean isInterfaceContainsFolder(long interfaceId, long folderId,
-         IUser user) throws IOException, ConfigurationException, SQLException;
-
-   public void addFolder(long interfaceId, long folderId, IUser user,
-         Connection connection) throws ConfigurationException, SQLException,
-         IOException;
-
-   public void deleteInterface(long interfaceId, IUser user)
-         throws ConfigurationException, SQLException, IOException;
+   public List<IFJPost> readPosts(IUser user, Long threadId, long nfirstpost, int count, int page, boolean lastPost) throws IOException, SQLException, ConfigurationException;
 
    /**
-    * @param vewNameParameter
-    * @param user
+    * 
+    * @param threadId
+    * @param idMax
     * @return
+    * @throws ConfigurationException
+    * @throws SQLException
+    * @throws IOException
     */
-   public boolean isExist(String name, IUser user) throws ConfigurationException, SQLException, IOException ;
-
-   /**
-    * @param vewNameParameter
-    * @param user
-    */
-   public void create(String name, IUser user) throws ConfigurationException, SQLException, IOException ;
-
+   public Integer getPostsCountInThread(Long threadId, Long idMax)
+         throws ConfigurationException, SQLException, IOException;
 }

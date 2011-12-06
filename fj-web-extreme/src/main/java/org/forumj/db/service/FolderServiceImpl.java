@@ -30,7 +30,8 @@ import org.forumj.common.db.service.FolderService;
 public class FolderServiceImpl extends FJService implements FolderService {
 
    public void moveToRecyclebin(long threadId, IUser user) throws IOException, ConfigurationException, SQLException{
-      getFolderDao().moveToRecyclebin(threadId, user);
+      // TODO Magic integer!
+      getFolderDao().moveToFolder(threadId, 3, user);
    }
    
    public void deleteFolder(Long folderId, IUser user) throws ConfigurationException, SQLException, IOException{
@@ -61,5 +62,18 @@ public class FolderServiceImpl extends FJService implements FolderService {
 
    public List<IFJFolder> findAllFoldersNotIn(IUser user, IFJInterface interf) throws SQLException, ConfigurationException, IOException{
       return getFolderDao().findAllNotIn(user, interf);
+   }
+
+   public void moveToFolder(long threadId, long folderId, IUser user) throws IOException, ConfigurationException, SQLException{
+      getFolderDao().moveToFolder(threadId, folderId, user);
+   }
+
+   public void create(String folderName, IUser user) throws ConfigurationException, SQLException, IOException {
+      getFolderDao().create(folderName, user);
+   }
+
+   @Override
+   public boolean isExist(String name, IUser user) throws ConfigurationException, SQLException, IOException {
+      return getFolderDao().isExist(name, user);
    }
 }

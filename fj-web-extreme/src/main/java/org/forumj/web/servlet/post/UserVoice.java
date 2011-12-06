@@ -19,7 +19,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
-import org.forumj.db.dao.*;
+import org.forumj.common.db.service.*;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -43,13 +43,13 @@ public class UserVoice extends FJServlet {
          if (user != null && !user.isBanned() && user.isLogined()){
             if (threadIdParameter != null && !"".equals(threadIdParameter)){
                if (answerParameter != null && !"".equals(answerParameter)){
-                  FJQuestNodeDao questDao = new FJQuestNodeDao();
+                  QuestService questService = FJServiceHolder.getQuestService();
+                  VoiceService voiceService = FJServiceHolder.getVoiceService();
                   Long threadId = Long.valueOf(threadIdParameter);
-                  FJVoiceDao voteDao = new FJVoiceDao();
                   // TODO Magic integer!
                   int answerType = anonymouslyParameter == null ? 1 : 2; 
-                  if (!voteDao.isUserVoted(threadId, user)){
-                     questDao.addCustomAnswer(threadId, answerParameter, answerType, user);
+                  if (!voiceService.isUserVoted(threadId, user)){
+                     questService.addCustomAnswer(threadId, answerParameter, answerType, user);
                   }
                }
                buffer.append(successPostOut("3", "tema.php?id=" + threadIdParameter));

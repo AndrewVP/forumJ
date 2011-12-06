@@ -22,3 +22,6 @@ service.mailService.class=org.forumj.db.service.MailServiceImpl
 service.subscribeService.class=org.forumj.db.service.SubscribeServiceImpl
 service.questService.class=org.forumj.db.service.QuestServiceImpl
 service.userService.class=org.forumj.db.service.UserServiceImpl
+service.threadService.class=org.forumj.db.service.ThreadServiceImpl
+service.voiceService.class=org.forumj.db.service.VoiceServiceImpl
+service.postService.class=org.forumj.db.service.PostServiceImpl

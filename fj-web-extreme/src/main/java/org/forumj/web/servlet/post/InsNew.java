@@ -58,7 +58,7 @@ public class InsNew extends FJServlet {
          }else{
             String nick = prepareNick(nickParameter);
             UserService userService = FJServiceHolder.getUserService();
-            IUser user = userService.readUser(nick);
+            IUser user = userService.read(nick);
             if (user != null){
                session.setAttribute("nick", nick);
                response.sendRedirect("reg.php?id=5");
@@ -75,7 +75,7 @@ public class InsNew extends FJServlet {
                   user.setPp(FJConfiguration.getConfig().getInt("fj.default.threadsOnPage"));
                   user.setPt(FJConfiguration.getConfig().getInt("fj.default.postsOnPage"));
                   user.setView(FJConfiguration.getConfig().getInt("fj.default.viewId"));
-                  userService.createUser(user);
+                  userService.create(user);
                   session.setAttribute("user", user);
                   response.sendRedirect("index.php");
                }

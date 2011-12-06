@@ -29,7 +29,7 @@ import org.forumj.db.entity.*;
  */
 public class FJThreadDao extends FJDao {
 
-   public void create(FJThread thread, FJPost post) throws IOException, DBException, SQLException, ConfigurationException{
+   public void create(IFJThread thread, IFJPost post) throws IOException, DBException, SQLException, ConfigurationException{
       String createThreadQuery = getCreateThreadQuery(); 
       Connection conn = null;
       PreparedStatement st = null;
@@ -127,7 +127,7 @@ public class FJThreadDao extends FJDao {
       return thread;
    }
    
-   public void update(FJThread thread, Connection conn) throws IOException, SQLException{
+   public void update(IFJThread thread, Connection conn) throws IOException, SQLException{
       String updateThreadQuery = getUpdateThreadQuery(); 
       PreparedStatement st = null;
       try {
