@@ -13,27 +13,28 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.forumj.db.service;
+package org.forumj.common.db.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.IUser;
-import org.forumj.db.entity.Ignor;
+import org.forumj.common.db.entity.*;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class IgnorService extends FJCommonService {
+public interface IgnorService {
 
-   public static void createIgnor(long ignoredUserId, IUser user) throws SQLException, ConfigurationException, IOException{
-      getIgnorDao().create(ignoredUserId, user);
-   }
+   public void createIgnor(long ignoredUserId, IUser user) throws SQLException,
+         ConfigurationException, IOException;
 
-   public static void updateIgnor(Ignor ignor) throws IOException, ConfigurationException, SQLException{
-      getIgnorDao().update(ignor);
-   }
+   public void updateIgnor(IIgnor ignor) throws IOException,
+         ConfigurationException, SQLException;
+
+   public abstract List<IIgnor> readUserIgnor(Long userId) throws IOException,
+         ConfigurationException, SQLException;
 
 }

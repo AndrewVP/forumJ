@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.forumj.db.service;
+package org.forumj.common.db.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -21,15 +21,13 @@ import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
-import org.forumj.db.entity.*;
-import org.forumj.tool.LocaleString;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class IndexService extends FJCommonService{
-   
+public interface IndexService {
+
    /**
     * Возвращает id последнего поста в форуме
     * @return
@@ -37,10 +35,9 @@ public class IndexService extends FJCommonService{
     * @throws SQLException
     * @throws IOException
     */
-   public static Long getLastPostId() throws ConfigurationException, SQLException, IOException{
-      return getPostDao().getLastPostId(); 
-   }
-   
+   public Long getLastPostId() throws ConfigurationException, SQLException,
+         IOException;
+
    /**
     * Возвращает id последней ветки в форуме
     * @return
@@ -48,10 +45,9 @@ public class IndexService extends FJCommonService{
     * @throws SQLException
     * @throws IOException
     */
-   public static Long getMaxThreadId() throws ConfigurationException, SQLException, IOException{
-      return getThreadDao().getMaxThreadId();
-   }
-   
+   public Long getMaxThreadId() throws ConfigurationException, SQLException,
+         IOException;
+
    /**
     * 
     * @param viewId
@@ -63,10 +59,9 @@ public class IndexService extends FJCommonService{
     * @throws SQLException
     * @throws ConfigurationException
     */
-   public static FJThreads getThreads(Long viewId, long nfirstpost, LocaleString locale, IUser user, List<Ignor> ignorList) throws SQLException, ConfigurationException{
-      return getThreadDao().getThreads(viewId, nfirstpost, locale, user, ignorList);
-   }
-   
+   public FJThreads getThreads(Long viewId, long nfirstpost, IUser user, List<IIgnor> ignorList)
+         throws SQLException, ConfigurationException;
+
    /**
     * 
     * @param idUser
@@ -75,9 +70,8 @@ public class IndexService extends FJCommonService{
     * @throws SQLException
     * @throws IOException
     */
-   public static int getNewMailCount(Long idUser) throws ConfigurationException, SQLException, IOException{
-      return getMailDao().getNewMailCount(idUser);
-   }
+   public int getNewMailCount(Long idUser) throws ConfigurationException,
+         SQLException, IOException;
 
    /**
     * 
@@ -87,10 +81,9 @@ public class IndexService extends FJCommonService{
     * @throws SQLException
     * @throws IOException
     */
-   public static String getViewName(Long idView) throws ConfigurationException, SQLException, IOException{
-      return getInterfaceDao().getViewName(idView);
-   }
-   
+   public String getViewName(Long idView) throws ConfigurationException,
+         SQLException, IOException;
+
    /**
     * 
     * @param idUser
@@ -99,11 +92,9 @@ public class IndexService extends FJCommonService{
     * @throws SQLException
     * @throws IOException
     */
-   public static List<IFJInterface> getViews(Long idUser) throws ConfigurationException, SQLException, IOException{
-      return getInterfaceDao().getViewsArray(idUser);
-   }
-   
-   
+   public List<IFJInterface> getViews(Long idUser)
+         throws ConfigurationException, SQLException, IOException;
+
    /**
     * 
     * @return
@@ -111,10 +102,9 @@ public class IndexService extends FJCommonService{
     * @throws SQLException
     * @throws IOException
     */
-   public static List<IUser> getUsersArray() throws ConfigurationException, SQLException, IOException{
-      return getActiondao().getUsersArray();
-   }
-   
+   public List<IUser> getUsersArray() throws ConfigurationException,
+         SQLException, IOException;
+
    /**
     * 
     * @return
@@ -122,8 +112,7 @@ public class IndexService extends FJCommonService{
     * @throws SQLException
     * @throws IOException
     */
-   public static int getGuestsAmount() throws ConfigurationException, SQLException, IOException{
-      return getActiondao().getGuestsAmount();
-   }
-   
+   public int getGuestsAmount() throws ConfigurationException, SQLException,
+         IOException;
+
 }

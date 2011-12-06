@@ -17,31 +17,36 @@ package org.forumj.db.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
+import org.forumj.common.db.service.IgnorService;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class SubscribeService extends FJCommonService {
-   
-   public static boolean isKeyPresent(Integer key) throws SQLException, ConfigurationException, IOException{
-      return getSubscribedao().isKeyPresent(key);
-   }
-   
-   public static void createSubscribe(IFJSubscribe subscribe) throws ConfigurationException, SQLException, IOException{
-      getSubscribedao().create(subscribe);
+public class IgnorServiceImpl extends FJCommonService implements IgnorService {
+
+   public void createIgnor(long ignoredUserId, IUser user) throws SQLException, ConfigurationException, IOException{
+      getIgnorDao().create(ignoredUserId, user);
    }
 
-   public static void deleteSubscribeByTitleId(long titleId, IUser user) throws ConfigurationException, SQLException, IOException{
-      getSubscribedao().deleteByTitleId(titleId, user);
+   public void updateIgnor(IIgnor ignor) throws IOException, ConfigurationException, SQLException{
+      getIgnorDao().update(ignor);
    }
-   public static void deleteSubscribeByKey(long key) throws ConfigurationException, SQLException, IOException{
-      getSubscribedao().deleteByKey(key);
-   }
-   public static void deleteSuscribeById(long id, IUser user) throws ConfigurationException, SQLException, IOException{
-      getSubscribedao().deleteById(id, user);
+
+   /**
+    * 
+    * @param userId
+    * @return
+    * @throws IOException
+    * @throws ConfigurationException
+    * @throws SQLException
+    */
+   @Override
+   public List<IIgnor> readUserIgnor(Long userId) throws IOException, ConfigurationException, SQLException{
+      return getIgnorDao().loadAll(userId);
    }
 }

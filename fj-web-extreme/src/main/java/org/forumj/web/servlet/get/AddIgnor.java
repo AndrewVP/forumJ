@@ -9,7 +9,6 @@
  */
 package org.forumj.web.servlet.get;
 
-import static org.forumj.db.service.IgnorService.*;
 import static org.forumj.tool.Diletant.*;
 
 import java.io.IOException;
@@ -20,6 +19,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.service.*;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -38,12 +38,13 @@ public class AddIgnor extends FJServlet {
          String postIdParameter = request.getParameter("idp");
          String ignoredUserIdParameter = request.getParameter("idi");
          IUser user = (IUser) session.getAttribute("user");
+         IgnorService service = FJServiceHolder.getIgnorService();
          if (user != null && !user.isBanned() && user.isLogined()){
             if (!isEmptyParameter(threadIdParameter)
                   && !isEmptyParameter(postIdParameter)
                   && !isEmptyParameter(ignoredUserIdParameter)){
                Long ignoredUserId = Long.valueOf(ignoredUserIdParameter);
-               createIgnor(ignoredUserId, user);
+               service.createIgnor(ignoredUserId, user);
                String add = "";
                if (pageParameter != null){
                   add = "&page=" + pageParameter;

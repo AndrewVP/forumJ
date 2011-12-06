@@ -15,7 +15,6 @@
  */
 package org.forumj.web.servlet.get;
 
-import static org.forumj.db.service.FolderService.*;
 import static org.forumj.tool.Diletant.*;
 
 import java.io.IOException;
@@ -26,6 +25,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.service.*;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -44,10 +44,11 @@ public class DelOne extends FJServlet {
          String idThreadParameter = request.getParameter("id");
          String pageParameter = request.getParameter("page");
          IUser user = (IUser) session.getAttribute("user");
+         FolderService service = FJServiceHolder.getFolderService();
          if (user != null && !user.isBanned() && user.isLogined()){
             if (idThreadParameter != null && !"".equals(idThreadParameter)){
                Long idThread = Long.valueOf(idThreadParameter);
-               moveToRecyclebin(idThread, user);
+               service.moveToRecyclebin(idThread, user);
             }
             String urlQuery = "";
             if (pageParameter != null && !"".equals(pageParameter)){

@@ -9,7 +9,6 @@
  */
 package org.forumj.web.servlet.post;
 
-import static org.forumj.db.service.IgnorService.*;
 import static org.forumj.tool.Diletant.*;
 
 import java.io.IOException;
@@ -22,6 +21,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.service.*;
 import org.forumj.db.entity.Ignor;
 import org.forumj.web.servlet.FJServlet;
 
@@ -46,6 +46,7 @@ public class Amn extends FJServlet {
          String ignorDayParameter = request.getParameter("D");
          String ignorHourParameter = request.getParameter("H");
          String ignorMinuteParameter = request.getParameter("M");
+         IgnorService service = FJServiceHolder.getIgnorService();
          if (user != null && !user.isBanned() && user.isLogined()){
             String strDate = ignorDayParameter+ "." + ignorMounthParameter + "." + ignorYearParameter + "." + ignorHourParameter + "." + ignorMinuteParameter;
             SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy.HH.mm");
@@ -55,7 +56,7 @@ public class Amn extends FJServlet {
             ignor.setUserId(user.getId());
             ignor.setType(Integer.valueOf(ignorTypeParameter));
             ignor.setEnd(newEndDate);
-            updateIgnor(ignor);
+            service.updateIgnor(ignor);
             buffer.append(successPostOut("0", "control.php?id=1"));
          }else{
             // Вошли незарегистрировавшись

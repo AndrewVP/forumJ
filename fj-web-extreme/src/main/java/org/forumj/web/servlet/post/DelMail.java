@@ -15,7 +15,6 @@
  */
 package org.forumj.web.servlet.post;
 
-import static org.forumj.db.service.MailService.*;
 import static org.forumj.tool.Diletant.*;
 
 import java.io.IOException;
@@ -26,6 +25,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.service.*;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -44,6 +44,7 @@ public class DelMail extends FJServlet {
          String idParameter = request.getParameter("id");
          String actionParameter = request.getParameter("ACT");
          IUser user = (IUser) session.getAttribute("user");
+         MailService mailService = FJServiceHolder.getMailService();
          if (user != null && !user.isBanned() && user.isLogined()){
             if (actionParameter != null && !"".equals(actionParameter)){
                String nrwParameter = request.getParameter("NRW");
@@ -56,10 +57,10 @@ public class DelMail extends FJServlet {
                         Long mailId = Long.valueOf(mailIdParameter);
                         switch(id) {
                         case 2:
-                           deleteMailFromInbox(mailId, user);
+                           mailService.deleteMailFromInbox(mailId, user);
                            break;
                         case 4:
-                           deleteMailFromOutbox(mailId, user);
+                           mailService.deleteMailFromOutbox(mailId, user);
                            break;
                         }      
                      }

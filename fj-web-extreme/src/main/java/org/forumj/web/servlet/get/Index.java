@@ -19,7 +19,6 @@ import static org.forumj.common.tool.PHP.*;
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
-import static org.forumj.db.service.IndexService.*;
 
 import java.io.*;
 import java.sql.SQLException;
@@ -33,9 +32,8 @@ import javax.servlet.http.*;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
 import org.forumj.common.db.entity.*;
+import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
-import org.forumj.db.dao.*;
-import org.forumj.db.entity.*;
 import org.forumj.tool.*;
 import org.forumj.web.servlet.FJServlet;
 
@@ -75,8 +73,11 @@ public class Index extends FJServlet {
          buffer.append(loadCSS("/css/style.css"));
          // Скрипты (флажки)
          buffer.append(loadJavaScript("/js/jsmain_chek.js"));
-         Long m_xb = getLastPostId();
-         Long m_xt = getMaxThreadId();
+         IndexService indexService = FJServiceHolder.getIndexService();
+         IgnorService ignorService = FJServiceHolder.getIgnorService();
+         FolderService folderService = FJServiceHolder.getFolderService();
+         Long m_xb = indexService.getLastPostId();
+         Long m_xt = indexService.getMaxThreadId();
          buffer.append("<script language='javascript' type='text/javascript'>");
          buffer.append("// <!-- \n");
          buffer.append("var m_xb=" + m_xb + ";");
@@ -109,16 +110,16 @@ public class Index extends FJServlet {
          if (session.getAttribute("view") == null){
             session.setAttribute("view", user.getView());
          }
-         List<Ignor> ignorList = new FJIgnorDao().loadAll(user.getId());
-         FJThreads threads = getThreads(Long.valueOf((Integer) session.getAttribute("view")), nfirstpost, locale, user, ignorList);
-         List<FJThread> threadsList = threads.getThreads();
+         List<IIgnor> ignorList = ignorService.readUserIgnor(user.getId());
+         FJThreads threads = indexService.getThreads(Long.valueOf((Integer) session.getAttribute("view")), nfirstpost, user, ignorList);
+         List<IFJThread> threadsList = threads.getThreads();
          long threadsCount = threads.getThreadCount();
          // кол-во страниц с заголовками
          int couP = ceil(threadsCount/user.getPp())+1;
          // Проверяем наличие почты
          String newMail = "";
          if (user.isLogined()) {
-            int mailCount = getNewMailCount(user.getId());
+            int mailCount = indexService.getNewMailCount(user.getId());
             if (mailCount > 0) {
                newMail="<a class=hdforum href='control.php?id=2' rel='nofollow'><font color=red>" + locale.getString("mess66") + " " + mailCount +" " + locale.getString("mess67") + "</font></a>";
             }
@@ -132,9 +133,9 @@ public class Index extends FJServlet {
          // Интерфейс
          // Имя текущего
          if (session.getAttribute("vname") == null){
-            session.setAttribute("vname", getViewName(Long.valueOf((Integer)session.getAttribute("view"))));
+            session.setAttribute("vname", indexService.getViewName(Long.valueOf((Integer)session.getAttribute("view"))));
          }
-         List<IFJInterface> viewsList = getViews(userId);
+         List<IFJInterface> viewsList = indexService.getViews(userId);
          buffer.append("<tr><td>");
 
          buffer.append("<table class=control>");
@@ -292,7 +293,7 @@ public class Index extends FJServlet {
          }
          // Выводим строки
          for (int threadIndex = 0; threadIndex < threadsList.size(); threadIndex++) {
-            FJThread thread = threadsList.get(threadIndex);
+            IFJThread thread = threadsList.get(threadIndex);
             buffer.append(writeThread(thread, user, locale, threadIndex));
          }
          // Главные ссылки внизу страницы
@@ -337,7 +338,7 @@ public class Index extends FJServlet {
          // Сервис интерфейса
          if (user.isLogined()) {
             // Выбираем доступные папки
-            List<IFJFolder> foldersList = getUserFolders(user);
+            List<IFJFolder> foldersList = folderService.getUserFolders(user);
             buffer.append("<tr>");
             buffer.append("<table class=control>");        
             buffer.append("<tr>");
@@ -387,7 +388,7 @@ public class Index extends FJServlet {
          buffer.append("</tr>");
          // Таблица активных пользователей
          // Выбираем Активных юзеров
-         List<IUser> userList = getUsersArray();
+         List<IUser> userList = indexService.getUsersArray();
          buffer.append("<tr>");
          buffer.append("<td width=\"100%\">");
          buffer.append("<table width='100%'><tr><td>");
@@ -405,7 +406,7 @@ public class Index extends FJServlet {
          buffer.append("</font>");
          buffer.append("<font class=nick>");
          // Выводим количество гостей
-         buffer.append(getGuestsAmount());
+         buffer.append(indexService.getGuestsAmount());
          buffer.append("</font>");
          buffer.append("</td>");
          buffer.append("</tr>");
@@ -432,7 +433,7 @@ public class Index extends FJServlet {
       writer.write(out.replace("ъъ_ъ", format.format(allTime/1000)));
    }
 
-   private StringBuffer writeThread(FJThread thread, IUser user, LocaleString locale, int threadIndex) throws InvalidKeyException{
+   private StringBuffer writeThread(IFJThread thread, IUser user, LocaleString locale, int threadIndex) throws InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       if (thread.getDisain() == 1) { 
          buffer.append("<tr class=trees >");

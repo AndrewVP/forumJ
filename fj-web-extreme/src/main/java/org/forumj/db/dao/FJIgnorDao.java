@@ -23,7 +23,7 @@ import java.sql.*;
 import java.util.*;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.entity.*;
 import org.forumj.db.entity.*;
 
 /**
@@ -32,8 +32,8 @@ import org.forumj.db.entity.*;
  */
 public class FJIgnorDao extends FJDao {
 
-   public List<Ignor> loadAll(Long userId) throws IOException, ConfigurationException, SQLException{
-      List<Ignor> result = new ArrayList<Ignor>();
+   public List<IIgnor> loadAll(Long userId) throws IOException, ConfigurationException, SQLException{
+      List<IIgnor> result = new ArrayList<IIgnor>();
       String query = getLoadIgnorQuery();
       Connection conn = null;
       PreparedStatement st = null;
@@ -61,7 +61,7 @@ public class FJIgnorDao extends FJDao {
       return result;
    }
    
-   public void update(Ignor ignor) throws IOException, ConfigurationException, SQLException{
+   public void update(IIgnor ignor) throws IOException, ConfigurationException, SQLException{
       String query = getUpdateIgnorQuery();
       Connection conn = null;
       PreparedStatement st = null;
