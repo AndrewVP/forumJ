@@ -16,7 +16,7 @@ import java.sql.*;
 import java.util.*;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.entity.*;
 import org.forumj.db.entity.*;
 
 /**
@@ -25,8 +25,8 @@ import org.forumj.db.entity.*;
  */
 public class FJQuestNodeDao extends FJDao {
 
-   public List<QuestNode> loadNodes(Long threadId) throws IOException, ConfigurationException, SQLException{
-      List<QuestNode> result = new ArrayList<QuestNode>();
+   public List<IQuestNode> loadNodes(Long threadId) throws IOException, ConfigurationException, SQLException{
+      List<IQuestNode> result = new ArrayList<IQuestNode>();
       String query = getLoadAnswersQuery();
       Connection conn = null;
       PreparedStatement st = null;

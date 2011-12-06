@@ -20,26 +20,32 @@ import java.sql.SQLException;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.service.UserService;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class UserService extends FJCommonService {
+public class UserServiceImpl extends FJService implements UserService {
 
-   public static IUser readUser(Long userId) throws ConfigurationException, SQLException, IOException{
+   public IUser readUser(Long userId) throws ConfigurationException, SQLException, IOException{
       return getUserDao().read(userId);
    }
    
-   public static void updateUser(IUser user) throws IOException, ConfigurationException, SQLException {
+   public void updateUser(IUser user) throws IOException, ConfigurationException, SQLException {
       getUserDao().update(user);
    }
 
-   public static IUser readUserByMail(String mail) throws ConfigurationException, SQLException, IOException{
+   public IUser readUserByMail(String mail) throws ConfigurationException, SQLException, IOException{
       return getUserDao().readByMail(mail);
    }
 
-   public static void createUser(IUser user) throws SQLException, ConfigurationException, IOException{
+   public void createUser(IUser user) throws SQLException, ConfigurationException, IOException{
       getUserDao().create(user);
+   }
+
+   @Override
+   public IUser readUser(String nick) throws ConfigurationException, SQLException, IOException{
+      return getUserDao().read(nick);
    }
 }

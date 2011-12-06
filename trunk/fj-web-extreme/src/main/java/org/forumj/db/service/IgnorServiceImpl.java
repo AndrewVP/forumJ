@@ -27,7 +27,7 @@ import org.forumj.common.db.service.IgnorService;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class IgnorServiceImpl extends FJCommonService implements IgnorService {
+public class IgnorServiceImpl extends FJService implements IgnorService {
 
    public void createIgnor(long ignoredUserId, IUser user) throws SQLException, ConfigurationException, IOException{
       getIgnorDao().create(ignoredUserId, user);

@@ -25,26 +25,38 @@ public class FJServiceHolder {
    private static MailService mailService = null;
    
    private static SubscribeService subscribeService = null;
-   
-   @SuppressWarnings("unused")
-   private FJServiceHolder instance = new FJServiceHolder();
-   
-   private FJServiceHolder() throws ConfigurationException, InstantiationException, IllegalAccessException, ClassNotFoundException{
-      String countServiceClassName = FJConfiguration.getConfig().getString("service.countService.class");
-      countService = (CountService) Class.forName(countServiceClassName).newInstance();
-      String folderServiceClassName = FJConfiguration.getConfig().getString("service.folderService.class");
-      folderService = (FolderService) Class.forName(folderServiceClassName).newInstance();
-      String ignorServiceClassName = FJConfiguration.getConfig().getString("service.ignorService.class");
-      ignorService = (IgnorService) Class.forName(ignorServiceClassName).newInstance();
-      String indexServiceClassName = FJConfiguration.getConfig().getString("service.indexService.class");
-      indexService = (IndexService) Class.forName(indexServiceClassName).newInstance();
-      String interfaceServiceClassName = FJConfiguration.getConfig().getString("service.interfaceService.class");
-      interfaceService = (InterfaceService) Class.forName(interfaceServiceClassName).newInstance();
-      String mailServiceClassName = FJConfiguration.getConfig().getString("service.mailService.class");
-      mailService = (MailService) Class.forName(mailServiceClassName).newInstance();
 
-      String subscribeServiceClassName = FJConfiguration.getConfig().getString("service.subscribeService.class");
-      subscribeService = (SubscribeService) Class.forName(subscribeServiceClassName).newInstance();
+   private static QuestService questService = null;
+   
+   private static UserService userService = null;
+
+   private static TemaService temaService = null;
+   
+   static{
+      try {
+         countService = (CountService) Class.forName(FJConfiguration.getConfig().getString("service.countService.class")).newInstance();
+         folderService = (FolderService) Class.forName(FJConfiguration.getConfig().getString("service.folderService.class")).newInstance();
+         ignorService = (IgnorService) Class.forName(FJConfiguration.getConfig().getString("service.ignorService.class")).newInstance();
+         indexService = (IndexService) Class.forName(FJConfiguration.getConfig().getString("service.indexService.class")).newInstance();
+         interfaceService = (InterfaceService) Class.forName(FJConfiguration.getConfig().getString("service.interfaceService.class")).newInstance();
+         mailService = (MailService) Class.forName(FJConfiguration.getConfig().getString("service.mailService.class")).newInstance();
+         subscribeService = (SubscribeService) Class.forName(FJConfiguration.getConfig().getString("service.subscribeService.class")).newInstance();
+         questService = (QuestService) Class.forName(FJConfiguration.getConfig().getString("service.questService.class")).newInstance();
+         userService = (UserService) Class.forName(FJConfiguration.getConfig().getString("service.userService.class")).newInstance();
+         temaService = (TemaService) Class.forName(FJConfiguration.getConfig().getString("service.temaService.class")).newInstance();
+      } catch (ConfigurationException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      } catch (InstantiationException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      } catch (IllegalAccessException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      } catch (ClassNotFoundException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
    }
    
    public static CountService getCountService(){
@@ -73,5 +85,17 @@ public class FJServiceHolder {
    
    public static SubscribeService getSubscribeService(){
       return subscribeService;
+   }
+
+   public static QuestService getQuestService(){
+      return questService;
+   }
+   
+   public static UserService getUserService(){
+      return userService;
+   }
+
+   public static TemaService getTemaService(){
+      return temaService;
    }
 }

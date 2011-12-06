@@ -27,7 +27,7 @@ import org.forumj.common.db.service.FolderService;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FolderServiceImpl extends FJCommonService implements FolderService {
+public class FolderServiceImpl extends FJService implements FolderService {
 
    public void moveToRecyclebin(long threadId, IUser user) throws IOException, ConfigurationException, SQLException{
       getFolderDao().moveToRecyclebin(threadId, user);

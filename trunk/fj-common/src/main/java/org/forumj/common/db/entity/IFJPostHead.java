@@ -26,4 +26,28 @@ public interface IFJPostHead {
    public static final String LAST_EDIT_DATE_FIELD_NAME = "fd_post_edit_time";
    public static final String POST_ID_FIELD_NAME = "id_post";
    public static final String THREAD_ID_FIELD_NAME = "thread_id";
+   public abstract void setThreadId(Long threadId);
+   public abstract Long getThreadId();
+   public abstract void setPostId(Long postId);
+   public abstract Long getPostId();
+   public abstract void setEditTime(Long editTime);
+   public abstract Long getEditTime();
+   public abstract void setCreateTime(Long createTime);
+   public abstract Long getCreateTime();
+   public abstract void setNred(Integer nred);
+   public abstract Integer getNred();
+   public abstract void setOutd(String outd);
+   public abstract String getOutd();
+   public abstract void setDomen(String domen);
+   public abstract String getDomen();
+   public abstract void setIp(String ip);
+   public abstract String getIp();
+   public abstract void setTitle(String title);
+   public abstract String getTitle();
+   public abstract void setAuth(Long auth);
+   public abstract Long getAuth();
+   public abstract void setId(Long id);
+   public abstract Long getId();
+   public abstract void setAuthor(IUser author);
+   public abstract IUser getAuthor();
 }

@@ -15,7 +15,6 @@
  */
 package org.forumj.web.servlet.post;
 
-import static org.forumj.db.service.QuestService.*;
 import static org.forumj.tool.Diletant.*;
 
 import java.io.IOException;
@@ -26,6 +25,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.service.*;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -45,8 +45,9 @@ public class DelVoice extends FJServlet {
          IUser user = (IUser) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             if (threadIdParameter != null && !"".equals(threadIdParameter)){
+               QuestService questService = FJServiceHolder.getQuestService();
                Long threadId = Long.valueOf(threadIdParameter);
-               repealVote(threadId, user);
+               questService.repealVote(threadId, user);
                buffer.append(successPostOut("0", "tema.php?id=" + threadIdParameter));
             }
          }else{

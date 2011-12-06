@@ -20,14 +20,15 @@ import java.sql.SQLException;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.service.QuestService;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class QuestService extends FJCommonService {
+public class QuestServiceImpl extends FJService implements QuestService {
    
-   public static void repealVote(Long threadId, IUser user) throws ConfigurationException, IOException, SQLException{
+   public void repealVote(Long threadId, IUser user) throws ConfigurationException, IOException, SQLException{
       getQuestnodedao().repealVote(threadId, user);
    }
    

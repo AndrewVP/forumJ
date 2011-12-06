@@ -27,7 +27,7 @@ import org.forumj.common.db.service.MailService;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class MailServiceImpl extends FJCommonService implements MailService {
+public class MailServiceImpl extends FJService implements MailService {
 
    public void deleteMailFromInbox(Long mailId, IUser user) throws ConfigurationException, SQLException, IOException{
       getMailDao().deleteFromInbox(mailId, user);

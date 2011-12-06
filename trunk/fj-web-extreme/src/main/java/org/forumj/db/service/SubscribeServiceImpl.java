@@ -27,7 +27,7 @@ import org.forumj.common.db.service.SubscribeService;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class SubscribeServiceImpl extends FJCommonService implements SubscribeService {
+public class SubscribeServiceImpl extends FJService implements SubscribeService {
    
    public boolean isKeyPresent(Integer key) throws SQLException, ConfigurationException, IOException{
       return getSubscribedao().isKeyPresent(key);

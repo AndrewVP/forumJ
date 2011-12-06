@@ -11,10 +11,12 @@ package org.forumj.db.entity;
 
 import java.util.*;
 
+import org.forumj.common.db.entity.IQuestNode;
+
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class QuestNode {
+public class QuestNode implements IQuestNode {
 
    public QuestNode() {
       super();

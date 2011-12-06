@@ -9,8 +9,6 @@
  */
 package org.forumj.web.servlet.post;
 
-import static org.forumj.db.service.UserService.*;
-
 import java.io.IOException;
 import java.util.*;
 
@@ -21,6 +19,7 @@ import javax.servlet.http.*;
 import org.forumj.common.*;
 import org.forumj.common.config.FJConfiguration;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.service.*;
 import org.forumj.db.entity.User;
 import org.forumj.web.servlet.FJServlet;
 
@@ -58,12 +57,13 @@ public class InsNew extends FJServlet {
             response.sendRedirect("reg.php?id=7");
          }else{
             String nick = prepareNick(nickParameter);
-            IUser user = readUser(nick);
+            UserService userService = FJServiceHolder.getUserService();
+            IUser user = userService.readUser(nick);
             if (user != null){
                session.setAttribute("nick", nick);
                response.sendRedirect("reg.php?id=5");
             }else{
-               user = readUserByMail(email1Parameter);
+               user = userService.readUserByMail(email1Parameter);
                if (user != null){
                   response.sendRedirect("reg.php?id=12");
                }else{
@@ -75,7 +75,7 @@ public class InsNew extends FJServlet {
                   user.setPp(FJConfiguration.getConfig().getInt("fj.default.threadsOnPage"));
                   user.setPt(FJConfiguration.getConfig().getInt("fj.default.postsOnPage"));
                   user.setView(FJConfiguration.getConfig().getInt("fj.default.viewId"));
-                  createUser(user);
+                  userService.createUser(user);
                   session.setAttribute("user", user);
                   response.sendRedirect("index.php");
                }

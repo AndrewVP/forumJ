@@ -27,7 +27,7 @@ import org.forumj.common.db.service.IndexService;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class IndexServiceImpl extends FJCommonService implements IndexService{
+public class IndexServiceImpl extends FJService implements IndexService{
    
    /**
     * Возвращает id последнего поста в форуме
