@@ -32,7 +32,7 @@ public class UserServiceImpl extends FJService implements UserService {
       return getUserDao().read(userId);
    }
    
-   public void updateUser(IUser user) throws IOException, ConfigurationException, SQLException {
+   public void update(IUser user) throws IOException, ConfigurationException, SQLException {
       getUserDao().update(user);
    }
 
@@ -40,12 +40,15 @@ public class UserServiceImpl extends FJService implements UserService {
       return getUserDao().readByMail(mail);
    }
 
-   public void createUser(IUser user) throws SQLException, ConfigurationException, IOException{
+   public void create(IUser user) throws SQLException, ConfigurationException, IOException{
       getUserDao().create(user);
    }
 
-   @Override
-   public IUser readUser(String nick) throws ConfigurationException, SQLException, IOException{
+   public IUser read(String nick) throws ConfigurationException, SQLException, IOException{
       return getUserDao().read(nick);
+   }
+
+   public IUser read(String nick, String password, Boolean firstPassword) throws ConfigurationException, SQLException, IOException {
+      return getUserDao().read(nick, password, firstPassword);
    }
 }

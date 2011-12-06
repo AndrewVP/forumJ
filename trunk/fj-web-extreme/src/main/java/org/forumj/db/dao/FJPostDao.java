@@ -28,7 +28,7 @@ import org.forumj.db.entity.*;
  */
 public class FJPostDao extends FJDao {
 
-   public Long create(FJPost post, Connection conn) throws IOException, DBException, SQLException, ConfigurationException{
+   public Long create(IFJPost post, Connection conn) throws IOException, DBException, SQLException, ConfigurationException{
       Long postId = null;
       String createPostQuery = getCreatePostQuery();
       FJForumDao forumDao = new FJForumDao();
@@ -80,7 +80,7 @@ public class FJPostDao extends FJDao {
       return postId;
    }
 
-   public Long create(FJPost post) throws IOException, DBException, ConfigurationException, SQLException{
+   public Long create(IFJPost post) throws IOException, DBException, ConfigurationException, SQLException{
       Connection conn = null;
       try {
          conn = getConnection();

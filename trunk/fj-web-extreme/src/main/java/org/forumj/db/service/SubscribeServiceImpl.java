@@ -52,4 +52,17 @@ public class SubscribeServiceImpl extends FJService implements SubscribeService 
    public List<IFJSubscribe> findAllSubscribes(IUser user, Integer active) throws SQLException, ConfigurationException, IOException{
       return getSubscribedao().findAll(user, active);
    }
+
+   /**
+    * 
+    * @param idUser
+    * @param threadId
+    * @return
+    * @throws ConfigurationException
+    * @throws SQLException
+    * @throws IOException
+    */
+   public Boolean isUserSubscribed(Long idUser, Long threadId) throws ConfigurationException, SQLException, IOException{
+      return getSubscribedao().isUserSubscribed(idUser, threadId);
+   }
 }

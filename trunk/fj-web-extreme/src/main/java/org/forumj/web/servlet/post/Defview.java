@@ -42,7 +42,7 @@ public class Defview extends FJServlet {
             if (defaultViewParameter != null && !"".equals(defaultViewParameter)){
                UserService userService = FJServiceHolder.getUserService();
                user.setView(Integer.valueOf(defaultViewParameter));
-               userService.updateUser(user);
+               userService.update(user);
             }
             buffer.append(successPostOut("0", "control.php?id=6"));
          }else{

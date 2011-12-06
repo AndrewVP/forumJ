@@ -25,7 +25,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
-import org.forumj.db.dao.*;
+import org.forumj.common.db.service.*;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -47,14 +47,14 @@ public class MoveTitle extends FJServlet {
          if (user != null && !user.isBanned() && user.isLogined()){
             if (!isEmptyParameter(newViewIdParameter)){
                Long newViewId = Long.valueOf(newViewIdParameter);
-               FJFolderDao dao = new FJFolderDao();
+               FolderService service = FJServiceHolder.getFolderService();
                String nrwParameter = request.getParameter("NRW");
                Integer nrw = Integer.valueOf(nrwParameter);
                for (int nrwIndex = 0; nrwIndex < nrw; nrwIndex++) {
                   String folderIdParameter = request.getParameter(String.valueOf(nrwIndex));
                   if (folderIdParameter != null){
                      Long folderId = Long.valueOf(folderIdParameter);
-                     dao.moveToFolder(folderId, newViewId, user);
+                     service.moveToFolder(folderId, newViewId, user);
                   }
                }
             }

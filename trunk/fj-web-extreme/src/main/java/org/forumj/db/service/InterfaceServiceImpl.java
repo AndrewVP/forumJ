@@ -49,4 +49,13 @@ public class InterfaceServiceImpl extends FJService implements InterfaceService 
    public IFJInterface findInterface(IUser user, Long id) throws IOException, SQLException, ConfigurationException{
       return getInterfaceDao().find(user, id);
    }
+
+   public boolean isExist(String name, IUser user) throws ConfigurationException, SQLException, IOException {
+      return getInterfaceDao().isExist(name, user);
+   }
+
+   public void create(String name, IUser user) throws ConfigurationException, SQLException, IOException {
+      getInterfaceDao().create(name, user);
+   }
 }
+

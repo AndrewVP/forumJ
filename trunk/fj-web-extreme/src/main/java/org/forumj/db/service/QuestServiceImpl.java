@@ -16,7 +16,7 @@
 package org.forumj.db.service;
 
 import java.io.IOException;
-import java.sql.SQLException;
+import java.sql.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.IUser;
@@ -27,10 +27,16 @@ import org.forumj.common.db.service.QuestService;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 public class QuestServiceImpl extends FJService implements QuestService {
-   
-   public void repealVote(Long threadId, IUser user) throws ConfigurationException, IOException, SQLException{
-      getQuestnodedao().repealVote(threadId, user);
-   }
-   
 
+   public void repealVote(Long threadId, IUser user) throws ConfigurationException, IOException, SQLException{
+      getQuestNodeDao().repealVote(threadId, user);
+   }
+
+   public void addCustomAnswer(long threadId, String node, int type, IUser user) throws ConfigurationException, IOException, SQLException {
+      getQuestNodeDao().addCustomAnswer(threadId, node, type, user);
+   }
+
+   public void addVote(Long threadId, Long answerId, IUser user, Connection connection) throws ConfigurationException, IOException, SQLException {
+      getQuestNodeDao().addVote(threadId, answerId, user, connection);
+   }
 }

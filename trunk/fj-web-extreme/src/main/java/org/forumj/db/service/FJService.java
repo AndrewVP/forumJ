@@ -51,7 +51,7 @@ public class FJService {
    /**
     * @return the questnodedao
     */
-   public static FJQuestNodeDao getQuestnodedao() {
+   public static FJQuestNodeDao getQuestNodeDao() {
       return questNodeDao;
    }
 

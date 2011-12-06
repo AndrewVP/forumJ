@@ -25,7 +25,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
-import org.forumj.db.dao.*;
+import org.forumj.common.db.service.*;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -47,9 +47,9 @@ public class NewFolder extends FJServlet {
          IUser user = (IUser) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             if (!isEmptyParameter(folderNameParameter)){
-               FJFolderDao folderDao = new FJFolderDao();
-               if (!folderDao.isExist(folderNameParameter, user)){
-                  folderDao.create(folderNameParameter, user);
+               FolderService folderService = FJServiceHolder.getFolderService();
+               if (!folderService.isExist(folderNameParameter, user)){
+                  folderService.create(folderNameParameter, user);
                }
             }
             String urlQuery = "";

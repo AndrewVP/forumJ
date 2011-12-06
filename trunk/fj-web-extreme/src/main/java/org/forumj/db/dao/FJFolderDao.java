@@ -135,11 +135,6 @@ public class FJFolderDao extends FJDao {
       }
    }
    
-   public void moveToRecyclebin(long threadId, IUser user) throws IOException, ConfigurationException, SQLException{
-      // TODO Magic integer!
-      moveToFolder(threadId, 3, user);
-   }
-
    public void moveToFolder(long threadId, long folderId, IUser user) throws IOException, ConfigurationException, SQLException{
       String deleteTranzitQuery = getDeleteThreadTranzitQuery();
       String appendQuery = getAppendThreadInFolderQuery();

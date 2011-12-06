@@ -22,9 +22,9 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
-import org.forumj.db.dao.*;
-import org.forumj.db.entity.*;
+import org.forumj.db.entity.FJMail;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
@@ -51,8 +51,8 @@ public class Send extends FJServlet {
          String receiverNickParameter = request.getParameter("RCVR");
          Date currentDate = new Date();
          FJMail mail = new FJMail();
-         FJUserDao userDao = new FJUserDao();
-         IUser receiver = userDao.read(receiverNickParameter);
+         UserService userService = FJServiceHolder.getUserService();
+         IUser receiver = userService.read(receiverNickParameter);
          mail.setSender(user);
          mail.setReceiver(receiver);
          mail.setBody(bodyParameter);
@@ -63,8 +63,8 @@ public class Send extends FJServlet {
             if (!isEmptyParameter(comandParameter) && comandParameter.equals("view")){
                buffer.append(view(mail, locale, request));
             }else{
-               FJMailDao dao = new FJMailDao();
-               dao.create(mail);
+               MailService mailService = FJServiceHolder.getMailService();
+               mailService.create(mail);
                buffer.append(successPostOut("0", "control.php?id=" + idParameter));
             }
          }else{
