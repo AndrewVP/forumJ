@@ -17,11 +17,9 @@ package org.forumj.db.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.*;
-import org.forumj.db.entity.Ignor;
+import org.forumj.common.db.entity.IUser;
 
 /**
  * 
@@ -29,29 +27,6 @@ import org.forumj.db.entity.Ignor;
  */
 public class FJCommonService extends FJService {
 
-   /**
-    * 
-    * @param userId
-    * @return
-    * @throws IOException
-    * @throws ConfigurationException
-    * @throws SQLException
-    */
-   public static List<Ignor> readUserIgnor(Long userId) throws IOException, ConfigurationException, SQLException{
-      return getIgnorDao().loadAll(userId);
-   }
-
-   /**
-    * 
-    * @param idUser
-    * @return
-    * @throws ConfigurationException
-    * @throws SQLException
-    * @throws IOException
-    */
-   public static List<IFJFolder> getUserFolders(IUser user) throws ConfigurationException, SQLException, IOException{
-      return getFolderDao().findAll(user);
-   }
    
    public static IUser readUser(String nick) throws ConfigurationException, SQLException, IOException{
       return getUserDao().read(nick);

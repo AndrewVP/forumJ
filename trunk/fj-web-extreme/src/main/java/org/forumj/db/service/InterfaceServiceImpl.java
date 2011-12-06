@@ -17,26 +17,36 @@ package org.forumj.db.service;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.entity.*;
+import org.forumj.common.db.service.InterfaceService;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class InterfaceService extends FJCommonService {
+public class InterfaceServiceImpl extends FJCommonService implements InterfaceService {
 
-   public static boolean isInterfaceContainsFolder(long interfaceId, long folderId, IUser user) throws IOException, ConfigurationException, SQLException{
+   public boolean isInterfaceContainsFolder(long interfaceId, long folderId, IUser user) throws IOException, ConfigurationException, SQLException{
       return getInterfaceDao().isInterfaceContainsFolder(interfaceId, folderId, user);
    }
    
-   public static void addFolder(long interfaceId, long folderId, IUser user, Connection connection) throws ConfigurationException, SQLException, IOException{
+   public void addFolder(long interfaceId, long folderId, IUser user, Connection connection) throws ConfigurationException, SQLException, IOException{
       getInterfaceDao().addFolder(interfaceId, folderId, user, connection);
    }
    
-   public static void deleteInterface(long interfaceId, IUser user) throws ConfigurationException, SQLException, IOException{
+   public void deleteInterface(long interfaceId, IUser user) throws ConfigurationException, SQLException, IOException{
       getInterfaceDao().delete(interfaceId, user);
    }
    
+
+   public List<IFJInterface> findAllInterfaces(IUser user) throws IOException, SQLException, ConfigurationException{
+      return getInterfaceDao().findAll(user);
+   }
+   
+   public IFJInterface findInterface(IUser user, Long id) throws IOException, SQLException, ConfigurationException{
+      return getInterfaceDao().find(user, id);
+   }
 }

@@ -19,22 +19,23 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.common.db.service.CountService;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class CountService extends FJCommonService {
+public class CountServiceImpl extends FJCommonService implements CountService {
 
-   public static long getAddedPostsAmount(long lastPostId) throws SQLException, ConfigurationException, IOException{
+   public long getAddedPostsAmount(long lastPostId) throws SQLException, ConfigurationException, IOException{
       return getPostDao().getAddedPostsAmount(lastPostId);
    }
    
-   public static long getAddedThreadsAmount(long lastThreadId) throws SQLException, ConfigurationException, IOException{
+   public long getAddedThreadsAmount(long lastThreadId) throws SQLException, ConfigurationException, IOException{
       return getThreadDao().getAddedThreadsAmount(lastThreadId);
    }
    
-   public static long getAddedPostsAmount(long threadId, long lastPostId) throws SQLException, ConfigurationException, IOException{
+   public long getAddedPostsAmount(long threadId, long lastPostId) throws SQLException, ConfigurationException, IOException{
       return getPostDao().getAddedPostsAmount(threadId, lastPostId);
    }
 }

@@ -19,10 +19,9 @@ import java.util.*;
 import java.util.Date;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.entity.*;
 import org.forumj.common.exception.DBException;
 import org.forumj.db.entity.*;
-import org.forumj.tool.LocaleString;
 
 /**
  *
@@ -223,7 +222,7 @@ public class FJThreadDao extends FJDao {
       }
    }
 
-   public FJThreads getThreads(Long viewId, long nfirstpost, LocaleString locale, IUser user, List<Ignor> ignorList) throws SQLException, ConfigurationException{
+   public FJThreads getThreads(Long viewId, long nfirstpost, IUser user, List<IIgnor> ignorList) throws SQLException, ConfigurationException{
       FJThreads result = new FJThreads();
       String sql_views="SELECT folder FROM fdvtranzit WHERE (user=" + user.getId() + " OR user=0) AND view=" + viewId;
       Connection conn = null;

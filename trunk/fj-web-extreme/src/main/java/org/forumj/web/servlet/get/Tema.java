@@ -26,7 +26,8 @@ import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
-import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.entity.*;
+import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.common.tool.Time;
 import org.forumj.db.entity.*;
@@ -60,7 +61,8 @@ public class Tema extends FJServlet {
          String replyPostId = request.getParameter("reply");
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          IUser user = (IUser) session.getAttribute("user");
-         List<Ignor> ignorList = readUserIgnor(user.getId());
+         IgnorService ignorService = FJServiceHolder.getIgnorService();
+         List<IIgnor> ignorList = ignorService.readUserIgnor(user.getId());
          int nfirstpost = (pageNumber-1)*user.getPt();
          int i3=pageNumber*user.getPt();
          // Сколько страниц?
@@ -392,7 +394,7 @@ public class Tema extends FJServlet {
       writer.write(out.replace("ъъ_ъ", format.format(allTime/1000)));
    }
 
-   private StringBuffer writePost(FJPost post, List<Ignor> ignorList, IUser user, Integer pageNumber, LocaleString locale, FJThread thread) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
+   private StringBuffer writePost(FJPost post, List<IIgnor> ignorList, IUser user, Integer pageNumber, LocaleString locale, FJThread thread) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
       StringBuffer buffer = new StringBuffer();
       Time postTime = new Time(post.getHead().getCreateTime());
       IUser author = post.getHead().getAuthor();
@@ -458,9 +460,9 @@ public class Tema extends FJServlet {
          if (post.getAnswers() != null){
             buffer.append(writeQuest(post, user, locale, thread));
          }
-         //            if (this.isQuest){
-         //               buffer.append( this.getQuest() ;
-         //            }
+         if (thread.isQuest()){
+            buffer.append( writeQuest(post, user, locale, thread));
+         }
          buffer.append("<tr><td>");
          buffer.append("<p class=post>" + fd_body(post.getBody().getBody()) + "</p>");
          buffer.append("</td></tr>");
@@ -656,7 +658,7 @@ public class Tema extends FJServlet {
       return buffer;
    }
 
-   private boolean isIgnored(Long userId, List<Ignor> ignorList){
+   private boolean isIgnored(Long userId, List<IIgnor> ignorList){
       for(int arrIndex=0; arrIndex < ignorList.size(); arrIndex++) {
          if(ignorList.get(arrIndex).getUser().getId().longValue() == userId.longValue()) {
             return true;

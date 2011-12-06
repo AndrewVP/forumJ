@@ -26,7 +26,13 @@ import org.forumj.common.db.entity.*;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public interface ControlService {
+public interface MailService {
+
+   public void deleteMailFromInbox(Long mailId, IUser user)
+         throws ConfigurationException, SQLException, IOException;
+
+   public void deleteMailFromOutbox(Long mailId, IUser user)
+         throws ConfigurationException, SQLException, IOException;
 
    /**
     * 
@@ -105,64 +111,5 @@ public interface ControlService {
     */
    public List<IFJMail> loadDraftBox(IUser user) throws IOException,
          ConfigurationException, SQLException;
-
-   /**
-    * 
-    * @param user
-    * @return
-    * @throws IOException
-    * @throws SQLException
-    * @throws ConfigurationException
-    */
-   public List<IFJInterface> findAllInterfaces(IUser user) throws IOException,
-         SQLException, ConfigurationException;
-
-   /**
-    * 
-    * @param user
-    * @param id
-    * @return
-    * @throws IOException
-    * @throws SQLException
-    * @throws ConfigurationException
-    */
-   public IFJInterface findInterface(IUser user, Long id) throws IOException,
-         SQLException, ConfigurationException;
-
-   /**
-    * 
-    * @param user
-    * @param interf
-    * @return
-    * @throws SQLException
-    * @throws ConfigurationException
-    * @throws IOException
-    */
-   public List<IFJFolder> findAllFolders(IUser user, IFJInterface interf)
-         throws SQLException, ConfigurationException, IOException;
-
-   /**
-    * 
-    * @param user
-    * @param interf
-    * @return
-    * @throws SQLException
-    * @throws ConfigurationException
-    * @throws IOException
-    */
-   public List<IFJFolder> findAllFoldersNotIn(IUser user, IFJInterface interf)
-         throws SQLException, ConfigurationException, IOException;
-
-   /**
-    * 
-    * @param user
-    * @param active
-    * @return
-    * @throws SQLException
-    * @throws ConfigurationException
-    * @throws IOException
-    */
-   public List<IFJSubscribe> findAllSubscribes(IUser user, Integer active)
-         throws SQLException, ConfigurationException, IOException;
 
 }

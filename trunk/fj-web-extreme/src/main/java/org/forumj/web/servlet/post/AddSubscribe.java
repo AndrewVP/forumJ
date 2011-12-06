@@ -1,6 +1,5 @@
 package org.forumj.web.servlet.post;
 
-import static org.forumj.db.service.SubscribeService.*;
 import static org.forumj.tool.Diletant.*;
 
 import java.io.IOException;
@@ -12,6 +11,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.service.*;
 import org.forumj.db.entity.FJSubscribe;
 import org.forumj.web.servlet.FJServlet;
 
@@ -36,7 +36,8 @@ public class AddSubscribe extends FJServlet {
             if (threadIdParameter != null && !"".equals(threadIdParameter)){
                Long threadId = Long.valueOf(threadIdParameter);
                int key = generateRandom();
-               for(; isKeyPresent(key); key = generateRandom());
+               SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
+               for(; subscribeService.isKeyPresent(key); key = generateRandom());
                FJSubscribe subscribe = new FJSubscribe();
                subscribe.setKey((long) key);
                subscribe.setUser(user);
@@ -44,7 +45,7 @@ public class AddSubscribe extends FJServlet {
                subscribe.setStart(new Date());
                //TODO Magic integer!!!!!
                subscribe.setType(1);
-               createSubscribe(subscribe);
+               subscribeService.createSubscribe(subscribe);
                String urlQuery = "?id=" + threadIdParameter;
                if (pageParameter != null && !"".equals(pageParameter)){
                   urlQuery += "&page=" + pageParameter;

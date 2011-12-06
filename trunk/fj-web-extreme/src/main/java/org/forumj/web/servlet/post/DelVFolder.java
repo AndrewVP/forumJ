@@ -15,7 +15,6 @@
  */
 package org.forumj.web.servlet.post;
 
-import static org.forumj.db.service.FolderService.*;
 import static org.forumj.tool.Diletant.*;
 
 import java.io.IOException;
@@ -26,6 +25,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.service.*;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -44,6 +44,7 @@ public class DelVFolder extends FJServlet {
          String viewIdParameter = request.getParameter("IDVW");
          String actionParameter = request.getParameter("ACT");
          IUser user = (IUser) session.getAttribute("user");
+         FolderService folderService = FJServiceHolder.getFolderService();
          if (user != null && !user.isBanned() && user.isLogined()){
             Long viewId = Long.valueOf(viewIdParameter);
             if (actionParameter != null && !"".equals(actionParameter)){
@@ -54,7 +55,7 @@ public class DelVFolder extends FJServlet {
                      String folderIdParameter = request.getParameter(String.valueOf(nrwIndex));
                      if (folderIdParameter != null){
                         Long folderId = Long.valueOf(folderIdParameter);
-                        deleteFolderFromView(folderId, viewId, user);
+                        folderService.deleteFolderFromView(folderId, viewId, user);
                      }
                   }
                }

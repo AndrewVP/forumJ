@@ -35,8 +35,7 @@ import org.forumj.common.exception.*;
 import org.forumj.common.tool.Time;
 import org.forumj.db.dao.FJThreadDao;
 import org.forumj.db.entity.*;
-import org.forumj.exception.*;
-import org.forumj.tool.*;
+import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
 /**

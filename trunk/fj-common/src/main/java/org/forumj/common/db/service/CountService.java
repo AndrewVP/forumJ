@@ -13,26 +13,26 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.forumj.db.service;
+package org.forumj.common.db.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.IUser;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class MailService extends FJCommonService {
+public interface CountService {
 
-   public static void deleteMailFromInbox(Long mailId, IUser user) throws ConfigurationException, SQLException, IOException{
-      getMailDao().deleteFromInbox(mailId, user);
-   }
+   public long getAddedPostsAmount(long lastPostId) throws SQLException,
+         ConfigurationException, IOException;
 
-   public static void deleteMailFromOutbox(Long mailId, IUser user) throws ConfigurationException, SQLException, IOException{
-      getMailDao().deleteFromOutbox(mailId, user);
-   }
+   public long getAddedThreadsAmount(long lastThreadId) throws SQLException,
+         ConfigurationException, IOException;
+
+   public long getAddedPostsAmount(long threadId, long lastPostId)
+         throws SQLException, ConfigurationException, IOException;
 
 }

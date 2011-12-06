@@ -7,7 +7,7 @@
  * You shall use it and distribute only in accordance with the terms of the 
  * License Agreement.
  */
-package org.forumj.db.entity;
+package org.forumj.common.db.entity;
 
 import java.util.*;
 
@@ -16,7 +16,7 @@ import java.util.*;
  */
 public class FJThreads {
 
-   private List<FJThread> threads = new ArrayList<FJThread>();
+   private List<IFJThread> threads = new ArrayList<IFJThread>();
    
    /**
     * Количество веток
@@ -33,14 +33,14 @@ public class FJThreads {
    /**
     * @return the threads
     */
-   public List<FJThread> getThreads() {
+   public List<IFJThread> getThreads() {
       return threads;
    }
 
    /**
     * @param threads the threads to set
     */
-   public void setThreads(List<FJThread> threads) {
+   public void setThreads(List<IFJThread> threads) {
       this.threads = threads;
    }
 

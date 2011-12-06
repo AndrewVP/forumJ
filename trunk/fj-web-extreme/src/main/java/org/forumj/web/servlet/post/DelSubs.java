@@ -9,7 +9,6 @@
  */
 package org.forumj.web.servlet.post;
 
-import static org.forumj.db.service.SubscribeService.*;
 import static org.forumj.tool.Diletant.*;
 
 import java.io.IOException;
@@ -20,6 +19,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.service.*;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -40,12 +40,13 @@ public class DelSubs extends FJServlet {
             if (actionParameter != null && !"".equals(actionParameter)){
                String nrwParameter = request.getParameter("NRW");
                Integer nrw = Integer.valueOf(nrwParameter);
+               SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
                if ("del".equalsIgnoreCase(actionParameter)){
                   for (int nrwIndex = 0; nrwIndex < nrw; nrwIndex++) {
                      String subscribeIdParameter = request.getParameter(String.valueOf(nrwIndex));
                      if (subscribeIdParameter != null){
                         Long subscribeId = Long.valueOf(subscribeIdParameter);
-                        deleteSuscribeById(subscribeId, user);
+                        subscribeService.deleteSuscribeById(subscribeId, user);
                      }
                   }
                }

@@ -120,6 +120,7 @@ public class FJThread implements IFJThread{
    /**
     * @return the lastPostAuthId
     */
+   @Override
    public Long getLastPostAuthId() {
       return lastPostAuthId;
    }
@@ -127,6 +128,7 @@ public class FJThread implements IFJThread{
    /**
     * @param lastPostAuthId the lastPostAuthId to set
     */
+   @Override
    public void setLastPostAuthId(Long lastPostAuthId) {
       this.lastPostAuthId = lastPostAuthId;
    }
@@ -134,6 +136,7 @@ public class FJThread implements IFJThread{
    /**
     * @return the regDate
     */
+   @Override
    public Date getRegDate() {
       return regDate;
    }
@@ -141,6 +144,7 @@ public class FJThread implements IFJThread{
    /**
     * @param regDate the regDate to set
     */
+   @Override
    public void setRegDate(Date regDate) {
       this.regDate = regDate;
    }
@@ -148,6 +152,7 @@ public class FJThread implements IFJThread{
    /**
     * @return the dock
     */
+   @Override
    public int getDock() {
       return dock;
    }
@@ -155,6 +160,7 @@ public class FJThread implements IFJThread{
    /**
     * @param dock the dock to set
     */
+   @Override
    public void setDock(int dock) {
       this.dock = dock;
    }
@@ -162,6 +168,7 @@ public class FJThread implements IFJThread{
    /**
     * @return the head
     */
+   @Override
    public String getHead() {
       return head;
    }
@@ -169,6 +176,7 @@ public class FJThread implements IFJThread{
    /**
     * @param head the head to set
     */
+   @Override
    public void setHead(String head) {
       this.head = head;
    }
@@ -176,6 +184,7 @@ public class FJThread implements IFJThread{
    /**
     * @return the nick
     */
+   @Override
    public String getNick() {
       return nick;
    }
@@ -183,6 +192,7 @@ public class FJThread implements IFJThread{
    /**
     * @param nick the nick to set
     */
+   @Override
    public void setNick(String nick) {
       this.nick = nick;
    }
@@ -190,6 +200,7 @@ public class FJThread implements IFJThread{
    /**
     * @return the id
     */
+   @Override
    public Long getId() {
       return id;
    }
@@ -197,6 +208,7 @@ public class FJThread implements IFJThread{
    /**
     * @param id the id to set
     */
+   @Override
    public void setId(Long id) {
       this.id = id;
    }
@@ -204,6 +216,7 @@ public class FJThread implements IFJThread{
    /**
     * @return the lastPostTime
     */
+   @Override
    public Date getLastPostTime() {
       return lastPostTime;
    }
@@ -211,6 +224,7 @@ public class FJThread implements IFJThread{
    /**
     * @param lastPostTime the lastPostTime to set
     */
+   @Override
    public void setLastPostTime(Date lastPostTime) {
       this.lastPostTime = lastPostTime;
    }
@@ -218,6 +232,7 @@ public class FJThread implements IFJThread{
    /**
     * @return the lastPostNick
     */
+   @Override
    public String getLastPostNick() {
       return lastPostNick;
    }
@@ -225,6 +240,7 @@ public class FJThread implements IFJThread{
    /**
     * @param lpauthor the lpauthor to set
     */
+   @Override
    public void setLastPostNick(String lastPostNick) {
       this.lastPostNick = lastPostNick;
    }
@@ -232,6 +248,7 @@ public class FJThread implements IFJThread{
    /**
     * @return the pcount
     */
+   @Override
    public int getPcount() {
       return pcount;
    }
@@ -239,6 +256,7 @@ public class FJThread implements IFJThread{
    /**
     * @param pcount the pcount to set
     */
+   @Override
    public void setPcount(int pcount) {
       this.pcount = pcount;
    }
@@ -246,6 +264,7 @@ public class FJThread implements IFJThread{
    /**
     * @return the snid
     */
+   @Override
    public Integer getSnid() {
       return snid;
    }
@@ -253,6 +272,7 @@ public class FJThread implements IFJThread{
    /**
     * @param snid the snid to set
     */
+   @Override
    public void setSnid(Integer snid) {
       this.snid = snid;
    }
@@ -260,6 +280,7 @@ public class FJThread implements IFJThread{
    /**
     * @return the snall
     */
+   @Override
    public Integer getSnall() {
       return snall;
    }
@@ -267,6 +288,7 @@ public class FJThread implements IFJThread{
    /**
     * @param snall the snall to set
     */
+   @Override
    public void setSnall(Integer snall) {
       this.snall = snall;
    }
@@ -274,6 +296,7 @@ public class FJThread implements IFJThread{
    /**
     * @return the type
     */
+   @Override
    public int getType() {
       return type;
    }
@@ -281,6 +304,7 @@ public class FJThread implements IFJThread{
    /**
     * @param type the type to set
     */
+   @Override
    public void setType(int type) {
       this.type = type;
    }
@@ -288,6 +312,7 @@ public class FJThread implements IFJThread{
    /**
     * @return the folder
     */
+   @Override
    public String getFolder() {
       return folder;
    }
@@ -295,6 +320,7 @@ public class FJThread implements IFJThread{
    /**
     * @param folder the folder to set
     */
+   @Override
    public void setFolder(String folder) {
       this.folder = folder;
    }
@@ -302,6 +328,7 @@ public class FJThread implements IFJThread{
    /**
     * @return the disain
     */
+   @Override
    public int getDisain() {
       return disain;
    }
@@ -309,6 +336,7 @@ public class FJThread implements IFJThread{
    /**
     * @param disain the disain to set
     */
+   @Override
    public void setDisain(int disain) {
       this.disain = disain;
    }
@@ -316,6 +344,7 @@ public class FJThread implements IFJThread{
    /**
     * @return the pt
     */
+   @Override
    public int getPt() {
       return pt;
    }
@@ -323,6 +352,7 @@ public class FJThread implements IFJThread{
    /**
     * @param pt the pt to set
     */
+   @Override
    public void setPt(int pt) {
       this.pt = pt;
    }
@@ -330,6 +360,7 @@ public class FJThread implements IFJThread{
    /**
     * @return the pg
     */
+   @Override
    public int getPg() {
       return pg;
    }
@@ -337,6 +368,7 @@ public class FJThread implements IFJThread{
    /**
     * @param pg the pg to set
     */
+   @Override
    public void setPg(int pg) {
       this.pg = pg;
    }
@@ -344,6 +376,7 @@ public class FJThread implements IFJThread{
    /**
     * @return the authId
     */
+   @Override
    public Long getAuthId() {
       return authId;
    }
@@ -351,6 +384,7 @@ public class FJThread implements IFJThread{
    /**
     * @param authId the authId to set
     */
+   @Override
    public void setAuthId(Long authId) {
       this.authId = authId;
    }
@@ -358,6 +392,7 @@ public class FJThread implements IFJThread{
    /**
     * @return the lastPostId
     */
+   @Override
    public Long getLastPostId() {
       return lastPostId;
    }
@@ -365,6 +400,7 @@ public class FJThread implements IFJThread{
    /**
     * @param lastPostId the lastPostId to set
     */
+   @Override
    public void setLastPostId(Long lastPostId) {
       this.lastPostId = lastPostId;
    }
@@ -372,6 +408,7 @@ public class FJThread implements IFJThread{
    /**
     * @return the folderId
     */
+   @Override
    public Long getFolderId() {
       return folderId;
    }
@@ -379,10 +416,12 @@ public class FJThread implements IFJThread{
    /**
     * @param folderId the folderId to set
     */
+   @Override
    public void setFolderId(Long folderId) {
       this.folderId = folderId;
    }
 
+   @Override
    public boolean isQuest(){
       return type == 1 || type == 2;
    }
