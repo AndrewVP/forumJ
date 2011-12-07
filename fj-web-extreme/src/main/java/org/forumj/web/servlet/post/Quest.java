@@ -24,11 +24,10 @@ import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
-import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.*;
 import org.forumj.common.tool.Time;
-import org.forumj.db.entity.*;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
@@ -67,13 +66,14 @@ public class Quest extends FJServlet {
                   String domen = gethostbyaddr(ip);
                   boolean usersCanAddAnswers = request.getParameter("US") != null; 
                   Time threadTime = new Time(new Date().getTime());
-                  ArrayList<QuestNode> answers = new ArrayList<QuestNode>();
-                  answers.add(new QuestNode(1, answer1, user.getId()));
-                  answers.add(new QuestNode(2, answer2, user.getId()));
+                  ArrayList<IQuestNode> answers = new ArrayList<IQuestNode>();
+                  QuestService questService = FJServiceHolder.getQuestService();
+                  answers.add(questService.getQuestNodeObject(1, answer1, user.getId()));
+                  answers.add(questService.getQuestNodeObject(2, answer2, user.getId()));
                   for (int answerIndex = 3;; answerIndex++){
                      String answer = request.getParameter("P" + answerIndex);
                      if (answer != null && !"".equalsIgnoreCase(answer.trim())){
-                        answers.add(new QuestNode(answerIndex, answer, user.getId()));
+                        answers.add(questService.getQuestNodeObject(answerIndex, answer, user.getId()));
                      }else{
                         break;
                      }
@@ -81,9 +81,10 @@ public class Quest extends FJServlet {
                   if (command != null && "view".equalsIgnoreCase(command)){
                      buffer.append(view(locale, head, question, user, threadTime.toString("dd.MM.yyyy HH:mm"), ip, domen, answers, usersCanAddAnswers, body, request));
                   }else{
-                     FJPost post = new FJPost();
-                     FJPostBody postBody = new FJPostBody();
-                     FJPostHead postHead = new FJPostHead();
+                     PostService postService = FJServiceHolder.getPostService();
+                     IFJPost post = postService.getPostObject();
+                     IFJPostBody postBody = postService.getPostbodyObject();
+                     IFJPostHead postHead = postService.getPostHeadObject();
                      post.setState(1);
                      post.setBody(postBody);
                      post.setHead(postHead);
@@ -93,7 +94,8 @@ public class Quest extends FJServlet {
                      postHead.setIp(ip);
                      postHead.setNred(0);
                      postHead.setTitle(head);
-                     FJQuestionThread thread = new FJQuestionThread();
+                     ThreadService treadService = FJServiceHolder.getThreadService();
+                     IFJQuestionThread thread = treadService.getQuestionThreadObject();
                      thread.setAuthId(user.getId());
                      thread.setHead(head);
                      thread.setNick(user.getNick());
@@ -104,7 +106,6 @@ public class Quest extends FJServlet {
                      thread.setType(usersCanAddAnswers ? 2 :1);
                      thread.setAnswers(answers);
                      thread.setQuestion(question);
-                     ThreadService treadService = FJServiceHolder.getThreadService();
                      treadService.create(thread, post);
                      buffer.append(successPostOut("3", "index.php"));
                   }
@@ -135,7 +136,7 @@ public class Quest extends FJServlet {
       }
    }
 
-   private StringBuffer view(LocaleString locale, String head, String question, IUser user, String $rgtime, String $str_ip, String $str_dom, List<QuestNode> answers, boolean usersCanAddAnswers, String body, HttpServletRequest request) throws InvalidKeyException, IOException{
+   private StringBuffer view(LocaleString locale, String head, String question, IUser user, String $rgtime, String $str_ip, String $str_dom, List<IQuestNode> answers, boolean usersCanAddAnswers, String body, HttpServletRequest request) throws InvalidKeyException, IOException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
       buffer.append("<html>");

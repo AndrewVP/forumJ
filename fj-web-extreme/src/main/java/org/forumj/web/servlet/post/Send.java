@@ -21,10 +21,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
-import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
-import org.forumj.db.entity.FJMail;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
@@ -50,7 +49,8 @@ public class Send extends FJServlet {
          String bodyParameter = request.getParameter("A2");
          String receiverNickParameter = request.getParameter("RCVR");
          Date currentDate = new Date();
-         FJMail mail = new FJMail();
+         MailService mailService = FJServiceHolder.getMailService();
+         IFJMail mail = mailService.getMailObject();
          UserService userService = FJServiceHolder.getUserService();
          IUser receiver = userService.read(receiverNickParameter);
          mail.setSender(user);
@@ -63,7 +63,6 @@ public class Send extends FJServlet {
             if (!isEmptyParameter(comandParameter) && comandParameter.equals("view")){
                buffer.append(view(mail, locale, request));
             }else{
-               MailService mailService = FJServiceHolder.getMailService();
                mailService.create(mail);
                buffer.append(successPostOut("0", "control.php?id=" + idParameter));
             }
@@ -78,7 +77,7 @@ public class Send extends FJServlet {
       }
    }
 
-   private StringBuffer view(FJMail mail, LocaleString locale, HttpServletRequest request) throws InvalidKeyException, IOException{
+   private StringBuffer view(IFJMail mail, LocaleString locale, HttpServletRequest request) throws InvalidKeyException, IOException{
       StringBuffer buffer = new StringBuffer();
       /*Тело.*/
       buffer.append("<html>");

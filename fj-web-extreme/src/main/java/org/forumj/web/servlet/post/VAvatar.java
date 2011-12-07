@@ -18,8 +18,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
+import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
-import org.forumj.db.entity.User;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -34,7 +34,7 @@ public class VAvatar extends FJServlet {
          StringBuffer buffer = new StringBuffer();
          boolean vAvatar = request.getParameter("v_avatar") != null;
          HttpSession session = request.getSession();
-         User user = (User) session.getAttribute("user");
+         IUser user = (IUser) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             user.setWantSeeAvatars(vAvatar);
             UserService userService = FJServiceHolder.getUserService();

@@ -20,9 +20,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
-import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
-import org.forumj.db.entity.Ignor;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -51,7 +50,7 @@ public class Amn extends FJServlet {
             String strDate = ignorDayParameter+ "." + ignorMounthParameter + "." + ignorYearParameter + "." + ignorHourParameter + "." + ignorMinuteParameter;
             SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy.HH.mm");
             Date newEndDate = format.parse(strDate);
-            Ignor ignor = new Ignor();
+            IIgnor ignor = service.getIgnorObject();
             ignor.setId(Long.valueOf(ignorIdParameter));
             ignor.setUserId(user.getId());
             ignor.setType(Integer.valueOf(ignorTypeParameter));

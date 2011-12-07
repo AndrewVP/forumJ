@@ -19,13 +19,17 @@ import java.io.IOException;
 import java.sql.*;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.entity.*;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 public interface QuestService {
+   
+   public IQuestNode getQuestNodeObject();
+
+   public IQuestNode getQuestNodeObject(Integer numb, String node, Long userId);
 
    public void repealVote(Long threadId, IUser user) throws ConfigurationException, IOException, SQLException;
    

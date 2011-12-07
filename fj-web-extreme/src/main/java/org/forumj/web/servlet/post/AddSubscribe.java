@@ -10,9 +10,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
-import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
-import org.forumj.db.entity.FJSubscribe;
 import org.forumj.web.servlet.FJServlet;
 
 @SuppressWarnings("serial")
@@ -38,7 +37,7 @@ public class AddSubscribe extends FJServlet {
                int key = generateRandom();
                SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
                for(; subscribeService.isKeyPresent(key); key = generateRandom());
-               FJSubscribe subscribe = new FJSubscribe();
+               IFJSubscribe subscribe = subscribeService.getSubscribeObject();
                subscribe.setKey((long) key);
                subscribe.setUser(user);
                subscribe.setTitleId(threadId);

@@ -26,6 +26,8 @@ import org.forumj.common.db.entity.IUser;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 public interface UserService {
+   
+   public IUser getUserObject();
 
    public IUser readUser(Long userId) throws ConfigurationException,
          SQLException, IOException;
@@ -43,4 +45,6 @@ public interface UserService {
          SQLException, IOException;
 
    public IUser read(String nick, String password, Boolean firstPassword) throws ConfigurationException, SQLException, IOException;
+
+   public IUser read(Long userId, String password, boolean firstPassword) throws ConfigurationException, SQLException, IOException;
 }

@@ -20,8 +20,8 @@ import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
+import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
-import org.forumj.db.entity.User;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -35,7 +35,7 @@ public class Defview extends FJServlet {
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       HttpSession session = request.getSession();
-      User user = (User) session.getAttribute("user");
+      IUser user = (IUser) session.getAttribute("user");
       String defaultViewParameter = request.getParameter("DVIEW");
       try {
          if (user != null && !user.isBanned() && user.isLogined()){

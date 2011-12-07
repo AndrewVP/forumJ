@@ -30,11 +30,10 @@ import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
-import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.*;
 import org.forumj.common.tool.Time;
-import org.forumj.db.entity.*;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
@@ -72,9 +71,10 @@ public class New extends FJServlet {
                if (command != null && "view".equalsIgnoreCase(command)){
                   buffer.append(new_view(locale, head, user, rgTime, ip, domen, body, request));
                }else{
-                  FJPost post = new FJPost();
-                  FJPostBody postBody = new FJPostBody();
-                  FJPostHead postHead = new FJPostHead();
+                  PostService postService = FJServiceHolder.getPostService();
+                  IFJPost post = postService.getPostObject();
+                  IFJPostBody postBody = postService.getPostbodyObject();
+                  IFJPostHead postHead = postService.getPostHeadObject();
                   post.setState(1);
                   post.setBody(postBody);
                   post.setHead(postHead);
@@ -84,7 +84,8 @@ public class New extends FJServlet {
                   postHead.setIp(ip);
                   postHead.setNred(0);
                   postHead.setTitle(head);
-                  FJThread thread = new FJThread();
+                  ThreadService treadService = FJServiceHolder.getThreadService();
+                  IFJThread thread = treadService.getThreadObject();
                   thread.setAuthId(user.getId());
                   thread.setHead(head);
                   thread.setNick(user.getNick());
@@ -93,7 +94,6 @@ public class New extends FJServlet {
                   thread.setFolderId((long) 1);
                   thread.setPcount(1);
                   thread.setType(0);
-                  ThreadService treadService = FJServiceHolder.getThreadService();
                   treadService.create(thread, post);
                   // Подготавливаем текст поста.          
                   //bbcode

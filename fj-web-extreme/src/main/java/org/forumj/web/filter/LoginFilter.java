@@ -15,8 +15,8 @@
  */
 package org.forumj.web.filter;
 
-import static org.forumj.web.servlet.tool.FJServletTools.*;
 import static org.forumj.common.FJServletName.*;
+import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -29,7 +29,7 @@ import org.apache.commons.codec.*;
 import org.apache.commons.codec.net.QuotedPrintableCodec;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.IUser;
-import org.forumj.db.dao.FJUserDao;
+import org.forumj.common.db.service.*;
 
 /**
  * 
@@ -47,7 +47,7 @@ public class LoginFilter implements Filter {
       HttpServletRequest request = (HttpServletRequest) req;
       HttpServletResponse response = (HttpServletResponse) resp;
       IUser user = (IUser) request.getSession(true).getAttribute("user");
-      FJUserDao dao = new FJUserDao();
+      UserService userService = FJServiceHolder.getUserService();
       QuotedPrintableCodec codec = new QuotedPrintableCodec();
       try {
          if (user == null || !user.isLogined()){
@@ -58,7 +58,7 @@ public class LoginFilter implements Filter {
                String pass2 = pass2Cookie.getValue();
                if (pass2 != null){
                   pass2 = codec.decode(pass2);
-                  user = dao.read(Long.valueOf(iduCookie.getValue()), pass2Cookie.getValue(), false);
+                  user = userService.read(Long.valueOf(iduCookie.getValue()), pass2Cookie.getValue(), false);
                   if (user == null){
                      ok = false;
                   }else{
@@ -70,7 +70,7 @@ public class LoginFilter implements Filter {
             }
          }
          if (user == null){
-            request.getSession().setAttribute("user", dao.read(0l));
+            request.getSession().setAttribute("user", userService.readUser(0l));
          }
          if (ok){
             chain.doFilter(request, response);
