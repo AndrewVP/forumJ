@@ -27,6 +27,8 @@ import org.forumj.common.db.entity.*;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 public interface IgnorService {
+   
+   public IIgnor getIgnorObject();
 
    public void createIgnor(long ignoredUserId, IUser user) throws SQLException,
          ConfigurationException, IOException;

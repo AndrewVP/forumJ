@@ -28,7 +28,6 @@ import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.*;
 import org.forumj.common.tool.Time;
-import org.forumj.db.entity.*;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
@@ -293,9 +292,9 @@ public class Write extends FJServlet {
    }
    
    private void write_new(String body, IUser user, String domen, String ip, String head, Long threadId, PostService postService) throws DBException, ConfigurationException, IOException, SQLException{
-      FJPost post = new FJPost();
-      FJPostBody postBody = new FJPostBody();
-      FJPostHead postHead = new FJPostHead();
+      IFJPost post = postService.getPostObject();
+      IFJPostBody postBody = postService.getPostbodyObject();
+      IFJPostHead postHead = postService.getPostHeadObject();
       post.setState(1);
       post.setBody(postBody);
       post.setHead(postHead);

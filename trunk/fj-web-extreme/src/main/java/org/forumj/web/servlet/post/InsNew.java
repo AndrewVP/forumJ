@@ -20,7 +20,6 @@ import org.forumj.common.*;
 import org.forumj.common.config.FJConfiguration;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
-import org.forumj.db.entity.User;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -67,7 +66,7 @@ public class InsNew extends FJServlet {
                if (user != null){
                   response.sendRedirect("reg.php?id=12");
                }else{
-                  user = new User();
+                  user = userService.getUserObject();
                   user.setNick(nick);
                   user.setEmail(email1Parameter);
                   user.setPass(pass1Parameter);

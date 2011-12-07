@@ -15,9 +15,8 @@
  */
 package org.forumj.web.filter;
 
-import static org.forumj.web.servlet.tool.FJServletTools.setcookie;
 import static org.forumj.common.FJServletName.*;
-
+import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -29,7 +28,7 @@ import javax.servlet.http.*;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.IUser;
-import org.forumj.db.dao.FJUserDao;
+import org.forumj.common.db.service.*;
 
 /**
  * 
@@ -49,8 +48,8 @@ public class ExitFilter implements Filter {
       IUser user = (IUser) request.getSession().getAttribute("user");
       try {
          if (exitParam != null && user != null && user.isLogined()){
-            FJUserDao dao = new FJUserDao();
-            request.getSession().setAttribute("user", dao.read(0l));
+            UserService userService = FJServiceHolder.getUserService();
+            request.getSession().setAttribute("user", userService.readUser(0l));
             setcookie(response, "idu", "", 0, request.getContextPath(), request.getServerName());
             setcookie(response, "pass2", "", 0, request.getContextPath(), request.getServerName());
             String query = request.getQueryString();

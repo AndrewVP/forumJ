@@ -28,6 +28,12 @@ import org.forumj.common.exception.DBException;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 public interface PostService {
+   
+   public IFJPost getPostObject();
+   
+   public IFJPostBody getPostbodyObject();
+   
+   public IFJPostHead getPostHeadObject();
 
    public Long create(IFJPost post) throws IOException, DBException, ConfigurationException, SQLException;
    

@@ -18,8 +18,8 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
+import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
-import org.forumj.db.entity.User;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -34,7 +34,7 @@ public class SetFooter extends FJServlet {
          StringBuffer buffer = new StringBuffer();
          String footerParameter = request.getParameter("foot");
          HttpSession session = request.getSession();
-         User user = (User) session.getAttribute("user");
+         IUser user = (IUser) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             user.setFooter(footerParameter);
             UserService userService = FJServiceHolder.getUserService();

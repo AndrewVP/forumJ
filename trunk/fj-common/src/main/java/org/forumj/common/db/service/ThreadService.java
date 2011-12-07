@@ -27,6 +27,10 @@ import org.forumj.common.exception.DBException;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 public interface ThreadService {
+   
+   public IFJThread getThreadObject();
+
+   public IFJQuestionThread getQuestionThreadObject();
 
    public void create(IFJThread thread, IFJPost post) throws IOException, DBException, SQLException, ConfigurationException;
    

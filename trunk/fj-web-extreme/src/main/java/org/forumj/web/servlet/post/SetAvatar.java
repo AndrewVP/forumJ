@@ -19,8 +19,8 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.config.FJConfiguration;
+import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
-import org.forumj.db.entity.User;
 import org.forumj.email.FJEMail;
 import org.forumj.web.servlet.FJServlet;
 
@@ -38,7 +38,7 @@ public class SetAvatar extends FJServlet {
          String sAvatarParameter = request.getParameter("s_avatar");
          boolean sAvatar = sAvatarParameter != null; 
          HttpSession session = request.getSession();
-         User user = (User) session.getAttribute("user");
+         IUser user = (IUser) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             user.setAvatar(avatarParameter);
             user.setAvatarApproved(false);

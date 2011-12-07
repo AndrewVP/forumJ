@@ -27,6 +27,8 @@ import org.forumj.common.db.entity.*;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 public interface SubscribeService {
+   
+   public IFJSubscribe getSubscribeObject();
 
    public boolean isKeyPresent(Integer key) throws SQLException,
          ConfigurationException, IOException;
