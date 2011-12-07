@@ -9,7 +9,6 @@
  */
 package org.forumj.web.servlet.post;
 
-import static org.forumj.common.tool.PHP.*;
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
@@ -85,11 +84,11 @@ public class Write extends FJServlet {
                   }
                   /* Отправляем в форум*/
                   /*Остаемся в ветке?*/
-                  String $exit = "index.php";
+                  String exit = "index.php";
                   if (request.getParameter("no_exit") != null){
-                     $exit="tema.php?id=" + threadId + "&end=1#end";
+                     exit="tema.php?id=" + threadId + "&end=1#end";
                   }
-                  buffer.append(successPostOut("3", $exit));
+                  buffer.append(successPostOut("3", exit));
                }
             }else{
                // Пустая
@@ -119,7 +118,7 @@ public class Write extends FJServlet {
       }
    }
 
-   private StringBuffer view(LocaleString locale, HttpServletRequest request, IUser user, String head, String $str_ip, String $str_dom, String idt, String $lptime, String body) throws IOException, InvalidKeyException{
+   private StringBuffer view(LocaleString locale, HttpServletRequest request, IUser user, String head, String str_ip, String str_dom, String idt, String lptime, String body) throws IOException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
       buffer.append("<html>");
@@ -146,7 +145,7 @@ public class Write extends FJServlet {
       /*"Закладка" номера поста для ссылки из поиска, возврата после обработки игнора*/
       /*Тема*/
       buffer.append("<div class=nik>");
-      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(stripslashes(head))+ "</b>");
+      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(head.replace("\\", ""))+ "</b>");
       buffer.append("</div>");
       buffer.append("</td>");
       buffer.append("</tr>");
@@ -160,16 +159,16 @@ public class Write extends FJServlet {
 
       buffer.append("<img border='0' src='smiles/icon_minipost.gif'>&nbsp;");
 
-      buffer.append("<span class='posthead'>" + $lptime+ "</span></span>&nbsp;•&nbsp;");
+      buffer.append("<span class='posthead'>" + lptime+ "</span></span>&nbsp;•&nbsp;");
       /*Хост*/ 
-      if ($str_ip.trim().equalsIgnoreCase($str_dom.trim())){
-         $str_dom = substr($str_dom, 0, strrpos($str_dom, ".")+1) + "---";
+      if (str_ip.trim().equalsIgnoreCase(str_dom.trim())){
+         str_dom = str_dom.substring(0, str_dom.lastIndexOf(".")+1) + "---";
       }else{
-         $str_dom = "---" + substr($str_dom, strpos($str_dom, ".") + 1);
+         str_dom = "---" + str_dom.substring(str_dom.indexOf(".") + 1);
       }
 
       buffer.append("&nbsp;<span class='posthead'>");
-      buffer.append($str_dom);
+      buffer.append(str_dom);
       buffer.append("</span>&nbsp;");
       /*игнорировать*/
       buffer.append("&nbsp;•");
@@ -195,7 +194,7 @@ public class Write extends FJServlet {
       buffer.append("<tr>");
       buffer.append("<td>");
       /* Выводим текст*/
-      buffer.append("<p class=post>" + nl2br(fd_smiles(fd_bbcode(stripslashes(body))))+ "</p>");
+      buffer.append("<p class=post>" + fd_smiles(fd_bbcode(body)) + "</p>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table>");
@@ -217,7 +216,7 @@ public class Write extends FJServlet {
       buffer.append("<tr>");
       buffer.append("<td colspan='2' align='CENTER'>");
       buffer.append(locale.getString("mess59") + ":&nbsp;");
-      buffer.append("<input class='mnuforumSm' type=text name='NHEAD' size='70' value='" + stripslashes(head) +"'>");
+      buffer.append("<input class='mnuforumSm' type=text name='NHEAD' size='70' value='" + head.replace("\\", "") +"'>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("<tr>");
@@ -243,13 +242,13 @@ public class Write extends FJServlet {
       buffer.append(autotags_add());
       /* текстарий*/
       buffer.append("<p>");
-      buffer.append("<textarea rows='20' class='mnuforumSm'  id='ed1' name='A2' cols='55'>"+stripslashes(body)+"</textarea>");
+      buffer.append("<textarea rows='20' class='mnuforumSm'  id='ed1' name='A2' cols='55'>"+body.replace("\\", "")+"</textarea>");
       buffer.append("</p>");
-      String $checked="";
+      String checked="";
       if (request.getParameter("no_exit") != null){
-         $checked="CHECKED";
+         checked="CHECKED";
       }
-      buffer.append("<input type='checkbox'"+  $checked+" name='no_exit' value='1'>");
+      buffer.append("<input type='checkbox'"+  checked+" name='no_exit' value='1'>");
       buffer.append(locale.getString("mess123"));
       /*Кнопки*/
       buffer.append("<table>");

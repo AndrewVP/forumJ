@@ -15,7 +15,6 @@
  */
 package org.forumj.web.servlet.post;
 
-import static org.forumj.common.tool.PHP.*;
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
@@ -36,6 +35,8 @@ import org.forumj.common.exception.*;
 import org.forumj.common.tool.Time;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
+
+import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 
 /**
  * 
@@ -114,7 +115,7 @@ public class New extends FJServlet {
                   //                  
                   //                  mailPostHead=mailPostHead + "<tr style='background-color:#D1D7DC'>";
                   //                  mailPostHead=mailPostHead + "<td style='border:1px ridge; border-collapse: collapse; padding: 3px; border-color:#f1f7fC;'>\r\n";
-                  //                  mailPostHead=mailPostHead + "<span style='font-family: Verdana; font-size: 8pt;'>Автор:&nbsp;</span><span style='font-family: Arial; font-size: 12pt; font-weight: bold;'>" + stripslashes(htmlspecialchars(user.getNick())) + "</span>\r\n";
+                  //                  mailPostHead=mailPostHead + "<span style='font-family: Verdana; font-size: 8pt;'>Автор:&nbsp;</span><span style='font-family: Arial; font-size: 12pt; font-weight: bold;'>" + stripslashes(HTMLEntities.htmlentities(user.getNick())) + "</span>\r\n";
                   //                  mailPostHead=mailPostHead + "<span style='font-family: Verdana; font-size: 8pt;'>&nbsp;" + chr(149) + "&nbsp;Дата:&nbsp;</span>";
                   ////                  mailPostHead=mailPostHead + "<span style='font-family: Verdana; font-size: 10pt;'>" + substr(rgTime,8,2) + "." + substr(rgTime,5,2) + "." + substr(rgTime,2,2) + "&nbsp;" + substr(rgTime,11,2) + ":" + substr(rgTime,14,2) + "&nbsp;</span>" + chr(149) + "\r\n";      
                   //                  mailPostHead=mailPostHead + "<span style='font-family: Verdana; font-size: 8pt;'>&nbsp;Хост:&nbsp;</span><span style='font-family: Verdana; font-size: 10pt;'>" + domen + "</span>\r\n";
@@ -155,7 +156,7 @@ public class New extends FJServlet {
       }
    }
 
-   public StringBuffer new_view(LocaleString locale, String head, IUser user, String $rgtime, String $str_ip, String $str_dom, String body, HttpServletRequest request) throws IOException, InvalidKeyException{
+   public StringBuffer new_view(LocaleString locale, String head, IUser user, String rgtime, String str_ip, String str_dom, String body, HttpServletRequest request) throws IOException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
       buffer.append("<html>");
@@ -192,15 +193,15 @@ public class New extends FJServlet {
       /*Дата*/
       
       buffer.append("<img border='0' src='smiles/icon_minipost.gif'>&nbsp;");
-      buffer.append("<span class='posthead'>" + $rgtime + "</span>&nbsp;•");
+      buffer.append("<span class='posthead'>" + rgtime + "</span>&nbsp;•");
       /*Хост*/ 
-      if ($str_ip.trim().equalsIgnoreCase($str_dom.trim())){
-         $str_dom = substr($str_dom, 0, strrpos($str_dom, ".")+1) + "---";
+      if (str_ip.trim().equalsIgnoreCase(str_dom.trim())){
+         str_dom = str_dom.substring(0, str_dom.lastIndexOf(".")+1) + "---";
       }else{
-         $str_dom = "---" + substr($str_dom, strpos($str_dom, ".") + 1);
+         str_dom = "---" + str_dom.substring(str_dom.indexOf(".") + 1);
       }
       
-      buffer.append("&nbsp;<span class='posthead'>" + $str_dom + "</span>&nbsp;");
+      buffer.append("&nbsp;<span class='posthead'>" + str_dom + "</span>&nbsp;");
       /*игнорировать*/
       buffer.append("&nbsp;•<span class='posthead'>");
       buffer.append(locale.getString("mess68"));
@@ -224,7 +225,7 @@ public class New extends FJServlet {
       buffer.append("<tr>");
       buffer.append("<td>");
       /* Выводим текст*/
-      buffer.append("<p class='post'>" + nl2br(fd_smiles(fd_bbcode(stripslashes(body)))) + "</p>");
+      buffer.append("<p class='post'>" + fd_smiles(fd_bbcode(body)) + "</p>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table>");
@@ -246,7 +247,7 @@ public class New extends FJServlet {
       buffer.append("<td colspan='2' align='CENTER'>");
       /*Тема*/
       buffer.append(locale.getString("mess4") + "&nbsp");
-      buffer.append("<input class='mnuforumSm' type=text name='NHEAD' size='70' value='" +htmlspecialchars(stripslashes(head)) + "'>");
+      buffer.append("<input class='mnuforumSm' type=text name='NHEAD' size='70' value='" +HTMLEntities.htmlentities(head.replace("\\", "")) + "'>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("<tr>");
@@ -274,7 +275,7 @@ public class New extends FJServlet {
       buffer.append(autotags_add());
       /* текстарий*/
       buffer.append("<p>");
-      buffer.append("<textarea class='mnuforumSm' rows='20' id='ed1' name='A2' cols='55'>" + htmlspecialchars(stripslashes(body)) + "</textarea>");
+      buffer.append("<textarea class='mnuforumSm' rows='20' id='ed1' name='A2' cols='55'>" + HTMLEntities.htmlentities(body.replace("\\", "")) + "</textarea>");
       buffer.append("</p>");
       /*Кнопки*/
       buffer.append("<table>");

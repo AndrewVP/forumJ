@@ -14,7 +14,11 @@
  * limitations under the License.
  */
 package org.forumj.common.tool;
-import static org.forumj.common.tool.PHP.*;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+import com.humaorie.strtotime.StrToTime;
 
 /**
  * 
@@ -51,7 +55,10 @@ public class Time {
     * @param unknown_type $mask
     */
    public String toString(String mask){
-      return date(mask, this.timestamp);
+      SimpleDateFormat format = new SimpleDateFormat(mask);
+      Date date = new Date();
+      date.setTime(timestamp);
+      return format.format(date);
    }
    
    /**
@@ -59,7 +66,7 @@ public class Time {
     *
     */
    public void setClearTime(){
-       this.timestamp = strtotime(toString("dd.MM.yyyy HH:mm"));
+       this.timestamp = StrToTime.strtotime(toString("dd.MM.yyyy HH:mm")).getTime();
    }
    
    /**
@@ -67,7 +74,7 @@ public class Time {
     *
     */
    public long getClearTime(){
-       return strtotime(this.toString("dd.MM.yyyy HH:mm"));
+       return StrToTime.strtotime(this.toString("dd.MM.yyyy HH:mm")).getTime();
    }
    
    /**
@@ -108,4 +115,10 @@ public class Time {
       this.timestamp -= value * seconds;
    }
 
+   public static String date(String mask , long timestamp){
+      SimpleDateFormat format = new SimpleDateFormat(mask);
+      Date date = new Date();
+      date.setTime(timestamp);
+      return format.format(date);
+   }
 }

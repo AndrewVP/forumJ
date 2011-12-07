@@ -9,7 +9,6 @@
  */
 package org.forumj.web.servlet.post;
 
-import static org.forumj.common.tool.PHP.*;
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
@@ -136,7 +135,7 @@ public class Quest extends FJServlet {
       }
    }
 
-   private StringBuffer view(LocaleString locale, String head, String question, IUser user, String $rgtime, String $str_ip, String $str_dom, List<IQuestNode> answers, boolean usersCanAddAnswers, String body, HttpServletRequest request) throws InvalidKeyException, IOException{
+   private StringBuffer view(LocaleString locale, String head, String question, IUser user, String rgtime, String str_ip, String str_dom, List<IQuestNode> answers, boolean usersCanAddAnswers, String body, HttpServletRequest request) throws InvalidKeyException, IOException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
       buffer.append("<html>");
@@ -162,7 +161,7 @@ public class Quest extends FJServlet {
       buffer.append("<td  class='internal'>");
       /*Тема*/
       buffer.append("<div class=nik>");
-      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(stripslashes(head))+ "</b>");
+      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(head.replace("\\", ""))+ "</b>");
       buffer.append("</div>");
       buffer.append("</td>");
       buffer.append("</tr>");
@@ -177,17 +176,17 @@ public class Quest extends FJServlet {
 
       buffer.append("&nbsp;<img border='0' src='smiles/icon_minipost.gif'>&nbsp;");
 
-      buffer.append("<span class='posthead'>" + $rgtime + "</span>&nbsp;•");
+      buffer.append("<span class='posthead'>" + rgtime + "</span>&nbsp;•");
 
       /*Хост*/ 
-      if ($str_ip.trim().equalsIgnoreCase($str_dom.trim())){
-         $str_dom = substr($str_dom, 0, strrpos($str_dom, ".")+1) + "---";
+      if (str_ip.trim().equalsIgnoreCase(str_dom.trim())){
+         str_dom = str_dom.substring(0, str_dom.lastIndexOf(".")+1) + "---";
       }else{
-         $str_dom = "---" + substr($str_dom, strpos($str_dom, ".") + 1);
+         str_dom = "---" + str_dom.substring(str_dom.indexOf(".") + 1);
       }
 
       buffer.append("&nbsp;<span class='posthead'>");
-      buffer.append($str_dom);
+      buffer.append(str_dom);
       buffer.append("</span>&nbsp;&nbsp;•");
       /*игнорировать*/
 
@@ -216,7 +215,7 @@ public class Quest extends FJServlet {
       buffer.append("<p align='CENTER'>");
       buffer.append("<font size='4'>");
       buffer.append("<b>");
-      buffer.append(fd_smiles(stripslashes(question)));
+      buffer.append(fd_smiles(question.replace("\\", "")));
       buffer.append("</b>");
       buffer.append("</font>");
       buffer.append("</p>");
@@ -231,14 +230,14 @@ public class Quest extends FJServlet {
       buffer.append("<table class=content>");
       for (int i = 0; i < answers.size(); i++) {
          String answer = answers.get(i).getNode();
-         String $check="";
-         if (i == 0) $check=" CHECKED";
+         String check="";
+         if (i == 0) check=" CHECKED";
          buffer.append("<tr>");
          buffer.append("<td class=voice_right >");
-         buffer.append("<input type='radio' name='ANSWER' value='" + (i + 1) + "'" + $check + ">");
+         buffer.append("<input type='radio' name='ANSWER' value='" + (i + 1) + "'" + check + ">");
          buffer.append("</td>");
          buffer.append("<td class=voice_right nowrap align='left'>");
-         buffer.append(fd_smiles(fd_href(stripslashes(answer))));
+         buffer.append(fd_smiles(fd_href(answer.replace("\\", ""))));
          buffer.append("</td>");
          buffer.append("</tr>");
       }
@@ -260,7 +259,7 @@ public class Quest extends FJServlet {
       buffer.append("<tr>");
       buffer.append("<td>");
       /* Выводим текст*/
-      buffer.append("<p class='post'" + nl2br(fd_smiles(fd_bbcode(stripslashes(body))))+ "</p>");
+      buffer.append("<p class='post'" + fd_smiles(fd_bbcode(body)) + "</p>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table>");
@@ -286,7 +285,7 @@ public class Quest extends FJServlet {
       buffer.append(locale.getString("mess59") + ":&nbsp");
       buffer.append("</td>");
       buffer.append("<td>");
-      buffer.append("<input type='text' class='mnuforumSm' name='T' size='120' value='" + stripslashes(head)+ "'>");
+      buffer.append("<input type='text' class='mnuforumSm' name='T' size='120' value='" + head.replace("\\", "") + "'>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("<tr>");
@@ -294,7 +293,7 @@ public class Quest extends FJServlet {
       buffer.append(locale.getString("mess124") + ":&nbsp");
       buffer.append("</td>");
       buffer.append("<td>");
-      buffer.append("<input type='text' class='mnuforumSm' name='Q' size='120' value='" + stripslashes(question) + "'>");
+      buffer.append("<input type='text' class='mnuforumSm' name='Q' size='120' value='" + question.replace("\\", "") + "'>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table>");
@@ -354,7 +353,7 @@ public class Quest extends FJServlet {
       autotags_add();
       /*текстарий*/
       buffer.append("<p>");
-      buffer.append("<textarea class='mnuforumSm' rows='30' id='ed1' name='A2' cols='55'>" + stripslashes(body) + "</textarea>");
+      buffer.append("<textarea class='mnuforumSm' rows='30' id='ed1' name='A2' cols='55'>" + body.replace("\\", "") + "</textarea>");
       buffer.append("</p>");
       /*Кнопки*/
       buffer.append("<table>");

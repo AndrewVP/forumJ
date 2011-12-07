@@ -15,13 +15,10 @@
  */
 package org.forumj.tool;
 
-import static org.forumj.common.tool.PHP.*;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.forumj.common.db.entity.IUser;
-import org.forumj.common.tool.PHP;
 
 /**
  * Diletant custom php functions 
@@ -30,110 +27,110 @@ import org.forumj.common.tool.PHP;
 public class Diletant {
 
    public static String fd_head(String result){
-      result=PHP.str_replace("[span class='found']", "<span class='found'>", result); 
-      result=PHP.str_replace("[/span]", "</span>", result); 
-      result=fd_smiles(result);
-      result=fd_cenz(result);
+      result = result.replace("[span class='found']", "<span class='found'>"); 
+      result = result.replace("[/span]", "</span>"); 
+      result = fd_smiles(result);
+      result = fd_cenz(result);
       return result;
    }
 
    public static String fd_smiles(String tmptxt) {
-      tmptxt=PHP.str_replace(":)","<img border='0' src='smiles/smile_.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":(","<img border='0' src='smiles/sad.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":D","<img border='0' src='smiles/biggrin.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[russian]","<img border='0' src='smiles/russian.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[pioners]","<img border='0' src='smiles/take_example.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[beer]","<img border='0' src='smiles/drinks.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[no-no]","<img border='0' src='smiles/acute.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[nea]","<img border='0' src='smiles/nea.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[babruysk]","<img border='0' src='smiles/to_babruysk.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[ohi]","<img border='0' src='smiles/girl_sigh.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[klizma]","<img border='0' src='smiles/girl_hospital.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[king]","<img border='0' src='smiles/king2.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":g)","<img border='0' src='smiles/girl_smile.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":g(","<img border='0' src='smiles/girl_sad.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[blum]","<img border='0' src='smiles/girl_blum.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[ghaha]","<img border='0' src='smiles/girl_haha.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[gwacko]","<img border='0' src='smiles/girl_wacko.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[gmad]","<img border='0' src='smiles/girl_mad.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[ghide]","<img border='0' src='smiles/girl_hide.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[glove]","<img border='0' src='smiles/girl_in_love.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[gfish]","<img border='0' src='smiles/girl_prepare_fish.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[gcrazy]","<img border='0' src='smiles/girl_crazy.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[mblum]","<img border='0' src='smiles/blum3.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[toclue]","<img border='0' src='smiles/to_clue.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[snooks]","<img border='0' src='smiles/snooks.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[scare]","<img border='0' src='smiles/scare.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[scare2]","<img border='0' src='smiles/scare2.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[gwerewolf]","<img border='0' src='smiles/girl_werewolf.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[gdevil]","<img border='0' src='smiles/girl_devil.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[friends]","<img border='0' src='smiles/friends.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[taunt]","<img border='0' src='smiles/taunt.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[offtopic]","<img border='0' src='smiles/offtopic.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[queen]","<img border='0' src='smiles/queen.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[butcher]","<img border='0' src='smiles/butcher.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[rtfm]","<img border='0' src='smiles/rtfm.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[shok]","<img border='0' src='smiles/shok.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[kr2]","<img border='0' src='smiles/KidRock_02.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[kr5]","<img border='0' src='smiles/KidRock_05.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[kr7]","<img border='0' src='smiles/KidRock_07.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[kr4]","<img border='0' src='smiles/KidRock_04.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[whistle]","<img border='0' src='smiles/whistle.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[whatever]","<img border='0' src='smiles/whatever_01.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[vinsent]","<img border='0' src='smiles/vinsent.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[victory]","<img border='0' src='smiles/victory.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[triniti]","<img border='0' src='smiles/triniti.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[tommy]","<img border='0' src='smiles/tommy.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[to_keep_order]","<img border='0' src='smiles/to_keep_order.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[tease]","<img border='0' src='smiles/tease.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[suicide]","<img border='0' src='smiles/suicide.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[spruce_up]","<img border='0' src='smiles/spruce_up.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[slow]","<img border='0' src='smiles/slow.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[skull]","<img border='0' src='smiles/skull.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[rofl]","<img border='0' src='smiles/rofl.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[read]","<img border='0' src='smiles/read.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[rabbi]","<img border='0' src='smiles/rabbi.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[punish]","<img border='0' src='smiles/punish.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[pooh_door]","<img border='0' src='smiles/pooh_door.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[pioneer]","<img border='0' src='smiles/pioneer.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[ok]","<img border='0' src='smiles/ok.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[new_russian]","<img border='0' src='smiles/new_russian.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[moil]","<img border='0' src='smiles/moil.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[lazy2]","<img border='0' src='smiles/lazy2.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[jc]","<img border='0' src='smiles/Just_Cuz_11.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[hi]","<img border='0' src='smiles/hi.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[help]","<img border='0' src='smiles/help.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[heat]","<img border='0' src='smiles/heat.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[good]","<img border='0' src='smiles/good.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[fuck]","<img border='0' src='smiles/fuck.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[fool]","<img border='0' src='smiles/fool.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[flirt]","<img border='0' src='smiles/flirt.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[dntknw]","<img border='0' src='smiles/dntknw.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[dance2]","<img border='0' src='smiles/dance2.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[brunette]","<img border='0' src='smiles/brunette.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[angel]","<img border='0' src='smiles/angel.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[aleksey_01]","<img border='0' src='smiles/aleksey_01.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[girl_cray2]","<img border='0' src='smiles/girl_cray2.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[girl_cray3]","<img border='0' src='smiles/girl_cray3.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[girl_impossible]","<img border='0' src='smiles/girl_impossible.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[girl_wink]","<img border='0' src='smiles/girl_wink.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[girl_dance]","<img border='0' src='smiles/girl_dance.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[snoozer_18]","<img border='0' src='smiles/snoozer_18.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[drag_10]","<img border='0' src='smiles/drag_10.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[Koshechka_09]","<img border='0' src='smiles/Koshechka_09.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[Koshechka_11]","<img border='0' src='smiles/Koshechka_11.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[libelle_1]","<img border='0' src='smiles/libelle_1.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[connie_6]","<img border='0' src='smiles/connie_6.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[connie_1]","<img border='0' src='smiles/connie_1.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[aftar]","<img border='0' src='smiles/aftar.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[party]","<img border='0' src='smiles/party.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[smoke]","<img border='0' src='smiles/smoke.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[feminist]","<img border='0' src='smiles/feminist.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[spam_light]","<img border='0' src='smiles/spam_light.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[laie_32]","<img border='0' src='smiles/laie_32.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[laie_44]","<img border='0' src='smiles/laie_44.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(":[laie_48]","<img border='0' src='smiles/laie_48.gif'>",tmptxt);
-      tmptxt=PHP.str_replace(";)","<img border='0' src='smiles/wink3.gif'>",tmptxt);
+      tmptxt = tmptxt.replace(":)","<img border='0' src='smiles/smile_.gif'>");
+      tmptxt = tmptxt.replace(":(","<img border='0' src='smiles/sad.gif'>");
+      tmptxt=tmptxt.replace(":D","<img border='0' src='smiles/biggrin.gif'>");
+      tmptxt=tmptxt.replace(":[russian]","<img border='0' src='smiles/russian.gif'>");
+      tmptxt=tmptxt.replace(":[pioners]","<img border='0' src='smiles/take_example.gif'>");
+      tmptxt=tmptxt.replace(":[beer]","<img border='0' src='smiles/drinks.gif'>");
+      tmptxt=tmptxt.replace(":[no-no]","<img border='0' src='smiles/acute.gif'>");
+      tmptxt=tmptxt.replace(":[nea]","<img border='0' src='smiles/nea.gif'>");
+      tmptxt=tmptxt.replace(":[babruysk]","<img border='0' src='smiles/to_babruysk.gif'>");
+      tmptxt=tmptxt.replace(":[ohi]","<img border='0' src='smiles/girl_sigh.gif'>");
+      tmptxt=tmptxt.replace(":[klizma]","<img border='0' src='smiles/girl_hospital.gif'>");
+      tmptxt=tmptxt.replace(":[king]","<img border='0' src='smiles/king2.gif'>");
+      tmptxt=tmptxt.replace(":g)","<img border='0' src='smiles/girl_smile.gif'>");
+      tmptxt=tmptxt.replace(":g(","<img border='0' src='smiles/girl_sad.gif'>");
+      tmptxt=tmptxt.replace(":[blum]","<img border='0' src='smiles/girl_blum.gif'>");
+      tmptxt=tmptxt.replace(":[ghaha]","<img border='0' src='smiles/girl_haha.gif'>");
+      tmptxt=tmptxt.replace(":[gwacko]","<img border='0' src='smiles/girl_wacko.gif'>");
+      tmptxt=tmptxt.replace(":[gmad]","<img border='0' src='smiles/girl_mad.gif'>");
+      tmptxt=tmptxt.replace(":[ghide]","<img border='0' src='smiles/girl_hide.gif'>");
+      tmptxt=tmptxt.replace(":[glove]","<img border='0' src='smiles/girl_in_love.gif'>");
+      tmptxt=tmptxt.replace(":[gfish]","<img border='0' src='smiles/girl_prepare_fish.gif'>");
+      tmptxt=tmptxt.replace(":[gcrazy]","<img border='0' src='smiles/girl_crazy.gif'>");
+      tmptxt=tmptxt.replace(":[mblum]","<img border='0' src='smiles/blum3.gif'>");
+      tmptxt=tmptxt.replace(":[toclue]","<img border='0' src='smiles/to_clue.gif'>");
+      tmptxt=tmptxt.replace(":[snooks]","<img border='0' src='smiles/snooks.gif'>");
+      tmptxt=tmptxt.replace(":[scare]","<img border='0' src='smiles/scare.gif'>");
+      tmptxt=tmptxt.replace(":[scare2]","<img border='0' src='smiles/scare2.gif'>");
+      tmptxt=tmptxt.replace(":[gwerewolf]","<img border='0' src='smiles/girl_werewolf.gif'>");
+      tmptxt=tmptxt.replace(":[gdevil]","<img border='0' src='smiles/girl_devil.gif'>");
+      tmptxt=tmptxt.replace(":[friends]","<img border='0' src='smiles/friends.gif'>");
+      tmptxt=tmptxt.replace(":[taunt]","<img border='0' src='smiles/taunt.gif'>");
+      tmptxt=tmptxt.replace(":[offtopic]","<img border='0' src='smiles/offtopic.gif'>");
+      tmptxt=tmptxt.replace(":[queen]","<img border='0' src='smiles/queen.gif'>");
+      tmptxt=tmptxt.replace(":[butcher]","<img border='0' src='smiles/butcher.gif'>");
+      tmptxt=tmptxt.replace(":[rtfm]","<img border='0' src='smiles/rtfm.gif'>");
+      tmptxt=tmptxt.replace(":[shok]","<img border='0' src='smiles/shok.gif'>");
+      tmptxt=tmptxt.replace(":[kr2]","<img border='0' src='smiles/KidRock_02.gif'>");
+      tmptxt=tmptxt.replace(":[kr5]","<img border='0' src='smiles/KidRock_05.gif'>");
+      tmptxt=tmptxt.replace(":[kr7]","<img border='0' src='smiles/KidRock_07.gif'>");
+      tmptxt=tmptxt.replace(":[kr4]","<img border='0' src='smiles/KidRock_04.gif'>");
+      tmptxt=tmptxt.replace(":[whistle]","<img border='0' src='smiles/whistle.gif'>");
+      tmptxt=tmptxt.replace(":[whatever]","<img border='0' src='smiles/whatever_01.gif'>");
+      tmptxt=tmptxt.replace(":[vinsent]","<img border='0' src='smiles/vinsent.gif'>");
+      tmptxt=tmptxt.replace(":[victory]","<img border='0' src='smiles/victory.gif'>");
+      tmptxt=tmptxt.replace(":[triniti]","<img border='0' src='smiles/triniti.gif'>");
+      tmptxt=tmptxt.replace(":[tommy]","<img border='0' src='smiles/tommy.gif'>");
+      tmptxt=tmptxt.replace(":[to_keep_order]","<img border='0' src='smiles/to_keep_order.gif'>");
+      tmptxt=tmptxt.replace(":[tease]","<img border='0' src='smiles/tease.gif'>");
+      tmptxt=tmptxt.replace(":[suicide]","<img border='0' src='smiles/suicide.gif'>");
+      tmptxt=tmptxt.replace(":[spruce_up]","<img border='0' src='smiles/spruce_up.gif'>");
+      tmptxt=tmptxt.replace(":[slow]","<img border='0' src='smiles/slow.gif'>");
+      tmptxt=tmptxt.replace(":[skull]","<img border='0' src='smiles/skull.gif'>");
+      tmptxt=tmptxt.replace(":[rofl]","<img border='0' src='smiles/rofl.gif'>");
+      tmptxt=tmptxt.replace(":[read]","<img border='0' src='smiles/read.gif'>");
+      tmptxt=tmptxt.replace(":[rabbi]","<img border='0' src='smiles/rabbi.gif'>");
+      tmptxt=tmptxt.replace(":[punish]","<img border='0' src='smiles/punish.gif'>");
+      tmptxt=tmptxt.replace(":[pooh_door]","<img border='0' src='smiles/pooh_door.gif'>");
+      tmptxt=tmptxt.replace(":[pioneer]","<img border='0' src='smiles/pioneer.gif'>");
+      tmptxt=tmptxt.replace(":[ok]","<img border='0' src='smiles/ok.gif'>");
+      tmptxt=tmptxt.replace(":[new_russian]","<img border='0' src='smiles/new_russian.gif'>");
+      tmptxt=tmptxt.replace(":[moil]","<img border='0' src='smiles/moil.gif'>");
+      tmptxt=tmptxt.replace(":[lazy2]","<img border='0' src='smiles/lazy2.gif'>");
+      tmptxt=tmptxt.replace(":[jc]","<img border='0' src='smiles/Just_Cuz_11.gif'>");
+      tmptxt=tmptxt.replace(":[hi]","<img border='0' src='smiles/hi.gif'>");
+      tmptxt=tmptxt.replace(":[help]","<img border='0' src='smiles/help.gif'>");
+      tmptxt=tmptxt.replace(":[heat]","<img border='0' src='smiles/heat.gif'>");
+      tmptxt=tmptxt.replace(":[good]","<img border='0' src='smiles/good.gif'>");
+      tmptxt=tmptxt.replace(":[fuck]","<img border='0' src='smiles/fuck.gif'>");
+      tmptxt=tmptxt.replace(":[fool]","<img border='0' src='smiles/fool.gif'>");
+      tmptxt=tmptxt.replace(":[flirt]","<img border='0' src='smiles/flirt.gif'>");
+      tmptxt=tmptxt.replace(":[dntknw]","<img border='0' src='smiles/dntknw.gif'>");
+      tmptxt=tmptxt.replace(":[dance2]","<img border='0' src='smiles/dance2.gif'>");
+      tmptxt=tmptxt.replace(":[brunette]","<img border='0' src='smiles/brunette.gif'>");
+      tmptxt=tmptxt.replace(":[angel]","<img border='0' src='smiles/angel.gif'>");
+      tmptxt=tmptxt.replace(":[aleksey_01]","<img border='0' src='smiles/aleksey_01.gif'>");
+      tmptxt=tmptxt.replace(":[girl_cray2]","<img border='0' src='smiles/girl_cray2.gif'>");
+      tmptxt=tmptxt.replace(":[girl_cray3]","<img border='0' src='smiles/girl_cray3.gif'>");
+      tmptxt=tmptxt.replace(":[girl_impossible]","<img border='0' src='smiles/girl_impossible.gif'>");
+      tmptxt=tmptxt.replace(":[girl_wink]","<img border='0' src='smiles/girl_wink.gif'>");
+      tmptxt=tmptxt.replace(":[girl_dance]","<img border='0' src='smiles/girl_dance.gif'>");
+      tmptxt=tmptxt.replace(":[snoozer_18]","<img border='0' src='smiles/snoozer_18.gif'>");
+      tmptxt=tmptxt.replace(":[drag_10]","<img border='0' src='smiles/drag_10.gif'>");
+      tmptxt=tmptxt.replace(":[Koshechka_09]","<img border='0' src='smiles/Koshechka_09.gif'>");
+      tmptxt=tmptxt.replace(":[Koshechka_11]","<img border='0' src='smiles/Koshechka_11.gif'>");
+      tmptxt=tmptxt.replace(":[libelle_1]","<img border='0' src='smiles/libelle_1.gif'>");
+      tmptxt=tmptxt.replace(":[connie_6]","<img border='0' src='smiles/connie_6.gif'>");
+      tmptxt=tmptxt.replace(":[connie_1]","<img border='0' src='smiles/connie_1.gif'>");
+      tmptxt=tmptxt.replace(":[aftar]","<img border='0' src='smiles/aftar.gif'>");
+      tmptxt=tmptxt.replace(":[party]","<img border='0' src='smiles/party.gif'>");
+      tmptxt=tmptxt.replace(":[smoke]","<img border='0' src='smiles/smoke.gif'>");
+      tmptxt=tmptxt.replace(":[feminist]","<img border='0' src='smiles/feminist.gif'>");
+      tmptxt=tmptxt.replace(":[spam_light]","<img border='0' src='smiles/spam_light.gif'>");
+      tmptxt=tmptxt.replace(":[laie_32]","<img border='0' src='smiles/laie_32.gif'>");
+      tmptxt=tmptxt.replace(":[laie_44]","<img border='0' src='smiles/laie_44.gif'>");
+      tmptxt=tmptxt.replace(":[laie_48]","<img border='0' src='smiles/laie_48.gif'>");
+      tmptxt=tmptxt.replace(";)","<img border='0' src='smiles/wink3.gif'>");
 
       return tmptxt;
    }   
@@ -217,7 +214,7 @@ public class Diletant {
    }
 
    public static String fd_bbcode(String body) {
-      String result=nl2br(stripslashes(body));
+      String result = body.replace("\r\n","<br />").replace("\\", "");
       result = parce(result, "[span class='found']", "[/span]", "<span class='found'>", "</span>");
       // [b] [/b] <b> </b>
       result = parce(result, "[b]", "[/b]", "<b>", "</b>");
@@ -267,8 +264,8 @@ public class Diletant {
       int lastocc=0;
       int sndocc=1;
       while(sndocc > 0){
-         fstocc=strpos(source, startCode, lastocc);
-         sndocc=strpos(source, endCode, fstocc);
+         fstocc = source.indexOf(startCode, lastocc);
+         sndocc = source.indexOf(endCode, fstocc);
          if((fstocc > 0 && sndocc > 0 && lastocc > 0) || (fstocc >= 0 && sndocc > 0 && lastocc== 0)){
             result += source.substring(lastocc, fstocc);
             result += startReplace + source.substring(fstocc + startCode.length(), sndocc) + endReplace;
@@ -281,55 +278,55 @@ public class Diletant {
       return result;
    }
 
-   public static String fd_href(String $href_head){
-      String $postbody=str_replace("<br", " <br", $href_head) + " ";
-      int $pos=0;
-      while (strpos(" " + $postbody, "http://", $pos) > 0) {
-         int $npos=strpos(" " + $postbody, "http://", $pos)-1;
-         int $epos=strpos($postbody, " ", $npos);
-         int $slpos=strpos(" " + $postbody, "/", $npos+8);
-         if ($npos < 5 || !substr($postbody, $npos-5, 5).equals("[img]")) $postbody=substr($postbody, 0, $npos) + "<a href='" + substr($postbody, $npos, $epos-$npos) + "'><span class='nick'>" + substr($postbody, $npos+7, $slpos-$npos-8) + "</span></a>" + substr($postbody, $epos);
-         $pos=$epos;
+   public static String fd_href(String href_head){
+      String postbody=href_head.replace("<br", " <br") + " ";
+      int pos=0;
+      while ((" " + postbody).indexOf("http://", pos) > 0) {
+         int npos=(" " + postbody).indexOf("http://", pos)-1;
+         int epos = postbody.indexOf(" ", npos);
+         int slpos = (" " + postbody).indexOf("/", npos+8);
+         if (npos < 5 || !postbody.substring(npos-5, npos).equals("[img]")) postbody=postbody.substring(0, npos) + "<a href='" + postbody.substring(npos, epos) + "'><span class='nick'>" + postbody.substring(npos + 7, slpos - 1) + "</span></a>" + postbody.substring(epos);
+         pos=epos;
 
       }
-      return $postbody;
+      return postbody;
    }      
-   public static String fd_button(String $mess, String  $onClick, String $name, String $numb){
-      String $button="<table id='"+$name+"_table' class='bttn"+$numb+"' onclick='"+$onClick+"'>"+
+   public static String fd_button(String mess, String  onClick, String name, String numb){
+      String button="<table id='"+name+"_table' class='bttn"+numb+"' onclick='"+onClick+"'>"+
       "<tr>"+
-      "  <td class='bttn"+$numb+"LeftTop'></td>"+
-      "  <td class='bttn"+$numb+"Top'></td>"+
-      "  <td class='bttn"+$numb+"RightTop'></td>"+
+      "  <td class='bttn"+numb+"LeftTop'></td>"+
+      "  <td class='bttn"+numb+"Top'></td>"+
+      "  <td class='bttn"+numb+"RightTop'></td>"+
       "</tr>"+
       "<tr>"+
-      "  <td class='bttn"+$numb+"Left'></td>"+
-      "  <td class='bttn"+$numb+"Bg'>"+$mess+"</td>"+
-      "  <td class='bttn"+$numb+"Right'></td>"+
+      "  <td class='bttn"+numb+"Left'></td>"+
+      "  <td class='bttn"+numb+"Bg'>"+mess+"</td>"+
+      "  <td class='bttn"+numb+"Right'></td>"+
       "</tr>"+
       "<tr>"+
-      "  <td class='bttn"+$numb+"LeftBtm'></td>"+
-      "  <td class='bttn"+$numb+"Btm'></td>"+
-      "  <td class='bttn"+$numb+"RightBtm'></td>"+
+      "  <td class='bttn"+numb+"LeftBtm'></td>"+
+      "  <td class='bttn"+numb+"Btm'></td>"+
+      "  <td class='bttn"+numb+"RightBtm'></td>"+
       "</tr>"+
       "</table>  ";
-      return $button;
+      return button;
    }
    public static String fd_form_add(IUser user) {
-      String $result="";
+      String result="";
       //Команда для обработки
-      $result+="<input type=hidden name='comand'>";
+      result+="<input type=hidden name='comand'>";
       // Автор
-      $result+="<input type=hidden name='IDU' value='"+user.getId().toString()+"'>";
-      $result+="<input type=hidden name='AUT' value='"+user.getNick()+"'>";
+      result+="<input type=hidden name='IDU' value='"+user.getId().toString()+"'>";
+      result+="<input type=hidden name='AUT' value='"+user.getNick()+"'>";
       // пароль автора
-      if (isset(user.getPass2())) {
+      if (user.getPass2() != null) {
          // кука
-         $result+="<input type=hidden name='PS2' value='"+user.getPass2()+"'>";
+         result+="<input type=hidden name='PS2' value='"+user.getPass2()+"'>";
       }else{
          // не кука
-         $result+="<input type=hidden name='PS1' value='"+user.getPass()+"'>";
+         result+="<input type=hidden name='PS1' value='"+user.getPass()+"'>";
       }
-      return $result;
+      return result;
    }
    public static String fd_input(String name, String value, String size, String numb){
       StringBuffer input= new StringBuffer();
@@ -352,9 +349,9 @@ public class Diletant {
       input.append("</table>");    
       return input.toString();
    }
-   public static int fd_timezone_hr(int $id_timezone){
+   public static int fd_timezone_hr(int id_timezone){
       int result = 0;
-      switch($id_timezone) {
+      switch(id_timezone) {
          case 1:
             // (GMT - 12:00)
             result = -14;
@@ -479,9 +476,9 @@ public class Diletant {
       return result;
 
    }
-   public static int fd_timezone_mn(int $id_timezone){
+   public static int fd_timezone_mn(int id_timezone){
       int result = 0;
-      switch($id_timezone) {
+      switch(id_timezone) {
          case 10:
             // (GMT - 3:30)
             result = -30;

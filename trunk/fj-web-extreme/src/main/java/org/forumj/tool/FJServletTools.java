@@ -1,13 +1,13 @@
 package org.forumj.tool;
 
-import static org.forumj.common.tool.PHP.*;
-
 import java.util.*;
 
 import javax.servlet.http.*;
 
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.exception.InvalidKeyException;
+
+import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 
 
 public class FJServletTools {
@@ -105,7 +105,7 @@ public class FJServletTools {
          /*Ник*/
          buffer.append("<img src='picts/nick.gif' border='0' class='menuImg'>");
          buffer.append("<span class=nik>");
-         buffer.append(stripslashes(htmlspecialchars(user.getNick())));
+         buffer.append(HTMLEntities.htmlentities(user.getNick()).replace("\\", ""));
          buffer.append("</span>");
          if(!index){
             /*Список тем*/
