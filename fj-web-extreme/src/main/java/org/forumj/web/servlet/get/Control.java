@@ -15,7 +15,6 @@
  */
 package org.forumj.web.servlet.get;
 
-import static org.forumj.common.tool.PHP.*;
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
@@ -35,6 +34,8 @@ import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
+
+import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 
 /**
  * 
@@ -1134,7 +1135,7 @@ public class Control extends FJServlet {
       }
       buffer.append("<form method='POST' class=content action='setavatar.php?id=9'>");
       buffer.append(locale.getString("mess97") + "&nbsp;");
-      buffer.append("<input type=text size=100 name='avatar' value='" + htmlspecialchars(user.getAvatar()) + "'>");
+      buffer.append("<input type=text size=100 name='avatar' value='" + HTMLEntities.htmlentities(user.getAvatar()) + "'>");
       buffer.append("<br>");
       buffer.append("<br>");
       if (user.getShowAvatar()) {
@@ -1202,7 +1203,7 @@ public class Control extends FJServlet {
       buffer.append(locale.getString("mess111"));
       buffer.append("</td>");
       buffer.append("<td>");
-      buffer.append("<input size='25' maxlength='20' type='text' name='country' value='" + htmlspecialchars(user.getCountry() != null ? user.getCountry() : "") + "'>");
+      buffer.append("<input size='25' maxlength='20' type='text' name='country' value='" + HTMLEntities.htmlentities(user.getCountry() != null ? user.getCountry() : "") + "'>");
       buffer.append("<input type='checkbox' name='scountry' value='1'");
       if (user.getShowCountry()){
          buffer.append(" CHECKED ");
@@ -1216,7 +1217,7 @@ public class Control extends FJServlet {
       buffer.append(locale.getString("mess112"));
       buffer.append("</td>");
       buffer.append("<td>");
-      buffer.append("<input size='25' maxlength='20' type='text' name='city' value='" + htmlspecialchars(user.getCity() != null ? user.getCity() : "") + "'>");
+      buffer.append("<input size='25' maxlength='20' type='text' name='city' value='" + HTMLEntities.htmlentities(user.getCity() != null ? user.getCity() : "") + "'>");
       buffer.append("<input type='checkbox' name='city' value='1'");
       if (user.getShowCity()){
          buffer.append(" CHECKED ");
@@ -1247,7 +1248,7 @@ public class Control extends FJServlet {
       buffer.append("</div>");
       String $textArea = "";
       if (user.getFooter() != null && !"".equals(user.getFooter())){
-         $textArea=htmlspecialchars(user.getFooter());
+         $textArea=HTMLEntities.htmlentities(user.getFooter());
       }
       buffer.append("<form method='POST' name='footer' class=content action='setfooter.php?id=11'>");
       buffer.append("<br>");

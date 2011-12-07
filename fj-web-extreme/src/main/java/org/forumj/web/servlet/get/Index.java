@@ -15,7 +15,6 @@
  */
 package org.forumj.web.servlet.get;
 
-import static org.forumj.common.tool.PHP.*;
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
@@ -34,8 +33,11 @@ import org.forumj.common.*;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
+import org.forumj.common.tool.Time;
 import org.forumj.tool.*;
 import org.forumj.web.servlet.FJServlet;
+
+import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 
 
 /**
@@ -115,7 +117,7 @@ public class Index extends FJServlet {
          List<IFJThread> threadsList = threads.getThreads();
          long threadsCount = threads.getThreadCount();
          // кол-во страниц с заголовками
-         int couP = ceil(threadsCount/user.getPp())+1;
+         int couP = (int) (Math.floor(threadsCount/user.getPp())+2);
          // Проверяем наличие почты
          String newMail = "";
          if (user.isLogined()) {
@@ -303,7 +305,7 @@ public class Index extends FJServlet {
          if(threads.getIndctrIds() == null || threads.getIndctrIds().trim().length() == 0){
             buffer.append("var idss = '0';");
          }else{
-            buffer.append("var idss = '" + substr(threads.getIndctrIds(), 1) + "';");
+            buffer.append("var idss = '" + threads.getIndctrIds().substring(1) + "';");
          }
          buffer.append("getIndicatorInfo();");
          buffer.append("}");
@@ -397,7 +399,7 @@ public class Index extends FJServlet {
          buffer.append("</font>");
          buffer.append("<font class=nick>");
          for (int userIndex=0 ; userIndex<userList.size()-1; userIndex++){
-            buffer.append(str_replace(" ", "&nbsp;", userList.get(userIndex).getNick()));
+            buffer.append(userList.get(userIndex).getNick().replace(" ", "&nbsp;"));
             if (userIndex != userList.size()-2) buffer.append("; ");
          }
          buffer.append("</font>");
@@ -458,7 +460,7 @@ public class Index extends FJServlet {
       buffer.append("<td width='1'></td>");
       // Тема
       buffer.append("<td><p>");
-      String str_head = htmlspecialchars(stripslashes(thread.getHead()));
+      String str_head = HTMLEntities.htmlentities(thread.getHead().replace("\\", ""));
       // Добавляем смайлики
       str_head = Diletant.fd_head(str_head);
       // Опрос? Добавляем "метку"
@@ -486,20 +488,20 @@ public class Index extends FJServlet {
          buffer.append("<br><font size=1>" +locale.getString("mess10")+ ":&nbsp");
          int k1=0;
          int k2=0;
-         for (int k=1; k<=ceil((pcount+1)/user.getPt()); k++) {
+         for (int k=1; k<=Math.floor((pcount+1)/user.getPt()) + 1; k++) {
             k1=k1+1;
             if (k1==10){
                buffer.append("<a href='tema.php?page=" +k+ "&id=" +thread.getId().toString()+ "'>" +k+ "</a>");
-               if (k != ceil((pcount+1)/user.getPt())) buffer.append(",&nbsp;&nbsp;");
+               if (k != Math.floor((pcount+1)/user.getPt()) + 1) buffer.append(",&nbsp;&nbsp;");
                k1=0;
                k2=k2+1;
             }
             if (k==1){
                buffer.append("<a href='tema.php?page=" +k+ "&id=" +thread.getId().toString()+ "'>" +k+ "</a>,&nbsp;&nbsp;");
             }
-            if ((ceil((pcount+1)/user.getPt())-k2*10)< 10 && (k-k2*10) != 0 && k!=1){
+            if ((Math.floor((pcount+1)/user.getPt())-k2*10 + 1)< 10 && (k-k2*10) != 0 && k!=1){
                buffer.append("<a href='tema.php?page=" +k+ "&id=" +thread.getId().toString()+ "'>" +k+ "</a>");
-               if (k != ceil((pcount+1)/user.getPt())) buffer.append(",&nbsp;&nbsp;");
+               if (k != Math.floor((pcount+1)/user.getPt()) + 1) buffer.append(",&nbsp;&nbsp;");
             }
 
          }
@@ -516,11 +518,11 @@ public class Index extends FJServlet {
       // Количество просмотров всего
       buffer.append("<font size='1' color='purple'>" + thread.getSnall() + "</font></div></td>");
       // Автор
-      buffer.append("<td width='120' align='center' valign='middle'><div class='trforum'><font size='1'>" +htmlspecialchars(thread.getNick())+ "</font></div></td>");
+      buffer.append("<td width='120' align='center' valign='middle'><div class='trforum'><font size='1'>" +HTMLEntities.htmlentities(thread.getNick())+ "</font></div></td>");
       // Автор последнего поста
-      buffer.append("<td width='120' align=center><div class='mnuforum'><font size='1'>" +htmlspecialchars(thread.getLastPostNick())+ "</font></div>");
+      buffer.append("<td width='120' align=center><div class='mnuforum'><font size='1'>" +HTMLEntities.htmlentities(thread.getLastPostNick())+ "</font></div>");
       // Время последнего поста
-      buffer.append("<div class='mnuforum'><a href='tema.php?id=" + thread.getId().toString() + "&end=1#end' rel='nofollow'><font size='1'>" + date("dd.MM.yy HH:mm",thread.getLastPostTime().getTime()) + "</font></a></div>");
+      buffer.append("<div class='mnuforum'><a href='tema.php?id=" + thread.getId().toString() + "&end=1#end' rel='nofollow'><font size='1'>" + Time.date("dd.MM.yy HH:mm",thread.getLastPostTime().getTime()) + "</font></a></div>");
       buffer.append("</td>");
       // Папка
       buffer.append("<td align='center' valign='middle'>");

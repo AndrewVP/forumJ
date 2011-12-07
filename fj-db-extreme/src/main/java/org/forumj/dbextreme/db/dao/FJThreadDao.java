@@ -10,7 +10,6 @@
 package org.forumj.dbextreme.db.dao;
 
 import static org.forumj.common.db.entity.IFJThread.*;
-import static org.forumj.common.tool.PHP.*;
 import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.*;
 
 import java.io.IOException;
@@ -251,15 +250,22 @@ public class FJThreadDao extends FJDao {
             isForum = 1;
          }else{
             /*другое*/
-            folders=substr(folders, 0, strlen(folders)-1)+")";
+            folders=folders.substring(0, folders.length()-1)+")";
          }
          String ignored = null;
          /*выбираем минусы игнора*/
          if (ignorList.size() > 0){
-            ignored = "("+implode(", ", new ArrayList<Object>(ignorList))+")";
+            ignored = "(";
+            for (int ignorIndex = 0; ignorIndex < ignorList.size(); ignorIndex++) {
+               ignored += ignorList.get(ignorIndex).getUser().getId();
+               if (ignorIndex < ignorList.size() -1){
+                  ignored += ", ";
+               }
+            }
+            ignored += ")";
          }
          String where = "";
-         if (isset(ignored)){
+         if (ignored != null){
             where = " WHERE titles.auth NOT IN " + ignored + " ";
          }
          String join=null;
@@ -282,11 +288,11 @@ public class FJThreadDao extends FJDao {
                   moved+=" "+rs.getLong("title")+",";
                }
                if (moved != null){
-                  moved=substr(moved, 0, strlen(moved)-1)+")";
+                  moved=moved.substring(0, moved.length()-1)+")";
                }
                /*Собираем запросы*/
-               if (isset(moved)){
-                  if (isset(ignored)){
+               if (moved != null){
+                  if (ignored != null){
                      where+=" AND titles.id NOT IN "+moved+" ";
                   }else{
                      where=" WHERE titles.id NOT IN "+moved+" ";
@@ -308,11 +314,11 @@ public class FJThreadDao extends FJDao {
                   moved+=" "+rs.getLong("title")+",";
                }
                if (moved != null){
-                  moved=substr(moved, 0, strlen(moved)-1)+")";
+                  moved=moved.substring(0, moved.length()-1)+")";
                }
                /*Собираем запросы*/
-               if (isset(moved)){
-                  if (isset(ignored)){
+               if (moved != null){
+                  if (ignored != null){
                      where+=" AND titles.id NOT IN "+moved+" ";
                   }else{
                      where=" WHERE titles.id NOT IN "+moved+" ";
@@ -338,18 +344,18 @@ public class FJThreadDao extends FJDao {
                moved+=" "+rs.getLong("title")+",";
             }
             if (moved != null){
-               moved=substr(moved, 0, strlen(moved)-1)+")";
+               moved=moved.substring(0, moved.length()-1)+")";
             }
             /*Собираем запросы*/
-            if (isset(moved)){
-               if (isset(ignored)){
+            if (moved != null){
+               if (ignored != null){
                   where+=" AND titles.id NOT IN "+moved+" ";
                }else{
                   where=" WHERE titles.id IN "+moved+" ";
                }
             }else{
                //Ничего нет
-               if (isset(ignored)){
+               if (ignored != null){
                   where+=" AND 0=1";
                }else{
                   where=" WHERE 0=1";
@@ -392,7 +398,7 @@ public class FJThreadDao extends FJDao {
          "FROM "+
          "titles " + where + ";";
          // Добавляем временную таблицу
-         if (isset(sqlTmpJoinTable)){
+         if (sqlTmpJoinTable != null){
             String query = "DROP TEMPORARY TABLE IF EXISTS fdutranzit;";
             st.executeUpdate(query);
             st.executeUpdate(sqlTmpJoinTable);
