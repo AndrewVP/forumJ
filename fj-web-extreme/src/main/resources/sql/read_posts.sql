@@ -6,4 +6,4 @@ WHERE
  body.head = ? 
 ORDER BY 
  body.id ASC 
-LIMIT ? ?
+LIMIT ?, ?

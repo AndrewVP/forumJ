@@ -201,7 +201,7 @@ public class FJInterfaceDao extends FJDao {
 
    public List<IFJInterface> getViewsArray(Long idUser) throws ConfigurationException, SQLException, IOException{
       List<IFJInterface> result = new ArrayList<IFJInterface>();
-      String query = getLoadViewNameQuery();
+      String query = getLoadUserViewsQuery();
       Connection conn = null;
       PreparedStatement st = null;
       try {

@@ -464,7 +464,7 @@ public class Tema extends FJServlet {
             buffer.append(writeQuest(post, user, locale, thread, voiceService));
          }
          if (thread.isQuest()){
-            buffer.append( writeQuest(post, user, locale, thread, voiceService));
+            buffer.append(writeQuest(post, user, locale, thread, voiceService));
          }
          buffer.append("<tr><td>");
          buffer.append("<p class=post>" + fd_body(post.getBody().getBody()) + "</p>");

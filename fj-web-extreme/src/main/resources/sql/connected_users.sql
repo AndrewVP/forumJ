@@ -8,4 +8,4 @@ WHERE
  AND (fd_action.fd_time > now() - INTERVAL 20 MINUTE)
  AND (users.ban = 0)
 ORDER BY 
- users.nick";
+ users.nick;

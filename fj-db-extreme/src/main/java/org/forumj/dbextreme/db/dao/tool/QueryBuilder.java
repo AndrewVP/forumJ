@@ -188,7 +188,11 @@ public class QueryBuilder {
    
    private static Map<String, String> readPostsHeadsQuery = new HashMap<String, String>();
    
+   private static Object readPostsHeadsQueryMonitor = new Object();
+   
    private static Map<String, String> readPostsBodiesQuery = new HashMap<String, String>();
+   
+   private static Object readPostsBodiesQueryMonitor = new Object();
    
    private static String seenByUserQuery = null;
    
@@ -779,7 +783,7 @@ public class QueryBuilder {
       String query = readPostsHeadsQuery.get(table);
       if (query == null){
          query = loadQuery("/sql/read_post_heads.sql").replace("@@TABLE@@", table);
-         synchronized (readPostHeadQuery) {
+         synchronized (readPostsHeadsQueryMonitor) {
             readPostsHeadsQuery.put(table, query); 
          }
       }
@@ -790,7 +794,7 @@ public class QueryBuilder {
       String query = readPostsBodiesQuery.get(table);
       if (query == null){
          query = loadQuery("/sql/read_post_bodies.sql").replace("@@TABLE@@", table);
-         synchronized (readPostsBodiesQuery) {
+         synchronized (readPostsBodiesQueryMonitor) {
             readPostsBodiesQuery.put(table, query); 
          }
       }
