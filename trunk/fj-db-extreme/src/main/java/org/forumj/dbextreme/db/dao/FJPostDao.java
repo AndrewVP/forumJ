@@ -307,7 +307,7 @@ public class FJPostDao extends FJDao {
          st.setLong(1, threadId);
          st.setLong(2, nfirstpost);
          st.setInt(3, count);
-         ResultSet rs = st.executeQuery(query);
+         ResultSet rs = st.executeQuery();
          while (rs.next()){
             isFirst = page == 1 && ++nPost == 1;
             lastPostId = rs.getLong("id");

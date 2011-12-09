@@ -118,7 +118,7 @@ public class FJVoiceDao extends FJDao {
          conn = getConnection();
          st = conn.prepareStatement(query) ;
          st.setLong(1, threadId);
-         ResultSet rs = st.executeQuery(query);
+         ResultSet rs = st.executeQuery();
          if (rs.next()){
             result = rs.getInt("nvcs");
          }
