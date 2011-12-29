@@ -827,8 +827,14 @@ public class QueryBuilder {
       InputStream stream = classLoader.getResourceAsStream(path);
       BufferedReader br = new BufferedReader(new InputStreamReader(stream));
       StringBuffer result = new StringBuffer();
-      while(br.ready()){
-         result.append(br.readLine() + "\n");
+      try {
+         while(br.ready()){
+            result.append(br.readLine() + "\n");
+         }
+      } finally {
+         if (br != null){
+            br.close();
+         }
       }
       return result.toString();
    }
