@@ -41,7 +41,7 @@ public class ReadTest {
 
    private static String name = "";
    private static String fam = "";
-   private static byte sex = 'M';
+   private static String sex = "M";
    private static Date bith = new Date(); 
    private static String pass2 = "";
    private static boolean smail = true;
@@ -82,7 +82,7 @@ public class ReadTest {
       st.setString(3, mail);
       st.setString(4, name);
       st.setString(5, fam);
-      st.setByte(6, sex);
+      st.setString(6, sex);
       st.setDate(7, new java.sql.Date(bith.getTime()));
       st.setString(8, pass2);
       st.setInt(9, smail ? 1 : 0);
@@ -146,7 +146,7 @@ public class ReadTest {
    @Test
    public void sexTest(){
       if (user != null){
-         assertEquals("user sex is not loaded", sex, user.getSex().byteValue());
+         assertEquals("user sex is not loaded", sex, user.getSex());
       }
    }
 }

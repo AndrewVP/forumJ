@@ -128,7 +128,7 @@ public class FJUserDao extends FJDao {
          result.setShowAvatar(rs.getInt("s_avatar") > 0);
          result.setName(rs.getString("name"));
          result.setFam(rs.getString("fam"));
-         result.setSex(rs.getByte("sex"));
+         result.setSex(rs.getString("sex"));
          result.setBith(rs.getDate("bith"));
          result.setReg(rs.getDate("reg"));
          result.setShowMail(rs.getBoolean("smail"));
@@ -163,7 +163,7 @@ public class FJUserDao extends FJDao {
          st.setString(3, user.getEmail());
          st.setString(4, user.getName());
          st.setString(5, user.getFam());
-         st.setByte(6, user.getSex());
+         st.setString(6, user.getSex());
          java.sql.Date birhTime = null;
          if (user.getBith() != null){
             birhTime = new java.sql.Date(user.getBith().getTime());
@@ -213,7 +213,7 @@ public class FJUserDao extends FJDao {
          st.setString(3, user.getEmail());
          st.setString(4, user.getName());
          st.setString(5, user.getFam());
-         st.setByte(6, user.getSex());
+         st.setString(6, user.getSex());
          java.sql.Date birhTime = null;
          if (user.getBith() != null){
             birhTime = new java.sql.Date(user.getBith().getTime());

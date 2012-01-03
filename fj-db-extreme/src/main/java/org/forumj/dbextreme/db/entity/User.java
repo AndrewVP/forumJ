@@ -53,7 +53,7 @@ public class User implements IUser {
 
    private String fam = null;
 
-   private Byte sex = null;
+   private String sex = null;
 
    private Date bith = null;
 
@@ -150,12 +150,12 @@ public class User implements IUser {
    }
 
    @Override
-   public Byte getSex() {
+   public String getSex() {
       return sex;
    }
 
    @Override
-   public void setSex(Byte sex) {
+   public void setSex(String sex) {
       this.sex = sex;
    }
 
