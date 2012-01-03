@@ -753,7 +753,7 @@ public class QueryBuilder {
    
    public static String getReadUserByIdQuery() throws IOException{
       if (readUserByIdQuery == null){
-         readUserByIdQuery = loadQuery("/sql/read_user_by_id.sql");
+         readUserByIdQuery = loadQuery("sql/read_user_by_id.sql");
       }
       return readUserByIdQuery;
    }

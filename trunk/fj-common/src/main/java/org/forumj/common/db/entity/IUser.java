@@ -80,8 +80,8 @@ public interface IUser {
    public Date getReg();
    public void setBith(Date bith);
    public Date getBith();
-   public void setSex(Byte sex);
-   public Byte getSex();
+   public void setSex(String sex);
+   public String getSex();
    public void setFam(String fam);
    public String getFam();
    public void setName(String name);
