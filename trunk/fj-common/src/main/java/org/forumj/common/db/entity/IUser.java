@@ -9,7 +9,7 @@
  */
 package org.forumj.common.db.entity;
 
-import java.util.Date;
+import java.sql.*;
 
 /**
  *
@@ -76,8 +76,7 @@ public interface IUser {
    public Boolean getShowName();
    public void setShowMail(Boolean showMail);
    public Boolean getShowMail();
-   public void setReg(Date reg);
-   public Date getReg();
+   public Timestamp getReg();
    public void setBith(Date bith);
    public Date getBith();
    public void setSex(String sex);
@@ -90,5 +89,6 @@ public interface IUser {
    public Boolean getWantSeeAvatars();
    public void setEmail(String email);
    public String getEmail();
+   void setReg(Timestamp reg);
 
 }

@@ -15,7 +15,7 @@
  */
 package org.forumj.dbextreme.db.entity;
 
-import java.util.Date;
+import java.sql.*;
 
 import org.forumj.common.db.entity.IUser;
 
@@ -57,7 +57,7 @@ public class User implements IUser {
 
    private Date bith = null;
 
-   private Date reg = null;
+   private Timestamp reg = null;
 
    private Boolean showMail = null;
 
@@ -170,12 +170,12 @@ public class User implements IUser {
    }
 
    @Override
-   public Date getReg() {
+   public Timestamp getReg() {
       return reg;
    }
 
    @Override
-   public void setReg(Date reg) {
+   public void setReg(Timestamp reg) {
       this.reg = reg;
    }
 
@@ -509,4 +509,365 @@ public class User implements IUser {
    public void setAvatarApproved(Boolean ok_avatar) {
        this.avatarApproved = ok_avatar;
     }
+
+   /* (non-Javadoc)
+    * @see java.lang.Object#hashCode()
+    */
+   @Override
+   public int hashCode() {
+      final int prime = 31;
+      int result = 1;
+      result = prime * result
+            + ((activateCode == null) ? 0 : activateCode.hashCode());
+      result = prime * result + ((avatar == null) ? 0 : avatar.hashCode());
+      result = prime * result
+            + ((avatarApproved == null) ? 0 : avatarApproved.hashCode());
+      result = prime * result + ban;
+      result = prime * result + ((bith == null) ? 0 : bith.hashCode());
+      result = prime * result + ((city == null) ? 0 : city.hashCode());
+      result = prime * result + ((country == null) ? 0 : country.hashCode());
+      result = prime * result + ((email == null) ? 0 : email.hashCode());
+      result = prime * result + ((fam == null) ? 0 : fam.hashCode());
+      result = prime * result + ((footer == null) ? 0 : footer.hashCode());
+      result = prime * result + ((hideIp == null) ? 0 : hideIp.hashCode());
+      result = prime * result + ((icq == null) ? 0 : icq.hashCode());
+      result = prime * result + ((id == null) ? 0 : id.hashCode());
+      result = prime * result + ((isActive == null) ? 0 : isActive.hashCode());
+      result = prime * result + ((languge == null) ? 0 : languge.hashCode());
+      result = prime * result + ((name == null) ? 0 : name.hashCode());
+      result = prime * result + ((nick == null) ? 0 : nick.hashCode());
+      result = prime * result + ((pass == null) ? 0 : pass.hashCode());
+      result = prime * result + ((pass2 == null) ? 0 : pass2.hashCode());
+      result = prime * result + pp;
+      result = prime * result + pt;
+      result = prime * result + ((reg == null) ? 0 : reg.hashCode());
+      result = prime * result + ((sex == null) ? 0 : sex.hashCode());
+      result = prime * result
+            + ((showAvatar == null) ? 0 : showAvatar.hashCode());
+      result = prime * result
+            + ((showBithday == null) ? 0 : showBithday.hashCode());
+      result = prime * result + ((showCity == null) ? 0 : showCity.hashCode());
+      result = prime * result
+            + ((showCountry == null) ? 0 : showCountry.hashCode());
+      result = prime * result + ((showIcq == null) ? 0 : showIcq.hashCode());
+      result = prime * result + ((showMail == null) ? 0 : showMail.hashCode());
+      result = prime * result + ((showName == null) ? 0 : showName.hashCode());
+      result = prime * result + ((showSex == null) ? 0 : showSex.hashCode());
+      result = prime * result + ((timeZone == null) ? 0 : timeZone.hashCode());
+      result = prime * result + view;
+      result = prime * result
+            + ((wantSeeAvatars == null) ? 0 : wantSeeAvatars.hashCode());
+      return result;
+   }
+
+   public boolean equals(Object obj) {
+      if (this == obj) {
+         return true;
+      }
+      if (obj == null) {
+         return false;
+      }
+      if (getClass() != obj.getClass()) {
+         return false;
+      }
+      User other = (User) obj;
+      if (activateCode == null) {
+         if (other.activateCode != null) {
+            return false;
+         }
+      } else if (!activateCode.equals(other.activateCode)) {
+         return false;
+      }
+      if (avatar == null) {
+         if (other.avatar != null) {
+            return false;
+         }
+      } else if (!avatar.equals(other.avatar)) {
+         return false;
+      }
+      if (avatarApproved == null) {
+         if (other.avatarApproved != null) {
+            return false;
+         }
+      } else if (!avatarApproved.equals(other.avatarApproved)) {
+         return false;
+      }
+      if (ban != other.ban) {
+         return false;
+      }
+      if (bith == null) {
+         if (other.bith != null) {
+            return false;
+         }
+      } else if (other.bith == null || bith.getTime() != other.bith.getTime()) {
+         return false;
+      }
+      if (city == null) {
+         if (other.city != null) {
+            return false;
+         }
+      } else if (!city.equals(other.city)) {
+         return false;
+      }
+      if (country == null) {
+         if (other.country != null) {
+            return false;
+         }
+      } else if (!country.equals(other.country)) {
+         return false;
+      }
+      if (email == null) {
+         if (other.email != null) {
+            return false;
+         }
+      } else if (!email.equals(other.email)) {
+         return false;
+      }
+      if (fam == null) {
+         if (other.fam != null) {
+            return false;
+         }
+      } else if (!fam.equals(other.fam)) {
+         return false;
+      }
+      if (footer == null) {
+         if (other.footer != null) {
+            return false;
+         }
+      } else if (!footer.equals(other.footer)) {
+         return false;
+      }
+      if (hideIp == null) {
+         if (other.hideIp != null) {
+            return false;
+         }
+      } else if (!hideIp.equals(other.hideIp)) {
+         return false;
+      }
+      if (icq == null) {
+         if (other.icq != null) {
+            return false;
+         }
+      } else if (!icq.equals(other.icq)) {
+         return false;
+      }
+      if (id == null) {
+         if (other.id != null) {
+            return false;
+         }
+      } else if (!id.equals(other.id)) {
+         return false;
+      }
+      if (isActive == null) {
+         if (other.isActive != null) {
+            return false;
+         }
+      } else if (!isActive.equals(other.isActive)) {
+         return false;
+      }
+      if (languge == null) {
+         if (other.languge != null) {
+            return false;
+         }
+      } else if (!languge.equals(other.languge)) {
+         return false;
+      }
+      if (name == null) {
+         if (other.name != null) {
+            return false;
+         }
+      } else if (!name.equals(other.name)) {
+         return false;
+      }
+      if (nick == null) {
+         if (other.nick != null) {
+            return false;
+         }
+      } else if (!nick.equals(other.nick)) {
+         return false;
+      }
+      if (pass == null) {
+         if (other.pass != null) {
+            return false;
+         }
+      } else if (!pass.equals(other.pass)) {
+         return false;
+      }
+      if (pass2 == null) {
+         if (other.pass2 != null) {
+            return false;
+         }
+      } else if (!pass2.equals(other.pass2)) {
+         return false;
+      }
+      if (pp != other.pp) {
+         return false;
+      }
+      if (pt != other.pt) {
+         return false;
+      }
+      if (reg == null) {
+         if (other.reg != null) {
+            return false;
+         }
+      } else if (other.reg == null || reg.getTime() != other.reg.getTime()) {
+         return false;
+      }
+      if (sex == null) {
+         if (other.sex != null) {
+            return false;
+         }
+      } else if (!sex.equals(other.sex)) {
+         return false;
+      }
+      if (showAvatar == null) {
+         if (other.showAvatar != null) {
+            return false;
+         }
+      } else if (!showAvatar.equals(other.showAvatar)) {
+         return false;
+      }
+      if (showBithday == null) {
+         if (other.showBithday != null) {
+            return false;
+         }
+      } else if (!showBithday.equals(other.showBithday)) {
+         return false;
+      }
+      if (showCity == null) {
+         if (other.showCity != null) {
+            return false;
+         }
+      } else if (!showCity.equals(other.showCity)) {
+         return false;
+      }
+      if (showCountry == null) {
+         if (other.showCountry != null) {
+            return false;
+         }
+      } else if (!showCountry.equals(other.showCountry)) {
+         return false;
+      }
+      if (showIcq == null) {
+         if (other.showIcq != null) {
+            return false;
+         }
+      } else if (!showIcq.equals(other.showIcq)) {
+         return false;
+      }
+      if (showMail == null) {
+         if (other.showMail != null) {
+            return false;
+         }
+      } else if (!showMail.equals(other.showMail)) {
+         return false;
+      }
+      if (showName == null) {
+         if (other.showName != null) {
+            return false;
+         }
+      } else if (!showName.equals(other.showName)) {
+         return false;
+      }
+      if (showSex == null) {
+         if (other.showSex != null) {
+            return false;
+         }
+      } else if (!showSex.equals(other.showSex)) {
+         return false;
+      }
+      if (timeZone == null) {
+         if (other.timeZone != null) {
+            return false;
+         }
+      } else if (!timeZone.equals(other.timeZone)) {
+         return false;
+      }
+      if (view != other.view) {
+         return false;
+      }
+      if (wantSeeAvatars == null) {
+         if (other.wantSeeAvatars != null) {
+            return false;
+         }
+      } else if (!wantSeeAvatars.equals(other.wantSeeAvatars)) {
+         return false;
+      }
+      return true;
+   }
+
+   @Override
+   public String toString() {
+      StringBuilder builder = new StringBuilder();
+      builder.append("User [id=");
+      builder.append(id);
+      builder.append(", nick=");
+      builder.append(nick);
+      builder.append(", pass=");
+      builder.append(pass);
+      builder.append(", pass2=");
+      builder.append(pass2);
+      builder.append(", pp=");
+      builder.append(pp);
+      builder.append(", pt=");
+      builder.append(pt);
+      builder.append(", view=");
+      builder.append(view);
+      builder.append(", wantSeeAvatars=");
+      builder.append(wantSeeAvatars);
+      builder.append(", ban=");
+      builder.append(ban);
+      builder.append(", avatar=");
+      builder.append(avatar);
+      builder.append(", avatarApproved=");
+      builder.append(avatarApproved);
+      builder.append(", showAvatar=");
+      builder.append(showAvatar);
+      builder.append(", name=");
+      builder.append(name);
+      builder.append(", fam=");
+      builder.append(fam);
+      builder.append(", sex=");
+      builder.append(sex);
+      builder.append(", bith=");
+      builder.append(bith);
+      builder.append(", reg=");
+      builder.append(reg);
+      builder.append(", showMail=");
+      builder.append(showMail);
+      builder.append(", showName=");
+      builder.append(showName);
+      builder.append(", city=");
+      builder.append(city);
+      builder.append(", showCity=");
+      builder.append(showCity);
+      builder.append(", country=");
+      builder.append(country);
+      builder.append(", showCountry=");
+      builder.append(showCountry);
+      builder.append(", showSex=");
+      builder.append(showSex);
+      builder.append(", showBithday=");
+      builder.append(showBithday);
+      builder.append(", icq=");
+      builder.append(icq);
+      builder.append(", showIcq=");
+      builder.append(showIcq);
+      builder.append(", hideIp=");
+      builder.append(hideIp);
+      builder.append(", languge=");
+      builder.append(languge);
+      builder.append(", timeZone=");
+      builder.append(timeZone);
+      builder.append(", footer=");
+      builder.append(footer);
+      builder.append(", activateCode=");
+      builder.append(activateCode);
+      builder.append(", isActive=");
+      builder.append(isActive);
+      builder.append(", email=");
+      builder.append(email);
+      builder.append("]");
+      return builder.toString();
+   }
 }

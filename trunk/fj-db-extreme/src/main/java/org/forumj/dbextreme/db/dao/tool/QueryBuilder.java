@@ -725,28 +725,28 @@ public class QueryBuilder {
    
    public static String getReadUserByFirstPasswordQuery() throws IOException{
       if (readUserByFirstPasswordQuery == null){
-         readUserByFirstPasswordQuery = loadQuery("/sql/read_user_by_first_password.sql");
+         readUserByFirstPasswordQuery = loadQuery("sql/read_user_by_first_password.sql");
       }
       return readUserByFirstPasswordQuery;
    }
    
    public static String getReadUserBySecondPasswordQuery() throws IOException{
       if (readUserBySecondPasswordQuery == null){
-         readUserBySecondPasswordQuery = loadQuery("/sql/read_user_by_second_password.sql");
+         readUserBySecondPasswordQuery = loadQuery("sql/read_user_by_second_password.sql");
       }
       return readUserBySecondPasswordQuery;
    }
    
    public static String getReadUserByNickAndFirstPasswordQuery() throws IOException{
       if (readUserByNickAndFirstPasswordQuery == null){
-         readUserByNickAndFirstPasswordQuery = loadQuery("/sql/read_user_by_nick_and_first_password.sql");
+         readUserByNickAndFirstPasswordQuery = loadQuery("sql/read_user_by_nick_and_first_password.sql");
       }
       return readUserByNickAndFirstPasswordQuery;
    }
    
    public static String getReadUserByNickAndSecondPasswordQuery() throws IOException{
       if (readUserByNickAndSecondPasswordQuery == null){
-         readUserByNickAndSecondPasswordQuery = loadQuery("/sql/read_user_by_nick_and_second_password.sql");
+         readUserByNickAndSecondPasswordQuery = loadQuery("sql/read_user_by_nick_and_second_password.sql");
       }
       return readUserByNickAndSecondPasswordQuery;
    }
@@ -760,14 +760,14 @@ public class QueryBuilder {
    
    public static String getReadUserByNickQuery() throws IOException{
       if (readUserByNickQuery == null){
-         readUserByNickQuery = loadQuery("/sql/read_user_by_nick.sql");
+         readUserByNickQuery = loadQuery("sql/read_user_by_nick.sql");
       }
       return readUserByNickQuery;
    }
    
    public static String getReadUserByMailQuery() throws IOException{
       if (readUserByMailQuery == null){
-         readUserByMailQuery = loadQuery("/sql/read_user_by_mail.sql");
+         readUserByMailQuery = loadQuery("sql/read_user_by_mail.sql");
       }
       return readUserByMailQuery;
    }
