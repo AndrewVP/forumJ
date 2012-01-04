@@ -34,196 +34,292 @@ import org.junit.*;
  */
 public class ReadTest {
 
-   private static String nick = "testПользователь";
-
-   private static String pass = "testPass";
-
-   private static String mail = "testPass";
-
-   private static String name = "name";
-   private static String fam = "fam";
-   private static String sex = "M";
-   private static Date bith = new Date(new java.util.Date().getTime()); 
-   private static String pass2 = "pass2";
-   private static boolean smail = true;
-   private static boolean sname = true;
-   private static String city = "city";
-   private static boolean scity = true;
-   private static String country = "country";
-   private static boolean scountry = true;
-   private static boolean ssex = true;
-   private static String icq = "icq";
-   private static boolean sicq = true;
-   private static boolean sbith = true;
-   private static int lang = 1;
-   private static boolean h_ip = true;
-   private static int view_def = 1;
-   private static int pp_def = 1;
-   private static int pt_def = 1;
-   private static String avatar = "avatar";
-   private static boolean s_avatar = true;
-   private static boolean ok_avatar = true;
-   private static boolean v_avatars = true;
-   private static int fd_timezone = 1;
-   private static String footer = "footer";
-   private static boolean ban = true;
-   private static int activate_code = 1;
-   private static boolean is_active = true;
-
-   private static IUser testUser = new User();
+   private static IUser testUser1 = new User();
+   private static IUser testUser2 = new User();
+   private static IUser testUser3 = new User();
    private UserService service = new UserServiceImpl();
 
    @BeforeClass
    public static void prepare() throws SQLException, ConfigurationException{
+      prepareUser1();
+      prepareUser2();
+      prepareUser3();
       String query = "INSERT INTO users (nick, pass, mail, name, fam, sex, bith, pass2, smail, sname, city, scity, country, scountry, ssex, icq, sicq, sbith, lang, h_ip, view_def, pp_def, pt_def, avatar, s_avatar, ok_avatar, v_avatars, fd_timezone, footer, ban, activate_code, is_active) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
       Connection conn = getConnection();
       PreparedStatement st = conn.prepareStatement(query, new String[]{"id"});
-      st.setString(1, nick);
-      testUser.setNick(nick);
-      st.setString(2, pass);
-      testUser.setPass(pass);
-      st.setString(3, mail);
-      testUser.setEmail(mail);
-      st.setString(4, name);
-      testUser.setName(name);
-      st.setString(5, fam);
-      testUser.setFam(fam);
-      st.setString(6, sex);
-      testUser.setSex(sex);
-      st.setDate(7, bith);
-      testUser.setBith(bith);
-      st.setString(8, pass2);
-      testUser.setPass2(pass2);
-      st.setInt(9, smail ? 1 : 0);
-      testUser.setShowMail(smail);
-      st.setInt(10, sname ? 1 : 0);
-      testUser.setShowName(sname);
-      st.setString(11, city);
-      testUser.setCity(city);
-      st.setInt(12, scity ? 1 : 0);
-      testUser.setShowCity(scity);
-      st.setString(13, country);
-      testUser.setCountry(country);
-      st.setInt(14, scountry ? 1 : 0);
-      testUser.setShowCountry(scountry);
-      st.setInt(15, ssex ? 1 : 0);
-      testUser.setShowSex(ssex);
-      st.setString(16, icq);
-      testUser.setIcq(icq);
-      st.setInt(17, sicq ? 1 : 0);
-      testUser.setShowIcq(sicq);
-      st.setInt(18, sbith ? 1 : 0);
-      testUser.setShowBithday(sbith);
-      st.setInt(19, lang);
-      testUser.setLanguge(lang);
-      st.setInt(20, h_ip ? 1 : 0);
-      testUser.setHideIp(h_ip);
-      st.setInt(21, view_def);
-      testUser.setView(view_def);
-      st.setInt(22, pp_def);
-      testUser.setPp(pp_def);
-      st.setInt(23, pt_def);
-      testUser.setPt(pt_def);
-      st.setString(24, avatar);
-      testUser.setAvatar(avatar);
-      st.setInt(25, s_avatar ? 1 : 0);
-      testUser.setShowAvatar(s_avatar);
-      st.setInt(26, ok_avatar ? 1 : 0);
-      testUser.setAvatarApproved(ok_avatar);
-      st.setInt(27, v_avatars ? 1 : 0);
-      testUser.setWantSeeAvatars(v_avatars);
-      st.setInt(28, fd_timezone);
-      testUser.setTimeZone(fd_timezone);
-      st.setString(29, footer);
-      testUser.setFooter(footer);
-      st.setInt(30, ban ? 1 : 0);
-      testUser.setBan(ban ? 1 : 0);
-      st.setInt(31, activate_code);
-      testUser.setActivateCode(activate_code);
-      st.setInt(32, is_active ? 1 : 0);
-      testUser.setIsActive(is_active);
+      prepareStatement(st, testUser1);
+      executeSql(st, testUser1);
+      prepareStatement(st, testUser2);
+      executeSql(st, testUser2);
+      prepareStatement(st, testUser3);
+      executeSql(st, testUser3);
+   }
+   
+   private static void prepareStatement(PreparedStatement st, IUser user) throws SQLException{
+      st.setString(1, user.getNick());
+      st.setString(2, user.getPass());
+      st.setString(3, user.getEmail());
+      st.setString(4, user.getName());
+      st.setString(5, user.getFam());
+      st.setString(6, user.getSex());
+      st.setDate(7, user.getBith());
+      st.setString(8, user.getPass2());
+      st.setInt(9, user.getShowMail() ? 1 : 0);
+      st.setInt(10, user.getShowName() ? 1 : 0);
+      st.setString(11, user.getCity());
+      st.setInt(12, user.getShowCity() ? 1 : 0);
+      st.setString(13, user.getCountry());
+      st.setInt(14, user.getShowCountry() ? 1 : 0);
+      st.setInt(15, user.getShowSex() ? 1 : 0);
+      st.setString(16, user.getIcq());
+      st.setInt(17, user.getShowIcq() ? 1 : 0);
+      st.setInt(18, user.getShowBithday() ? 1 : 0);
+      st.setInt(19, user.getLanguge());
+      st.setInt(20, user.getHideIp() ? 1 : 0);
+      st.setInt(21, user.getView());
+      st.setInt(22, user.getPp());
+      st.setInt(23, user.getPt());
+      st.setString(24, user.getAvatar());
+      st.setInt(25, user.getShowAvatar() ? 1 : 0);
+      st.setInt(26, user.getAvatarApproved() ? 1 : 0);
+      st.setInt(27, user.getWantSeeAvatars() ? 1 : 0);
+      st.setInt(28, user.getTimeZone());
+      st.setString(29, user.getFooter());
+      st.setInt(30, user.getBan());
+      st.setInt(31, user.getActivateCode());
+      st.setInt(32, user.getIsActive() ? 1 : 0);
+   }
+   
+   private static void executeSql(PreparedStatement st, IUser user) throws SQLException{
       st.executeUpdate();
       ResultSet idRs = st.getGeneratedKeys();
       if (idRs.next()){
-         testUser.setId(idRs.getLong(1));
+         user.setId(idRs.getLong(1));
       }
    }
+   
+   private static void prepareUser1(){
+      testUser1.setNick("nickПользователь1");
+      testUser1.setPass("pass1");
+      testUser1.setEmail("mail");
+      testUser1.setName("name");
+      testUser1.setFam("fam");
+      testUser1.setSex("M");
+      testUser1.setBith(new Date(new java.util.Date().getTime()));
+      testUser1.setPass2("pass2");
+      testUser1.setShowMail(true);
+      testUser1.setShowName(true);
+      testUser1.setCity("city");
+      testUser1.setShowCity(true);
+      testUser1.setCountry("country");
+      testUser1.setShowCountry(true);
+      testUser1.setShowSex(true);
+      testUser1.setIcq("icq");
+      testUser1.setShowIcq(true);
+      testUser1.setShowBithday(true);
+      testUser1.setLanguge(1);
+      testUser1.setHideIp(true);
+      testUser1.setView(5);
+      testUser1.setPp(66);
+      testUser1.setPt(77);
+      testUser1.setAvatar("avatar");
+      testUser1.setShowAvatar(true);
+      testUser1.setAvatarApproved(true);
+      testUser1.setWantSeeAvatars(true);
+      testUser1.setTimeZone(7);
+      testUser1.setFooter("footer");
+      testUser1.setBan(1);
+      testUser1.setActivateCode(45567678);
+      testUser1.setIsActive(true);
+   }
 
+   private static void prepareUser2(){
+      testUser2.setNick("nickПользователь2");
+      testUser2.setPass("pass11112пароль");
+      testUser2.setEmail("mail2");
+      testUser2.setName("name");
+      testUser2.setFam("fam");
+      testUser2.setSex("M");
+      testUser2.setBith(new Date(new java.util.Date().getTime()));
+      testUser2.setPass2("paввsвs2ааааа");
+      testUser2.setShowMail(false);
+      testUser2.setShowName(false);
+      testUser2.setCity("city");
+      testUser2.setShowCity(false);
+      testUser2.setCountry("country");
+      testUser2.setShowCountry(false);
+      testUser2.setShowSex(false);
+      testUser2.setIcq("icq");
+      testUser2.setShowIcq(false);
+      testUser2.setShowBithday(false);
+      testUser2.setLanguge(2);
+      testUser2.setHideIp(false);
+      testUser2.setView(6);
+      testUser2.setPp(66);
+      testUser2.setPt(77);
+      testUser2.setAvatar("avatar");
+      testUser2.setShowAvatar(false);
+      testUser2.setAvatarApproved(false);
+      testUser2.setWantSeeAvatars(false);
+      testUser2.setTimeZone(7);
+      testUser2.setFooter("footer");
+      testUser2.setBan(0);
+      testUser2.setActivateCode(45567678);
+      testUser2.setIsActive(false);
+   }
+   
+   private static void prepareUser3(){
+      testUser3.setNick("ыnicыыыkПоыыльызыыыоывыатыель");
+      testUser3.setPass("pass1ывыавпм");
+      testUser3.setEmail("mailыкуав");
+      testUser3.setName("name");
+      testUser3.setFam("fam");
+      testUser3.setSex("M");
+      testUser3.setBith(new Date(new java.util.Date().getTime()));
+      testUser3.setPass2("paвпsррsр2р");
+      testUser3.setShowMail(true);
+      testUser3.setShowName(true);
+      testUser3.setCity("city");
+      testUser3.setShowCity(true);
+      testUser3.setCountry("country");
+      testUser3.setShowCountry(true);
+      testUser3.setShowSex(true);
+      testUser3.setIcq("icq");
+      testUser3.setShowIcq(true);
+      testUser3.setShowBithday(true);
+      testUser3.setLanguge(1);
+      testUser3.setHideIp(true);
+      testUser3.setView(7);
+      testUser3.setPp(66);
+      testUser3.setPt(77);
+      testUser3.setAvatar("avatar");
+      testUser3.setShowAvatar(true);
+      testUser3.setAvatarApproved(true);
+      testUser3.setWantSeeAvatars(true);
+      testUser3.setTimeZone(7);
+      testUser3.setFooter("footer");
+      testUser3.setBan(1);
+      testUser3.setActivateCode(45567678);
+      testUser3.setIsActive(true);
+   }
+   
    @Test
    public void readByIdTest() throws ConfigurationException, SQLException, IOException{
-      IUser user = service.readUser(testUser.getId());
+      IUser user = service.readUser(testUser1.getId());
       if (user != null){
-         testEqualsUsers(user);
+         testEqualsUsers(testUser1, user);
       }else{
-         fail("User is not loaded");
+         fail("User1 is not loaded");
+      }
+      user = service.readUser(testUser2.getId());
+      if (user != null){
+         testEqualsUsers(testUser2, user);
+      }else{
+         fail("User2 is not loaded");
       }
    }
    
    @Test
    public void readByEmailTest() throws ConfigurationException, SQLException, IOException{
-      IUser user = service.readUserByMail(testUser.getEmail());
+      IUser user = service.readUserByMail(testUser1.getEmail());
       if (user != null){
-         testEqualsUsers(user);
+         testEqualsUsers(testUser1, user);
       }else{
-         fail("User is not loaded");
+         fail("User1 is not loaded");
+      }
+      user = service.readUserByMail(testUser2.getEmail());
+      if (user != null){
+         testEqualsUsers(testUser2, user);
+      }else{
+         fail("User2 is not loaded");
       }
    }
    
    @Test
    public void readByNickTest() throws ConfigurationException, SQLException, IOException{
-      IUser user = service.read(testUser.getNick());
+      IUser user = service.read(testUser1.getNick());
       if (user != null){
-         testEqualsUsers(user);
+         testEqualsUsers(testUser1, user);
       }else{
-         fail("User is not loaded");
+         fail("User1 is not loaded");
+      }
+      user = service.read(testUser2.getNick());
+      if (user != null){
+         testEqualsUsers(testUser2, user);
+      }else{
+         fail("User2 is not loaded");
       }
    }
 
    @Test
    public void readByNickPassTest() throws ConfigurationException, SQLException, IOException{
-      IUser user = service.read(testUser.getNick(), testUser.getPass(), true);
+      IUser user = service.read(testUser1.getNick(), testUser1.getPass(), true);
       if (user != null){
-         testEqualsUsers(user);
+         testEqualsUsers(testUser1, user);
       }else{
-         fail("User is not loaded");
+         fail("User1 is not loaded");
+      }
+      user = service.read(testUser2.getNick(), testUser2.getPass(), true);
+      if (user != null){
+         testEqualsUsers(testUser2, user);
+      }else{
+         fail("User2 is not loaded");
       }
    }
    
    @Test
    public void readByNickPass2Test() throws ConfigurationException, SQLException, IOException{
-      IUser user = service.read(testUser.getNick(), testUser.getPass2(), false);
+      IUser user = service.read(testUser1.getNick(), testUser1.getPass2(), false);
       if (user != null){
-         testEqualsUsers(user);
+         testEqualsUsers(testUser1, user);
       }else{
-         fail("User is not loaded");
+         fail("User1 is not loaded");
+      }
+      user = service.read(testUser2.getNick(), testUser2.getPass2(), false);
+      if (user != null){
+         testEqualsUsers(testUser2, user);
+      }else{
+         fail("User2 is not loaded");
       }
    }
    
    @Test
    public void readByIdPassTest() throws ConfigurationException, SQLException, IOException{
-      IUser user = service.read(testUser.getId(), testUser.getPass(), true);
+      IUser user = service.read(testUser1.getId(), testUser1.getPass(), true);
       if (user != null){
-         testEqualsUsers(user);
+         testEqualsUsers(testUser1, user);
       }else{
-         fail("User is not loaded");
+         fail("User1 is not loaded");
+      }
+      user = service.read(testUser2.getId(), testUser2.getPass(), true);
+      if (user != null){
+         testEqualsUsers(testUser2, user);
+      }else{
+         fail("User2 is not loaded");
       }
    }
    
    @Test
    public void readByIdPass2Test() throws ConfigurationException, SQLException, IOException{
-      IUser user = service.read(testUser.getId(), testUser.getPass2(), false);
+      IUser user = service.read(testUser1.getId(), testUser1.getPass2(), false);
       if (user != null){
-         testEqualsUsers(user);
+         testEqualsUsers(testUser1, user);
       }else{
-         fail("User is not loaded");
+         fail("User1 is not loaded");
+      }
+      user = service.read(testUser2.getId(), testUser2.getPass2(), false);
+      if (user != null){
+         testEqualsUsers(testUser2, user);
+      }else{
+         fail("User2 is not loaded");
       }
    }
    
-   private void testEqualsUsers(IUser user){
+   private void testEqualsUsers(IUser expected, IUser user){
       //TODO FixMe!
       user.setReg(null);
       //TODO FixMe!
-      user.setBith(testUser.getBith());
-      assertEquals(testUser, user);
+      user.setBith(expected.getBith());
+      assertEquals(expected, user);
    }
 }
