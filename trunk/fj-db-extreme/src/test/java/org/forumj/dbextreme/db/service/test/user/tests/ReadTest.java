@@ -15,7 +15,7 @@
  */
 package org.forumj.dbextreme.db.service.test.user.tests;
 
-import static org.forumj.dbextreme.db.dao.FJDao.getConnection;
+import static org.forumj.dbextreme.db.dao.FJDao.*;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
@@ -23,9 +23,7 @@ import java.sql.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.IUser;
-import org.forumj.common.db.service.UserService;
-import org.forumj.dbextreme.db.entity.User;
-import org.forumj.dbextreme.db.service.UserServiceImpl;
+import org.forumj.common.db.service.*;
 import org.junit.*;
 
 /**
@@ -34,17 +32,17 @@ import org.junit.*;
  */
 public class ReadTest {
 
-   private static IUser testUser1 = new User();
-   private static IUser testUser2 = new User();
-   private static IUser testUser3 = new User();
-   private UserService service = new UserServiceImpl();
+   private static UserService service = FJServiceHolder.getUserService();
+   private static IUser testUser1 = service.getUserObject();
+   private static IUser testUser2 = service.getUserObject();
+   private static IUser testUser3 = service.getUserObject();
+   private static String query = "INSERT INTO users (nick, pass, mail, name, fam, sex, bith, pass2, smail, sname, city, scity, country, scountry, ssex, icq, sicq, sbith, lang, h_ip, view_def, pp_def, pt_def, avatar, s_avatar, ok_avatar, v_avatars, fd_timezone, footer, ban, activate_code, is_active) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
    @BeforeClass
    public static void prepare() throws SQLException, ConfigurationException{
       prepareUser1();
       prepareUser2();
       prepareUser3();
-      String query = "INSERT INTO users (nick, pass, mail, name, fam, sex, bith, pass2, smail, sname, city, scity, country, scountry, ssex, icq, sicq, sbith, lang, h_ip, view_def, pp_def, pt_def, avatar, s_avatar, ok_avatar, v_avatars, fd_timezone, footer, ban, activate_code, is_active) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
       Connection conn = getConnection();
       PreparedStatement st = conn.prepareStatement(query, new String[]{"id"});
       prepareStatement(st, testUser1);
