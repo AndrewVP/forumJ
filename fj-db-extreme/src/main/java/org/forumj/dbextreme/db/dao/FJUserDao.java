@@ -198,12 +198,12 @@ public class FJUserDao extends FJDao {
    }
    
    public void create(IUser user) throws SQLException, ConfigurationException, IOException{
-      String query = getUpdateUserQuery();
+      String query = getCreateUserQuery();
       Connection conn = null;
       PreparedStatement st = null;
       try{
          conn = getConnection();
-         st = conn.prepareStatement(query);
+         st = conn.prepareStatement(query, new String[]{"id"});
          st.setString(1, user.getNick());
          st.setString(2, user.getPass());
          st.setString(3, user.getEmail());
@@ -237,6 +237,10 @@ public class FJUserDao extends FJDao {
          st.setInt(31, user.getActivateCode());
          st.setInt(32, user.getIsActive() ? 1 : 0);
          st.executeUpdate();
+         ResultSet idRs = st.getGeneratedKeys();
+         if (idRs.next()){
+            user.setId(idRs.getLong(1));
+         }
       }finally{
          readFinally(null, st);
       }

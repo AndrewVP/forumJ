@@ -15,7 +15,7 @@
  */
 package org.forumj.dbextreme.db.service.test.user;
 
-import org.forumj.dbextreme.db.service.test.user.tests.ReadTest;
+import org.forumj.dbextreme.db.service.test.user.tests.*;
 import org.forumj.dbextreme.db.suite.DbExtremeSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
@@ -25,7 +25,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @RunWith(DbExtremeSuite.class)
-@SuiteClasses({ReadTest.class})
+@SuiteClasses({ReadTest.class, CreateTest.class, UpdateTest.class})
 public class UserServiceTestCase {
 
 }
