@@ -4,4 +4,3 @@ FROM
 WHERE 
  head = ? 
  AND user = ? 
-ORDER BY numb

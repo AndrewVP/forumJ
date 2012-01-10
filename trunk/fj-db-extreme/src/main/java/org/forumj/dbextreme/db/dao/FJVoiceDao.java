@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.sql.*;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.entity.*;
 import org.forumj.dbextreme.db.entity.FJVoice;
 
 /**
@@ -23,7 +23,7 @@ import org.forumj.dbextreme.db.entity.FJVoice;
  */
 public class FJVoiceDao extends FJDao {
 
-   public FJVoice read(Long threadId, IUser user) throws IOException, ConfigurationException, SQLException{
+   public IFJVoice read(Long threadId, Long userId) throws IOException, ConfigurationException, SQLException{
       FJVoice result = new FJVoice();
       String query = getReadVoiceQuery();
       Connection conn = null;
@@ -32,7 +32,7 @@ public class FJVoiceDao extends FJDao {
          conn = getConnection();
          st = conn.prepareStatement(query) ;
          st.setLong(1, threadId);
-         st.setLong(2, user.getId());
+         st.setLong(2, userId);
          ResultSet rs = st.executeQuery();
          if (rs.next()){
             result.setId(rs.getLong("id"));
@@ -46,7 +46,7 @@ public class FJVoiceDao extends FJDao {
       return result;
    }
 
-   public void delete(FJVoice voice, Connection connection) throws ConfigurationException, IOException, SQLException{
+   public void delete(IFJVoice voice, Connection connection) throws ConfigurationException, IOException, SQLException{
       String query = getDeleteVoiceQuery();
       Connection conn = null;
       PreparedStatement st = null;
@@ -126,6 +126,10 @@ public class FJVoiceDao extends FJDao {
          readFinally(conn, st);
       }
       return result;
+   }
+   
+   public IFJVoice getVoiceObject(){
+      return new FJVoice();
    }
 
 }

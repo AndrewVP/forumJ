@@ -25,7 +25,7 @@ import org.junit.runners.Suite.SuiteClasses;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @RunWith(DbExtremeSuite.class)
-@SuiteClasses({ReadTest.class, CreateTest.class, UpdateTest.class})
+@SuiteClasses({ReadUserTest.class, CreateUserTest.class, UpdateUserTest.class})
 public class UserServiceTestCase {
 
 }

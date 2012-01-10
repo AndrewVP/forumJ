@@ -13,33 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.forumj.common.db.service;
+package org.forumj.dbextreme.db.service.test.voice;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
-import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.*;
+import org.forumj.dbextreme.db.service.test.voice.tests.ReadVoiceTest;
+import org.forumj.dbextreme.db.suite.DbExtremeSuite;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite.SuiteClasses;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public interface VoiceService {
+@RunWith(DbExtremeSuite.class)
+@SuiteClasses({ReadVoiceTest.class})
+public class VoiceServiseTestCase {
 
-   /**
-    * 
-    * @param threadId
-    * @param user
-    * @return
-    * @throws SQLException
-    * @throws ConfigurationException
-    * @throws IOException
-    */
-   public boolean isUserVoted(long threadId, IUser user) throws SQLException, ConfigurationException, IOException;
-   
-   public IFJVoice getVoiceObject();
-   
-   public IFJVoice read(Long threadId, Long userId) throws ConfigurationException, IOException, SQLException;
-   
 }

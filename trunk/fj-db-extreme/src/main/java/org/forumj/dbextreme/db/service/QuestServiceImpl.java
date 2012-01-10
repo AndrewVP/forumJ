@@ -28,7 +28,7 @@ import org.forumj.dbextreme.db.entity.QuestNode;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 public class QuestServiceImpl extends FJService implements QuestService {
-
+   
    public void repealVote(Long threadId, IUser user) throws ConfigurationException, IOException, SQLException{
       getQuestNodeDao().repealVote(threadId, user);
    }
@@ -37,8 +37,8 @@ public class QuestServiceImpl extends FJService implements QuestService {
       getQuestNodeDao().addCustomAnswer(threadId, node, type, user);
    }
 
-   public void addVote(Long threadId, Long answerId, IUser user, Connection connection) throws ConfigurationException, IOException, SQLException {
-      getQuestNodeDao().addVote(threadId, answerId, user, connection);
+   public void addVote(Long threadId, Long answerId, IUser user) throws ConfigurationException, IOException, SQLException {
+      getQuestNodeDao().addVote(threadId, answerId, user, null);
    }
 
    public IQuestNode getQuestNodeObject() {

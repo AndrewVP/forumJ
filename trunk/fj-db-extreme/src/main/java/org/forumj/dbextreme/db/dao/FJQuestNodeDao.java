@@ -78,7 +78,7 @@ public class FJQuestNodeDao extends FJDao {
 
    public void repealVote(Long threadId, IUser user) throws ConfigurationException, IOException, SQLException{
       FJVoiceDao voiceDao = new FJVoiceDao();
-      FJVoice voice = voiceDao.read(threadId, user);
+      IFJVoice voice = voiceDao.read(threadId, user.getId());
       if (voice != null){
          String query = getReduceVoiceNumbersQuery();
          Connection conn = null;
@@ -101,6 +101,9 @@ public class FJQuestNodeDao extends FJDao {
    public void addVote(Long threadId, Long answerId, IUser user, Connection connection) throws ConfigurationException, IOException, SQLException{
       FJVoiceDao voiceDao = new FJVoiceDao();
       FJVoice voice = new FJVoice();
+      voice.setThreadId(threadId);
+      voice.setNodeId(answerId);
+      voice.setUserId(user.getId());
       String query = getIncreaseVoiceNumbersQuery();
       Connection conn = null;
       PreparedStatement st = null;

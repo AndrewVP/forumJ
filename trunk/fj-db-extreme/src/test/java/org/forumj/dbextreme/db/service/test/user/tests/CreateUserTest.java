@@ -31,7 +31,7 @@ import org.junit.*;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class UpdateTest {
+public class CreateUserTest {
 
    private static UserService service = FJServiceHolder.getUserService();
    private static IUser testUser1 = service.getUserObject();
@@ -40,25 +40,31 @@ public class UpdateTest {
    private static String query = "SELECT * FROM users WHERE id = ?";
    
    @Test
-   public void updateUser2Test() throws ConfigurationException, SQLException, IOException{
-      service.update(testUser2);
+   public void createUser1Test() throws ConfigurationException, SQLException, IOException{
+      service.create(testUser1);
+      IUser user = loadUser(testUser1.getId());
+      testEqualsUsers(testUser1, user);
+   }
+
+   @Test
+   public void createUser2Test() throws ConfigurationException, SQLException, IOException{
+      service.create(testUser2);
       IUser user = loadUser(testUser2.getId());
       testEqualsUsers(testUser2, user);
    }
    
    @Test
-   public void updateUser3Test() throws ConfigurationException, SQLException, IOException{
-      service.update(testUser3);
+   public void createUser3Test() throws ConfigurationException, SQLException, IOException{
+      service.create(testUser3);
       IUser user = loadUser(testUser3.getId());
       testEqualsUsers(testUser3, user);
    }
    
    @BeforeClass
-   public static void prepare() throws SQLException, ConfigurationException, IOException{
+   public static void prepare() throws SQLException, ConfigurationException{
       prepareUser1();
-      service.create(testUser1);
-      prepareUser2(testUser1.getId());
-      prepareUser3(testUser1.getId());
+      prepareUser2();
+      prepareUser3();
    }
    
    private static void prepareUser1(){
@@ -96,8 +102,7 @@ public class UpdateTest {
       testUser1.setIsActive(true);
    }
 
-   private static void prepareUser2(Long id){
-      testUser2.setId(id);
+   private static void prepareUser2(){
       testUser2.setNick("nickПользователь2");
       testUser2.setPass("pass11112пароль");
       testUser2.setEmail("mail2");
@@ -132,8 +137,7 @@ public class UpdateTest {
       testUser2.setIsActive(false);
    }
    
-   private static void prepareUser3(Long id){
-      testUser3.setId(id);
+   private static void prepareUser3(){
       testUser3.setNick("ыnicыыыkПоыыльызыыыоывыатыель");
       testUser3.setPass("pass1ывыавпм");
       testUser3.setEmail("mailыкуав");
