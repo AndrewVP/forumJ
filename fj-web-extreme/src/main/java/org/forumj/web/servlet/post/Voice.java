@@ -44,7 +44,7 @@ public class Voice extends FJServlet {
                if (!voiceService.isUserVoted(threadId, user)){
                   Long answerId = Long.valueOf(answerIdParameter);
                   QuestService questService = FJServiceHolder.getQuestService();
-                  questService.addVote(threadId, answerId, user, null);
+                  questService.addVote(threadId, answerId, user);
                }
                String urlQuery = "?id=" + threadIdParameter;
                buffer.append(successPostOut("3", "tema.php" + urlQuery));

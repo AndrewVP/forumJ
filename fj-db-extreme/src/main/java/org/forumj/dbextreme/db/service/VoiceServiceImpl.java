@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.VoiceService;
 
 /**
@@ -40,4 +40,14 @@ public class VoiceServiceImpl extends FJService implements VoiceService {
    public boolean isUserVoted(long threadId, IUser user) throws SQLException, ConfigurationException, IOException{
       return getVoiceDao().isUserVoted(threadId, user);
    }
+   
+   public IFJVoice getVoiceObject(){
+      return getVoiceDao().getVoiceObject();
+   }
+
+   public IFJVoice read(Long threadId, Long userId) throws ConfigurationException, IOException, SQLException{
+      return getVoiceDao().read(threadId, userId);
+   }
+   
+   
 }

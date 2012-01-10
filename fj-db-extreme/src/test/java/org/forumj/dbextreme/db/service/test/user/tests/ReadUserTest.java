@@ -30,7 +30,7 @@ import org.junit.*;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class ReadTest {
+public class ReadUserTest {
 
    private static UserService service = FJServiceHolder.getUserService();
    private static IUser testUser1 = service.getUserObject();
@@ -51,6 +51,7 @@ public class ReadTest {
       executeSql(st, testUser2);
       prepareStatement(st, testUser3);
       executeSql(st, testUser3);
+      conn.close();
    }
    
    private static void prepareStatement(PreparedStatement st, IUser user) throws SQLException{

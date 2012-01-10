@@ -16,7 +16,7 @@
 package org.forumj.common.db.service;
 
 import java.io.IOException;
-import java.sql.*;
+import java.sql.SQLException;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
@@ -35,6 +35,6 @@ public interface QuestService {
    
    public void addCustomAnswer(long threadId, String node, int type, IUser user) throws ConfigurationException, IOException, SQLException;
    
-   public void addVote(Long threadId, Long answerId, IUser user, Connection connection) throws ConfigurationException, IOException, SQLException;
+   public void addVote(Long threadId, Long answerId, IUser user) throws ConfigurationException, IOException, SQLException;
 
 }
