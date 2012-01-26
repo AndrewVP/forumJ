@@ -72,6 +72,23 @@ public class ReadVoiceTest {
       assertEquals(testVoice3, voice);
    }
    
+   @Test
+   public void isUserVotedTest1() throws ConfigurationException, SQLException, IOException{
+      assertTrue(service.isUserVoted(testVoice3.getThreadId(), testVoice3.getUserId()));
+   }
+   
+   @Test
+   public void isUserVotedTest2() throws ConfigurationException, SQLException, IOException{
+      assertFalse(service.isUserVoted(testVoice1.getThreadId(), testVoice2.getUserId()));
+   }
+   
+   @Test
+   public void isUserVotedTest3() throws ConfigurationException, SQLException, IOException{
+      assertFalse(service.isUserVoted(testVoice1.getThreadId(), testVoice3.getUserId()));
+   }
+   
+   
+   
    
    private static void prepareVoice1(){
       testVoice1.setNodeId(1l);
@@ -87,8 +104,8 @@ public class ReadVoiceTest {
    
    private static void prepareVoice3(){
       testVoice3.setNodeId(1l);
-      testVoice3.setThreadId(2l);
-      testVoice3.setUserId(1l);
+      testVoice3.setThreadId(3l);
+      testVoice3.setUserId(3l);
    }
 
    private static void prepareStatement(PreparedStatement st, IFJVoice voice) throws SQLException{

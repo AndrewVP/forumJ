@@ -41,7 +41,7 @@ public class Voice extends FJServlet {
             if (threadIdParameter != null && !"".equals(threadIdParameter)){
                VoiceService voiceService = FJServiceHolder.getVoiceService();
                Long threadId = Long.valueOf(threadIdParameter);
-               if (!voiceService.isUserVoted(threadId, user)){
+               if (!voiceService.isUserVoted(threadId, user.getId())){
                   Long answerId = Long.valueOf(answerIdParameter);
                   QuestService questService = FJServiceHolder.getQuestService();
                   questService.addVote(threadId, answerId, user);

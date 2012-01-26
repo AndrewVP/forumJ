@@ -48,7 +48,7 @@ public class UserVoice extends FJServlet {
                   Long threadId = Long.valueOf(threadIdParameter);
                   // TODO Magic integer!
                   int answerType = anonymouslyParameter == null ? 1 : 2; 
-                  if (!voiceService.isUserVoted(threadId, user)){
+                  if (!voiceService.isUserVoted(threadId, user.getId())){
                      questService.addCustomAnswer(threadId, answerParameter, answerType, user);
                   }
                }
