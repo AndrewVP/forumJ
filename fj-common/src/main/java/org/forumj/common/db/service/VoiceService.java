@@ -36,7 +36,7 @@ public interface VoiceService {
     * @throws ConfigurationException
     * @throws IOException
     */
-   public boolean isUserVoted(long threadId, IUser user) throws SQLException, ConfigurationException, IOException;
+   public boolean isUserVoted(long threadId, long userId) throws SQLException, ConfigurationException, IOException;
    
    public IFJVoice getVoiceObject();
    

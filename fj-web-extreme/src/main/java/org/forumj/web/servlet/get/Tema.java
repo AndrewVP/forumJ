@@ -526,7 +526,7 @@ public class Tema extends FJServlet {
       buffer.append("</td></tr>");
       buffer.append("<tr><td align=\"CENTER\">");
       List<IQuestNode> nodes = post.getAnswers();
-      boolean userVoted = voiceService.isUserVoted(thread.getId(), user);
+      boolean userVoted = voiceService.isUserVoted(thread.getId(), user.getId());
       if (user.isLogined() && !userVoted){
          buffer.append("<form  action='voice.php' method='POST'><table class=content>");
          for (int nodeIndex = 1; nodeIndex < nodes.size(); nodeIndex++) {

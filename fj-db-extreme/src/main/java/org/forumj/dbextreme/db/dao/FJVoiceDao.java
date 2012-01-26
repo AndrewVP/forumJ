@@ -63,7 +63,7 @@ public class FJVoiceDao extends FJDao {
       }
    }
    
-   public boolean isUserVoted(long threadId, IUser user) throws SQLException, ConfigurationException, IOException{
+   public boolean isUserVoted(long threadId, long userId) throws SQLException, ConfigurationException, IOException{
       boolean result = false;
       String query = getIsUserVotedQuery();
       Connection conn = null;
@@ -72,7 +72,7 @@ public class FJVoiceDao extends FJDao {
          conn = getConnection();
          st = conn.prepareStatement(query) ;
          st.setLong(1, threadId);
-         st.setLong(2, user.getId());
+         st.setLong(2, userId);
          ResultSet rs = st.executeQuery();
          if (rs.next()){
             result = true;

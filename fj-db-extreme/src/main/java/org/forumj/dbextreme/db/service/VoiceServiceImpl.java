@@ -37,8 +37,8 @@ public class VoiceServiceImpl extends FJService implements VoiceService {
     * @throws ConfigurationException
     * @throws IOException
     */
-   public boolean isUserVoted(long threadId, IUser user) throws SQLException, ConfigurationException, IOException{
-      return getVoiceDao().isUserVoted(threadId, user);
+   public boolean isUserVoted(long threadId, long userId) throws SQLException, ConfigurationException, IOException{
+      return getVoiceDao().isUserVoted(threadId, userId);
    }
    
    public IFJVoice getVoiceObject(){
