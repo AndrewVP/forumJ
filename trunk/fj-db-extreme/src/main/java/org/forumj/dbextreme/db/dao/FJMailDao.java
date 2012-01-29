@@ -204,7 +204,7 @@ public class FJMailDao extends FJDao {
 
    public int getNewMailCount(Long idUser) throws ConfigurationException, SQLException, IOException{
       int result = 0;
-      String query = getCreateMailQuery();
+      String query = getNewMailCountQuery();
       Connection conn = null;
       PreparedStatement st = null;
       try {

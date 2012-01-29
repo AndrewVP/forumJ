@@ -384,7 +384,7 @@ public class Index extends FJServlet {
             buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          }
          /*Главное меню*/
-         menu(request, user, locale, true);
+         buffer.append(menu(request, user, locale, true));
          buffer.append("</table>");
          buffer.append("</td>");
          buffer.append("</tr>");
@@ -460,7 +460,7 @@ public class Index extends FJServlet {
       buffer.append("<td width='1'></td>");
       // Тема
       buffer.append("<td><p>");
-      String str_head = HTMLEntities.htmlentities(thread.getHead().replace("\\", ""));
+      String str_head = HTMLEntities.htmlentities(removeSlashes(thread.getHead()));
       // Добавляем смайлики
       str_head = Diletant.fd_head(str_head);
       // Опрос? Добавляем "метку"

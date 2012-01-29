@@ -33,6 +33,13 @@ public class Diletant {
       result = fd_cenz(result);
       return result;
    }
+   
+   public static String removeSlashes(String text){
+      while (text.contains("\\\"")){
+         text = text.replace("\\\"", "\"");
+      }
+      return text;
+   }
 
    public static String fd_smiles(String tmptxt) {
       tmptxt = tmptxt.replace(":)","<img border='0' src='smiles/smile_.gif'>");
@@ -130,7 +137,7 @@ public class Diletant {
       tmptxt=tmptxt.replace(":[laie_32]","<img border='0' src='smiles/laie_32.gif'>");
       tmptxt=tmptxt.replace(":[laie_44]","<img border='0' src='smiles/laie_44.gif'>");
       tmptxt=tmptxt.replace(":[laie_48]","<img border='0' src='smiles/laie_48.gif'>");
-      tmptxt=tmptxt.replace(";)","<img border='0' src='smiles/wink3.gif'>");
+//      tmptxt=tmptxt.replace(";)","<img border='0' src='smiles/wink3.gif'>");
 
       return tmptxt;
    }   
@@ -254,28 +261,29 @@ public class Diletant {
       result = parce(result, "[quote]", "[/quote]", "<table align='center' width='90%'><tr><td class=tdquote><span class='quote'>", " </span></td></tr></table>");
       // [img] [/img] (<img border='0' src=') ('>)
       result = parce(result, "[img]", "[/img]", "<img border='0' src='", "'>");
+      result = fd_href(result);
       result = parce(result, "[url]", "[/url]", "<a href='", "'>");
       return result;
    }
    
    private static String parce(String source, String startCode, String endCode, String startReplace, String endReplace){
       int fstocc = 0;
-      String result = "";
+      StringBuffer result = new StringBuffer();
       int lastocc=0;
       int sndocc=1;
       while(sndocc > 0){
          fstocc = source.indexOf(startCode, lastocc);
          sndocc = source.indexOf(endCode, fstocc);
          if((fstocc > 0 && sndocc > 0 && lastocc > 0) || (fstocc >= 0 && sndocc > 0 && lastocc== 0)){
-            result += source.substring(lastocc, fstocc);
-            result += startReplace + source.substring(fstocc + startCode.length(), sndocc) + endReplace;
+            result.append(source.substring(lastocc, fstocc));
+            result.append(startReplace + source.substring(fstocc + startCode.length(), sndocc) + endReplace);
             lastocc = sndocc + endCode.length();
          }else{
-            result += source.substring(lastocc);
+            result.append(source.substring(lastocc));
             break;
          }
       }
-      return result;
+      return result.toString();
    }
 
    public static String fd_href(String href_head){
@@ -287,7 +295,6 @@ public class Diletant {
          int slpos = (" " + postbody).indexOf("/", npos+8);
          if (npos < 5 || !postbody.substring(npos-5, npos).equals("[img]")) postbody=postbody.substring(0, npos) + "<a href='" + postbody.substring(npos, epos) + "'><span class='nick'>" + postbody.substring(npos + 7, slpos - 1) + "</span></a>" + postbody.substring(epos);
          pos=epos;
-
       }
       return postbody;
    }      
