@@ -188,12 +188,14 @@ public class FJPostDao extends FJDao {
       return result;
    }
    
-   private FJPostHead readHead(Long id, String tableHead, Connection conn) throws SQLException, IOException{
+   private FJPostHead readHead(Long id, String tableHead, Connection conn) throws SQLException, IOException, ConfigurationException{
       String readPostHeadQuery = getReadPostHeadQuery(tableHead);
       FJPostHead result = null;
       PreparedStatement st = null;
+      Connection cn = null;
       try {
-         st = conn.prepareStatement(readPostHeadQuery);
+         cn = conn == null ? getConnection(): conn;
+         st = cn.prepareStatement(readPostHeadQuery);
          st.setLong(1, id);
          ResultSet rs = st.executeQuery();
          if (rs.next()){
@@ -211,17 +213,19 @@ public class FJPostDao extends FJDao {
             result.setThreadId(rs.getLong(IFJPostHead.THREAD_ID_FIELD_NAME));
          }
       }finally{
-         readFinally(conn, st);
+         readFinally(conn == null ? cn : null, st);
       }
       return result;
    }
 
-   private FJPostBody readBody(Long id, String bodyTable, Connection conn) throws SQLException, IOException{
+   private FJPostBody readBody(Long id, String bodyTable, Connection conn) throws SQLException, IOException, ConfigurationException{
       String readPostBodyQuery = getReadPostBodyQuery(bodyTable);
       FJPostBody result = null;
       PreparedStatement st = null;
+      Connection cn = null;
       try {
-         st = conn.prepareStatement(readPostBodyQuery);
+         cn = conn == null ? getConnection(): conn;
+         st = cn.prepareStatement(readPostBodyQuery);
          st.setLong(1, id);
          ResultSet rs = st.executeQuery();
          if (rs.next()){
@@ -231,7 +235,7 @@ public class FJPostDao extends FJDao {
             result.setPostId(rs.getLong(IFJPostBody.POST_ID_FIELD_NAME));
          }
       }finally{
-         readFinally(conn, st);
+         readFinally(conn == null ? cn : null, st);
       }
       return result;
    }

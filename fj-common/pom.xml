@@ -8,13 +8,6 @@
   </parent>
   <groupId>org.forumj.common</groupId>
   <artifactId>fj-common</artifactId>
-  <dependencies>
-      <dependency>
-         <groupId>commons-configuration</groupId>
-         <artifactId>commons-configuration</artifactId>
-         <version>1.6</version>
-      </dependency>
-  </dependencies>
   <build>
       <finalName>fj-common</finalName>
   </build>
