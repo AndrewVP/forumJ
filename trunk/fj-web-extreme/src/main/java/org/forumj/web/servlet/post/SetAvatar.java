@@ -32,8 +32,8 @@ import org.forumj.web.servlet.FJServlet;
 public class SetAvatar extends FJServlet {
 
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      StringBuffer buffer = new StringBuffer();
       try {
-         StringBuffer buffer = new StringBuffer();
          String avatarParameter = request.getParameter("avatar");
          String sAvatarParameter = request.getParameter("s_avatar");
          boolean sAvatar = sAvatarParameter != null; 
@@ -65,11 +65,13 @@ public class SetAvatar extends FJServlet {
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());
          }
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
-      }catch (Exception e) {
+      } catch (Throwable e) {
+         buffer = new StringBuffer();
+         buffer.append(errorOut(e));
          e.printStackTrace();
       }
+      response.setContentType("text/html; charset=UTF-8");
+      response.getWriter().write(buffer.toString());
    }
 
 }

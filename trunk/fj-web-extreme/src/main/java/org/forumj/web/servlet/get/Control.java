@@ -32,7 +32,8 @@ import org.forumj.common.*;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
-import org.forumj.tool.LocaleString;
+import org.forumj.common.tool.HtmlChars;
+import org.forumj.tool.*;
 import org.forumj.web.servlet.FJServlet;
 
 import com.tecnick.htmlutils.htmlentities.HTMLEntities;
@@ -269,7 +270,7 @@ public class Control extends FJServlet {
             buffer.append("<table>");
             buffer.append("<tr>");
             buffer.append("<td>");
-            buffer.append("<form name='post' action='send.php' method='POST'>");
+            buffer.append("<form name='post' action='send.php?id=" + id + "' method='POST'>");
             buffer.append("<table width='100%'>");
             buffer.append("<tr>");
             buffer.append("<td width='100%'>");
@@ -390,11 +391,9 @@ public class Control extends FJServlet {
          buffer.append(footer(request));
          buffer.append("</body>");
          buffer.append("</html>");
-      } catch (InvalidKeyException e) {
-         e.printStackTrace();
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-      } catch (SQLException e) {
+      } catch (Throwable e) {
+         buffer = new StringBuffer();
+         buffer.append(errorOut(e));
          e.printStackTrace();
       }
       response.setContentType("text/html; charset=UTF-8");
@@ -498,10 +497,10 @@ public class Control extends FJServlet {
             buffer.append("<option value='12'><span class='mnuprof'>" + locale.getString("mess43") + "</span></option>");
             buffer.append("</select>&nbsp;");
             buffer.append("<select size='1' name='Y'>");
-            buffer.append("<option class='mnuprof' selected value='2006'>2006</option>");
-            buffer.append("<option class='mnuprof' value='2007'>2007</option>");
-            buffer.append("<option class='mnuprof' value='2008'>2008</option>");
-            buffer.append("<option class='mnuprof' value='2009'>2009</option>");
+            buffer.append("<option class='mnuprof' selected value='2012'>2012</option>");
+            for (int year=2013; year < 2100; year++){
+               buffer.append("<option class='mnuprof' value='" + year + "'>" + year + "</option>");
+            }
             buffer.append("</select>&nbsp;");
             buffer.append("<select size='1' name='H'>");
             buffer.append("<option class='mnuprof' selected value='00'>0</option>");
@@ -1072,17 +1071,17 @@ public class Control extends FJServlet {
       buffer.append("<th class='internal' width='20'></th>");
       buffer.append("</tr>");
       int subscribesAmount = subscribes.size();
-      for (int subscribeIndex=0; subscribeIndex<subscribesAmount; subscribeIndex++){
+      for (int subscribeIndex = 0; subscribeIndex < subscribesAmount; subscribeIndex++){
          IFJSubscribe subscribe = subscribes.get(subscribeIndex);
          // Ветка
          buffer.append("<tr>");
          buffer.append("<td class='internal'><div class=tbtext>");
-         buffer.append("<a href='tema.php?id=" + subscribe.getTitleId() + "&end=1#end'>" + subscribe.getHead() + "</a>");
+         buffer.append("<a href='tema.php?id=" + subscribe.getTitleId() + "&end=1#end'>" + Diletant.fd_head(HtmlChars.convertHtmlSymbols(removeSlashes(subscribe.getHead()))) + "</a>");
          buffer.append("</div></td>");
          // Флажок.
          buffer.append("<td class='internal'>");
          buffer.append("<div align='center' class=tbtext>");
-         buffer.append("<input type='checkbox' name='" + subscribeIndex + "' value= " + +subscribe.getId() + "'>");
+         buffer.append("<input type='checkbox' name='" + subscribeIndex + "' value= '" + subscribe.getId() + "'>");
          buffer.append("</div>");
          buffer.append("</td>");       
          buffer.append("</tr>");

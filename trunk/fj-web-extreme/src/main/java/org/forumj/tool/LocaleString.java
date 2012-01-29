@@ -40,10 +40,12 @@ public class LocaleString{
    public LocaleString(String strLang, String strFileName, String strDefaultLang) throws ConfigurationException{
       this.strLang = strLang;
       locales = new PropertiesConfiguration();
+      locales.setDelimiterParsingDisabled(true);
       locales.setFileName("nls/" + strFileName + "_" + strLang + ".properties");
       locales.setEncoding("UTF-8");
       locales.load();
       defaultLocales = new PropertiesConfiguration();
+      defaultLocales.setDelimiterParsingDisabled(true);
       defaultLocales.setFileName("nls/" + strFileName + "_" + strDefaultLang + ".properties");
       defaultLocales.setEncoding("UTF-8");
       defaultLocales.load();

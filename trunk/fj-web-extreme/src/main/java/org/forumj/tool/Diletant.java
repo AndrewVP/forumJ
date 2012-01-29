@@ -260,30 +260,24 @@ public class Diletant {
       // [quote] [/quote]
       result = parce(result, "[quote]", "[/quote]", "<table align='center' width='90%'><tr><td class=tdquote><span class='quote'>", " </span></td></tr></table>");
       // [img] [/img] (<img border='0' src=') ('>)
-      result = parce(result, "[img]", "[/img]", "<img border='0' src='", "'>");
       result = fd_href(result);
+      result = parce(result, "[img]", "[/img]", "<img border='0' src='", "'>");
       result = parce(result, "[url]", "[/url]", "<a href='", "'>");
       return result;
    }
    
    private static String parce(String source, String startCode, String endCode, String startReplace, String endReplace){
-      int fstocc = 0;
       StringBuffer result = new StringBuffer();
-      int lastocc=0;
-      int sndocc=1;
-      while(sndocc > 0){
-         fstocc = source.indexOf(startCode, lastocc);
-         sndocc = source.indexOf(endCode, fstocc);
-         if((fstocc > 0 && sndocc > 0 && lastocc > 0) || (fstocc >= 0 && sndocc > 0 && lastocc== 0)){
-            result.append(source.substring(lastocc, fstocc));
-            result.append(startReplace + source.substring(fstocc + startCode.length(), sndocc) + endReplace);
-            lastocc = sndocc + endCode.length();
-         }else{
-            result.append(source.substring(lastocc));
-            break;
-         }
+      int startCodePosition = source.indexOf(startCode);
+      int endCodePosition = source.indexOf(endCode);
+      if (startCodePosition > -1 && endCodePosition > startCodePosition){
+         result.append(source.substring(0, startCodePosition));
+         result.append(startReplace + source.substring(startCodePosition + startCode.length(), endCodePosition) + endReplace);
+         result.append(source.substring(endCodePosition + endCode.length()));
+      }else{
+         return source;
       }
-      return result.toString();
+      return parce(result.toString(), startCode, endCode, startReplace, endReplace);
    }
 
    public static String fd_href(String href_head){
@@ -609,6 +603,29 @@ public class Diletant {
       return buffer;
    }
 
+   public static StringBuffer errorOut(Throwable e){
+      StringBuffer buffer = new StringBuffer();
+      buffer.append("<html>");
+      buffer.append("<head>");
+      buffer.append("<meta http-equiv='content-type' content='text/html; charset=utf-8'>");
+      buffer.append("<title>");
+      buffer.append("Error");
+      buffer.append("</title>");
+      buffer.append("</head>");
+      // Цвет фона страницы
+      buffer.append("<body bgcolor=#EFEFEF>");
+      buffer.append("<b>An error occurred:</b><br />");
+      buffer.append("<b>" + e.getMessage() + "</b><br />");
+      StackTraceElement[] elements = e.getStackTrace();
+      for (int i = 0; i < elements.length; i++) {
+         StackTraceElement element = elements[i];
+         buffer.append(element.toString() + "<br />");
+      }
+      buffer.append("</body>");
+      buffer.append("</html>");
+      return buffer;
+   }
+   
    public static StringBuffer blankPostOut(){
       StringBuffer buffer = new StringBuffer();
       buffer.append("<html>");

@@ -9,6 +9,7 @@
  */
 package org.forumj.web.servlet.get;
 
+import static org.forumj.tool.Diletant.errorOut;
 import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
 
@@ -37,6 +38,7 @@ public class Registration extends FJServlet {
     */
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      StringBuffer buffer = new StringBuffer();
       try {
          cache(response);
          HttpSession session = request.getSession();
@@ -49,7 +51,6 @@ public class Registration extends FJServlet {
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          IUser user = (IUser) session.getAttribute("user");
          if (!user.isLogined()){
-            StringBuffer buffer = new StringBuffer();
             buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
             buffer.append("<html>");
             buffer.append("<head>");
@@ -200,14 +201,15 @@ public class Registration extends FJServlet {
             buffer.append(footer(request));
             buffer.append("</body>");
             buffer.append("</html>");
-            response.setContentType("text/html; charset=UTF-8");
-            PrintWriter writer = response.getWriter();
-            writer.write(buffer.toString());
          }
-      } catch (InvalidKeyException e) {
-         // TODO Auto-generated catch block
+      } catch (Throwable e) {
+         buffer = new StringBuffer();
+         buffer.append(errorOut(e));
          e.printStackTrace();
       }
+      response.setContentType("text/html; charset=UTF-8");
+      PrintWriter writer = response.getWriter();
+      writer.write(buffer.toString());
    }
 
 }

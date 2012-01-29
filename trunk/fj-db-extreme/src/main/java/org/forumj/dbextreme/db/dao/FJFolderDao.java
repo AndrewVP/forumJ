@@ -190,7 +190,7 @@ public class FJFolderDao extends FJDao {
          conn.setAutoCommit(false);
          st = conn.prepareStatement(query, new String[]{"id"});
          st.setString(1, folderName);
-         st.setLong(3, user.getId());
+         st.setLong(2, user.getId());
          st.executeUpdate();
          ResultSet idRs = st.getGeneratedKeys();
          if (idRs.next()){

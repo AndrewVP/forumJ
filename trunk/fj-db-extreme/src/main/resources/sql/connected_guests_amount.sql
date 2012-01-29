@@ -4,4 +4,4 @@ FROM
  fd_action
 WHERE
  fd_user = 0
- AND (fd_time > NOW() - INTERVAL 20 MINUTE)
+ AND (fd_time > NOW() - INTERVAL 2 MINUTE)

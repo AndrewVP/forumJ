@@ -55,7 +55,7 @@ public class FJVoiceDao extends FJDao {
          conn = connection == null ? getConnection() : connection;
          conn.setAutoCommit(false);
          st = conn.prepareStatement(query);
-         st.setLong(1, voice.getNodeId());
+         st.setLong(1, voice.getId());
          st.executeUpdate();
          error = false;
       }finally{
@@ -93,8 +93,8 @@ public class FJVoiceDao extends FJDao {
          conn.setAutoCommit(false);
          st = conn.prepareStatement(query);
          st.setLong(1, voice.getThreadId());
-         st.setLong(1, voice.getNodeId());
-         st.setLong(1, voice.getUserId());
+         st.setLong(2, voice.getNodeId());
+         st.setLong(3, voice.getUserId());
          st.executeUpdate();
          error = false;
       }finally{

@@ -34,8 +34,8 @@ public class Amn extends FJServlet {
 
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      StringBuffer buffer = new StringBuffer();
       try {
-         StringBuffer buffer = new StringBuffer();
          HttpSession session = request.getSession();
          IUser user = (IUser) session.getAttribute("user");
          String ignorTypeParameter = request.getParameter("C1");
@@ -53,7 +53,7 @@ public class Amn extends FJServlet {
             IIgnor ignor = service.getIgnorObject();
             ignor.setId(Long.valueOf(ignorIdParameter));
             ignor.setUserId(user.getId());
-            ignor.setType(Integer.valueOf(ignorTypeParameter));
+            ignor.setType(ignorTypeParameter == null ? 0 : 1);
             ignor.setEnd(newEndDate);
             service.updateIgnor(ignor);
             buffer.append(successPostOut("0", "control.php?id=1"));
@@ -61,11 +61,13 @@ public class Amn extends FJServlet {
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());
          }
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
-      }catch (Exception e) {
+      } catch (Throwable e) {
+         buffer = new StringBuffer();
+         buffer.append(errorOut(e));
          e.printStackTrace();
       }
+      response.setContentType("text/html; charset=UTF-8");
+      response.getWriter().write(buffer.toString());
    }
 
 }

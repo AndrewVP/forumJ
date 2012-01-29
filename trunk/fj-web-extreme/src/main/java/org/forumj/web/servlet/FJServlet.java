@@ -25,13 +25,13 @@ public class FJServlet extends HttpServlet {
 
    protected String gethostbyaddr(String ip) throws UnknownHostException{
       String result = null;
-      String[] arrIp = ip.split("\\.");
-      byte[] ipAddr = new byte[4];
-      for (int i = 0; i < arrIp.length; i++) {
-         ipAddr[i] = Byte.valueOf(arrIp[i]);
-      }
-      result = InetAddress.getByAddress(ipAddr).getCanonicalHostName();
-      return result;
+//      String[] arrIp = ip.split("\\.");
+//      byte[] ipAddr = new byte[4];
+//      for (int i = 0; i < arrIp.length; i++) {
+//         ipAddr[i] = Byte.valueOf(arrIp[i]);
+//      }
+//      result = InetAddress.getByAddress(ipAddr).getCanonicalHostName();
+      return ip;
    }
    
 }

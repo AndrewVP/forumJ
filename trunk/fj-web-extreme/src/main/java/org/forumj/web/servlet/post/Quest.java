@@ -10,25 +10,25 @@
 package org.forumj.web.servlet.post;
 
 import static org.forumj.tool.Diletant.*;
-import static org.forumj.tool.FJServletTools.*;
+import static org.forumj.tool.FJServletTools.menu;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.*;
-import java.sql.SQLException;
 import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
-import org.forumj.common.exception.*;
-import org.forumj.common.tool.Time;
+import org.forumj.common.exception.InvalidKeyException;
+import org.forumj.common.tool.*;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
+
+import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 
 /**
  *
@@ -44,10 +44,10 @@ public class Quest extends FJServlet {
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
-      HttpSession session = request.getSession();
-      LocaleString locale = (LocaleString) session.getAttribute("locale");
-      IUser user = (IUser) session.getAttribute("user");
       try {
+         HttpSession session = request.getSession();
+         LocaleString locale = (LocaleString) session.getAttribute("locale");
+         IUser user = (IUser) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             String body = request.getParameter("A2");
             String head = request.getParameter("T");
@@ -93,6 +93,7 @@ public class Quest extends FJServlet {
                      postHead.setIp(ip);
                      postHead.setNred(0);
                      postHead.setTitle(head);
+                     postHead.setAuthor(user);
                      ThreadService treadService = FJServiceHolder.getThreadService();
                      IFJQuestionThread thread = treadService.getQuestionThreadObject();
                      thread.setAuthId(user.getId());
@@ -106,7 +107,7 @@ public class Quest extends FJServlet {
                      thread.setAnswers(answers);
                      thread.setQuestion(question);
                      treadService.create(thread, post);
-                     buffer.append(successPostOut("3", "index.php"));
+                     buffer.append(successPostOut("0", "index.php"));
                   }
                }else{
                   // Пустая
@@ -120,19 +121,15 @@ public class Quest extends FJServlet {
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());
          }
-         response.setContentType("text/html; charset=UTF-8");
-         PrintWriter writer = response.getWriter();
-         String out = buffer.toString();
-         writer.write(out);
-      } catch (InvalidKeyException e) {
-         e.printStackTrace();
-      } catch (DBException e) {
-         e.printStackTrace();
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-      } catch (SQLException e) {
+      } catch (Throwable e) {
+         buffer = new StringBuffer();
+         buffer.append(errorOut(e));
          e.printStackTrace();
       }
+      response.setContentType("text/html; charset=UTF-8");
+      PrintWriter writer = response.getWriter();
+      String out = buffer.toString();
+      writer.write(out);
    }
 
    private StringBuffer view(LocaleString locale, String head, String question, IUser user, String rgtime, String str_ip, String str_dom, List<IQuestNode> answers, boolean usersCanAddAnswers, String body, HttpServletRequest request) throws InvalidKeyException, IOException{
@@ -153,7 +150,7 @@ public class Quest extends FJServlet {
       buffer.append(quest_submit(locale));
       buffer.append("<link rel='icon' href='/favicon.ico' type='image/x-icon'>");
       buffer.append("<link rel='shortcut icon' href='/favicon.ico' type='image/x-icon'>");
-      buffer.append("<title>" + head + "</title>");
+      buffer.append("<title>" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head))) + "</title>");
       buffer.append("</head>");
       buffer.append("<body bgcolor='#EFEFEF'>");
       buffer.append("<table class='content'>");
@@ -161,7 +158,7 @@ public class Quest extends FJServlet {
       buffer.append("<td  class='internal'>");
       /*Тема*/
       buffer.append("<div class=nik>");
-      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(head.replace("\\", ""))+ "</b>");
+      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)))+ "</b>");
       buffer.append("</div>");
       buffer.append("</td>");
       buffer.append("</tr>");
@@ -169,30 +166,14 @@ public class Quest extends FJServlet {
       buffer.append("<td class='matras'>");
       /*Ник*/
       buffer.append("<span class='tbtextnread'>");
-      buffer.append(user.getNick());
-      buffer.append("</span>&nbsp;•");
+      buffer.append(HtmlChars.convertHtmlSymbols(removeSlashes(user.getNick())));
+      buffer.append("</span>&nbsp;•&nbsp;");
 
       /*Дата*/
 
       buffer.append("&nbsp;<img border='0' src='smiles/icon_minipost.gif'>&nbsp;");
 
-      buffer.append("<span class='posthead'>" + rgtime + "</span>&nbsp;•");
-
-      /*Хост*/ 
-      if (str_ip.trim().equalsIgnoreCase(str_dom.trim())){
-         str_dom = str_dom.substring(0, str_dom.lastIndexOf(".")+1) + "---";
-      }else{
-         str_dom = "---" + str_dom.substring(str_dom.indexOf(".") + 1);
-      }
-
-      buffer.append("&nbsp;<span class='posthead'>");
-      buffer.append(str_dom);
-      buffer.append("</span>&nbsp;&nbsp;•");
-      /*игнорировать*/
-
-      buffer.append("<span class='posthead'>");
-      buffer.append(locale.getString("mess68"));
-      buffer.append("</span>");
+      buffer.append("<span class='posthead'>" + rgtime + "</span>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("<tr>");
@@ -204,8 +185,24 @@ public class Quest extends FJServlet {
       buffer.append("<tr>");
       buffer.append("<td valign=top class='matras' style='padding:10px;'>");
       buffer.append("<div>");
-      buffer.append("<img border='0' src='smiles/no_avatar.gif'>");
+      if (user.getWantSeeAvatars() && user.getAvatarApproved() && user.getAvatar() != null && !user.getAvatar().trim().isEmpty() && user.getShowAvatar()){
+         buffer.append("<a href='control.php?id=9'><img border='0' src='" + user.getAvatar() + "' rel=\"nofollow\"></a>");
+      }else{
+         buffer.append("<a href='control.php?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>");
+      }
       buffer.append("</div>");
+      buffer.append("<span class='posthead'><u>" + locale.getString("mess111") + "</u></span><br>");
+      if (!user.getShowCountry() || user.getCountry() == null || user.getCountry().isEmpty()){
+         buffer.append("<span class='posthead'>" + locale.getString("mess114") + "</span><br>");
+      }else{
+         buffer.append("<span class='posthead'>" + user.getCountry() + "</span><br>");
+      }
+      buffer.append("<span class='posthead'><u>" + locale.getString("mess112") + "</u></span><br>");
+      if (user.getShowCity() || user.getCity() == null || user.getCity().isEmpty()){
+         buffer.append("<span class='posthead'>" + locale.getString("mess114") + "</span><br>");
+      }else{
+         buffer.append("<span class='posthead'>" + user.getCity() + "</span><br>");
+      }
       buffer.append("</td>");
       buffer.append("<td valign='top' width='100%'>");
       buffer.append("<table width='100%'>");
@@ -259,12 +256,16 @@ public class Quest extends FJServlet {
       buffer.append("<tr>");
       buffer.append("<td>");
       /* Выводим текст*/
-      buffer.append("<p class='post'" + fd_smiles(fd_bbcode(body)) + "</p>");
+      buffer.append("<p class='post'>" + fd_body(HtmlChars.convertHtmlSymbols(removeSlashes(body))) + "</p>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table>");
       buffer.append("</td>");
       buffer.append("</tr>");
+      buffer.append("<tr><td class='matras' colspan=2></td></tr>");
+      buffer.append("<tr><td class='matras'></td><td>");
+      buffer.append("<p class=post>" + fd_body(HtmlChars.convertHtmlSymbols(removeSlashes(user.getFooter()))) + "</p>");
+      buffer.append("</td></tr>");
       buffer.append("</table>");
       buffer.append("</div>");
       buffer.append("</td>");
@@ -285,7 +286,7 @@ public class Quest extends FJServlet {
       buffer.append(locale.getString("mess59") + ":&nbsp");
       buffer.append("</td>");
       buffer.append("<td>");
-      buffer.append("<input type='text' class='mnuforumSm' name='T' size='120' value='" + head.replace("\\", "") + "'>");
+      buffer.append(fd_input("T", HtmlChars.convertHtmlSymbols(removeSlashes(head)), "70", "1"));
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("<tr>");
@@ -294,6 +295,7 @@ public class Quest extends FJServlet {
       buffer.append("</td>");
       buffer.append("<td>");
       buffer.append("<input type='text' class='mnuforumSm' name='Q' size='120' value='" + question.replace("\\", "") + "'>");
+      buffer.append(fd_input("Q", HtmlChars.convertHtmlSymbols(removeSlashes(head)), "70", "1"));
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table>");
@@ -306,7 +308,8 @@ public class Quest extends FJServlet {
          String answer = answers.get(i).getNode();
          buffer.append("<tr>");
          buffer.append("<td>");
-         buffer.append("" + (i + 1) + ". <input type='text' class='mnuforumSm' value='" + answer + "' name='P" + (i + 1) +"' id='P"+ (i + 1) + "' size='100'>");
+//         buffer.append("" + (i + 1) + ". <input type='text' class='mnuforumSm' value='" + answer + "' name='P" + (i + 1) +"' id='P"+ (i + 1) + "' size='100'>");
+         buffer.append("" + (i + 1) + ". " + fd_input("P" + (i + 1), HtmlChars.convertHtmlSymbols(removeSlashes(answer)), "70", "1"));
          buffer.append("</td>");
          buffer.append("</tr>");
       }
@@ -353,7 +356,7 @@ public class Quest extends FJServlet {
       autotags_add();
       /*текстарий*/
       buffer.append("<p>");
-      buffer.append("<textarea class='mnuforumSm' rows='30' id='ed1' name='A2' cols='55'>" + body.replace("\\", "") + "</textarea>");
+      buffer.append("<textarea class='mnuforumSm' rows='20' id='ed1' name='A2' cols='55'>" + HTMLEntities.htmlentities(removeSlashes(body)) + "</textarea>");
       buffer.append("</p>");
       /*Кнопки*/
       buffer.append("<table>");

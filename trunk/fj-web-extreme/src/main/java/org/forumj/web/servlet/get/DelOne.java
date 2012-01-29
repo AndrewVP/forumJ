@@ -38,8 +38,8 @@ public class DelOne extends FJServlet {
 
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      StringBuffer buffer = new StringBuffer();
       try {
-         StringBuffer buffer = new StringBuffer();
          HttpSession session = request.getSession();
          String idThreadParameter = request.getParameter("id");
          String pageParameter = request.getParameter("page");
@@ -59,10 +59,12 @@ public class DelOne extends FJServlet {
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());
          }
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
-      }catch (Exception e) {
+      } catch (Throwable e) {
+         buffer = new StringBuffer();
+         buffer.append(errorOut(e));
          e.printStackTrace();
       }
+      response.setContentType("text/html; charset=UTF-8");
+      response.getWriter().write(buffer.toString());
    }
 }

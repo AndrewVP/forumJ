@@ -1,6 +1,6 @@
 UPDATE @@TABLE@@ 
   SET auth = ?
-  , tlte = ?
+  , tilte = ?
   , ip = ?
   , domen = ?
   , outd = ?

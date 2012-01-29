@@ -26,3 +26,4 @@ service.userService.class=org.forumj.dbextreme.db.service.UserServiceImpl
 service.threadService.class=org.forumj.dbextreme.db.service.ThreadServiceImpl
 service.voiceService.class=org.forumj.dbextreme.db.service.VoiceServiceImpl
 service.postService.class=org.forumj.dbextreme.db.service.PostServiceImpl
+service.actionService.class=org.forumj.dbextreme.db.service.ActionServiceImpl

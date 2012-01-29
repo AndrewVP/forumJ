@@ -35,6 +35,8 @@ public class FJServiceHolder {
    private static VoiceService voiceService = null;
    
    private static PostService postService = null;
+
+   private static ActionService actionService = null;
    
    static{
       try {
@@ -50,6 +52,7 @@ public class FJServiceHolder {
          threadService = (ThreadService) Class.forName(FJConfiguration.getConfig().getString("service.threadService.class")).newInstance();
          voiceService = (VoiceService) Class.forName(FJConfiguration.getConfig().getString("service.voiceService.class")).newInstance();
          postService = (PostService) Class.forName(FJConfiguration.getConfig().getString("service.postService.class")).newInstance();
+         actionService = (ActionService) Class.forName(FJConfiguration.getConfig().getString("service.actionService.class")).newInstance();
       } catch (ConfigurationException e) {
          // TODO Auto-generated catch block
          e.printStackTrace();
@@ -111,5 +114,9 @@ public class FJServiceHolder {
    
    public static PostService getPostService(){
       return postService;
+   }
+
+   public static ActionService getActionService(){
+      return actionService;
    }
 }

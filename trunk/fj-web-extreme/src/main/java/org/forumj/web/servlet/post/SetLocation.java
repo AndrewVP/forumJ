@@ -30,8 +30,8 @@ import org.forumj.web.servlet.FJServlet;
 public class SetLocation extends FJServlet {
 
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      StringBuffer buffer = new StringBuffer();
       try {
-         StringBuffer buffer = new StringBuffer();
          boolean scity = request.getParameter("scity") != null;;
          boolean scountry = request.getParameter("scountry") != null;;
          String timezoneParameter = request.getParameter("timezone");
@@ -54,11 +54,13 @@ public class SetLocation extends FJServlet {
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());
          }
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
-      }catch (Exception e) {
+      } catch (Throwable e) {
+         buffer = new StringBuffer();
+         buffer.append(errorOut(e));
          e.printStackTrace();
       }
+      response.setContentType("text/html; charset=UTF-8");
+      response.getWriter().write(buffer.toString());
    }
 
 }

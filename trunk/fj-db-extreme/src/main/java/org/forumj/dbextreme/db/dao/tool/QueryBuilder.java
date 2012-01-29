@@ -72,6 +72,8 @@ public class QueryBuilder {
    
    private static String createFolderQuery = null;
    
+   private static String createActionQuery = null;
+   
    private static String createInterfaceQuery = null;
    
    private static String receiveMailQuery = null;
@@ -490,6 +492,13 @@ public class QueryBuilder {
          createFolderQuery = loadQuery("sql/create_folder.sql");
       }
       return createFolderQuery;
+   }
+   
+   public static String getCreateActionQuery() throws IOException{
+      if (createActionQuery == null){
+         createActionQuery = loadQuery("sql/create_action.sql");
+      }
+      return createActionQuery;
    }
    
    public static String getCreateInterfaceQuery() throws IOException{

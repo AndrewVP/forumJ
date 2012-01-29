@@ -37,8 +37,8 @@ public class Send extends FJServlet {
 
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      StringBuffer buffer = new StringBuffer();
       try {
-         StringBuffer buffer = new StringBuffer();
          HttpSession session = request.getSession();
          IUser user = (IUser) session.getAttribute("user");
          LocaleString locale = (LocaleString) session.getAttribute("locale");
@@ -70,11 +70,13 @@ public class Send extends FJServlet {
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());
          }
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
-      }catch (Exception e) {
+      } catch (Throwable e) {
+         buffer = new StringBuffer();
+         buffer.append(errorOut(e));
          e.printStackTrace();
       }
+      response.setContentType("text/html; charset=UTF-8");
+      response.getWriter().write(buffer.toString());
    }
 
    private StringBuffer view(IFJMail mail, LocaleString locale, HttpServletRequest request) throws InvalidKeyException, IOException{

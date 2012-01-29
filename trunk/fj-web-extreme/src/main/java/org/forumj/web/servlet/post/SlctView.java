@@ -29,13 +29,19 @@ public class SlctView extends FJServlet {
 
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
-      String viewParameter = request.getParameter("VIEW");
-      HttpSession session = request.getSession();
-      if (!isEmptyParameter(viewParameter)){
-         session.setAttribute("view", Integer.valueOf(viewParameter));
-         session.setAttribute("vname", null);
+      try {
+         String viewParameter = request.getParameter("VIEW");
+         HttpSession session = request.getSession();
+         if (!isEmptyParameter(viewParameter)){
+            session.setAttribute("view", Integer.valueOf(viewParameter));
+            session.setAttribute("vname", null);
+         }
+         buffer.append(successPostOut("0", "index.php"));
+      } catch (Throwable e) {
+         buffer = new StringBuffer();
+         buffer.append(errorOut(e));
+         e.printStackTrace();
       }
-      buffer.append(successPostOut("0", "index.php"));
       response.setContentType("text/html; charset=UTF-8");
       response.getWriter().write(buffer.toString());
    }

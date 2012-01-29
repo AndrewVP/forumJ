@@ -16,23 +16,21 @@
 package org.forumj.web.servlet.post;
 
 import static org.forumj.tool.Diletant.*;
-import static org.forumj.tool.FJServletTools.*;
+import static org.forumj.tool.FJServletTools.menu;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.*;
-import java.sql.SQLException;
 import java.util.Date;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
-import org.forumj.common.exception.*;
-import org.forumj.common.tool.Time;
+import org.forumj.common.exception.InvalidKeyException;
+import org.forumj.common.tool.*;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
@@ -51,8 +49,8 @@ public class New extends FJServlet {
     */
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      StringBuffer buffer = new StringBuffer();
       try {
-         StringBuffer buffer = new StringBuffer();
          HttpSession session = request.getSession();
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          IUser user = (IUser) session.getAttribute("user");
@@ -81,6 +79,7 @@ public class New extends FJServlet {
                   post.setHead(postHead);
                   postBody.setBody(body);
                   postHead.setAuth(user.getId());
+                  postHead.setAuthor(user);
                   postHead.setDomen(domen);
                   postHead.setIp(ip);
                   postHead.setNred(0);
@@ -131,7 +130,7 @@ public class New extends FJServlet {
                   //mail("an.diletant@mail.ru", $subject, $strMailAll, $headers);
                   //mail("andrew@sunbay.com", $subject, $strMailAll, $headers);
                   // Отправляем в форум
-                  buffer.append(successPostOut("3", "index.php"));
+                  buffer.append(successPostOut("0", "index.php"));
                }
             }else{
                // Пустая
@@ -141,19 +140,15 @@ public class New extends FJServlet {
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());
          }   
-         response.setContentType("text/html; charset=UTF-8");
-         PrintWriter writer = response.getWriter();
-         String out = buffer.toString();
-         writer.write(out);
-      } catch (InvalidKeyException e) {
-         e.printStackTrace();
-      } catch (DBException e) {
-         e.printStackTrace();
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-      } catch (SQLException e) {
+      } catch (Throwable e) {
+         buffer = new StringBuffer();
+         buffer.append(errorOut(e));
          e.printStackTrace();
       }
+      response.setContentType("text/html; charset=UTF-8");
+      PrintWriter writer = response.getWriter();
+      String out = buffer.toString();
+      writer.write(out);
    }
 
    public StringBuffer new_view(LocaleString locale, String head, IUser user, String rgtime, String str_ip, String str_dom, String body, HttpServletRequest request) throws IOException, InvalidKeyException{
@@ -172,7 +167,7 @@ public class New extends FJServlet {
       buffer.append(new_submit(locale.getString("mess128")));
       buffer.append("<link rel='icon' href='/favicon.ico' type='image/x-icon'>");
       buffer.append("<link rel='shortcut icon' href='/favicon.ico' type='image/x-icon'>");
-      buffer.append("<title>" + head + "</title>");
+      buffer.append("<title>" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head))) + "</title>");
       buffer.append("</head>");
       buffer.append("<body bgcolor=#EFEFEF>");
       buffer.append("<table class='content'>");
@@ -182,30 +177,20 @@ public class New extends FJServlet {
       /*"Закладка" номера поста для ссылки из поиска, возврата после обработки игнора*/
       /*Тема*/
       buffer.append("<div class='nik'>");
-      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(head) + "</b>");
+      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)))+ "</b>");
       buffer.append("</div>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("<tr>");
       buffer.append("<td class='matras'>");
       /*Ник*/
-      buffer.append("<span class='tbtextnread'>" + user.getNick() + "</span>&nbsp;•&nbsp;");
+      buffer.append("<span class='tbtextnread'>");
+      buffer.append(HtmlChars.convertHtmlSymbols(removeSlashes(user.getNick())));
+      buffer.append("</span>&nbsp;•&nbsp;");
       /*Дата*/
       
       buffer.append("<img border='0' src='smiles/icon_minipost.gif'>&nbsp;");
-      buffer.append("<span class='posthead'>" + rgtime + "</span>&nbsp;•");
-      /*Хост*/ 
-      if (str_ip.trim().equalsIgnoreCase(str_dom.trim())){
-         str_dom = str_dom.substring(0, str_dom.lastIndexOf(".")+1) + "---";
-      }else{
-         str_dom = "---" + str_dom.substring(str_dom.indexOf(".") + 1);
-      }
-      
-      buffer.append("&nbsp;<span class='posthead'>" + str_dom + "</span>&nbsp;");
-      /*игнорировать*/
-      buffer.append("&nbsp;•<span class='posthead'>");
-      buffer.append(locale.getString("mess68"));
-      buffer.append("</span>");
+      buffer.append("<span class='posthead'>" + rgtime + "</span>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("<tr>");
@@ -217,20 +202,40 @@ public class New extends FJServlet {
       buffer.append("<tr>");
       buffer.append("<td valign=top class='matras' style='padding:10px;'>");
       buffer.append("<div>");
-      buffer.append("<img border='0' src='smiles/no_avatar.gif'>");
+      if (user.getWantSeeAvatars() && user.getAvatarApproved() && user.getAvatar() != null && !user.getAvatar().trim().isEmpty() && user.getShowAvatar()){
+         buffer.append("<a href='control.php?id=9'><img border='0' src='" + user.getAvatar() + "' rel=\"nofollow\"></a>");
+      }else{
+         buffer.append("<a href='control.php?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>");
+      }
       buffer.append("</div>");
+      buffer.append("<span class='posthead'><u>" + locale.getString("mess111") + "</u></span><br>");
+      if (!user.getShowCountry() || user.getCountry() == null || user.getCountry().isEmpty()){
+         buffer.append("<span class='posthead'>" + locale.getString("mess114") + "</span><br>");
+      }else{
+         buffer.append("<span class='posthead'>" + user.getCountry() + "</span><br>");
+      }
+      buffer.append("<span class='posthead'><u>" + locale.getString("mess112") + "</u></span><br>");
+      if (user.getShowCity() || user.getCity() == null || user.getCity().isEmpty()){
+         buffer.append("<span class='posthead'>" + locale.getString("mess114") + "</span><br>");
+      }else{
+         buffer.append("<span class='posthead'>" + user.getCity() + "</span><br>");
+      }
       buffer.append("</td>");
       buffer.append("<td valign='top' width='100%'>");
       buffer.append("<table width='100%'>");
       buffer.append("<tr>");
       buffer.append("<td>");
       /* Выводим текст*/
-      buffer.append("<p class='post'>" + fd_smiles(fd_bbcode(body)) + "</p>");
+      buffer.append("<p class='post'>" + fd_body(HtmlChars.convertHtmlSymbols(removeSlashes(body))) + "</p>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table>");
       buffer.append("</td>");
       buffer.append("</tr>");
+      buffer.append("<tr><td class='matras' colspan=2></td></tr>");
+      buffer.append("<tr><td class='matras'></td><td>");
+      buffer.append("<p class=post>" + fd_body(HtmlChars.convertHtmlSymbols(removeSlashes(user.getFooter()))) + "</p>");
+      buffer.append("</td></tr>");
       buffer.append("</table>");
       buffer.append("</div>");
       buffer.append("</td>");
@@ -247,7 +252,7 @@ public class New extends FJServlet {
       buffer.append("<td colspan='2' align='CENTER'>");
       /*Тема*/
       buffer.append(locale.getString("mess4") + "&nbsp");
-      buffer.append("<input class='mnuforumSm' type=text name='NHEAD' size='70' value='" +HTMLEntities.htmlentities(head.replace("\\", "")) + "'>");
+      buffer.append(fd_input("NHEAD", HtmlChars.convertHtmlSymbols(removeSlashes(head)), "70", "1"));
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("<tr>");
@@ -275,7 +280,7 @@ public class New extends FJServlet {
       buffer.append(autotags_add());
       /* текстарий*/
       buffer.append("<p>");
-      buffer.append("<textarea class='mnuforumSm' rows='20' id='ed1' name='A2' cols='55'>" + HTMLEntities.htmlentities(body.replace("\\", "")) + "</textarea>");
+      buffer.append("<textarea class='mnuforumSm' rows='20' id='ed1' name='A2' cols='55'>" + HTMLEntities.htmlentities(removeSlashes(body)) + "</textarea>");
       buffer.append("</p>");
       /*Кнопки*/
       buffer.append("<table>");

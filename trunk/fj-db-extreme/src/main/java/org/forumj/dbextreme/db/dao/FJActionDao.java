@@ -16,7 +16,7 @@ import java.sql.*;
 import java.util.*;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.entity.*;
 import org.forumj.dbextreme.db.entity.User;
 
 /**
@@ -60,5 +60,27 @@ public class FJActionDao extends FJDao {
          readFinally(conn, st);
       }
       return result;
+   }
+   
+   public void create(IFJAction action) throws SQLException, ConfigurationException, IOException{
+      String query = getCreateActionQuery();
+      PreparedStatement st = null;
+      Connection conn = null;
+      boolean error = true;
+      try{
+         conn = getConnection();
+         conn.setAutoCommit(false);
+         st = conn.prepareStatement(query);
+         st.setString(1, action.getIp());
+         st.setString(2, action.getSubnet());
+         st.setLong(3, action.getUserId());
+         st.setString(4, action.getServletName());
+         st.setString(5, action.getUas());
+         st.setString(6, action.getRefer());
+         st.executeUpdate();
+         error = false;
+      }finally{
+         writeFinally(conn, st, error);
+      }
    }
 }

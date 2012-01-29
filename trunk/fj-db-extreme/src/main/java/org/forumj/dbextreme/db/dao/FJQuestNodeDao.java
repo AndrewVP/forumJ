@@ -14,10 +14,12 @@ import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.*;
 import java.io.IOException;
 import java.sql.*;
 import java.util.*;
+import java.util.Date;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
 import org.forumj.dbextreme.db.entity.*;
+import org.forumj.dbextreme.db.service.FJService;
 
 /**
  *
@@ -113,8 +115,15 @@ public class FJQuestNodeDao extends FJDao {
          conn.setAutoCommit(false);
          voiceDao.create(voice, conn);
          st = conn.prepareStatement(query);
-         st.setLong(1, voice.getNodeId());
+         st.setLong(1, answerId);
          st.executeUpdate();
+         FJThreadDao threadDao = new FJThreadDao();
+         FJThread thread = threadDao.read(threadId);
+         thread.setLastPostAuthId(0l);
+         thread.setLastPostTime(new Date());
+         //TODO !!!!
+         thread.setLastPostNick("Добавлен голос");
+         threadDao.update(thread, conn);
          error = false;
       }finally{
          writeFinally(connection == null ? conn : null, st, error);
@@ -143,7 +152,12 @@ public class FJQuestNodeDao extends FJDao {
             answer.setUserId(user.getId());
             Long nodeId = create(answer, conn);
             if (nodeId != null){
-               addVote(threadId, nodeId, user, conn);
+               FJVoiceDao voiceDao = FJService.getVoiceDao(); 
+               FJVoice voice = new FJVoice();
+               voice.setThreadId(threadId);
+               voice.setNodeId(nodeId);
+               voice.setUserId(user.getId());
+               voiceDao.create(voice, conn);
                error = false;
             }
          }
