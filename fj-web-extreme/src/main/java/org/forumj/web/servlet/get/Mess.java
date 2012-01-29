@@ -145,8 +145,9 @@ public class Mess extends FJServlet {
          buffer.append(footer(request));
          buffer.append("</body>");
          buffer.append("</html>");
-
-      } catch (InvalidKeyException e) {
+      } catch (Throwable e) {
+         buffer = new StringBuffer();
+         buffer.append(errorOut(e));
          e.printStackTrace();
       }
       response.setContentType("text/html; charset=UTF-8");

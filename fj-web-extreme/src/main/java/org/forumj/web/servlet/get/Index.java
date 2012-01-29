@@ -20,7 +20,6 @@ import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.*;
-import java.sql.SQLException;
 import java.text.DecimalFormat;
 import java.util.*;
 
@@ -28,16 +27,13 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
-import org.forumj.common.tool.Time;
+import org.forumj.common.tool.*;
 import org.forumj.tool.*;
 import org.forumj.web.servlet.FJServlet;
-
-import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 
 
 /**
@@ -398,9 +394,9 @@ public class Index extends FJServlet {
          buffer.append(locale.getString("MSG_READERS") + "<br>");
          buffer.append("</font>");
          buffer.append("<font class=nick>");
-         for (int userIndex=0 ; userIndex<userList.size()-1; userIndex++){
+         for (int userIndex=0 ; userIndex<userList.size(); userIndex++){
             buffer.append(userList.get(userIndex).getNick().replace(" ", "&nbsp;"));
-            if (userIndex != userList.size()-2) buffer.append("; ");
+            if (userIndex != userList.size()-1) buffer.append("; ");
          }
          buffer.append("</font>");
          buffer.append("<font class=mnuforum>");
@@ -420,11 +416,9 @@ public class Index extends FJServlet {
          buffer.append("</table></td></tr></table></td></tr></table>");
          buffer.append("</body>");
          buffer.append("</html>");
-      } catch (InvalidKeyException e) {
-         e.printStackTrace();
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-      } catch (SQLException e) {
+      } catch (Throwable e) {
+         buffer = new StringBuffer();
+         buffer.append(errorOut(e));
          e.printStackTrace();
       }
       Double allTime = (double) ((new Date().getTime() - startTime));
@@ -460,7 +454,7 @@ public class Index extends FJServlet {
       buffer.append("<td width='1'></td>");
       // Тема
       buffer.append("<td><p>");
-      String str_head = HTMLEntities.htmlentities(removeSlashes(thread.getHead()));
+      String str_head = HtmlChars.convertHtmlSymbols(removeSlashes(thread.getHead()));
       // Добавляем смайлики
       str_head = Diletant.fd_head(str_head);
       // Опрос? Добавляем "метку"
@@ -518,9 +512,9 @@ public class Index extends FJServlet {
       // Количество просмотров всего
       buffer.append("<font size='1' color='purple'>" + thread.getSnall() + "</font></div></td>");
       // Автор
-      buffer.append("<td width='120' align='center' valign='middle'><div class='trforum'><font size='1'>" +HTMLEntities.htmlentities(thread.getNick())+ "</font></div></td>");
+      buffer.append("<td width='120' align='center' valign='middle'><div class='trforum'><font size='1'>" +HtmlChars.convertHtmlSymbols(thread.getNick())+ "</font></div></td>");
       // Автор последнего поста
-      buffer.append("<td width='120' align=center><div class='mnuforum'><font size='1'>" +HTMLEntities.htmlentities(thread.getLastPostNick())+ "</font></div>");
+      buffer.append("<td width='120' align=center><div class='mnuforum'><font size='1'>" +HtmlChars.convertHtmlSymbols(thread.getLastPostNick())+ "</font></div>");
       // Время последнего поста
       buffer.append("<div class='mnuforum'><a href='tema.php?id=" + thread.getId().toString() + "&end=1#end' rel='nofollow'><font size='1'>" + Time.date("dd.MM.yy HH:mm",thread.getLastPostTime().getTime()) + "</font></a></div>");
       buffer.append("</td>");

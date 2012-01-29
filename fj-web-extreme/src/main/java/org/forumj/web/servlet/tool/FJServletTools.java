@@ -163,6 +163,11 @@ public class FJServletTools {
             uas.contains("Yandex") ||
             uas.contains("msnbot") ||
             uas.contains("Jyxobot") ||
+            uas.contains("METASpider") ||
+            uas.contains("bingbot/2.0") ||
+            uas.contains("Ezooms/1.0") ||
+            uas.contains("MJ12bot") ||
+            uas.contains("linkdex.com/v2.0") ||
             uas.contains("Slurp")){
          return true;
       }

@@ -27,7 +27,7 @@ import org.forumj.common.*;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
-import org.forumj.common.tool.Time;
+import org.forumj.common.tool.*;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
@@ -61,12 +61,13 @@ public class Tema extends FJServlet {
          ThreadService treadService = FJServiceHolder.getThreadService();
          IFJThread thread = treadService.readThread(threadId);
          // Номер поста, на который отвечаем
-         String replyPostId = request.getParameter("reply");
+//         String replyPostId = request.getParameter("reply");
+         String replyPostParameter = request.getParameter("reply");
+         boolean isAnswer = replyPostParameter != null && !"".equals(replyPostParameter.trim());
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          IUser user = (IUser) session.getAttribute("user");
          IgnorService ignorService = FJServiceHolder.getIgnorService();
          List<IIgnor> ignorList = ignorService.readUserIgnor(user.getId());
-         int nfirstpost = (pageNumber-1)*user.getPt();
          int i3=pageNumber*user.getPt();
          // Сколько страниц?
          Integer count = thread.getPcount();
@@ -74,15 +75,16 @@ public class Tema extends FJServlet {
          // Если цитирование или последний пост, то нам на последнюю
          boolean lastPost = false;
          String end = request.getParameter("end");
-         if (replyPostId != null && !"".equals(replyPostId.trim()) || end != null){
+         if (isAnswer || end != null){
             pageNumber = couP-1;
             lastPost = true;
          }
+         int nfirstpost = (pageNumber-1)*user.getPt();
          List<IFJPost> posts = postService.readPosts(user, threadId, nfirstpost, i3, pageNumber, lastPost);
          // Получаем массив постов
          session.setAttribute("page", pageNumber);
          session.setAttribute("id", threadId);
-         session.setAttribute("where", request.getContextPath() + "?id=$gid&page=$pg");
+         session.setAttribute("where", request.getContextPath() + "?id=" + threadId + "&page=" + pageNumber);
          // Зашли с поиска?
          String msg = request.getParameter("msg");
          int countPosts = 0;
@@ -261,18 +263,9 @@ public class Tema extends FJServlet {
             String head = thread.getHead();
             IFJPost replyPost = null;
             // Если цитируем/редактируем
-            if (replyPostId != null && !"".equals(replyPostId.trim())) {
-               replyPost = postService.read(Long.valueOf(replyPostId));
-               // Редактируем?
+            if (isAnswer) {
+               replyPost = postService.read(Long.valueOf(replyPostParameter));
                head = removeSlashes(replyPost.getHead().getTitle());
-               if (replyPost.getHead().getAuth().equals(user.getId())) {
-                  // Да
-                  session.setAttribute("edit",replyPostId);
-                  re="";
-               }else{
-                  // Нет
-                  session.setAttribute("edit",null);
-               }
             }
             // Новое мнение
             // Форма нового поста
@@ -294,7 +287,7 @@ public class Tema extends FJServlet {
             buffer.append(locale.getString("mess59") + ":&nbsp;");
             buffer.append("</td>");
             buffer.append("<td>");
-            buffer.append(fd_input("NHEAD", re + HTMLEntities.htmlentities(head), "70", "1"));
+            buffer.append(fd_input("NHEAD", re + HtmlChars.convertHtmlSymbols(head), "70", "1"));
             buffer.append("</td>");
             buffer.append("</tr>");
             buffer.append("</table>");
@@ -325,16 +318,16 @@ public class Tema extends FJServlet {
             buffer.append(autotags_add());
             // текстарий
             String textarea="";
-            if (replyPostId != null && !"".equals(replyPostId.trim())) {
+            if (isAnswer) {
                String ans = request.getParameter("ans");
-               if (session.getAttribute("edit") != null){
-                  textarea += replyPost.getBody().getBody().replace("\\", "");
-               }else if (ans != null){
-                  textarea += "[quote][b]" + replyPost.getHead().getAuthor().getNick().replace("\\", "") + "[/b]";
+               if (replyPost.getHead().getAuth().equals(user.getId())){
+                  textarea += HtmlChars.convertHtmlSymbols(removeSlashes(replyPost.getBody().getBody()));
+               }else if (ans == null){
+                  textarea += "[quote][b]" + HtmlChars.convertHtmlSymbols(removeSlashes(replyPost.getHead().getAuthor().getNick())) + "[/b]";
                   textarea += locale.getString("mess14")+String.valueOf((char) 13);
-                  textarea += replyPost.getBody().getBody().replace("\\", "") + "[/quote]";
+                  textarea += HtmlChars.convertHtmlSymbols(removeSlashes(replyPost.getBody().getBody())) + "[/quote]";
                }else{
-                  textarea += "[b]" + replyPost.getHead().getAuthor().getNick().replace("\\", "") + "[/b]";
+                  textarea += "[b]" + removeSlashes(replyPost.getHead().getAuthor().getNick()) + "[/b]";
                   textarea += ", ";
                }
             }
@@ -346,7 +339,11 @@ public class Tema extends FJServlet {
             buffer.append("<table>");
             buffer.append("<tr>");
             buffer.append("<td>");
-            buffer.append(fd_button(locale.getString("mess13"),"post_submit(\"write\");","B1", "1"));
+            if (isAnswer && (replyPost.getHead().getAuth().equals(user.getId()))){
+               buffer.append(fd_button(locale.getString("mess13"),"post_submit(\"write_edit\");","B1", "1"));
+            }else{
+               buffer.append(fd_button(locale.getString("mess13"),"post_submit(\"write_new\");","B1", "1"));
+            }
             buffer.append("</td>");
             buffer.append("<td>");
             buffer.append(fd_button(locale.getString("mess63"),"post_submit(\"view\");","B3", "1"));
@@ -354,8 +351,8 @@ public class Tema extends FJServlet {
             buffer.append("</tr>");
             buffer.append("</table>");
             //Если редактируем
-            if (replyPostId != null && !"".equals(replyPostId.trim()) && (replyPost.getHead().getAuth().equals(user.getId()))){
-               buffer.append("<input type=hidden name='IDB' size='20' value='" + replyPostId + "'>");
+            if (isAnswer && (replyPost.getHead().getAuth().equals(user.getId()))){
+               buffer.append("<input type=hidden name='IDB' size='20' value='" + replyPostParameter + "'>");
                buffer.append("<input type=hidden name='IDTbl' size='20' value='" + replyPost.getTablePost() + "'>");
                buffer.append("<input type=hidden name='IDPst' size='20' value='" + replyPost.getId().toString() + "'>");
                buffer.append("<input type=hidden name='IDTblHead' size='20' value='" + replyPost.getTableHead() + "'>");
@@ -382,11 +379,9 @@ public class Tema extends FJServlet {
          buffer.append("</table>");
          buffer.append("</body>");
          buffer.append("</html>");
-      } catch (InvalidKeyException e) {
-         e.printStackTrace();
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-      } catch (SQLException e) {
+      } catch (Throwable e) {
+         buffer = new StringBuffer();
+         buffer.append(errorOut(e));
          e.printStackTrace();
       }
       Double allTime = (double) ((new Date().getTime() - startTime));
@@ -401,13 +396,6 @@ public class Tema extends FJServlet {
       StringBuffer buffer = new StringBuffer();
       Time postTime = new Time(post.getHead().getCreateTime());
       IUser author = post.getHead().getAuthor();
-      String domen = post.getHead().getDomen();
-      String ip = post.getHead().getIp();
-      if (ip.trim().equalsIgnoreCase(domen.trim())){
-         domen = domen.substring(0, domen.lastIndexOf( ".")+1) + "---";
-      }else{
-         domen = "---" + domen.substring(domen.indexOf(".") + 1);
-      }
       buffer.append("<tr class=heads>");
       buffer.append("<td  class=internal>");
       if (post.isLastPost()) buffer.append("<a name='end'></a>");
@@ -420,7 +408,7 @@ public class Tema extends FJServlet {
       if (ignorList.size() > 0){
          if (isIgnored(post.getHead().getAuth(), ignorList)) ignored = true;
       }
-      buffer.append("<span class='tbtextnread'>" + author.getNick() + "</span>&nbsp;•");
+      buffer.append("<span class='tbtextnread'>" + HtmlChars.convertHtmlSymbols(author.getNick()) + "</span>&nbsp;•");
       buffer.append("&nbsp;<img border='0' src='smiles/icon_minipost.gif'>&nbsp;<span class='posthead'>" + postTime.toString("dd.MM.yyyy HH:mm") + "</span>&nbsp;");
       if (!ignored && user.isLogined() && post.getHead().getAuth() != user.getId()){
          buffer.append("•&nbsp;<a class='posthead' href='ignor.php?idi=" + post.getHead().getAuth() + "&idt=" + thread.getId() + "&idp=" + post.getId() + "&pg=" + pageNumber + "' rel='nofollow'>" + locale.getString("mess68") + "</a>");
@@ -438,7 +426,7 @@ public class Tema extends FJServlet {
          buffer.append("<table width='100%'><tr><td valign=top class='matras'>");
          buffer.append("<table style='table-layout:fixed;' width='170'><tr><td valign=top>");
          buffer.append("<div style='padding:10px;'>");
-         if (user.getWantSeeAvatars() && author.getAvatarApproved() && author.getAvatar() != null && author.getAvatar().trim().isEmpty() && author.getShowAvatar()){
+         if (user.getWantSeeAvatars() && author.getAvatarApproved() && author.getAvatar() != null && !author.getAvatar().trim().isEmpty() && author.getShowAvatar()){
             buffer.append("<a href='control.php?id=9'><img border='0' src='" + author.getAvatar() + "' rel=\"nofollow\"></a>");
          }else{
             buffer.append("<a href='control.php?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>");
@@ -448,13 +436,13 @@ public class Tema extends FJServlet {
          if (!author.getShowCountry() || author.getCountry() == null || author.getCountry().isEmpty()){
             buffer.append("<span class='posthead'>" + locale.getString("mess114") + "</span><br>");
          }else{
-            buffer.append("<span class='posthead'>" + author.getCountry() + "</span><br>");
+            buffer.append("<span class='posthead'>" + HtmlChars.convertHtmlSymbols(author.getCountry()) + "</span><br>");
          }
          buffer.append("<span class='posthead'><u>" + locale.getString("mess112") + "</u></span><br>");
          if (author.getShowCity() || author.getCity() == null || author.getCity().isEmpty()){
             buffer.append("<span class='posthead'>" + locale.getString("mess114") + "</span><br>");
          }else{
-            buffer.append("<span class='posthead'>" + author.getCity() + "</span><br>");
+            buffer.append("<span class='posthead'>" + HtmlChars.convertHtmlSymbols(author.getCity()) + "</span><br>");
          }
          buffer.append("</td></tr></table>");
          buffer.append("</td><td valign='top' width='100%'>");
@@ -463,20 +451,19 @@ public class Tema extends FJServlet {
             buffer.append(writeQuest(post, user, locale, thread, voiceService));
          }
          buffer.append("<tr><td>");
-         buffer.append("<p class=post>" + fd_body(removeSlashes(post.getBody().getBody())) + "</p>");
+         buffer.append("<p class=post>" + fd_body(HtmlChars.convertHtmlSymbols(removeSlashes(post.getBody().getBody()))) + "</p>");
          buffer.append("</td></tr>");
          buffer.append("</table></td></tr>");
          buffer.append("<tr><td class='matras' colspan=2></td></tr>");
          buffer.append("<tr><td class='matras'></td><td>");
-         buffer.append("<p class=post>" + fd_body(removeSlashes(author.getFooter())) + "</p>");
+         buffer.append("<p class=post>" + fd_body(HtmlChars.convertHtmlSymbols(removeSlashes(author.getFooter()))) + "</p>");
          buffer.append("</td></tr>");
          buffer.append("<tr><td align='RIGHT' width='100%' colspan=2>");
          if (post.getHead().getNred()>0){
             Time postEditTime = new Time(post.getHead().getEditTime());
-
             buffer.append("<table class='matras' width='100%'>");
             buffer.append("<tr><td align='LEFT'>");
-            buffer.append("<span class='posthead'>" + locale.getString("mess50") + post.getHead().getNred() + locale.getString("mess51") + postEditTime.toString("dd.MM.yyyy HH:mm") + "</span>");
+            buffer.append("<span class='posthead'>" + locale.getString("mess50") + "&nbsp;" + post.getHead().getNred() + "&nbsp;" + locale.getString("mess51") + "&nbsp;" + postEditTime.toString("dd.MM.yyyy HH:mm") + "</span>");
          }
          else {
             buffer.append("<table class='matras'>");
@@ -532,20 +519,18 @@ public class Tema extends FJServlet {
             if (nodeIndex == 1){
                check=" CHECKED";
             }
-            if (questNode.getUserId() == 0){
+            if (questNode.getType() != 0){
                buffer.append(locale.getString("mess143"));
                if (questNode.getType() == 1){
                   buffer.append("<b>" + questNode.getUserNick() + "</b>");
-               }
-               else{
+               }else{
                   buffer.append("<b>" + locale.getString("mess144") + "</b>");
                }
-               buffer.append("</td><td class=voice_right align='left'>");
-               buffer.append("<input type='radio' name='ANSWER' value='$in1'>&nbsp;" + fd_smiles(fd_href(removeSlashes(questNode.getNode()))) + "<br>");
-            }
-            else {
-               buffer.append("</td><td class=voice_right align='left'>");
-               buffer.append("<input type='radio' name='ANSWER' value='$in1'" + check + ">&nbsp;" + fd_smiles(fd_href(removeSlashes(questNode.getNode()))) + "<br>");
+               buffer.append("</td><td class='voice_right' align='left'>");
+               buffer.append("<input type='radio' name='ANSWER' value='" + questNode.getId() + "'>&nbsp;" + fd_smiles(fd_href(removeSlashes(questNode.getNode()))) + "<br>");
+            }else {
+               buffer.append("</td><td class='voice_right' align='left'>");
+               buffer.append("<input type='radio' name='ANSWER' value='" + questNode.getId() + "'" + check + ">&nbsp;" + fd_smiles(fd_href(removeSlashes(questNode.getNode()))) + "<br>");
             }
             buffer.append("</td></tr>");
          }
@@ -613,17 +598,12 @@ public class Tema extends FJServlet {
       buffer.append("</th></tr><tr>");
       for (int nodeIndex = 1; nodeIndex < nodes.size(); nodeIndex++) {
          IQuestNode questNode = nodes.get(nodeIndex);
-         if (questNode.getUserId() == 0){
-            if (questNode.getType() == 1){
-               buffer.append("<td align='LEFT' class='internal'>" + questNode.getUserNick() + "</td>");
-            }
-            else{
-               buffer.append("<td align='LEFT' class='internal'>" + locale.getString("mess144") + "</td>");
-            }
-         }
-         else
-         {
+         if (questNode.getType() == 0){
             buffer.append("<td align='LEFT' class='internal'></td>");
+         }else if (questNode.getType() == 1){
+            buffer.append("<td align='LEFT' class='internal'>" + questNode.getUserNick() + "</td>");
+         }else if (questNode.getType() == 2){
+            buffer.append("<td align='LEFT' class='internal'>" + locale.getString("mess144") + "</td>");
          }
          buffer.append("<td class='internal'>" + fd_body(questNode.getNode()) + "</td>");
 
@@ -639,16 +619,8 @@ public class Tema extends FJServlet {
       buffer.append("</table>");
       if (user.isLogined() && userVoted){
          buffer.append("<form method=\"POST\" action=\"delvoice.php\" align=\"CENTER\">");
-         buffer.append("<input type=hidden name=\"IDU\" size=\"20\" value=\"" + user.getId() + "\">");
-         buffer.append("<input type=hidden name=\"AUT\" size=\"20\" value=\"" + user.getNick() + "\">");
          buffer.append("<input type=hidden name=\"IDT\" size=\"20\" value=\"" + thread.getId() + "\">");
-         if (user.getPass2() != null) {
-            buffer.append("<input type=hidden name=\"PS2\" size=\"20\" value=\"" + user.getPass2() + "\">");
-         }
-         else {
-            buffer.append("<input type=hidden name=\"PS1\" size=\"20\" value=\"" + user.getPass() + "\">");
-         }
-
+         buffer.append(fd_form_add(user));
          buffer.append("<input type='submit' value='" + locale.getString("mess161") + "'>");
          buffer.append("</form>");
       }

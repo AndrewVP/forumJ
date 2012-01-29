@@ -16,11 +16,13 @@ import java.io.IOException;
 import java.sql.*;
 import java.util.*;
 import java.util.Map.Entry;
+import java.util.Date;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.exception.DBException;
 import org.forumj.dbextreme.db.entity.*;
+import org.forumj.dbextreme.db.service.FJService;
 
 /**
  *
@@ -28,7 +30,7 @@ import org.forumj.dbextreme.db.entity.*;
  */
 public class FJPostDao extends FJDao {
 
-   public Long create(IFJPost post, Connection conn) throws IOException, DBException, SQLException, ConfigurationException{
+   public Long create(IFJPost post, Connection conn, boolean updateThread) throws IOException, DBException, SQLException, ConfigurationException{
       Long postId = null;
       String createPostQuery = getCreatePostQuery();
       FJForumDao forumDao = new FJForumDao();
@@ -67,10 +69,15 @@ public class FJPostDao extends FJDao {
             st.setString(7, postHead.getIp());
             st.setString(8, postHead.getDomen());
             st.executeUpdate();
-            FJThreadDao threadDao = new FJThreadDao();
-            FJThread thread = threadDao.read(post.getThreadId());
-            thread.setLastPostId(postId);
-            threadDao.update(thread, conn);
+            if (updateThread){
+               FJThreadDao threadDao = new FJThreadDao();
+               FJThread thread = threadDao.read(post.getThreadId());
+               thread.setLastPostId(postId);
+               thread.setLastPostAuthId(postHead.getAuth());
+               thread.setLastPostTime(new Date(postHead.getCreateTime()));
+               thread.setLastPostNick(postHead.getAuthor().getNick());
+               threadDao.update(thread, conn);
+            }
          }else{
             throw new DBException("Post wasn't created");
          }
@@ -84,7 +91,7 @@ public class FJPostDao extends FJDao {
       Connection conn = null;
       try {
          conn = getConnection();
-         return create(post, conn);
+         return create(post, conn, true);
       }finally{
          readFinally(conn, null);
       }
@@ -189,6 +196,7 @@ public class FJPostDao extends FJDao {
    }
    
    private FJPostHead readHead(Long id, String tableHead, Connection conn) throws SQLException, IOException, ConfigurationException{
+      FJUserDao userDao = FJService.getUserDao();
       String readPostHeadQuery = getReadPostHeadQuery(tableHead);
       FJPostHead result = null;
       PreparedStatement st = null;
@@ -211,6 +219,8 @@ public class FJPostDao extends FJDao {
             result.setEditTime(rs.getLong(IFJPostHead.LAST_EDIT_DATE_FIELD_NAME));
             result.setPostId(rs.getLong(IFJPostHead.POST_ID_FIELD_NAME));
             result.setThreadId(rs.getLong(IFJPostHead.THREAD_ID_FIELD_NAME));
+            IUser user = userDao.read(result.getAuth(), conn);
+            result.setAuthor(user);
          }
       }finally{
          readFinally(conn == null ? cn : null, st);
@@ -268,6 +278,7 @@ public class FJPostDao extends FJDao {
          conn = getConnection();
          st = conn.prepareStatement(query);
          st.setLong(1, lastPostId);
+         st.setLong(2, threadId);
          ResultSet rs = st.executeQuery();
          if (rs.next()){
             result = rs.getLong("mx");
@@ -312,16 +323,13 @@ public class FJPostDao extends FJDao {
          st.setLong(2, nfirstpost);
          st.setInt(3, count);
          ResultSet rs = st.executeQuery();
+         FJPost post = null; 
          while (rs.next()){
             isFirst = page == 1 && ++nPost == 1;
             lastPostId = rs.getLong("id");
-            FJPost post = new FJPost();
+            post = new FJPost();
             post.setId(lastPostId);
             post.setFirstPost(isFirst);
-            if (lastPost){
-               //TODO All of them??????????
-               post.setLastPost(true);
-            }
             result.add(post);
             postsMap.put(lastPostId, post);
             String tablePost = rs.getString("table_post");
@@ -341,6 +349,9 @@ public class FJPostDao extends FJDao {
             }
             headsId.put(tableHead, tableHeadIds);
          }
+         if (lastPost && post != null){
+            post.setLastPost(true);
+         }
          //Загружаем заголовки постов
          for (Iterator<Entry<String, String>> iterator = headsId.entrySet().iterator(); iterator.hasNext();) {
             Entry<String, String> entry = iterator.next();
@@ -353,7 +364,7 @@ public class FJPostDao extends FJDao {
                Long postId = rs.getLong("id");
                int type = rs.getInt("type");
                isQuest = (type == 1 || type == 2);
-               FJPost post = postsMap.get(postId);
+               post = postsMap.get(postId);
                FJPostHead postHead = new FJPostHead();
                post.setHead(postHead);
                if (post.isFirstPost() && isQuest){
@@ -396,7 +407,7 @@ public class FJPostDao extends FJDao {
             rs = st.executeQuery();
             while (rs.next()){
                Long postId = rs.getLong("id");
-               FJPost post = postsMap.get(postId);
+               post = postsMap.get(postId);
                FJPostBody postBody = new FJPostBody();
                post.setBody(postBody);
                postBody.setBody(rs.getString("body"));

@@ -59,18 +59,22 @@ public class FJUserDao extends FJDao {
    }
    
    public IUser read(Long userId) throws ConfigurationException, SQLException, IOException{
+      return read(userId, null);
+   }
+   
+   public IUser read(Long userId, Connection conn) throws ConfigurationException, SQLException, IOException{
       IUser result = null;
       String query = getReadUserByIdQuery();
-      Connection conn = null;
       PreparedStatement st = null;
+      Connection cn = null;
       try {
-         conn = getConnection();
-         st = conn.prepareStatement(query) ;
+         cn = conn == null ? getConnection(): conn;
+         st = cn.prepareStatement(query) ;
          st.setLong(1, userId);
          ResultSet rs = st.executeQuery();
          result = loadUser(rs);
       }finally{
-         readFinally(conn, st);
+         readFinally(conn == null ? cn : null, st);
       }
       return result;
    }

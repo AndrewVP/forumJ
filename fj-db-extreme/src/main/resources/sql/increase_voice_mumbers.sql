@@ -3,4 +3,4 @@ UPDATE
 SET
  gol = gol+1 
 WHERE 
- id = ?
+ id= ?

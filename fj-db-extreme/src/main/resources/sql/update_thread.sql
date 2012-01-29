@@ -4,8 +4,6 @@ UPDATE titles
 , lpostuser = ?
 , lpostnick = ?
 , id_last_post = ?
-, seenid = ?
-, seenall = ?
 , dock = ?
 , folder = ?
 , npost = ?

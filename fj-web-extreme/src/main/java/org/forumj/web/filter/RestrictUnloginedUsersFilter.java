@@ -16,15 +16,14 @@
 package org.forumj.web.filter;
 
 import static org.forumj.common.FJServletName.*;
+import static org.forumj.tool.Diletant.errorOut;
 
-import java.io.IOException;
-import java.sql.SQLException;
+import java.io.*;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
 
@@ -35,7 +34,7 @@ import org.forumj.common.db.service.*;
 @WebFilter(servletNames={NEW_THREAD, ADD_THREAD, ADD_POST, NEW_QUESTION, ADD_QUESTION, SETTINGS, ADD_SUBSCRIBE, UPDATE_IGNORING, SET_DEFAULT_VIEW, FOLDER_TOOLS, 
       DELETE_MAIL, MOVE_THREAD_TO_RECYCLE, DELETE_SUBSCRIBE, DELETE_FOLDER_FROM_VIEW, DELETE_VIEW, DELETE_VOICE, VOICE, ADD_VOTE,
       MOVE_TITLE, NEW_FOLDER, NEW_VIEW, SET_AVATAR, SET_FOOTER, SET_LOCATION, V_AVATAR, SEND_PIVATE_MESSAGE, ADD_IGNOR})
-public class RestrictUnloginedUsersFilter implements Filter {
+      public class RestrictUnloginedUsersFilter implements Filter {
 
    /**
     * {@inheritDoc}
@@ -44,10 +43,10 @@ public class RestrictUnloginedUsersFilter implements Filter {
    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
       HttpServletRequest request = (HttpServletRequest) req;
       HttpServletResponse response = (HttpServletResponse) resp;
-      HttpSession session = request.getSession(true);
-      IUser user = (IUser) session.getAttribute("user");
-      if (user == null || !user.isLogined()){
-         try {
+      try {
+         HttpSession session = request.getSession(true);
+         IUser user = (IUser) session.getAttribute("user");
+         if (user == null || !user.isLogined()){
             String idu = request.getParameter("IDU");
             String password1 = request.getParameter("PS1");
             String password2 = request.getParameter("PS2");
@@ -61,16 +60,20 @@ public class RestrictUnloginedUsersFilter implements Filter {
                   session.setAttribute("user", user);
                }
             }
-         } catch (ConfigurationException e) {
-            e.printStackTrace();
-         } catch (SQLException e) {
-            e.printStackTrace();
          }
-      }
-      if (user == null || !user.isLogined()){
-         response.sendRedirect(request.getContextPath() + "/");
-      }else{
-         chain.doFilter(req, resp);
+         if (user == null || !user.isLogined()){
+            response.sendRedirect(request.getContextPath() + "/");
+         }else{
+            chain.doFilter(req, resp);
+         }
+      } catch (Throwable e) {
+         e.printStackTrace();
+         StringBuffer buffer = new StringBuffer();
+         buffer.append(errorOut(e));
+         response.setContentType("text/html; charset=UTF-8");
+         PrintWriter writer = response.getWriter();
+         String out = buffer.toString();
+         writer.write(out);
       }
    }
 

@@ -30,8 +30,8 @@ import org.forumj.web.servlet.FJServlet;
 public class AddIgnor extends FJServlet {
 
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      StringBuffer buffer = new StringBuffer();
       try {
-         StringBuffer buffer = new StringBuffer();
          HttpSession session = request.getSession();
          String threadIdParameter = request.getParameter("idt");
          String pageParameter = request.getParameter("pg");
@@ -55,11 +55,13 @@ public class AddIgnor extends FJServlet {
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());
          }
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
-      }catch (Exception e) {
+      } catch (Throwable e) {
+         buffer = new StringBuffer();
+         buffer.append(errorOut(e));
          e.printStackTrace();
       }
+         response.setContentType("text/html; charset=UTF-8");
+         response.getWriter().write(buffer.toString());
    }
    
 }

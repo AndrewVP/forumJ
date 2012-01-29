@@ -16,17 +16,15 @@
 package org.forumj.web.filter;
 
 import static org.forumj.common.FJServletName.*;
-import static org.forumj.web.servlet.tool.FJServletTools.*;
+import static org.forumj.tool.Diletant.errorOut;
+import static org.forumj.web.servlet.tool.FJServletTools.setcookie;
 
-import java.io.IOException;
-import java.sql.SQLException;
+import java.io.*;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
 
-import org.apache.commons.codec.EncoderException;
-import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
 
@@ -35,7 +33,7 @@ import org.forumj.common.db.service.*;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @WebFilter(servletNames={INDEX, VIEW_THREAD, NEW_THREAD, NEW_QUESTION, SETTINGS})
-public class ExitFilter implements Filter {
+public class AAAAExitFilter implements Filter {
 
    /**
     * {@inheritDoc}
@@ -44,9 +42,9 @@ public class ExitFilter implements Filter {
    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
       HttpServletRequest request = (HttpServletRequest) req;
       HttpServletResponse response = (HttpServletResponse)resp;
-      String exitParam = request.getParameter("exit");
-      IUser user = (IUser) request.getSession().getAttribute("user");
       try {
+         String exitParam = request.getParameter("exit");
+         IUser user = (IUser) request.getSession().getAttribute("user");
          if (exitParam != null && user != null && user.isLogined()){
             UserService userService = FJServiceHolder.getUserService();
             request.getSession().setAttribute("user", userService.readUser(0l));
@@ -66,12 +64,14 @@ public class ExitFilter implements Filter {
          }else{
             chain.doFilter(request, response);
          }
-      } catch (EncoderException e) {
+      } catch (Throwable e) {
          e.printStackTrace();
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-      } catch (SQLException e) {
-         e.printStackTrace();
+         StringBuffer buffer = new StringBuffer();
+         buffer.append(errorOut(e));
+         response.setContentType("text/html; charset=UTF-8");
+         PrintWriter writer = response.getWriter();
+         String out = buffer.toString();
+         writer.write(out);
       }
    }
 

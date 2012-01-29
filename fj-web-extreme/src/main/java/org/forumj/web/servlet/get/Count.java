@@ -10,13 +10,11 @@
 package org.forumj.web.servlet.get;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
 import org.forumj.common.db.service.*;
 import org.forumj.web.servlet.FJServlet;
@@ -30,12 +28,11 @@ public class Count extends FJServlet {
    
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-      StringBuffer buffer = new StringBuffer();
+      StringBuffer result = new StringBuffer();
       String m_xbParameter = request.getParameter("idb");
       String m_xtParameter = request.getParameter("idt");
       String idsParameter = request.getParameter("ids");
       CountService service = FJServiceHolder.getCountService();
-      StringBuffer result = new StringBuffer();
       try {
          long m_xb = service.getAddedPostsAmount(Long.valueOf(m_xbParameter));
          result.append(m_xb);
@@ -55,12 +52,8 @@ public class Count extends FJServlet {
             result.append(service.getAddedPostsAmount(Long.valueOf(threadId), Long.valueOf(lastPostId)));
          }
          response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
-      } catch (NumberFormatException e) {
-         e.printStackTrace();
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-      } catch (SQLException e) {
+         response.getWriter().write(result.toString());
+      } catch (Throwable e) {
          e.printStackTrace();
       }
    }

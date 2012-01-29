@@ -80,7 +80,7 @@ public class InsNew extends FJServlet {
                }
             }
          }
-      }catch (Exception e) {
+      } catch (Throwable e) {
          e.printStackTrace();
       }
    }

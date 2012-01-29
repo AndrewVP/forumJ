@@ -9,6 +9,8 @@
  */
 package org.forumj.web.servlet.post;
 
+import static org.forumj.tool.Diletant.errorOut;
+
 import java.io.IOException;
 
 import javax.servlet.ServletException;
@@ -29,8 +31,8 @@ import org.forumj.web.servlet.FJServlet;
 public class SAvatar extends FJServlet {
 
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      StringBuffer buffer = new StringBuffer();
       try {
-         StringBuffer buffer = new StringBuffer();
          String passParameter = request.getParameter("pass");
          String avatarParameter = request.getParameter("avatar");
          String userIdParameter = request.getParameter("qqnn");
@@ -49,11 +51,13 @@ public class SAvatar extends FJServlet {
             buffer.append("<img src='" + avatarParameter + "'>");
             buffer.append("</body></html>");
          }
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
-      }catch (Exception e) {
+      } catch (Throwable e) {
+         buffer = new StringBuffer();
+         buffer.append(errorOut(e));
          e.printStackTrace();
       }
+      response.setContentType("text/html; charset=UTF-8");
+      response.getWriter().write(buffer.toString());
    }
    
 }

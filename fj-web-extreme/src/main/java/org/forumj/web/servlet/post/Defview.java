@@ -34,10 +34,10 @@ public class Defview extends FJServlet {
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
-      HttpSession session = request.getSession();
-      IUser user = (IUser) session.getAttribute("user");
-      String defaultViewParameter = request.getParameter("DVIEW");
       try {
+         HttpSession session = request.getSession();
+         IUser user = (IUser) session.getAttribute("user");
+         String defaultViewParameter = request.getParameter("DVIEW");
          if (user != null && !user.isBanned() && user.isLogined()){
             if (defaultViewParameter != null && !"".equals(defaultViewParameter)){
                UserService userService = FJServiceHolder.getUserService();
@@ -49,13 +49,13 @@ public class Defview extends FJServlet {
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());
          }
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-      } catch (SQLException e) {
+      } catch (Throwable e) {
+         buffer = new StringBuffer();
+         buffer.append(errorOut(e));
          e.printStackTrace();
       }
+      response.setContentType("text/html; charset=UTF-8");
+      response.getWriter().write(buffer.toString());
    }
 
 }

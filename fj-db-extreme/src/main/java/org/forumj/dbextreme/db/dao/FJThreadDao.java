@@ -53,8 +53,11 @@ public class FJThreadDao extends FJDao {
             post.getHead().setThreadId(threadId);
             post.getHead().setCreateTime(date.getTime());
             FJPostDao postDao = new FJPostDao();
-            Long postId = postDao.create(post, conn);
+            Long postId = postDao.create(post, conn, false);
             thread.setLastPostId(postId);
+            thread.setLastPostAuthId(post.getHead().getAuth());
+            thread.setLastPostTime(new Date(post.getHead().getCreateTime()));
+            thread.setLastPostNick(post.getHead().getAuthor().getNick());
             update(thread, conn);
             if (thread instanceof FJQuestionThread){
                FJQuestNodeDao answersDao = new FJQuestNodeDao();
@@ -132,17 +135,14 @@ public class FJThreadDao extends FJDao {
       try {
          st = conn.prepareStatement(updateThreadQuery);
          st.setString(1, thread.getHead());
-         Date date = new Date();
-         st.setDate(2, new java.sql.Date(date.getTime()));
-         st.setLong(3, thread.getAuthId());
-         st.setString(4, thread.getNick());
+         st.setTimestamp(2, new java.sql.Timestamp(thread.getLastPostTime().getTime()));
+         st.setLong(3, thread.getLastPostAuthId());
+         st.setString(4, thread.getLastPostNick());
          st.setLong(5, thread.getLastPostId());
-         st.setInt(6, thread.getSnid());
-         st.setInt(7, thread.getSnall());
-         st.setInt(8, thread.getDock());
-         st.setLong(9, thread.getFolderId());
-         st.setInt(10, thread.getPcount());
-         st.setLong(11, thread.getId());
+         st.setInt(6, thread.getDock());
+         st.setLong(7, thread.getFolderId());
+         st.setInt(8, thread.getPcount());
+         st.setLong(9, thread.getId());
          st.executeUpdate();
       }finally{
          readFinally(null, st);
@@ -432,7 +432,7 @@ public class FJThreadDao extends FJDao {
             thr.setDisain(disain);
             thr.setId(id);
             thr.setDock(rs.getInt("dock"));
-            thr.setLastPostTime(rs.getDate("lposttime_"));
+            thr.setLastPostTime(rs.getTimestamp("lposttime_"));
             thr.setHead(rs.getString("head"));
             thr.setNick(rs.getString("nick"));
             thr.setLastPostNick(rs.getString("lpostnick"));

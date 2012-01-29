@@ -2,7 +2,7 @@ UPDATE
  ignor 
 SET 
  end = ?
- type = ?
+ ,type = ?
 WHERE
 id= ?
 AND user = ?

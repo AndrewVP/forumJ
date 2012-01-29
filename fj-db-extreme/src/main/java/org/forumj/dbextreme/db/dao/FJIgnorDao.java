@@ -68,7 +68,7 @@ public class FJIgnorDao extends FJDao {
       try {
          conn = getConnection();
          st = conn.prepareStatement(query);
-         st.setDate(1, new java.sql.Date(ignor.getEnd().getTime()));
+         st.setTimestamp(1, new java.sql.Timestamp(ignor.getEnd().getTime()));
          st.setInt(2, ignor.getType());
          st.setLong(3, ignor.getId());
          st.setLong(4, ignor.getUserId());

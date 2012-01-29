@@ -16,18 +16,17 @@
 package org.forumj.web.filter;
 
 import static org.forumj.common.FJServletName.*;
+import static org.forumj.tool.Diletant.errorOut;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
 
-import java.io.IOException;
-import java.sql.SQLException;
+import java.io.*;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
 
-import org.apache.commons.codec.*;
+import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.net.QuotedPrintableCodec;
-import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
 
@@ -36,7 +35,7 @@ import org.forumj.common.db.service.*;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @WebFilter(servletNames={INDEX, VIEW_THREAD, LOGIN, NEW_THREAD, NEW_QUESTION, SETTINGS, REGISTRATION})
-public class LoginFilter implements Filter {
+public class AAALoginFilter implements Filter {
 
    /**
     * {@inheritDoc}
@@ -46,10 +45,10 @@ public class LoginFilter implements Filter {
       boolean ok = true;
       HttpServletRequest request = (HttpServletRequest) req;
       HttpServletResponse response = (HttpServletResponse) resp;
-      IUser user = (IUser) request.getSession(true).getAttribute("user");
-      UserService userService = FJServiceHolder.getUserService();
-      QuotedPrintableCodec codec = new QuotedPrintableCodec();
       try {
+         IUser user = (IUser) request.getSession(true).getAttribute("user");
+         UserService userService = FJServiceHolder.getUserService();
+         QuotedPrintableCodec codec = new QuotedPrintableCodec();
          if (user == null || !user.isLogined()){
             Cookie[] cookies = request.getCookies();
             Cookie iduCookie = getCookie(cookies, "idu"); 
@@ -77,16 +76,14 @@ public class LoginFilter implements Filter {
          }else{
             goAwayStupidHackers(response, request.getContextPath() + "/", request);
          }
-      } catch (EncoderException e) {
+      } catch (Throwable e) {
          e.printStackTrace();
-      } catch (DecoderException e) {
-         e.printStackTrace();
-      } catch (NumberFormatException e) {
-         e.printStackTrace();
-      } catch (ConfigurationException e) {
-         e.printStackTrace();
-      } catch (SQLException e) {
-         e.printStackTrace();
+         StringBuffer buffer = new StringBuffer();
+         buffer.append(errorOut(e));
+         response.setContentType("text/html; charset=UTF-8");
+         PrintWriter writer = response.getWriter();
+         String out = buffer.toString();
+         writer.write(out);
       }
    }
 
