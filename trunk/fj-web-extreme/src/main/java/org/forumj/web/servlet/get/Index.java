@@ -243,9 +243,9 @@ public class Index extends FJServlet {
          buffer.append("<td style='text-align: right;'>");    
          // Индикатор   
          buffer.append("<span class=posthead>" + locale.getString("mess164") + ":&nbsp;</span>");
-         buffer.append("<span class=posthead id='indicatort' style='color:red'>&nbsp;</span><br />");
+         buffer.append("<span class=posthead id='indicatorb' style='color:red'>&nbsp;</span><br />");
          buffer.append("<span class=posthead >" + locale.getString("mess165") + ":&nbsp;</span>");
-         buffer.append("<span class=posthead id='indicatorb' style='color:red'>&nbsp;</span>");
+         buffer.append("<span class=posthead id='indicatort' style='color:red'>&nbsp;</span>");
          buffer.append("</td>");
          buffer.append("</tr>");
          buffer.append("</table>");

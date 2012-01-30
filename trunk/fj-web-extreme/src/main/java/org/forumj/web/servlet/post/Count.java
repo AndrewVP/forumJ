@@ -7,7 +7,7 @@
  * You shall use it and distribute only in accordance with the terms of the 
  * License Agreement.
  */
-package org.forumj.web.servlet.get;
+package org.forumj.web.servlet.post;
 
 import java.io.IOException;
 
@@ -27,7 +27,7 @@ import org.forumj.web.servlet.FJServlet;
 public class Count extends FJServlet {
    
    @Override
-   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       StringBuffer result = new StringBuffer();
       String m_xbParameter = request.getParameter("idb");
       String m_xtParameter = request.getParameter("idt");
