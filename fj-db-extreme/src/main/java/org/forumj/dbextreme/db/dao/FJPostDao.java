@@ -76,6 +76,7 @@ public class FJPostDao extends FJDao {
                thread.setLastPostAuthId(postHead.getAuth());
                thread.setLastPostTime(new Date(postHead.getCreateTime()));
                thread.setLastPostNick(postHead.getAuthor().getNick());
+               thread.setPcount(thread.getPcount()+1);
                threadDao.update(thread, conn);
             }
          }else{
