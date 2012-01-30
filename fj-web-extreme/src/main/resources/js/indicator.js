@@ -13,10 +13,21 @@ try {
    }
 }
 function getIndicatorInfo() {
-   var url = "/forum/count.php?idb=" + m_xb + "&idt=" + m_xt + "&ids=" + idss;
-   request.open("GET", url, true);
-   request.onreadystatechange = updateIndicator;
-   request.send(null);
+	url = "count.php";
+	params = "idb=" + m_xb + "&idt=" + m_xt + "&ids=" + idss;
+	request.open("POST", url, true);
+
+	//Send the proper header information along with the request
+	request.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+	request.setRequestHeader("Content-length", params.length);
+	request.setRequestHeader("Connection", "close");
+
+	request.onreadystatechange = updateIndicator;
+	request.send(params);
+//   var url = "count.php?idb=" + m_xb + "&idt=" + m_xt + "&ids=" + idss;
+//   request.open("GET", url, true);
+//   request.onreadystatechange = updateIndicator;
+//   request.send(null);
 }
 
 function updateIndicator() {

@@ -835,7 +835,7 @@ public class Control extends FJServlet {
       for (int interfIndex=0; interfIndex < interfaces.size(); interfIndex++){
          String add="";
          IFJInterface interf = interfaces.get(interfIndex);
-         if (interf.getId() == user.getView()) {
+         if (interf.getId().equals(user.getView())) {
             add="selected ";
          }
          buffer.append("<option " + add + "value='" + interf.getId() + "'><span class=mnuprof>" + interf.getName() + "</span></option>");
@@ -861,7 +861,7 @@ public class Control extends FJServlet {
          // Имя интерфейса
          String name = interf.getName();
          // выделяем выбраный интерфейс
-         if (viewId != null && viewId == interf.getId()){
+         if (viewId != null && viewId.equals(interf.getId())){
             name = "<b>" + name + "</b>";
          }
          buffer.append("<tr>");

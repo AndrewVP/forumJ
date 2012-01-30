@@ -68,6 +68,7 @@ public class FJPostDao extends FJDao {
             st.setLong(6, postHead.getCreateTime());
             st.setString(7, postHead.getIp());
             st.setString(8, postHead.getDomen());
+            st.setString(9, " ");
             st.executeUpdate();
             if (updateThread){
                FJThreadDao threadDao = new FJThreadDao();
@@ -90,12 +91,17 @@ public class FJPostDao extends FJDao {
 
    public Long create(IFJPost post) throws IOException, DBException, ConfigurationException, SQLException{
       Connection conn = null;
+      Long result = null;
+      boolean error = true;
       try {
          conn = getConnection();
-         return create(post, conn, true);
+         conn.setAutoCommit(false);
+         result = create(post, conn, true);
+         error = false;
       }finally{
-         readFinally(conn, null);
+         writeFinally(conn, null, error);
       }
+      return result;
    }
 
    public void update(IFJPost post) throws IOException, SQLException, ConfigurationException{
@@ -160,7 +166,7 @@ public class FJPostDao extends FJDao {
          st.setLong(1, threadId);
          ResultSet rs = st.executeQuery();
          if (rs.next()){
-            result = postId == rs.getLong("id");
+            result = postId.equals(rs.getLong("id"));
          }
       }finally{
          readFinally(null, st);

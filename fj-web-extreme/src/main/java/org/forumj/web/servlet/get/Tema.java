@@ -477,7 +477,7 @@ public class Tema extends FJServlet {
             //                  buffer.append("<span class='posthead'><a href='site.php?id=" + post.getThreadId() + "&post=" + this.id + "' rel=\"nofollow\">" + locale.getString("mess162") + "</a></span>");
             //                  buffer.append("</td>");
             //               }
-            if (user.getId() == author.getId()) {
+            if (user.getId().equals(author.getId())) {
                buffer.append("<td align='CENTER' width='70'>");
                buffer.append("<span class='posthead'><a href='tema.php?id=" + thread.getId() + "&reply=" + post.getId() + "#edit' rel=\"nofollow\">" + locale.getString("mess141") + "</a></span>");
                buffer.append("</td>");
@@ -553,7 +553,7 @@ public class Tema extends FJServlet {
             boolean userVotes = false;
             for (int nodeIndex = 1; nodeIndex < nodes.size(); nodeIndex++) {
                IQuestNode questNode = nodes.get(nodeIndex);
-               if (questNode.getUserId() == user.getId()) userVotes = true;
+               if (questNode.getUserId().equals(user.getId())) userVotes = true;
             }
             if (!userVotes){
                buffer.append("<tr><td>");
@@ -630,7 +630,7 @@ public class Tema extends FJServlet {
 
    private boolean isIgnored(Long userId, List<IIgnor> ignorList){
       for(int arrIndex=0; arrIndex < ignorList.size(); arrIndex++) {
-         if(ignorList.get(arrIndex).getUser().getId().longValue() == userId.longValue()) {
+         if(ignorList.get(arrIndex).getUser().getId().equals(userId)) {
             return true;
          }
       }
