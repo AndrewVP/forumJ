@@ -68,7 +68,6 @@ public class Tema extends FJServlet {
          IUser user = (IUser) session.getAttribute("user");
          IgnorService ignorService = FJServiceHolder.getIgnorService();
          List<IIgnor> ignorList = ignorService.readUserIgnor(user.getId());
-         int i3=pageNumber*user.getPt();
          // Сколько страниц?
          Integer count = thread.getPcount();
          Integer couP = (int) (Math.floor((double)count/user.getPt())+2);
@@ -80,7 +79,8 @@ public class Tema extends FJServlet {
             lastPost = true;
          }
          int nfirstpost = (pageNumber-1)*user.getPt();
-         List<IFJPost> posts = postService.readPosts(user, threadId, nfirstpost, i3, pageNumber, lastPost);
+         List<IFJPost> posts = postService.readPosts(user, threadId, nfirstpost, user.getPt(), pageNumber, lastPost);
+         int postsAmount = posts.size();
          // Получаем массив постов
          session.setAttribute("page", pageNumber);
          session.setAttribute("id", threadId);
@@ -177,10 +177,10 @@ public class Tema extends FJServlet {
          // Таблица форума
          buffer.append("<table border='0' cellpadding='2' cellspacing='0' width='100%'>");
          // Определяем кол-во строк таблицы
-         if (i3>count) {
-            i3=count-(pageNumber-1)*user.getPt();
+         if (postsAmount>count) {
+            postsAmount=count-(pageNumber-1)*user.getPt();
          }else{
-            i3=user.getPt();
+            postsAmount=user.getPt();
          }
          // Тема
          // Выводим строки
