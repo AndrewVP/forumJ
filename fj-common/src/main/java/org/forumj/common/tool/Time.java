@@ -16,7 +16,7 @@
 package org.forumj.common.tool;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.util.*;
 
 import com.humaorie.strtotime.StrToTime;
 
@@ -31,10 +31,10 @@ public class Time {
     *
     * @var unknown_type
     */
-   public static final int SECOND = 1;
-   public static final int  MINUTE = 60;
-   public static final int  HOUR = 3600;
-   public static  final int DAY = 86400;
+   public static final int SECOND = 1000;
+   public static final int  MINUTE = 60000;
+   public static final int  HOUR = 3600000;
+   public static  final int DAY = 86400000;
    
    /**
     * Метка времени
@@ -55,10 +55,7 @@ public class Time {
     * @param unknown_type $mask
     */
    public String toString(String mask){
-      SimpleDateFormat format = new SimpleDateFormat(mask);
-      Date date = new Date();
-      date.setTime(timestamp);
-      return format.format(date);
+      return (new SimpleDateFormat(mask)).format(new Date(timestamp - HOUR));
    }
    
    /**
@@ -116,9 +113,6 @@ public class Time {
    }
 
    public static String date(String mask , long timestamp){
-      SimpleDateFormat format = new SimpleDateFormat(mask);
-      Date date = new Date();
-      date.setTime(timestamp);
-      return format.format(date);
+      return (new Time(timestamp)).toString(mask);
    }
 }
