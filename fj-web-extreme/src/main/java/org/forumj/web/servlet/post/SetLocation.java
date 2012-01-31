@@ -32,8 +32,8 @@ public class SetLocation extends FJServlet {
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try {
-         boolean scity = request.getParameter("scity") != null;;
-         boolean scountry = request.getParameter("scountry") != null;;
+         boolean scity = request.getParameter("scity") == null;
+         boolean scountry = request.getParameter("scountry") == null;
          String timezoneParameter = request.getParameter("timezone");
          String cityParameter = request.getParameter("city");
          String countryParameter = request.getParameter("country");

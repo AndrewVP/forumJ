@@ -18,7 +18,7 @@ import java.util.List;
 public interface IFJPost {
    
    public static final String ID_FIELD_NAME = "id";
-   public static final String THREAT_ID_FIELD_NAME = "head";
+   public static final String THREAD_ID_FIELD_NAME = "head";
    public static final String STATE_FIELD_NAME = "fd_state";
    public static final String TABLE_POST_FIELD_NAME = "table_post";
    public static final String TABLE_HEAD_FIELD_NAME = "table_head";
