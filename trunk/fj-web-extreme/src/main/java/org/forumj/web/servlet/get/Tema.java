@@ -89,7 +89,13 @@ public class Tema extends FJServlet {
          String msg = request.getParameter("msg");
          int countPosts = 0;
          if (msg != null && !"".equals(msg.trim())){
-            countPosts = postService.getPostsCountInThread(threadId, new Long(msg));
+            try {
+               Long msgId = new Long(msg);
+               countPosts = postService.getPostsCountInThread(threadId, msgId);
+            } catch (NumberFormatException e) {
+               e.printStackTrace();
+               msg = null;
+            }
             pageNumber=(int) (Math.floor(countPosts/user.getPt()) + 1);
          }
          // Записываем счетчики
@@ -323,7 +329,7 @@ public class Tema extends FJServlet {
                if (replyPost.getHead().getAuth().equals(user.getId())){
                   textarea += HtmlChars.convertHtmlSymbols(removeSlashes(replyPost.getBody().getBody()));
                }else if (ans == null){
-                  textarea += "[quote][b]" + HtmlChars.convertHtmlSymbols(removeSlashes(replyPost.getHead().getAuthor().getNick())) + "[/b]";
+                  textarea += "[quote][b]" + HtmlChars.convertHtmlSymbols(removeSlashes(replyPost.getHead().getAuthor().getNick())) + "[/b] ";
                   textarea += locale.getString("mess14")+String.valueOf((char) 13);
                   textarea += HtmlChars.convertHtmlSymbols(removeSlashes(replyPost.getBody().getBody())) + "[/quote]";
                }else{
@@ -426,6 +432,7 @@ public class Tema extends FJServlet {
          buffer.append("<table width='100%'><tr><td valign=top class='matras'>");
          buffer.append("<table style='table-layout:fixed;' width='170'><tr><td valign=top>");
          buffer.append("<div style='padding:10px;'>");
+         //avatar
          if (user.getWantSeeAvatars() && author.getAvatarApproved() && author.getAvatar() != null && !author.getAvatar().trim().isEmpty() && author.getShowAvatar()){
             buffer.append("<a href='control.php?id=9'><img border='0' src='" + author.getAvatar() + "' rel=\"nofollow\"></a>");
          }else{
@@ -433,13 +440,14 @@ public class Tema extends FJServlet {
          }
          buffer.append("</div>");
          buffer.append("<span class='posthead'><u>" + locale.getString("mess111") + "</u></span><br>");
+         //country
          if (!author.getShowCountry() || author.getCountry() == null || author.getCountry().isEmpty()){
             buffer.append("<span class='posthead'>" + locale.getString("mess114") + "</span><br>");
          }else{
             buffer.append("<span class='posthead'>" + HtmlChars.convertHtmlSymbols(author.getCountry()) + "</span><br>");
          }
          buffer.append("<span class='posthead'><u>" + locale.getString("mess112") + "</u></span><br>");
-         if (author.getShowCity() || author.getCity() == null || author.getCity().isEmpty()){
+         if (!author.getShowCity() || author.getCity() == null || author.getCity().isEmpty()){
             buffer.append("<span class='posthead'>" + locale.getString("mess114") + "</span><br>");
          }else{
             buffer.append("<span class='posthead'>" + HtmlChars.convertHtmlSymbols(author.getCity()) + "</span><br>");

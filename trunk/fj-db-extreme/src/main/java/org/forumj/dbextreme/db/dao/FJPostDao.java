@@ -188,7 +188,7 @@ public class FJPostDao extends FJDao {
             result = new FJPost();
             result.setId(id);
             result.setState(rs.getInt(STATE_FIELD_NAME));
-            result.setThreadId(rs.getLong(THREAT_ID_FIELD_NAME));
+            result.setThreadId(rs.getLong(THREAD_ID_FIELD_NAME));
             result.setTableHead(rs.getString(TABLE_HEAD_FIELD_NAME));
             result.setTablePost(rs.getString(TABLE_POST_FIELD_NAME));
             FJPostHead postHead = readHead(id, result.getTableHead(), conn);
@@ -337,6 +337,7 @@ public class FJPostDao extends FJDao {
             post = new FJPost();
             post.setId(lastPostId);
             post.setFirstPost(isFirst);
+            post.setThreadId(rs.getLong(THREAD_ID_FIELD_NAME));
             result.add(post);
             postsMap.put(lastPostId, post);
             String tablePost = rs.getString("table_post");

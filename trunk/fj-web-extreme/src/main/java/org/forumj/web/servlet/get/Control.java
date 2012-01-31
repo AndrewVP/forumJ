@@ -1203,8 +1203,8 @@ public class Control extends FJServlet {
       buffer.append("</td>");
       buffer.append("<td>");
       buffer.append("<input size='25' maxlength='20' type='text' name='country' value='" + HTMLEntities.htmlentities(user.getCountry() != null ? user.getCountry() : "") + "'>");
-      buffer.append("<input type='checkbox' name='scountry' value='1'");
-      if (user.getShowCountry()){
+      buffer.append("<input type='checkbox' name='scountry' ");
+      if (!user.getShowCountry()){
          buffer.append(" CHECKED ");
       }
       buffer.append(">");
@@ -1217,8 +1217,8 @@ public class Control extends FJServlet {
       buffer.append("</td>");
       buffer.append("<td>");
       buffer.append("<input size='25' maxlength='20' type='text' name='city' value='" + HTMLEntities.htmlentities(user.getCity() != null ? user.getCity() : "") + "'>");
-      buffer.append("<input type='checkbox' name='city' value='1'");
-      if (user.getShowCity()){
+      buffer.append("<input type='checkbox' name='scity' ");
+      if (!user.getShowCity()){
          buffer.append(" CHECKED ");
       }
       buffer.append(">");
