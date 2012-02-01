@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletRequest;
       SEND_PIVATE_MESSAGE, NEW_THREAD, UPDATE_IGNORING, DELETE_MAIL, MOVE_THREAD_TO_RECYCLE, DELETE_SUBSCRIBE,
       DELETE_SUBSCRIBES, DELETE_ONE_SUBSCRIBE_BY_EMAIL, DELETE_FOLDER_FROM_VIEW, DELETE_VIEW, SET_DEFAULT_VIEW, 
       SET_FOOTER, SET_LOCATION, ADD_VOTE, DO_REGISTRATION})
-public class Utf8Filter implements Filter{
+public class AAAAAUtf8Filter implements Filter{
 
    /**
     * {@inheritDoc}

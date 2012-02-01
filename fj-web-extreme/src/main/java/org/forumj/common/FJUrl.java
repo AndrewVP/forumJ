@@ -52,5 +52,5 @@ public interface FJUrl {
    public static final String SELECT_VIEW = "slctview.php";
    public static final String SEND_PIVATE_MESSAGE = "send.php";
    public static final String ADD_SUBSCRIBE = "addsubs.php";
-   public static final String COUNT = "count.php";
+   public static final String COUNT = "count2.php";
 }

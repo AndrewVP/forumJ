@@ -61,7 +61,6 @@ public class Tema extends FJServlet {
          ThreadService treadService = FJServiceHolder.getThreadService();
          IFJThread thread = treadService.readThread(threadId);
          // Номер поста, на который отвечаем
-//         String replyPostId = request.getParameter("reply");
          String replyPostParameter = request.getParameter("reply");
          boolean isAnswer = replyPostParameter != null && !"".equals(replyPostParameter.trim());
          LocaleString locale = (LocaleString) session.getAttribute("locale");
@@ -352,7 +351,11 @@ public class Tema extends FJServlet {
             }
             buffer.append("</td>");
             buffer.append("<td>");
-            buffer.append(fd_button(locale.getString("mess63"),"post_submit(\"view\");","B3", "1"));
+            if (isAnswer && (replyPost.getHead().getAuth().equals(user.getId()))){
+               buffer.append(fd_button(locale.getString("mess63"),"post_submit(\"view_edit\");","B1", "1"));
+            }else{
+               buffer.append(fd_button(locale.getString("mess63"),"post_submit(\"view_new\");","B3", "1"));
+            }
             buffer.append("</td>");
             buffer.append("</tr>");
             buffer.append("</table>");
@@ -406,7 +409,7 @@ public class Tema extends FJServlet {
       buffer.append("<td  class=internal>");
       if (post.isLastPost()) buffer.append("<a name='end'></a>");
       buffer.append("<a name='this.str_id'>&nbsp;</a>");
-      buffer.append("<a class=nik href='tema.php?id=" + post.getThreadId() + "&msg=" + thread.getId() + "#" + post.getId() + "'  rel='nofollow'><b>&nbsp;&nbsp;" + fd_head(HTMLEntities.htmlentities(removeSlashes(post.getHead().getTitle()))) + "</b></a>");
+      buffer.append("<a class=nik href='tema.php?id=" + post.getThreadId() + "&msg=" + post.getId() + "#" + post.getId() + "'  rel='nofollow'><b>&nbsp;&nbsp;" + fd_head(HTMLEntities.htmlentities(removeSlashes(post.getHead().getTitle()))) + "</b></a>");
       buffer.append("</td></tr>");
       buffer.append("<tr><td>");
       boolean ignored = false;
