@@ -71,8 +71,8 @@ public class Write extends FJServlet {
                String domen = gethostbyaddr(ip);
                /*Просмотр или запись?*/
                if (command != null ){
-                  if ("view".equalsIgnoreCase(command)){
-                     buffer.append(view(locale, request, user, head, ip, domen, threadId, rgTime, body));
+                  if ("view_new".equalsIgnoreCase(command) || "view_edit".equalsIgnoreCase(command)){
+                     buffer.append(view(locale, request, user, head, ip, domen, threadId, rgTime, body, command));
                   }else{
                      PostService postService = FJServiceHolder.getPostService();
                      /* Записываем или редактируем???*/
@@ -120,7 +120,7 @@ public class Write extends FJServlet {
       writer.write(out);
    }
 
-   private StringBuffer view(LocaleString locale, HttpServletRequest request, IUser user, String head, String str_ip, String str_dom, String idt, String lptime, String body) throws IOException, InvalidKeyException{
+   private StringBuffer view(LocaleString locale, HttpServletRequest request, IUser user, String head, String str_ip, String str_dom, String idt, String lptime, String body, String command) throws IOException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
       buffer.append("<html>");
@@ -259,10 +259,14 @@ public class Write extends FJServlet {
       buffer.append("<table>");
       buffer.append("<tr>");
       buffer.append("<td>");
-      buffer.append(fd_button(locale.getString("mess13"),"post_submit(\"write\");","B1", "1"));
+      if ("view_new".equalsIgnoreCase(command)){
+         buffer.append(fd_button(locale.getString("mess13"),"post_submit(\"write_new\");","B1", "1"));
+      }else if ("view_edit".equalsIgnoreCase(command)){
+         buffer.append(fd_button(locale.getString("mess13"),"post_submit(\"write_edit\");","B1", "1"));
+      }
       buffer.append("</td>");
       buffer.append("<td>");
-      buffer.append(fd_button(locale.getString("mess63"),"post_submit(\"view\");","B3", "1"));
+      buffer.append(fd_button(locale.getString("mess63"),"post_submit(\"" + command + "\");","B3", "1"));
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table>");

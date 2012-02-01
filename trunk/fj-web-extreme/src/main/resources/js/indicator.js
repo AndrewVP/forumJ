@@ -13,7 +13,7 @@ try {
    }
 }
 function getIndicatorInfo() {
-	url = "count.php";
+	url = "count2.php";
 	params = "idb=" + m_xb + "&idt=" + m_xt + "&ids=" + idss;
 	request.open("POST", url, true);
 

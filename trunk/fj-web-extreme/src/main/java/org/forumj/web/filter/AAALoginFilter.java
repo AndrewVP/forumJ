@@ -49,8 +49,8 @@ public class AAALoginFilter implements Filter {
       try {
          IUser user = (IUser) request.getSession(true).getAttribute("user");
          UserService userService = FJServiceHolder.getUserService();
-         QuotedPrintableCodec codec = new QuotedPrintableCodec();
          if (user == null || !user.isLogined()){
+            QuotedPrintableCodec codec = new QuotedPrintableCodec();
             Cookie[] cookies = request.getCookies();
             Cookie iduCookie = getCookie(cookies, "idu"); 
             Cookie pass2Cookie = getCookie(cookies, "pass2"); 
@@ -58,7 +58,7 @@ public class AAALoginFilter implements Filter {
                String pass2 = pass2Cookie.getValue();
                if (pass2 != null){
                   pass2 = codec.decode(pass2);
-                  user = userService.read(Long.valueOf(iduCookie.getValue()), pass2Cookie.getValue(), false);
+                  user = userService.read(Long.valueOf(iduCookie.getValue()), pass2, false);
                   if (user == null){
                      ok = false;
                   }else{
