@@ -29,6 +29,33 @@ import org.forumj.web.servlet.FJServlet;
 @WebServlet(urlPatterns = {"/" + FJUrl.DO_REGISTRATION}, name = FJServletName.DO_REGISTRATION)
 public class InsNew extends FJServlet {
 
+   private String[][] ruseng = new String[][]{
+         {"а","a"},
+         {"е","e"},
+         {"и","u"},
+         {"о","o"},
+         {"у","y"},
+         {"ц","u"},
+         {"к","k"},
+         {"г","r"},
+         {"х","x"},
+         {"п","n"},
+         {"р","p"},
+         {"с","c"},
+         {"ь","b"},
+   }; 
+   
+   private String[][] translit = new String[][]{
+         {"й","y"},
+         {"ц","c"},
+         {"у","u"},
+         {"к","k"},
+         {"е","e"},
+         {"н","n"},
+         {"г","g"},
+         {"г","g"},
+   }; 
+   
    private static Random random = new Random(new Date().getTime());
 
    static int generateRandom() {
