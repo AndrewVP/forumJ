@@ -39,9 +39,12 @@ import org.forumj.web.servlet.tool.FJServletTools;
             action.setIp(request.getRemoteAddr());
             String ref = request.getHeader("referer");
             if (ref != null){
-               action.setRefer(ref.substring(0, ref.length() > 100 ? 99 : ref.length()));
+               action.setRefer(ref.substring(0, ref.length() > 200 ? 199 : ref.length()));
             }
-            action.setServletName(request.getRequestURI());
+            String url = request.getRequestURI();
+            if (url != null){
+               action.setServletName(url.substring(0, url.length() > 200 ? 199 : url.length()));
+            }
 //action.setSubnet(subnet);
             action.setUas(request.getHeader("User-Agent"));
             if (user != null){
