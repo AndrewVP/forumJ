@@ -55,13 +55,16 @@ public class Tema extends FJServlet {
          Integer pageNumber = request.getParameter("page") == null ? 1 : Integer.valueOf(request.getParameter("page"));
          // id Темы
          Long threadId = request.getParameter("id") == null ? 1 : Long.valueOf(request.getParameter("id"));
+         // Номер поста, на который отвечаем
+         String replyPostParameter = request.getParameter("reply");
+         String end = request.getParameter("end");
+         // Зашли с поиска?
+         String msg = request.getParameter("msg");
          VoiceService voiceService = FJServiceHolder.getVoiceService();
          PostService postService = FJServiceHolder.getPostService();
          SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
          ThreadService treadService = FJServiceHolder.getThreadService();
          IFJThread thread = treadService.readThread(threadId);
-         // Номер поста, на который отвечаем
-         String replyPostParameter = request.getParameter("reply");
          boolean isAnswer = replyPostParameter != null && !"".equals(replyPostParameter.trim());
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          IUser user = (IUser) session.getAttribute("user");
@@ -72,7 +75,6 @@ public class Tema extends FJServlet {
          Integer couP = (int) (Math.floor((double)count/user.getPt())+2);
          // Если цитирование или последний пост, то нам на последнюю
          boolean lastPost = false;
-         String end = request.getParameter("end");
          if (isAnswer || end != null){
             pageNumber = couP-1;
             lastPost = true;
@@ -84,8 +86,6 @@ public class Tema extends FJServlet {
          session.setAttribute("page", pageNumber);
          session.setAttribute("id", threadId);
          session.setAttribute("where", request.getContextPath() + "?id=" + threadId + "&page=" + pageNumber);
-         // Зашли с поиска?
-         String msg = request.getParameter("msg");
          int countPosts = 0;
          if (msg != null && !"".equals(msg.trim())){
             try {
@@ -408,7 +408,7 @@ public class Tema extends FJServlet {
       buffer.append("<tr class=heads>");
       buffer.append("<td  class=internal>");
       if (post.isLastPost()) buffer.append("<a name='end'></a>");
-      buffer.append("<a name='this.str_id'>&nbsp;</a>");
+      buffer.append("<a name='" + post.getId() + "'>&nbsp;</a>");
       buffer.append("<a class=nik href='tema.php?id=" + post.getThreadId() + "&msg=" + post.getId() + "#" + post.getId() + "'  rel='nofollow'><b>&nbsp;&nbsp;" + fd_head(HTMLEntities.htmlentities(removeSlashes(post.getHead().getTitle()))) + "</b></a>");
       buffer.append("</td></tr>");
       buffer.append("<tr><td>");

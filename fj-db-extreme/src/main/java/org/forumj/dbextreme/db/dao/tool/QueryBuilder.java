@@ -32,6 +32,10 @@ public class QueryBuilder {
 
    private static String readThreadQuery = null;
    
+   private static String checkThreadExistQuery = null;
+   
+   private static String checkPostExistQuery = null;
+   
    private static String firstPostIdInThreadQuery = null;
 
    private static String createPostQuery = null;
@@ -126,6 +130,8 @@ public class QueryBuilder {
    
    private static String createUserQuery = null;
    
+   private static String checkUserNicksQuery = null;
+   
    private static String deleteFolderTranzitQuery = null;
    
    private static String deleteFolderFromViewQuery = null;
@@ -219,6 +225,13 @@ public class QueryBuilder {
          createUserQuery = loadQuery("sql/create_user.sql");
       }
       return createUserQuery;
+   }
+   
+   public static String getCheckUserNicksQuery(String nicks) throws IOException{
+      if (checkUserNicksQuery == null){
+         checkUserNicksQuery = loadQuery("sql/check_user_nicks.sql");
+      }
+      return checkUserNicksQuery.replace("@@NICKS@@", nicks);
    }
    
    public static String getCreateThreadQuery() throws IOException{
@@ -352,6 +365,20 @@ public class QueryBuilder {
          readThreadQuery = loadQuery("sql/read_thread.sql");
       }
       return readThreadQuery;
+   }
+   
+   public static String getCheckThreadExistQuery() throws IOException{
+      if (checkThreadExistQuery == null){
+         checkThreadExistQuery = loadQuery("sql/check_thread_exist.sql");
+      }
+      return checkThreadExistQuery;
+   }
+   
+   public static String getCheckPostExistQuery() throws IOException{
+      if (checkPostExistQuery == null){
+         checkPostExistQuery = loadQuery("sql/check_post_exist.sql");
+      }
+      return checkPostExistQuery;
    }
    
    public static String getFirstPostIdInThreadQuery() throws IOException{

@@ -9,7 +9,7 @@
  */
 package org.forumj.web.servlet.get;
 
-import static org.forumj.tool.Diletant.errorOut;
+import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
 
@@ -21,7 +21,6 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
-import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
@@ -94,8 +93,10 @@ public class Registration extends FJServlet {
                buffer.append("Зарегистрируйтесь, пожалуйста");
                break;
             case 5:
-               buffer.append("<b>Извините, но " + session.getAttribute("nick") + " уже зарегистрирован...</b>");
-               session.setAttribute("nick", null);
+               if (session.getAttribute("nick") != null){
+                  buffer.append("<b>Извините, но " + session.getAttribute("nick") + " уже зарегистрирован...</b>");
+                  session.setAttribute("nick", null);
+               }
                break;
             case 6:
                buffer.append("<b>Вы попали на могилу безНикого юзера, убитого при активном участии Нудного и Сель Ави :)</b>");
@@ -168,19 +169,6 @@ public class Registration extends FJServlet {
             buffer.append("</td>");
             buffer.append("</tr>");
             // Идентификатор
-            buffer.append("<tr>");
-            buffer.append("<td>");
-            buffer.append("Идентификатор*");
-            buffer.append("</td>");
-            buffer.append("<td>");
-            buffer.append("<input type=password name='R4' size='20'>");
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            buffer.append("<tr>");
-            buffer.append("<td colspan='4'>");
-            buffer.append("Идентификатор вводится один раз и больше нигде не отображается и не вводится, используется для борьбы с 'имитацией' чужих кук");
-            buffer.append("</td>");
-            buffer.append("</tr>");
             // Кнопки
             buffer.append("<tr>");
             buffer.append("<td>");

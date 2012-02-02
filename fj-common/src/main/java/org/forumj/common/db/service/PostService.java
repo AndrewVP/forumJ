@@ -73,6 +73,8 @@ public interface PostService {
     * @throws SQLException
     * @throws IOException
     */
-   public Integer getPostsCountInThread(Long threadId, Long idMax)
-         throws ConfigurationException, SQLException, IOException;
+   public Integer getPostsCountInThread(Long threadId, Long idMax) throws ConfigurationException, SQLException, IOException;
+
+   public boolean checkPostExist(Long id) throws ConfigurationException, SQLException, IOException;
+
 }

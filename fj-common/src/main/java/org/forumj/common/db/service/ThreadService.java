@@ -28,6 +28,9 @@ import org.forumj.common.exception.DBException;
  */
 public interface ThreadService {
    
+   public boolean checkThreadExist(Long id) throws IOException, SQLException, ConfigurationException;
+
+   
    public IFJThread getThreadObject();
 
    public IFJQuestionThread getQuestionThreadObject();
