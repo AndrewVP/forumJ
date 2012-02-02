@@ -96,6 +96,25 @@ public class FJThreadDao extends FJDao {
       }
    }
    
+   public boolean checkThreadExist(Long id) throws IOException, SQLException, ConfigurationException{
+      String readThreadQuery = getCheckThreadExistQuery(); 
+      PreparedStatement st = null;
+      Connection conn = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(readThreadQuery);
+         st.setLong(1, id);
+         ResultSet rs = st.executeQuery();
+         if (rs.next()){
+            return true;
+         }else{
+            return false;
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+   }
+   
    public FJThread read(Long id) throws ConfigurationException, SQLException, IOException{
       FJThread thread = null;
       String readThreadQuery = getReadThreadQuery(); 
@@ -112,7 +131,7 @@ public class FJThreadDao extends FJDao {
             thread.setAuthId(rs.getLong(AUTH_FIELD_NAME));
             thread.setHead(rs.getString(HEAD_FIELD_NAME));
             thread.setRegDate(rs.getDate(REGISTRATION_DATE_FIELD_NAME));
-            thread.setLastPostTime(rs.getDate(LAST_POST_DATE_FIELD_NAME));
+            thread.setLastPostTime(rs.getTimestamp(LAST_POST_DATE_FIELD_NAME));
             thread.setLastPostAuthId(rs.getLong(LAST_POST_USER_ID_FIELD_NAME));
             thread.setLastPostNick(rs.getString(LAST_POST_USER_NICK_FIELD_NAME));
             thread.setLastPostId(rs.getLong(LAST_POST_ID_FIELD_NAME));

@@ -4,6 +4,7 @@ import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.*;
 
 import java.io.IOException;
 import java.sql.*;
+import java.util.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.IUser;
@@ -226,7 +227,7 @@ public class FJUserDao extends FJDao {
          st.setString(16, user.getIcq());
          st.setInt(17, user.getShowIcq() ? 1 : 0);
          st.setInt(18, user.getShowBithday() ? 1 : 0);
-         st.setInt(19, user.getLanguge());
+         st.setInt(19, user.getLanguge() == null ? 0 : user.getLanguge());
          st.setInt(20, user.getHideIp() ? 1 : 0);
          st.setInt(21, user.getView());
          st.setInt(22, user.getPp());
@@ -248,5 +249,30 @@ public class FJUserDao extends FJDao {
       }finally{
          readFinally(null, st);
       }
+   }
+
+   public List<String> check(List<List<String>> lists) throws ConfigurationException, SQLException, IOException {
+      List<String> result = new ArrayList<String>();
+      Connection conn = null;
+      Statement st = null;
+      try {
+         for (List<String> nicks : lists) {
+            String parameter = "";
+            for (String nick : nicks) {
+               parameter += "'" + nick.toUpperCase() + "',";
+            }
+            parameter = parameter.substring(0, parameter.length()-1);
+            String query = getCheckUserNicksQuery(parameter);
+            conn = getConnection();
+            st = conn.createStatement() ;
+            ResultSet rs = st.executeQuery(query);
+            while (rs.next()){
+               result.add(rs.getString("nick"));
+            }
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
    }
 }

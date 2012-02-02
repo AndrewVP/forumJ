@@ -66,4 +66,12 @@ public class ThreadServiceImpl extends FJService implements ThreadService {
       return new FJQuestionThread();
    }
 
+   /* (non-Javadoc)
+    * @see org.forumj.common.db.service.ThreadService#checkThreadExist(java.lang.Long)
+    */
+   @Override
+   public boolean checkThreadExist(Long id) throws IOException, SQLException, ConfigurationException {
+      return getThreadDao().checkThreadExist(id);
+   }
+
 }

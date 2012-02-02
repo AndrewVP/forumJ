@@ -93,4 +93,12 @@ public class PostServiceImpl extends FJService implements PostService {
    public IFJPostHead getPostHeadObject() {
       return new FJPostHead();
    }
+
+   /* (non-Javadoc)
+    * @see org.forumj.common.db.service.PostService#checkPostExist(java.lang.Long)
+    */
+   @Override
+   public boolean checkPostExist(Long id) throws ConfigurationException, SQLException, IOException {
+      return getPostDao().checkPostExist(id);
+   }
 }

@@ -39,15 +39,15 @@ public class User implements IUser {
 
    private int view = 0;
 
-   private Boolean wantSeeAvatars = null;
+   private Boolean wantSeeAvatars = true;
 
    private int ban = 0;
 
-   private String avatar = null;
+   private String avatar = " ";
 
-   private Boolean avatarApproved = null;
+   private Boolean avatarApproved = true;
 
-   private Boolean showAvatar = null;
+   private Boolean showAvatar = true;
 
    private String name = null;
 
@@ -59,37 +59,37 @@ public class User implements IUser {
 
    private Timestamp reg = null;
 
-   private Boolean showMail = null;
+   private Boolean showMail = false;
 
-   private Boolean showName = null;
+   private Boolean showName = false;
 
-   private String city = null;
+   private String city = " ";
 
-   private Boolean showCity = null;
+   private Boolean showCity = false;
 
-   private String country = null;
+   private String country = " ";
 
-   private Boolean showCountry = null;
+   private Boolean showCountry = false;
 
-   private Boolean showSex = null;
+   private Boolean showSex = false;
 
-   private Boolean showBithday = null;
+   private Boolean showBithday = false;
 
-   private String icq = null;
+   private String icq = " ";
 
-   private Boolean showIcq = null;
+   private Boolean showIcq = false;
 
-   private Boolean hideIp = null;
+   private Boolean hideIp = false;
 
-   private Integer languge = null;
+   private Integer languge = 0;
 
-   private Integer timeZone = null; 
+   private Integer timeZone = 2; 
 
-   private String footer = null;
+   private String footer = " ";
 
-   private Integer activateCode = null;
+   private Integer activateCode = 0;
 
-   private Boolean isActive = null;
+   private Boolean isActive = true;
    
    private String email = null;
 

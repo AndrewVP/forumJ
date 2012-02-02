@@ -9,6 +9,9 @@
  */
 package org.forumj.web.servlet.post;
 
+import static org.forumj.tool.Diletant.*;
+import static org.forumj.web.servlet.tool.FJServletTools.*;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -43,17 +46,29 @@ public class InsNew extends FJServlet {
          {"р","p"},
          {"с","c"},
          {"ь","b"},
-   }; 
-   
-   private String[][] translit = new String[][]{
          {"й","y"},
+         {"і","i"},
+//translit         
          {"ц","c"},
          {"у","u"},
          {"к","k"},
          {"е","e"},
          {"н","n"},
          {"г","g"},
-         {"г","g"},
+         {"з","z"},
+         {"з","z"},
+         {"х","h"},
+         {"в","v"},
+         {"п","p"},
+         {"р","r"},
+         {"л","l"},
+         {"д","d"},
+         {"с","s"},
+         {"м","m"},
+         {"и","i"},
+         {"т","t"},
+         {"б","b"},
+         {"б","b"},
    }; 
    
    private static Random random = new Random(new Date().getTime());
@@ -82,18 +97,33 @@ public class InsNew extends FJServlet {
          }else if (!pass1Parameter.equals(pass2Parameter)){
             response.sendRedirect("reg.php?id=7");
          }else{
-            String nick = prepareNick(nickParameter);
+            List<List<String>> nicks = prepareNick(nickParameter);
             UserService userService = FJServiceHolder.getUserService();
-            IUser user = userService.read(nick);
-            if (user != null){
-               session.setAttribute("nick", nick);
+            List<String> users = userService.check(nicks); 
+            if (users.size() > 0){
+               System.out.println();
+               System.out.println("-------------------------------------------------------");
+               System.out.println(new Date().toString() + ":Registration fail, nick: " + nickParameter);
+               for (String nick : users) {
+                  System.out.println(nick);
+               }
+               System.out.println("-------------------------------------------------------");
+               System.out.println();
+               session.setAttribute("nick", nickParameter);
                response.sendRedirect("reg.php?id=5");
             }else{
-               user = userService.readUserByMail(email1Parameter);
+               IUser user = userService.readUserByMail(email1Parameter);
                if (user != null){
+                  System.out.println();
+                  System.out.println("-------------------------------------------------------");
+                  System.out.println(new Date().toString() + ":Registration fail, mail: " + email1Parameter);
+                  System.out.println("-------------------------------------------------------");
+                  System.out.println();
                   response.sendRedirect("reg.php?id=12");
                }else{
                   user = userService.getUserObject();
+                  List<String> list = nicks.get(0);
+                  String nick = list.get(list.size() - 1);      
                   user.setNick(nick);
                   user.setEmail(email1Parameter);
                   user.setPass(pass1Parameter);
@@ -103,18 +133,29 @@ public class InsNew extends FJServlet {
                   user.setView(FJConfiguration.getConfig().getInt("fj.default.viewId"));
                   userService.create(user);
                   session.setAttribute("user", user);
+                  // ставим куку
+                  setcookie(response, "idu", user.getId().toString(), 1209600, request.getContextPath(), request.getServerName());
+                  setcookie(response, "pass2", user.getPass2(), 1209600, request.getContextPath(), request.getServerName());
                   response.sendRedirect("index.php");
                }
             }
          }
       } catch (Throwable e) {
          e.printStackTrace();
+         StringBuffer buffer = new StringBuffer();
+         buffer.append(errorOut(e));
+         response.setContentType("text/html; charset=UTF-8");
+         response.getWriter().write(buffer.toString());
       }
    }
    
-   private String prepareNick(String nick){
+   private List<List<String>> prepareNick(String nick){
+      List<List<String>> result = new ArrayList<List<String>>();
       nick = removeExtraSpaces(nick);
-      return nick;
+      checkTrolls(nick, result, 0, ruseng);
+       List<String> list = result.get(0);
+      list.add(nick);
+      return result;
    }
    
    private String removeExtraSpaces(String string){
@@ -129,5 +170,32 @@ public class InsNew extends FJServlet {
       return result.trim();
    }
 
+   private void checkTrolls(String nick, List<List<String>> lists, int alphaPosition, String[][] alphas){
+      List<String> result;
+      if (lists.size() == 0){
+         result = new ArrayList<String>(100);
+         lists.add(result);
+      }else{
+         result = lists.get(lists.size() - 1);
+         if (result.size() > 90){
+            result = new ArrayList<String>(100);
+            lists.add(result);
+         }
+      }
+      for (; alphaPosition < nick.length(); alphaPosition++){
+         for (String[] pare : alphas) {
+            if (nick.substring(alphaPosition, alphaPosition + 1).equalsIgnoreCase(pare[0])){
+               String word = nick.substring(0, alphaPosition) + pare[1] + nick.substring(alphaPosition + 1);
+               result.add(word);
+               checkTrolls(word, lists, alphaPosition + 1, alphas);
+            }
+            if (nick.substring(alphaPosition, alphaPosition + 1).equalsIgnoreCase(pare[1])){
+               String word = nick.substring(0, alphaPosition) + pare[0] + nick.substring(alphaPosition + 1);
+               result.add(word);
+               checkTrolls(word, lists, alphaPosition + 1, alphas);
+            }
+         } 
+      }
+   }
 
 }

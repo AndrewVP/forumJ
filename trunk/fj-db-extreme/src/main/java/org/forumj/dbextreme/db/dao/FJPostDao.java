@@ -427,6 +427,26 @@ public class FJPostDao extends FJDao {
       return result;
    }
    
+   public boolean checkPostExist(Long id) throws ConfigurationException, SQLException, IOException{
+      String checkPostQuery = getCheckPostExistQuery(); 
+      PreparedStatement st = null;
+      Connection conn = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(checkPostQuery);
+         st.setLong(1, id);
+         ResultSet rs = st.executeQuery();
+         if (rs.next()){
+            return true;
+         }else{
+            return false;
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+   }
+   
+   
    /**
     * Возвращает id последнего поста в форуме
     *

@@ -63,16 +63,17 @@ public class FJSubscribeDao extends FJDao {
    }
    
    public void create(IFJSubscribe subscribe) throws ConfigurationException, SQLException, IOException{
-      String query = getIsSubscribeKeyPresentQuery();
+      String query = getCreateSubscribeQuery();
       Connection conn = null;
       PreparedStatement st = null;
       try {
          conn = getConnection();
          st = conn.prepareStatement(query);
-         st.setLong(1, subscribe.getTitleId());
-         st.setDate(2, new java.sql.Date(subscribe.getStart().getTime()));
-         st.setLong(3, subscribe.getKey());
-         st.setInt(4, subscribe.getType());
+         st.setLong(1, subscribe.getUser().getId());
+         st.setLong(2, subscribe.getTitleId());
+         st.setDate(3, new java.sql.Date(subscribe.getStart().getTime()));
+         st.setLong(4, subscribe.getKey());
+         st.setInt(5, subscribe.getType());
          st.executeUpdate();
       }finally{
          readFinally(conn, st);
@@ -150,14 +151,14 @@ public class FJSubscribeDao extends FJDao {
     * @throws ConfigurationException 
     * @throws IOException 
     */
-   public Boolean isUserSubscribed(Long idUser, Long threadId) throws ConfigurationException, SQLException, IOException{
+   public Boolean isUserSubscribed(Long threadId, Long userId) throws ConfigurationException, SQLException, IOException{
       String query = getIsUserSubscribedQuery();
       Connection conn = null;
       PreparedStatement st = null;
       try {
          conn = getConnection();
          st = conn.prepareStatement(query);
-         st.setLong(1, idUser);
+         st.setLong(1, userId);
          st.setLong(2, threadId);
          ResultSet rs = st.executeQuery();
          if (rs.next()){

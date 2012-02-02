@@ -17,6 +17,7 @@ package org.forumj.common.db.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.IUser;
@@ -38,6 +39,8 @@ public interface UserService {
    public void create(IUser user) throws SQLException, ConfigurationException, IOException;
 
    public IUser read(String nick) throws ConfigurationException, SQLException, IOException;
+
+   public List<String> check(List<List<String>> nick) throws ConfigurationException, SQLException, IOException;
 
    public IUser read(String nick, String password, Boolean firstPassword) throws ConfigurationException, SQLException, IOException;
 

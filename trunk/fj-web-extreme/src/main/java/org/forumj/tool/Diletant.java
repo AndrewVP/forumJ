@@ -281,14 +281,20 @@ public class Diletant {
    }
 
    public static String fd_href(String href_head){
-      String postbody=href_head.replace("<br", " <br") + " ";
-      int pos=0;
-      while ((" " + postbody).indexOf("http://", pos) > 0) {
-         int npos=(" " + postbody).indexOf("http://", pos)-1;
-         int epos = postbody.indexOf(" ", npos);
-         int slpos = (" " + postbody).indexOf("/", npos+8);
-         if (npos < 5 || !postbody.substring(npos-5, npos).equals("[img]")) postbody=postbody.substring(0, npos) + "<a href='" + postbody.substring(npos, epos) + "'><span class='nick'>" + postbody.substring(npos + 7, slpos - 1) + "</span></a>" + postbody.substring(epos);
-         pos=epos;
+      String postbody;
+      try {
+         postbody = href_head.replace("<br", " <br") + " ";
+         int pos=0;
+         while ((" " + postbody).indexOf("http://", pos) > 0) {
+            int npos=(" " + postbody).indexOf("http://", pos)-1;
+            int epos = postbody.indexOf(" ", npos);
+            int slpos = (" " + postbody).indexOf("/", npos+8);
+            if (npos < 5 || !postbody.substring(npos-5, npos).equals("[img]")) postbody=postbody.substring(0, npos) + "<a href='" + postbody.substring(npos, epos) + "'><span class='nick'>" + postbody.substring(npos + 7, slpos - 1) + "</span></a>" + postbody.substring(epos);
+            pos=epos;
+         }
+      } catch (Exception e) {
+         e.printStackTrace();
+         postbody = href_head;
       }
       return postbody;
    }      

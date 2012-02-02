@@ -17,6 +17,7 @@ package org.forumj.dbextreme.db.service;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.IUser;
@@ -32,7 +33,7 @@ public class UserServiceImpl extends FJService implements UserService {
    public IUser readUser(Long userId) throws ConfigurationException, SQLException, IOException{
       return getUserDao().read(userId);
    }
-   
+
    public void update(IUser user) throws IOException, ConfigurationException, SQLException {
       getUserDao().update(user);
    }
@@ -58,5 +59,10 @@ public class UserServiceImpl extends FJService implements UserService {
 
    public IUser getUserObject() {
       return new User();
+   }
+
+   @Override
+   public List<String> check(List<List<String>> nicks) throws ConfigurationException, SQLException, IOException {
+      return getUserDao().check(nicks);
    }
 }
