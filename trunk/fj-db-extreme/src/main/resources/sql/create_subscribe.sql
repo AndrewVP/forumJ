@@ -1,1 +1,1 @@
-INSERT INTO fd_subscribe (title, d_start, kod, type) VALUES (?,?,?,?)
+INSERT INTO fd_subscribe (user, title, d_start, kod, type) VALUES (?,?,?,?,?)
