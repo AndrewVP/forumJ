@@ -39,7 +39,8 @@ public class FJDao {
          synchronized (FJDao.class) {
             Configuration config = FJConfiguration.getConfig();
             if (dataSource == null){
-               ObjectPool connectionPool = new GenericObjectPool(null);
+               Integer maxActive = config.getInteger("dbcp.maxActive", 10);
+               ObjectPool connectionPool = new GenericObjectPool(null, maxActive);
                String connectURI = config.getString("jdbc.url");
                String userName = config.getString("jdbc.user.name");
                String userPassword = config.getString("jdbc.user.password");

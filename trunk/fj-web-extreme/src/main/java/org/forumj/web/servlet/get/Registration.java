@@ -172,7 +172,7 @@ public class Registration extends FJServlet {
             // Кнопки
             buffer.append("<tr>");
             buffer.append("<td>");
-            buffer.append("<input type='submit' value='Отправить' name='B1' disabled>");
+            buffer.append("<input type='submit' value='Отправить' name='B1'>");
             buffer.append("<input type='reset' value='Отменить' name='B2'>");
             buffer.append("</td>");
             buffer.append("</tr>");
