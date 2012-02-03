@@ -3,6 +3,7 @@ jdbc.user.name=diletant
 jdbc.user.password=qqq
 jdbc.driver=com.mysql.jdbc.Driver
 dbcp.validationQuery=SELECT 1
+dbcp.maxActive=100
 lang.default=ua
 okAvatar.password=
 mail.smtp.host=

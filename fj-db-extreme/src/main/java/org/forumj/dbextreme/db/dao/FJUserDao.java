@@ -256,6 +256,8 @@ public class FJUserDao extends FJDao {
       Connection conn = null;
       Statement st = null;
       try {
+         conn = getConnection();
+         st = conn.createStatement() ;
          for (List<String> nicks : lists) {
             String parameter = "";
             for (String nick : nicks) {
@@ -263,8 +265,6 @@ public class FJUserDao extends FJDao {
             }
             parameter = parameter.substring(0, parameter.length()-1);
             String query = getCheckUserNicksQuery(parameter);
-            conn = getConnection();
-            st = conn.createStatement() ;
             ResultSet rs = st.executeQuery(query);
             while (rs.next()){
                result.add(rs.getString("nick"));

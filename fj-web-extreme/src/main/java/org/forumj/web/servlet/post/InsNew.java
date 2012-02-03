@@ -52,7 +52,6 @@ public class InsNew extends FJServlet {
          {"ц","c"},
          {"у","u"},
          {"к","k"},
-         {"е","e"},
          {"н","n"},
          {"г","g"},
          {"з","z"},
@@ -122,8 +121,7 @@ public class InsNew extends FJServlet {
                   response.sendRedirect("reg.php?id=12");
                }else{
                   user = userService.getUserObject();
-                  List<String> list = nicks.get(0);
-                  String nick = list.get(list.size() - 1);      
+                  String nick = nicks.get(0).get(0);      
                   user.setNick(nick);
                   user.setEmail(email1Parameter);
                   user.setPass(pass1Parameter);
@@ -150,12 +148,11 @@ public class InsNew extends FJServlet {
    }
    
    private List<List<String>> prepareNick(String nick){
-      List<List<String>> result = new ArrayList<List<String>>();
       nick = removeExtraSpaces(nick);
-      checkTrolls(nick, result, 0, ruseng);
-       List<String> list = result.get(0);
-      list.add(nick);
-      return result;
+      NicksListHolder nickHolder = new NicksListHolder(nick);
+      checkTrolls(nick, nickHolder, 0, ruseng);
+      nickHolder.rotateList();
+      return nickHolder.getNickLists();
    }
    
    private String removeExtraSpaces(String string){
@@ -170,32 +167,50 @@ public class InsNew extends FJServlet {
       return result.trim();
    }
 
-   private void checkTrolls(String nick, List<List<String>> lists, int alphaPosition, String[][] alphas){
-      List<String> result;
-      if (lists.size() == 0){
-         result = new ArrayList<String>(100);
-         lists.add(result);
-      }else{
-         result = lists.get(lists.size() - 1);
-         if (result.size() > 90){
-            result = new ArrayList<String>(100);
-            lists.add(result);
-         }
-      }
+   private void checkTrolls(String nick, NicksListHolder lists, int alphaPosition, String[][] alphas){
       for (; alphaPosition < nick.length(); alphaPosition++){
          for (String[] pare : alphas) {
             if (nick.substring(alphaPosition, alphaPosition + 1).equalsIgnoreCase(pare[0])){
                String word = nick.substring(0, alphaPosition) + pare[1] + nick.substring(alphaPosition + 1);
-               result.add(word);
+               lists.addNick(word);
                checkTrolls(word, lists, alphaPosition + 1, alphas);
             }
             if (nick.substring(alphaPosition, alphaPosition + 1).equalsIgnoreCase(pare[1])){
                String word = nick.substring(0, alphaPosition) + pare[0] + nick.substring(alphaPosition + 1);
-               result.add(word);
+               lists.addNick(word);
                checkTrolls(word, lists, alphaPosition + 1, alphas);
             }
          } 
       }
+   }
+   
+   private class NicksListHolder{
+      private List<String> nickList;
+
+      private List<List<String>> nickLists;
+      
+      public NicksListHolder(String nick){
+         nickList = new ArrayList<String>(100);
+         nickList.add(nick);
+         nickLists = new ArrayList<List<String>>();
+      }
+      
+      public void rotateList(){
+         nickLists.add(nickList); 
+         nickList = new ArrayList<String>(100);
+      }
+      
+      public List<List<String>> getNickLists() {
+         return nickLists;
+      }
+      
+      public void addNick(String nick){
+         if (nickList.size() > 99){
+            rotateList();
+         }
+         nickList.add(nick);
+      }
+
    }
 
 }
