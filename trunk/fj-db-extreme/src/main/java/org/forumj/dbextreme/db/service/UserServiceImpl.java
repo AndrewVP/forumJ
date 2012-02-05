@@ -61,8 +61,7 @@ public class UserServiceImpl extends FJService implements UserService {
       return new User();
    }
 
-   @Override
-   public List<String> check(List<List<String>> nicks) throws ConfigurationException, SQLException, IOException {
+   public List<String> check(List<String> nicks) throws ConfigurationException, SQLException, IOException {
       return getUserDao().check(nicks);
    }
 }

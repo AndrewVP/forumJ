@@ -11,7 +11,7 @@ package org.forumj.web.servlet.get;
 
 import static org.forumj.tool.Diletant.errorOut;
 import static org.forumj.tool.FJServletTools.*;
-import static org.forumj.web.servlet.tool.FJServletTools.*;
+import static org.forumj.web.servlet.tool.FJServletTools.loadCSS;
 
 import java.io.*;
 
@@ -21,7 +21,6 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
-import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
@@ -114,15 +113,6 @@ public class Auth extends FJServlet {
          buffer.append("<td><input type=password name='T2' size='20'>");
          buffer.append("</td>");
          buffer.append("</tr>");
-         // Идентификатор
-         if (gid.equals("7") || gid.equals("8")) {
-            buffer.append("<tr>");
-            buffer.append("<td>Идентификатор</td>");
-            buffer.append("<td><input type=password name='T3' size='20'>");
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            session.setAttribute("xxxx", "1");
-         }
          // Кнопки
          buffer.append("<tr>");
          buffer.append("<td>");
