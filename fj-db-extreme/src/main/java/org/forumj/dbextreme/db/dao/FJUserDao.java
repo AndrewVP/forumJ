@@ -58,11 +58,11 @@ public class FJUserDao extends FJDao {
       }
       return result;
    }
-   
+
    public IUser read(Long userId) throws ConfigurationException, SQLException, IOException{
       return read(userId, null);
    }
-   
+
    public IUser read(Long userId, Connection conn) throws ConfigurationException, SQLException, IOException{
       IUser result = null;
       String query = getReadUserByIdQuery();
@@ -79,7 +79,7 @@ public class FJUserDao extends FJDao {
       }
       return result;
    }
-   
+
    public IUser read(String nick) throws ConfigurationException, SQLException, IOException{
       IUser result = null;
       String query = getReadUserByNickQuery();
@@ -96,7 +96,7 @@ public class FJUserDao extends FJDao {
       }
       return result;
    }
-   
+
    public IUser readByMail(String mail) throws ConfigurationException, SQLException, IOException{
       IUser result = null;
       String query = getReadUserByMailQuery();
@@ -113,7 +113,7 @@ public class FJUserDao extends FJDao {
       }
       return result;
    }
-   
+
    private User loadUser(ResultSet rs) throws ConfigurationException, SQLException{
       User result = null;
       if (rs.next()){
@@ -201,7 +201,7 @@ public class FJUserDao extends FJDao {
          readFinally(null, st);
       }
    }
-   
+
    public void create(IUser user) throws SQLException, ConfigurationException, IOException{
       String query = getCreateUserQuery();
       Connection conn = null;
@@ -251,24 +251,22 @@ public class FJUserDao extends FJDao {
       }
    }
 
-   public List<String> check(List<List<String>> lists) throws ConfigurationException, SQLException, IOException {
+   public List<String> check(List<String> nicks) throws ConfigurationException, SQLException, IOException {
       List<String> result = new ArrayList<String>();
       Connection conn = null;
       Statement st = null;
       try {
          conn = getConnection();
          st = conn.createStatement() ;
-         for (List<String> nicks : lists) {
-            String parameter = "";
-            for (String nick : nicks) {
-               parameter += "'" + nick.toUpperCase() + "',";
-            }
-            parameter = parameter.substring(0, parameter.length()-1);
-            String query = getCheckUserNicksQuery(parameter);
-            ResultSet rs = st.executeQuery(query);
-            while (rs.next()){
-               result.add(rs.getString("nick"));
-            }
+         String parameter = "";
+         for (String nick : nicks) {
+            parameter += "'" + nick.toUpperCase() + "',";
+         }
+         parameter = parameter.substring(0, parameter.length()-1);
+         String query = getCheckUserNicksQuery(parameter);
+         ResultSet rs = st.executeQuery(query);
+         while (rs.next()){
+            result.add(rs.getString("nick"));
          }
       }finally{
          readFinally(conn, st);

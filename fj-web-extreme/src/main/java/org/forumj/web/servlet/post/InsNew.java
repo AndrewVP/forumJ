@@ -9,16 +9,18 @@
  */
 package org.forumj.web.servlet.post;
 
-import static org.forumj.tool.Diletant.*;
-import static org.forumj.web.servlet.tool.FJServletTools.*;
+import static org.forumj.tool.Diletant.errorOut;
+import static org.forumj.web.servlet.tool.FJServletTools.setcookie;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
 import org.forumj.common.config.FJConfiguration;
 import org.forumj.common.db.entity.IUser;
@@ -96,18 +98,10 @@ public class InsNew extends FJServlet {
          }else if (!pass1Parameter.equals(pass2Parameter)){
             response.sendRedirect("reg.php?id=7");
          }else{
-            List<List<String>> nicks = prepareNick(nickParameter);
+            String nick = prepareNick(nickParameter);
             UserService userService = FJServiceHolder.getUserService();
-            List<String> users = userService.check(nicks); 
-            if (users.size() > 0){
-               System.out.println();
-               System.out.println("-------------------------------------------------------");
-               System.out.println(new Date().toString() + ":Registration fail, nick: " + nickParameter);
-               for (String nick : users) {
-                  System.out.println(nick);
-               }
-               System.out.println("-------------------------------------------------------");
-               System.out.println();
+            NicksListHolder holder = new NicksListHolder(nick, userService);
+            if (isDuplicate(nick, holder, 0, ruseng) || holder.checkIsDuplicate()){
                session.setAttribute("nick", nickParameter);
                response.sendRedirect("reg.php?id=5");
             }else{
@@ -115,13 +109,12 @@ public class InsNew extends FJServlet {
                if (user != null){
                   System.out.println();
                   System.out.println("-------------------------------------------------------");
-                  System.out.println(new Date().toString() + ":Registration fail, mail: " + email1Parameter);
+                  System.out.println(new Date().toString() + ":Registration fail, mail: " + email1Parameter + " , nick: " + nick);
                   System.out.println("-------------------------------------------------------");
                   System.out.println();
                   response.sendRedirect("reg.php?id=12");
                }else{
                   user = userService.getUserObject();
-                  String nick = nicks.get(0).get(0);      
                   user.setNick(nick);
                   user.setEmail(email1Parameter);
                   user.setPass(pass1Parameter);
@@ -147,12 +140,33 @@ public class InsNew extends FJServlet {
       }
    }
    
-   private List<List<String>> prepareNick(String nick){
+   private String prepareNick(String nick){
       nick = removeExtraSpaces(nick);
-      NicksListHolder nickHolder = new NicksListHolder(nick);
-      checkTrolls(nick, nickHolder, 0, ruseng);
-      nickHolder.rotateList();
-      return nickHolder.getNickLists();
+      return nick;
+   }
+   
+   private boolean isDuplicate(String nick, NicksListHolder lists, int alphaPosition, String[][] alphas) throws ConfigurationException, SQLException, IOException{
+      boolean result = false; 
+      for (; alphaPosition < nick.length(); alphaPosition++){
+         for (String[] pare : alphas) {
+            if (nick.substring(alphaPosition, alphaPosition + 1).equalsIgnoreCase(pare[0])){
+               String word = nick.substring(0, alphaPosition) + pare[1] + nick.substring(alphaPosition + 1);
+               if (lists.addNick(word) || isDuplicate(word, lists, alphaPosition + 1, alphas)){
+                  break;
+               }
+            }
+            if (nick.substring(alphaPosition, alphaPosition + 1).equalsIgnoreCase(pare[1])){
+               String word = nick.substring(0, alphaPosition) + pare[0] + nick.substring(alphaPosition + 1);
+               if (lists.addNick(word) || isDuplicate(word, lists, alphaPosition + 1, alphas)){
+                  break;
+               }
+            }
+         }
+         if (result){
+            break;
+         }
+      }
+      return result;
    }
    
    private String removeExtraSpaces(String string){
@@ -167,48 +181,46 @@ public class InsNew extends FJServlet {
       return result.trim();
    }
 
-   private void checkTrolls(String nick, NicksListHolder lists, int alphaPosition, String[][] alphas){
-      for (; alphaPosition < nick.length(); alphaPosition++){
-         for (String[] pare : alphas) {
-            if (nick.substring(alphaPosition, alphaPosition + 1).equalsIgnoreCase(pare[0])){
-               String word = nick.substring(0, alphaPosition) + pare[1] + nick.substring(alphaPosition + 1);
-               lists.addNick(word);
-               checkTrolls(word, lists, alphaPosition + 1, alphas);
-            }
-            if (nick.substring(alphaPosition, alphaPosition + 1).equalsIgnoreCase(pare[1])){
-               String word = nick.substring(0, alphaPosition) + pare[0] + nick.substring(alphaPosition + 1);
-               lists.addNick(word);
-               checkTrolls(word, lists, alphaPosition + 1, alphas);
-            }
-         } 
-      }
-   }
-   
    private class NicksListHolder{
+      
+      private String nick;
+      
       private List<String> nickList;
 
-      private List<List<String>> nickLists;
+      private UserService userService;
       
-      public NicksListHolder(String nick){
+      public NicksListHolder(String nick, UserService userService){
          nickList = new ArrayList<String>(100);
          nickList.add(nick);
-         nickLists = new ArrayList<List<String>>();
+         this.nick = nick;
+         this.userService = userService;
       }
       
-      public void rotateList(){
-         nickLists.add(nickList); 
-         nickList = new ArrayList<String>(100);
-      }
-      
-      public List<List<String>> getNickLists() {
-         return nickLists;
-      }
-      
-      public void addNick(String nick){
-         if (nickList.size() > 99){
-            rotateList();
+      public boolean checkIsDuplicate() throws ConfigurationException, SQLException, IOException{
+         List<String> users = userService.check(nickList);
+         if (users.size() > 0){
+            System.out.println();
+            System.out.println("-------------------------------------------------------");
+            System.out.println(new Date().toString() + ":Registration fail, nick: " + nick);
+            for (String user : users) {
+               System.out.println(user);
+            }
+            System.out.println("-------------------------------------------------------");
+            System.out.println();
+            return true;
+         }else{
+            nickList = new ArrayList<String>(100);
+            return false;
          }
+      }
+      
+      public boolean addNick(String nick) throws ConfigurationException, SQLException, IOException{
+         boolean result = false;
          nickList.add(nick);
+         if (nickList.size() > 99){
+            result = checkIsDuplicate();
+         }
+         return result;
       }
 
    }

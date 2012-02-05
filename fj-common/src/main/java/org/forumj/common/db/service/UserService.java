@@ -40,7 +40,7 @@ public interface UserService {
 
    public IUser read(String nick) throws ConfigurationException, SQLException, IOException;
 
-   public List<String> check(List<List<String>> nick) throws ConfigurationException, SQLException, IOException;
+   public List<String> check(List<String> nick) throws ConfigurationException, SQLException, IOException;
 
    public IUser read(String nick, String password, Boolean firstPassword) throws ConfigurationException, SQLException, IOException;
 
