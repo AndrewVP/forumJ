@@ -32,7 +32,6 @@ public class FJMailDao extends FJDao {
       PreparedStatement st = null;
       try {
          conn = getConnection();
-         conn.setAutoCommit(false);
          st = conn.prepareStatement(receiveMailQuery);
          st.setLong(1, userId);
          st.executeUpdate();
@@ -47,7 +46,6 @@ public class FJMailDao extends FJDao {
       PreparedStatement st = null;
       try {
          conn = getConnection();
-         conn.setAutoCommit(false);
          st = conn.prepareStatement(markMailAsReadQuery);
          st.setLong(1, userId);
          st.setLong(2, mailId);

@@ -24,6 +24,7 @@ import java.sql.*;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
+import org.forumj.common.web.Locale;
 import org.forumj.dbextreme.db.entity.User;
 import org.junit.*;
 
@@ -86,7 +87,7 @@ public class CreateUserTest {
       testUser1.setIcq("icq");
       testUser1.setShowIcq(true);
       testUser1.setShowBithday(true);
-      testUser1.setLanguge(1);
+      testUser1.setLanguge(Locale.UA);
       testUser1.setHideIp(true);
       testUser1.setView(5);
       testUser1.setPp(66);
@@ -121,7 +122,7 @@ public class CreateUserTest {
       testUser2.setIcq("icq");
       testUser2.setShowIcq(false);
       testUser2.setShowBithday(false);
-      testUser2.setLanguge(2);
+      testUser2.setLanguge(Locale.RU);
       testUser2.setHideIp(false);
       testUser2.setView(6);
       testUser2.setPp(66);
@@ -156,7 +157,7 @@ public class CreateUserTest {
       testUser3.setIcq("icq");
       testUser3.setShowIcq(true);
       testUser3.setShowBithday(true);
-      testUser3.setLanguge(1);
+      testUser3.setLanguge(Locale.UA);
       testUser3.setHideIp(true);
       testUser3.setView(7);
       testUser3.setPp(66);
@@ -212,7 +213,7 @@ public class CreateUserTest {
             result.setIcq(rs.getString("icq"));
             result.setShowIcq(rs.getBoolean("sicq"));
             result.setHideIp(rs.getBoolean("h_ip"));
-            result.setLanguge(rs.getInt("lang"));
+            result.setLanguge(Locale.valueOfInteger(rs.getInt("lang")));
             result.setFooter(rs.getString("footer"));
             result.setActivateCode(rs.getInt("activate_code"));
             result.setIsActive(rs.getInt("is_active")>0);

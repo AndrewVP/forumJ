@@ -17,6 +17,7 @@ package org.forumj.tool;
 
 import org.apache.commons.configuration.*;
 import org.forumj.common.exception.InvalidKeyException;
+import org.forumj.common.web.Locale;
 
 
 /**
@@ -27,7 +28,7 @@ public class LocaleString{
 
    private PropertiesConfiguration locales = null; 
    private PropertiesConfiguration defaultLocales = null; 
-   String strLang = null;
+   Locale strLang = null;
    
    /**
     * Конструктор
@@ -37,16 +38,16 @@ public class LocaleString{
     * @param unknown_type $strDefaultLang
     * @throws ConfigurationException 
     */
-   public LocaleString(String strLang, String strFileName, String strDefaultLang) throws ConfigurationException{
+   public LocaleString(Locale strLang, String strFileName, Locale strDefaultLang) throws ConfigurationException{
       this.strLang = strLang;
       locales = new PropertiesConfiguration();
       locales.setDelimiterParsingDisabled(true);
-      locales.setFileName("nls/" + strFileName + "_" + strLang + ".properties");
+      locales.setFileName("nls/" + strFileName + "_" + strLang.getName() + ".properties");
       locales.setEncoding("UTF-8");
       locales.load();
       defaultLocales = new PropertiesConfiguration();
       defaultLocales.setDelimiterParsingDisabled(true);
-      defaultLocales.setFileName("nls/" + strFileName + "_" + strDefaultLang + ".properties");
+      defaultLocales.setFileName("nls/" + strFileName + "_" + strDefaultLang.getName() + ".properties");
       defaultLocales.setEncoding("UTF-8");
       defaultLocales.load();
    }
@@ -74,7 +75,7 @@ public class LocaleString{
       return result;
    }
    
-   public String getLanguage(){
+   public Locale getLanguage(){
       return strLang;
    }
 }

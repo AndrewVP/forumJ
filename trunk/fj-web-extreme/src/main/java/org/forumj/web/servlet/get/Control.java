@@ -33,6 +33,8 @@ import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.common.tool.HtmlChars;
+import org.forumj.common.web.Command;
+import org.forumj.common.web.Locale;
 import org.forumj.tool.*;
 import org.forumj.web.servlet.FJServlet;
 
@@ -185,6 +187,11 @@ public class Control extends FJServlet {
          buffer.append("<td class='internal'>");
          buffer.append("<a class='mnuprof' href='control.php?id=10'>" + locale.getString("mess104") + "</a><br>");
          buffer.append("</td>");
+         /*Locale*/
+         buffer.append("</tr><tr>");
+         buffer.append("<td class='internal'>");
+         buffer.append("<a class='mnuprof' href='control.php?id=12'>" + locale.getString("MSG_INTERF_LOCALE") + "</a><br>");
+         buffer.append("</td>");
          buffer.append("</tr></table>");
          /*Подпись*/
          buffer.append("<table class='control'><tr class='heads'>");
@@ -196,9 +203,9 @@ public class Control extends FJServlet {
          buffer.append("<a class='mnuprof' href='control.php?id=11'>" + locale.getString("mess138") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
-         // Сервисы
+
          buffer.append("</td>");
-         buffer.append("<td valign='TOP'>");
+         buffer.append("<td valign='TOP' style='padding-left:5px;'>");
          switch(id) {
          case 0:
             // Зашли "по умолчанию"
@@ -246,6 +253,10 @@ public class Control extends FJServlet {
          case 11:
             // Подпись
             buffer.append(case11(locale, user));
+            break;
+         case 12:
+            // Язык интерфейса
+            buffer.append(langage(locale, user));
             break;
          }
          buffer.append("</td>");
@@ -522,7 +533,7 @@ public class Control extends FJServlet {
             buffer.append("<br><input type='checkbox' name='C1' value='ON'> <span class='mnuprof'>" + locale.getString("mess52") + "</span>");
             // Прередаем нужные параметры...
             // id Записи
-            buffer.append("<input type=hidden name=\"IDZ\" size=\"20\" value=\"" + ignorId + "\">");
+            buffer.append("<input type='hidden' name=\"IDZ\" size=\"20\" value=\"" + ignorId + "\">");
             // Автор
             buffer.append(fd_form_add(user));
             buffer.append("</form>");
@@ -537,6 +548,15 @@ public class Control extends FJServlet {
 
    private StringBuffer case2(LocaleString locale, IUser user, Long msg, MailService mailService) throws ConfigurationException, SQLException, IOException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
+      IFJMail mail = null;
+      if (msg != null){
+         // Находим его
+         mail = mailService.loadMail(user, msg, false);
+         // Помечаем как прочитанное.
+         if (mail.getReadDate() == null){
+            mailService.markMailAsRead(user.getId(), msg);
+         }
+      }
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess17") + "</b></div>");
       buffer.append("<form method='POST' class='content' action='delmail.php?id=2'>");
       buffer.append("<table class='control'><tr class='heads'>");
@@ -553,34 +573,34 @@ public class Control extends FJServlet {
          buffer.append("</tr>");
          // Выводим сообщения
          for (int mailIndex=0; mailIndex < mails.size(); mailIndex++){
-            IFJMail mail = mails.get(mailIndex);
+            IFJMail gridMail = mails.get(mailIndex);
             buffer.append("<tr>");
             // От.
             buffer.append("<td class='internal'><div align='center' class='tbtext'>");
-            buffer.append(mail.getSender().getNick());
+            buffer.append(gridMail.getSender().getNick());
             buffer.append("</div></td>");
             // Тема письма
-            if (mail.getReadDate() == null){
+            if (gridMail.getReadDate() == null){
                buffer.append("<td class='internal'><div class='tbtextnread'>");
-               buffer.append("<a href='control.php?id=2&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
+               buffer.append("<a href='control.php?id=2&msg=" + gridMail.getId() + "'>" + fd_head(gridMail.getSubject()) + "</a>");
                buffer.append("</div></td>");
             }
             else {
                buffer.append("<td class='internal'><div class='tbtext'>");
-               buffer.append("<a href='control.php?id=2&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
+               buffer.append("<a href='control.php?id=2&msg=" + gridMail.getId() + "'>" + fd_head(gridMail.getSubject()) + "</a>");
                buffer.append("</div></td>");
             }
             // Когда пришло.
             buffer.append("<td class='internal'><div align='center' class='tbtext'>");
-            buffer.append(mail.getReceiveDate());
+            buffer.append(gridMail.getReceiveDate());
             buffer.append("</div></td>");
             // Когда отправлено.
             buffer.append("<td class='internal'><div align='center' class='tbtext'>");
-            buffer.append(mail.getSentDate());
+            buffer.append(gridMail.getSentDate());
             buffer.append("</div></td>");
             // Флажок.
             buffer.append("<td class='internal'><div align='center' class='tbtext'>");
-            buffer.append("<input type='checkbox' name='" + mailIndex + "' value='" + mail.getId() + "'>");
+            buffer.append("<input type='checkbox' name='" + mailIndex + "' value='" + gridMail.getId() + "'>");
             buffer.append("</div></td>");       
             buffer.append("</tr>");
          }
@@ -596,21 +616,14 @@ public class Control extends FJServlet {
          buffer.append("<input value='OK' type='submit'>");
          buffer.append("</td>");
          buffer.append("</tr>");
-      }
-      else {
+      }else{
          buffer.append("<th class='internal'><div class='tbtext'>" + locale.getString("mess18") + "</div></th>");
          buffer.append("</tr>");
       }
       // Кнопка формы
       //Выводим письмо
       if (msg != null){
-         // Находим его
-         IFJMail mail = mailService.loadMail(user, msg, false);
          if (mail != null){ 
-            // Помечаем как прочитанное.
-            if (mail.getReadDate() == null){
-               mailService.markMailAsRead(user.getId(), msg);
-            }
             buffer.append("<tr class='heads'><td colspan=5 class='internal'>");
             // От кого.
             buffer.append("<span class='tbtext'>" + locale.getString("mess60") + ":&nbsp;" + mail.getReceiveDate() + "&nbsp;" + locale.getString("mess61") + ":&nbsp;" + mail.getSentDate() + "&nbsp;" + locale.getString("mess58") + ":&nbsp;</span><span class=nick>" + mail.getSender().getNick() + "</span>");
@@ -629,7 +642,7 @@ public class Control extends FJServlet {
 
    private StringBuffer case3(LocaleString locale, IUser user, Long msg, MailService mailService) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
-      buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess15") + "</b></div>");
+      buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess15") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
       // Выбираем почту
       List<IFJMail> mails = mailService.loadOutNotReceivedBox(user);
@@ -684,8 +697,8 @@ public class Control extends FJServlet {
 
    private StringBuffer case4(LocaleString locale, IUser user, Long msg, MailService mailService) throws ConfigurationException, IOException, SQLException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
-      buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess16") + "</b></div>");
-      buffer.append("<form method='POST' class=content action='delmail.php?id=4'>");
+      buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess16") + "</b></div>");
+      buffer.append("<form method='POST' class='content' action='delmail.php?id=4'>");
       buffer.append("<table class='control'><tr class=heads>");
       // Выбираем почту
       List<IFJMail> mails = mailService.loadOutReceivedBox(user);
@@ -732,7 +745,7 @@ public class Control extends FJServlet {
          buffer.append("<td colspan=5 align='right'>"); 
          buffer.append("<span class=tbtextnread>" + locale.getString("mess69") + "&nbsp;&nbsp;</span>");
          buffer.append("<select size='1' name='ACT'>");
-         buffer.append("<option selected value='del'><span class=mnuprof>" + locale.getString("mess70") + "&nbsp;&nbsp;</span></option>");
+         buffer.append("<option selected value='del'><span class='mnuprof'>" + locale.getString("mess70") + "&nbsp;&nbsp;</span></option>");
          buffer.append("</select>&nbsp;");
          buffer.append("<input type='hidden' value='" + mails.size() + "' name='NRW'>");
          buffer.append(fd_form_add(user));
@@ -766,7 +779,7 @@ public class Control extends FJServlet {
 
    private StringBuffer case5(LocaleString locale, IUser user, Long msg, MailService mailService) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
-      buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess62") + "</b></div>");
+      buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess62") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
       // Выбираем почту
       List<IFJMail> mails = mailService.loadDraftBox(user);
@@ -826,10 +839,10 @@ public class Control extends FJServlet {
       // Выбираем список интерфейсов
       List<IFJInterface> interfaces = interfaceService.findAllInterfaces(user);
       // "Список Ваших интерфейсов"
-      buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess76") + "</b></div>");
+      buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess76") + "</b></div>");
       // Интерфейс по умолчанию
       // 
-      buffer.append("<form method='POST' class=content action='defview.php'>");
+      buffer.append("<form method='POST' class='content' action='defview.php'>");
       buffer.append("<span class=tbtext><b>" + locale.getString("mess84") + "</b></span>");
       buffer.append("<select size='1' name='DVIEW'>");
       for (int interfIndex=0; interfIndex < interfaces.size(); interfIndex++){
@@ -838,7 +851,7 @@ public class Control extends FJServlet {
          if (interf.getId().equals(user.getView())) {
             add="selected ";
          }
-         buffer.append("<option " + add + "value='" + interf.getId() + "'><span class=mnuprof>" + interf.getName() + "</span></option>");
+         buffer.append("<option " + add + "value='" + interf.getId() + "'><span class='mnuprof'>" + interf.getName() + "</span></option>");
       }
       buffer.append("</select>&nbsp;");
       buffer.append("<input type='submit' value='" + locale.getString("mess85") + "'>");
@@ -847,7 +860,7 @@ public class Control extends FJServlet {
       buffer.append(fd_form_add(user));
       buffer.append("</form>");
 
-      buffer.append("<form method='POST' class=content action='delview.php?'>");
+      buffer.append("<form method='POST' class='content' action='delview.php?'>");
       buffer.append("<table class='control'><tr class=heads>");
       // Заголовки таблицы
       // Имя интерфейса
@@ -884,7 +897,7 @@ public class Control extends FJServlet {
       buffer.append("<td colspan=2 class='internal' align='right'>"); 
       buffer.append("<span class=tbtextnread>" + locale.getString("mess69") + "&nbsp;&nbsp;</span>");
       buffer.append("<select size='1' name='ACT'>");
-      buffer.append("<option selected value='del'><span class=mnuprof>" + locale.getString("mess70") + "&nbsp;&nbsp;</span></option>");
+      buffer.append("<option selected value='del'><span class='mnuprof'>" + locale.getString("mess70") + "&nbsp;&nbsp;</span></option>");
       buffer.append("</select>&nbsp;");
       buffer.append("<input type='hidden' value='" + interfacesAmount + "' name='NRW'>");
       // Прередаем нужные пераметры...
@@ -894,7 +907,7 @@ public class Control extends FJServlet {
       buffer.append("</tr>");
       buffer.append("</table>");
       buffer.append("</form>");  
-      buffer.append("<form method='POST' class=content action='newview.php'>");
+      buffer.append("<form method='POST' class='content' action='newview.php'>");
       buffer.append("<span class=tbtext>" + locale.getString("mess77") + ":&nbsp;</span>"); 
       buffer.append("<input type='text' size=50 name='FOLD'>");
       buffer.append("&nbsp;<input type='submit' value='" + locale.getString("mess75") + "' >");
@@ -906,8 +919,8 @@ public class Control extends FJServlet {
          IFJInterface interf = interfaceService.findInterface(user, viewId);
          // Выбираем список папок в интерфейсе
          List<IFJFolder> folders = folderService.findAllFolders(user, interf);
-         buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess78") + "<u>" + interf.getName() + "</u></b></div>");
-         buffer.append("<form method='POST' class=content action='delvfolder.php'>");
+         buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess78") + "<u>" + interf.getName() + "</u></b></div>");
+         buffer.append("<form method='POST' class='content' action='delvfolder.php'>");
          buffer.append("<table class='control'><tr class=heads>");
          // Заголовки таблицы
          // Имя папки
@@ -937,11 +950,11 @@ public class Control extends FJServlet {
          buffer.append("<td colspan=2 class='internal' align='right'>"); 
          buffer.append("<span class=tbtextnread>" + locale.getString("mess69") + "&nbsp;&nbsp;</span>");
          buffer.append("<select size='1' name='ACT'>");
-         buffer.append("<option selected value='del'><span class=mnuprof>" + locale.getString("mess70") + "&nbsp;&nbsp;</span></option>");
+         buffer.append("<option selected value='del'><span class='mnuprof'>" + locale.getString("mess70") + "&nbsp;&nbsp;</span></option>");
          buffer.append("</select>&nbsp;");
          buffer.append("<input type='hidden' value='" + folders.size() + "' name='NRW'>");
          // id Интерфейса
-         buffer.append("<input type=hidden name='IDVW' value='" + viewId + "'>");
+         buffer.append("<input type='hidden' name='IDVW' value='" + viewId + "'>");
          // Прередаем нужные пераметры...
          buffer.append(fd_form_add(user));
          buffer.append("<input value='OK' type='submit'>");
@@ -951,8 +964,8 @@ public class Control extends FJServlet {
          buffer.append("</form>");
          List<IFJFolder> foldersNotIn = folderService.findAllFoldersNotIn(user, interf);
          int foldersAmount = foldersNotIn.size();
-         buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess73") + "</b></div>");
-         buffer.append("<form method='POST' class=content action='delfolder.php?id=6&view=" + viewId + "'>");
+         buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess73") + "</b></div>");
+         buffer.append("<form method='POST' class='content' action='delfolder.php?id=6&view=" + viewId + "'>");
          buffer.append("<table class='control'><tr class=heads>");
          // Заголовки таблицы
          // Имя папки
@@ -980,7 +993,7 @@ public class Control extends FJServlet {
          buffer.append("<td colspan=2 class='internal' align='right'>"); 
          buffer.append("<span class=tbtextnread>" + locale.getString("mess69") + "&nbsp;&nbsp;</span>");
          buffer.append("<select size='1' name='ACT'>");
-         buffer.append("<option selected value='add'><span class=mnuprof>" + locale.getString("mess79") + interf.getName() + "&nbsp;&nbsp;</span></option>");
+         buffer.append("<option selected value='add'><span class='mnuprof'>" + locale.getString("mess79") + interf.getName() + "&nbsp;&nbsp;</span></option>");
          buffer.append("</select>&nbsp;");
          buffer.append("<input type='hidden' value='" + foldersAmount + "' name='NRW'>");
          // Прередаем нужные пераметры...
@@ -991,7 +1004,7 @@ public class Control extends FJServlet {
          buffer.append("</table>");
          buffer.append("</form>");  
          // Добавление новой папки
-         buffer.append("<form method='POST' class=content action='newfolder.php?id=6&view=" + viewId + "'>");
+         buffer.append("<form method='POST' class='content' action='newfolder.php?id=6&view=" + viewId + "'>");
          buffer.append("<span class=tbtext>" + locale.getString("mess74") + ":&nbsp;</span>"); 
          buffer.append("<input type='text' size=50 name='FOLD'>");
          buffer.append("&nbsp;<input type='submit' value='" + locale.getString("mess75") + "' >");
@@ -1007,8 +1020,8 @@ public class Control extends FJServlet {
       // Выбираем список папок
       List<IFJFolder> folders = folderService.getUserFolders(user);
       int foldersAmount = folders.size();
-      buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess73") + "</b></div>");
-      buffer.append("<form method='POST' class=content action='delfolder.php?id=7'>");
+      buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess73") + "</b></div>");
+      buffer.append("<form method='POST' class='content' action='delfolder.php?id=7'>");
       buffer.append("<table class='control'><tr class=heads>");
       // Заголовки таблицы
       // Имя папки
@@ -1038,7 +1051,7 @@ public class Control extends FJServlet {
       buffer.append("<td colspan=2 class='internal' align='right'>"); 
       buffer.append("<span class=tbtextnread>" + locale.getString("mess69") + "&nbsp;&nbsp;</span>");
       buffer.append("<select size='1' name='ACT'>");
-      buffer.append("<option selected value='del'><span class=mnuprof>" + locale.getString("mess70") + "&nbsp;&nbsp;</span></option>");
+      buffer.append("<option selected value='del'><span class='mnuprof'>" + locale.getString("mess70") + "&nbsp;&nbsp;</span></option>");
       buffer.append("</select>&nbsp;");
       buffer.append("<input type='hidden' value='" + foldersAmount + "' name='NRW'>");
       buffer.append(fd_form_add(user));
@@ -1048,7 +1061,7 @@ public class Control extends FJServlet {
       buffer.append("</table>");
       buffer.append("</form>");  
       // Добавление новой папки
-      buffer.append("<form method='POST' class=content action='newfolder.php?id=7'>");
+      buffer.append("<form method='POST' class='content' action='newfolder.php?id=7'>");
       buffer.append("<span class=tbtext>" + locale.getString("mess74") + ":&nbsp;</span>"); 
       buffer.append("<input type='text' size=50 name='FOLD'>");
       buffer.append("&nbsp;<input type='submit' value='" + locale.getString("mess75") + "' >");
@@ -1061,8 +1074,8 @@ public class Control extends FJServlet {
       StringBuffer buffer = new StringBuffer();
       // Выбираем список подписаных веток
       List<IFJSubscribe> subscribes = subscribeService.findAllSubscribes(user, new Integer(1));
-      buffer.append("<div class=mnuprof align='CENTER'><b>" + locale.getString("mess87") + "</b></div>");
-      buffer.append("<form method='POST' class=content action='delsubs.php?id=8'>");
+      buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess87") + "</b></div>");
+      buffer.append("<form method='POST' class='content' action='delsubs.php?id=8'>");
       buffer.append("<table class='control'><tr class=heads>");
       // Заголовки таблицы
       // Тема ветки
@@ -1091,7 +1104,7 @@ public class Control extends FJServlet {
       buffer.append("<td colspan=2 class='internal' align='right'>"); 
       buffer.append("<span class=tbtextnread>" + locale.getString("mess69") + "&nbsp;&nbsp;</span>");
       buffer.append("<select size='1' name='ACT'>");
-      buffer.append("<option selected value='del'><span class=mnuprof>" + locale.getString("mess88") + "&nbsp;&nbsp;</span></option>");
+      buffer.append("<option selected value='del'><span class='mnuprof'>" + locale.getString("mess88") + "&nbsp;&nbsp;</span></option>");
       buffer.append("</select>&nbsp;");
       buffer.append("<input type='hidden' value='" + subscribesAmount + "' name='NRW'>");
       buffer.append(fd_form_add(user));
@@ -1121,7 +1134,7 @@ public class Control extends FJServlet {
          buffer.append("</div>");
          buffer.append("<br>");
       } else {
-         buffer.append("<div class=mnuprof align='CENTER'>");
+         buffer.append("<div class='mnuprof' align='CENTER'>");
          buffer.append("<b>");
          buffer.append(locale.getString("mess92"));
          buffer.append("</b>");
@@ -1132,7 +1145,7 @@ public class Control extends FJServlet {
          buffer.append("</div>");
          buffer.append("<br>");
       }
-      buffer.append("<form method='POST' class=content action='setavatar.php?id=9'>");
+      buffer.append("<form method='POST' class='content' action='setavatar.php?id=9'>");
       buffer.append(locale.getString("mess97") + "&nbsp;");
       buffer.append("<input type=text size=100 name='avatar' value='" + HTMLEntities.htmlentities(user.getAvatar()) + "'>");
       buffer.append("<br>");
@@ -1151,7 +1164,7 @@ public class Control extends FJServlet {
       buffer.append("<input type='submit' value='" + locale.getString("mess75") + "'>");
       buffer.append(fd_form_add(user));
       buffer.append("</form>");
-      buffer.append("<form method='POST' class=content action='vavatar.php?id=9'>");
+      buffer.append("<form method='POST' class='content' action='vavatar.php?id=9'>");
       if (user.getAvatar() != null) {
          buffer.append("<input type=checkbox checked  name='v_avatar'>");
          buffer.append("&nbsp;" + locale.getString("mess98"));
@@ -1171,12 +1184,12 @@ public class Control extends FJServlet {
 
    private StringBuffer case10(LocaleString locale, IUser user) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
-      buffer.append("<div class=mnuprof align='CENTER'>");
+      buffer.append("<div class='mnuprof' align='CENTER'>");
       buffer.append("<b>" + locale.getString("mess105") + "</b>");
       buffer.append("</div>");
       buffer.append("<br>");
       buffer.append("<div>");
-      buffer.append("<form method='POST' class=content action='setlocation.php?id=10'>");
+      buffer.append("<form method='POST' class='content' action='setlocation.php?id=10'>");
       buffer.append(fd_form_add(user));
       buffer.append("<table>");
       buffer.append("<tr>");
@@ -1240,7 +1253,7 @@ public class Control extends FJServlet {
    /*подпись*/
    private StringBuffer case11(LocaleString locale, IUser user) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
-      buffer.append("<div class=mnuprof align='CENTER'>");
+      buffer.append("<div class='mnuprof' align='LEFT' style='padding: 10px 0 5px 0'>");
       buffer.append("<b>");
       buffer.append(locale.getString("mess138"));
       buffer.append("</b>");
@@ -1249,15 +1262,43 @@ public class Control extends FJServlet {
       if (user.getFooter() != null && !"".equals(user.getFooter())){
          $textArea=HTMLEntities.htmlentities(user.getFooter());
       }
-      buffer.append("<form method='POST' name='footer' class=content action='setfooter.php?id=11'>");
-      buffer.append("<br>");
-      buffer.append("<br>");
+      buffer.append("<form method='POST' name='footer' class='content' action='setfooter.php?id=11'>");
       buffer.append("<textarea name='foot' cols=50 rows=15 onkeyup='checkLength(this, 255);' onkeypress='this.onkeyup();' onChange='this.onkeyup();' onFocus='this.onkeyup();' onBlur='this.onkeyup();' onSelect='this.onkeyup();' onMouseOut='this.onkeyup();' onMouseMove='this.onkeyup();'>" + $textArea + "</textarea>");
-      buffer.append("<br>");
+      buffer.append("<div style='padding: 5px 0 0 0'>");
       buffer.append(fd_button(locale.getString("mess85"),"document.footer.submit();","foot_ok", "1"));
       buffer.append(fd_form_add(user));
+      buffer.append("</div>");
       buffer.append("</form>");
       return buffer;
    }
 
+   /*язык интерфейса*/
+   private StringBuffer langage(LocaleString locale, IUser user) throws InvalidKeyException {
+      StringBuffer buffer = new StringBuffer();
+      buffer.append("<div class='mnuprof' align='LEFT' style='padding: 10px 0 5px 0'>");
+      buffer.append("<b>");
+      buffer.append(locale.getString("MSG_DEFAULT_LOCALE"));
+      buffer.append("</b>");
+      buffer.append("</div>");
+      buffer.append("<form method='POST' name='locale' class='content' action='" + FJUrl.POST + "'>");
+      buffer.append("<select name='locale'>");
+      for (Locale localeParameter: Locale.values()){
+         buffer.append("<option value='" + localeParameter.getCode() + "'");
+         if (user.getLanguge() == localeParameter){
+            buffer.append(" SELECTED ");
+         }
+         buffer.append(">");
+         buffer.append(locale.getString("MSG_LOCALE" + localeParameter.getCode()));
+         buffer.append("</option>"); 
+      } 
+      buffer.append("</select>");     
+      buffer.append("<div style='padding: 5px 0 0 0'>");
+      buffer.append("<input type='hidden' name='command' value='set_locale' />");
+      buffer.append(fd_button(locale.getString("mess85"),"document.locale.submit();",Command.SET_LOCALE.getCommand(), "1"));
+      buffer.append(fd_form_add(user));
+      buffer.append("</div>");
+      buffer.append("</form>");
+      return buffer;
+   }
+   
 }

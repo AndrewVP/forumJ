@@ -19,4 +19,4 @@ WHERE
  AND fdmail.del_r <> 1 
  AND fdmail.d_snt IS NOT NULL
 ORDER BY
- fdmail.d_rcv DESC
+ fdmail.d_snt DESC

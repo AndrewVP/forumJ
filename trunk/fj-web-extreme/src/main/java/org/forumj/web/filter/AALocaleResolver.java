@@ -18,6 +18,8 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
 
 import org.forumj.common.config.FJConfiguration;
+import org.forumj.common.db.entity.IUser;
+import org.forumj.common.web.Locale;
 import org.forumj.tool.LocaleString;
 
 /**
@@ -37,16 +39,20 @@ public class AALocaleResolver implements Filter {
       try {
          HttpSession session = request.getSession(true);
          String lang = request.getParameter("lang");
-         String defaultLanguage = FJConfiguration.getConfig().getString("lang.default"); 
-         if (lang == null){
-            lang = defaultLanguage; 
+         IUser user = (IUser) session.getAttribute("user");
+         Locale defaultLocaleName = user != null ? user.getLanguge() : Locale.valueOfString(FJConfiguration.getConfig().getString("lang.default"));
+         Locale localeName = null;
+         if (lang != null){
+            localeName = Locale.valueOfString(lang);
+         }else{
+            localeName = defaultLocaleName;
          }
          LocaleString locale = (LocaleString) session.getAttribute("locale"); 
          if(locale == null){
-            locale = new LocaleString(lang, "messages", defaultLanguage);
+            locale = new LocaleString(localeName, "messages", defaultLocaleName);
             session.setAttribute("locale", locale);
-         }else if (!locale.getLanguage().equalsIgnoreCase(lang)){
-            locale = new LocaleString(lang, "messages", defaultLanguage);
+         }else if (lang != null && locale.getLanguage() != localeName){
+            locale = new LocaleString(localeName, "messages", defaultLocaleName);
             session.setAttribute("locale", locale);
          }
          chain.doFilter(req, resp);

@@ -33,28 +33,33 @@ public class Count extends FJServlet {
       String m_xtParameter = request.getParameter("idt");
       String idsParameter = request.getParameter("ids");
       CountService service = FJServiceHolder.getCountService();
-      try {
-         long m_xb = service.getAddedPostsAmount(Long.valueOf(m_xbParameter));
-         result.append(m_xb);
-         result.append(";");
-         long m_xt = service.getAddedThreadsAmount(Long.valueOf(m_xtParameter));
-         result.append(m_xt);
-         result.append(";");
-         String[] threads = idsParameter.split(";");
-         for (int i = 0; i < threads.length; i++) {
-            String threadId = threads[i].split(",")[0];
-            String lastPostId = threads[i].split(",")[1];
-            if (i != 0){
-               result.append("|");
+      if(m_xbParameter!= null && m_xtParameter != null && idsParameter != null){
+         try {
+            long m_xb = service.getAddedPostsAmount(Long.valueOf(m_xbParameter));
+            result.append(m_xb);
+            result.append(";");
+            long m_xt = service.getAddedThreadsAmount(Long.valueOf(m_xtParameter));
+            result.append(m_xt);
+            result.append(";");
+            String[] threads = idsParameter.split(";");
+            for (int i = 0; i < threads.length; i++) {
+               String[] ids = threads[i].split(",");
+               if (ids.length > 1){
+                  String threadId = ids[0];
+                  String lastPostId = ids[1];
+                  if (i != 0){
+                     result.append("|");
+                  }
+                  result.append(threadId);
+                  result.append(",");
+                  result.append(service.getAddedPostsAmount(Long.valueOf(threadId), Long.valueOf(lastPostId)));
+               }
             }
-            result.append(threadId);
-            result.append(",");
-            result.append(service.getAddedPostsAmount(Long.valueOf(threadId), Long.valueOf(lastPostId)));
+            response.setContentType("text/html; charset=UTF-8");
+            response.getWriter().write(result.toString());
+         } catch (Throwable e) {
+            e.printStackTrace();
          }
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(result.toString());
-      } catch (Throwable e) {
-         e.printStackTrace();
       }
    }
 

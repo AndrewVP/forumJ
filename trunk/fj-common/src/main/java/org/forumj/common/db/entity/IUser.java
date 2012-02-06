@@ -11,6 +11,8 @@ package org.forumj.common.db.entity;
 
 import java.sql.*;
 
+import org.forumj.common.web.Locale;
+
 /**
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
@@ -52,8 +54,8 @@ public interface IUser {
    public String getFooter();
    public void setTimeZone(Integer timeZone);
    public Integer getTimeZone();
-   public void setLanguge(Integer languge);
-   public Integer getLanguge();
+   public void setLanguge(Locale languge);
+   public Locale getLanguge();
    public void setHideIp(Boolean hideIp);
    public Boolean getHideIp();
    public void setShowIcq(Boolean showIcq);

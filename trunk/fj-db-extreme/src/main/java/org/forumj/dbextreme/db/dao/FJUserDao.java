@@ -8,6 +8,7 @@ import java.util.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.web.Locale;
 import org.forumj.dbextreme.db.entity.User;
 
 
@@ -147,7 +148,10 @@ public class FJUserDao extends FJDao {
          result.setIcq(rs.getString("icq"));
          result.setShowIcq(rs.getBoolean("sicq"));
          result.setHideIp(rs.getBoolean("h_ip"));
-         result.setLanguge(rs.getInt("lang"));
+         int lang = rs.getInt("lang");
+         if (lang != 0){
+            result.setLanguge(Locale.valueOfInteger(lang));
+         }
          result.setFooter(rs.getString("footer"));
          result.setActivateCode(rs.getInt("activate_code"));
          result.setIsActive(rs.getInt("is_active")>0);
@@ -181,7 +185,7 @@ public class FJUserDao extends FJDao {
          st.setString(16, user.getIcq());
          st.setInt(17, user.getShowIcq() ? 1 : 0);
          st.setInt(18, user.getShowBithday() ? 1 : 0);
-         st.setInt(19, user.getLanguge());
+         st.setInt(19, user.getLanguge().getCode());
          st.setInt(20, user.getHideIp() ? 1 : 0);
          st.setInt(21, user.getView());
          st.setInt(22, user.getPp());
@@ -227,7 +231,7 @@ public class FJUserDao extends FJDao {
          st.setString(16, user.getIcq());
          st.setInt(17, user.getShowIcq() ? 1 : 0);
          st.setInt(18, user.getShowBithday() ? 1 : 0);
-         st.setInt(19, user.getLanguge() == null ? 0 : user.getLanguge());
+         st.setInt(19, user.getLanguge().getCode());
          st.setInt(20, user.getHideIp() ? 1 : 0);
          st.setInt(21, user.getView());
          st.setInt(22, user.getPp());
