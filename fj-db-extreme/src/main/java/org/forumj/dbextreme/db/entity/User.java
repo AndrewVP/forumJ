@@ -18,6 +18,7 @@ package org.forumj.dbextreme.db.entity;
 import java.sql.*;
 
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.web.Locale;
 
 /**
  * 
@@ -81,7 +82,7 @@ public class User implements IUser {
 
    private Boolean hideIp = false;
 
-   private Integer languge = 0;
+   private Locale languge = Locale.UA;
 
    private Integer timeZone = 2; 
 
@@ -290,12 +291,12 @@ public class User implements IUser {
    }
 
    @Override
-   public Integer getLanguge() {
+   public Locale getLanguge() {
       return languge;
    }
 
    @Override
-   public void setLanguge(Integer languge) {
+   public void setLanguge(Locale languge) {
       this.languge = languge;
    }
 

@@ -56,7 +56,7 @@ public class Write extends FJServlet {
             String command = request.getParameter("comand");
             /* Все нормально*/
             /* Может пустое??*/
-            if (!("".equals(head.trim()) || "".equals(body.trim()))) {
+            if (head != null && body!= null && head.trim().length() > 0 && body.trim().length() > 0) {
                /* Не пустое*/
                /* Добавляем Сообщение*/
                //               $str_body=mysql_real_escape_string($_POST['A2']);

@@ -293,49 +293,51 @@ public class Diletant {
             pos=epos;
          }
       } catch (Exception e) {
+         System.out.println(href_head);
          e.printStackTrace();
          postbody = href_head;
       }
       return postbody;
    }      
-   public static String fd_button(String mess, String  onClick, String name, String numb){
-      String button="<table id='"+name+"_table' class='bttn"+numb+"' onclick='"+onClick+"'>"+
-      "<tr>"+
-      "  <td class='bttn"+numb+"LeftTop'></td>"+
-      "  <td class='bttn"+numb+"Top'></td>"+
-      "  <td class='bttn"+numb+"RightTop'></td>"+
-      "</tr>"+
-      "<tr>"+
-      "  <td class='bttn"+numb+"Left'></td>"+
-      "  <td class='bttn"+numb+"Bg'>"+mess+"</td>"+
-      "  <td class='bttn"+numb+"Right'></td>"+
-      "</tr>"+
-      "<tr>"+
-      "  <td class='bttn"+numb+"LeftBtm'></td>"+
-      "  <td class='bttn"+numb+"Btm'></td>"+
-      "  <td class='bttn"+numb+"RightBtm'></td>"+
-      "</tr>"+
-      "</table>  ";
-      return button;
+   public static StringBuffer fd_button(String mess, String  onClick, String name, String numb){
+      StringBuffer result = new StringBuffer();
+      result.append("<table id='" + name + "_table' class='bttn" + numb + "' onclick='" + onClick + "'>");
+      result.append("<tr>");
+      result.append("<td class='bttn" + numb + "LeftTop'></td>");
+      result.append("<td class='bttn" + numb + "Top'></td>");
+      result.append("<td class='bttn" + numb + "RightTop'></td>");
+      result.append("</tr>");
+      result.append("<tr>");
+      result.append("<td class='bttn" + numb + "Left'></td>");
+      result.append("<td class='bttn" + numb + "Bg'>" + mess + "</td>");
+      result.append("<td class='bttn" + numb + "Right'></td>");
+      result.append("</tr>");
+      result.append("<tr>");
+      result.append("<td class='bttn" + numb + "LeftBtm'></td>");
+      result.append("<td class='bttn" + numb + "Btm'></td>");
+      result.append("<td class='bttn" + numb + "RightBtm'></td>");
+      result.append("</tr>");
+      result.append("</table>");
+      return result;
    }
-   public static String fd_form_add(IUser user) {
-      String result="";
+   public static StringBuffer fd_form_add(IUser user) {
+      StringBuffer result = new StringBuffer();
       //Команда для обработки
-      result+="<input type=hidden name='comand'>";
+      result.append("<input type='hidden' name='comand' />");
       // Автор
-      result+="<input type=hidden name='IDU' value='"+user.getId().toString()+"'>";
-      result+="<input type=hidden name='AUT' value='"+user.getNick()+"'>";
+      result.append("<input type=hidden name='IDU' value='"+user.getId().toString()+"'>");
+      result.append("<input type=hidden name='AUT' value='"+user.getNick()+"'>");
       // пароль автора
       if (user.getPass2() != null) {
          // кука
-         result+="<input type=hidden name='PS2' value='"+user.getPass2()+"'>";
+         result.append("<input type=hidden name='PS2' value='"+user.getPass2()+"'>");
       }else{
          // не кука
-         result+="<input type=hidden name='PS1' value='"+user.getPass()+"'>";
+         result.append("<input type=hidden name='PS1' value='"+user.getPass()+"'>");
       }
       return result;
    }
-   public static String fd_input(String name, String value, String size, String numb){
+   public static StringBuffer fd_input(String name, String value, String size, String numb){
       StringBuffer input= new StringBuffer();
       input.append("<table id='" + name + "_table' class='input" + numb + "'>");
       input.append("<tr>");
@@ -354,7 +356,7 @@ public class Diletant {
       input.append("<td class='input" + numb + "RightBtm'></td>");
       input.append("</tr>");
       input.append("</table>");    
-      return input.toString();
+      return input;
    }
    public static int fd_timezone_hr(int id_timezone){
       int result = 0;

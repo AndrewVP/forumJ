@@ -6,4 +6,3 @@ WHERE
  AND id = ?
  AND del_r<>1 
  AND d_snt IS NOT NULL
- AND d_rcv IS NULL
