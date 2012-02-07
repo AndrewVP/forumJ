@@ -203,6 +203,8 @@ public class QueryBuilder {
    private static Object readPostsBodiesQueryMonitor = new Object();
    
    private static String seenByUserQuery = null;
+
+   private static String pinQuery = null;
    
    private static String seenByGuestQuery = null;
    
@@ -849,6 +851,13 @@ public class QueryBuilder {
          seenByUserQuery = loadQuery("sql/seen_by_user.sql");
       }
       return seenByUserQuery;
+   }
+   
+   public static String getPinQuery() throws IOException{
+      if (pinQuery == null){
+         pinQuery = loadQuery("sql/pin.sql");
+      }
+      return pinQuery;
    }
    
    public static String getSeenByGuestQuery() throws IOException{

@@ -17,6 +17,8 @@ package org.forumj.common.db.entity;
 
 import java.util.Date;
 
+import org.forumj.common.web.Pin;
+
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
@@ -69,8 +71,8 @@ public interface IFJThread {
    public abstract String getNick();
    public abstract void setHead(String head);
    public abstract String getHead();
-   public abstract void setDock(int dock);
-   public abstract int getDock();
+   public abstract void setDock(Pin dock);
+   public abstract Pin getDock();
    public abstract void setRegDate(Date regDate);
    public abstract Date getRegDate();
    public abstract void setLastPostAuthId(Long lastPostAuthId);
