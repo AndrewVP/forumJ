@@ -92,5 +92,6 @@ public interface IUser {
    public void setEmail(String email);
    public String getEmail();
    void setReg(Timestamp reg);
+   public boolean isModerator();
 
 }

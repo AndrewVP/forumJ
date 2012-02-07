@@ -31,6 +31,7 @@ import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.common.tool.*;
+import org.forumj.common.web.Pin;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
@@ -94,6 +95,7 @@ public class New extends FJServlet {
                   thread.setFolderId((long) 1);
                   thread.setPcount(1);
                   thread.setType(0);
+                  thread.setDock(Pin.COMMON);
                   treadService.create(thread, post);
                   // Подготавливаем текст поста.          
                   //bbcode

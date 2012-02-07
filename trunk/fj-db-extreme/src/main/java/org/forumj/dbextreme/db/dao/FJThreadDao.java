@@ -20,6 +20,7 @@ import java.util.Date;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.exception.DBException;
+import org.forumj.common.web.Pin;
 import org.forumj.dbextreme.db.entity.*;
 
 /**
@@ -137,7 +138,7 @@ public class FJThreadDao extends FJDao {
             thread.setLastPostId(rs.getLong(LAST_POST_ID_FIELD_NAME));
             thread.setSnid(rs.getInt(SEEN_ID_FIELD_NAME));
             thread.setSnall(rs.getInt(SEEN_ALL_FIELD_NAME));
-            thread.setDock(rs.getInt(DOCK_FIELD_NAME));
+            thread.setDock(Pin.valueOfInteger(rs.getInt(DOCK_FIELD_NAME)));
             thread.setType(rs.getInt(TYPE_FIELD_NAME));
             thread.setFolderId(rs.getLong(FOLDER_ID_FIELD_NAME));
             thread.setPcount(rs.getInt(POSTS_COUNT_FIELD_NAME));
@@ -158,7 +159,7 @@ public class FJThreadDao extends FJDao {
          st.setLong(3, thread.getLastPostAuthId());
          st.setString(4, thread.getLastPostNick());
          st.setLong(5, thread.getLastPostId());
-         st.setInt(6, thread.getDock());
+         st.setInt(6, thread.getDock().getCode());
          st.setLong(7, thread.getFolderId());
          st.setInt(8, thread.getPcount());
          st.setLong(9, thread.getId());
@@ -450,7 +451,7 @@ public class FJThreadDao extends FJDao {
             FJThread thr = new FJThread();
             thr.setDisain(disain);
             thr.setId(id);
-            thr.setDock(rs.getInt("dock"));
+            thr.setDock(Pin.valueOfInteger(rs.getInt("dock")));
             thr.setLastPostTime(rs.getTimestamp("lposttime_"));
             thr.setHead(rs.getString("head"));
             thr.setNick(rs.getString("nick"));
@@ -494,5 +495,20 @@ public class FJThreadDao extends FJDao {
          readFinally(conn, st);
       }
       return result;
+   }
+
+   public void pin(Long threadId, Pin pin) throws IOException, ConfigurationException, SQLException {
+      String query = getPinQuery();
+      PreparedStatement st = null;
+      Connection conn = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setInt(1, pin.getCode());
+         st.setLong(2, threadId);
+         st.executeUpdate();
+      }finally{
+         readFinally(conn, st);
+      }
    }
 }

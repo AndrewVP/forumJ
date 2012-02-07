@@ -21,6 +21,7 @@ import java.sql.SQLException;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.exception.DBException;
+import org.forumj.common.web.Pin;
 
 /**
  * 
@@ -45,8 +46,7 @@ public interface ThreadService {
     * @throws SQLException
     * @throws IOException
     */
-   public IFJThread readThread(Long id) throws ConfigurationException,
-         SQLException, IOException;
+   public IFJThread readThread(Long id) throws ConfigurationException, SQLException, IOException;
 
 
    /**
@@ -57,6 +57,7 @@ public interface ThreadService {
     * @throws SQLException
     * @throws IOException
     */
-   public void setSeen(IUser user, Long threadId)
-         throws ConfigurationException, SQLException, IOException;
+   public void setSeen(IUser user, Long threadId) throws ConfigurationException, SQLException, IOException;
+   
+   public void pin(Long threadId, Pin pin) throws ConfigurationException, IOException, SQLException;
 }

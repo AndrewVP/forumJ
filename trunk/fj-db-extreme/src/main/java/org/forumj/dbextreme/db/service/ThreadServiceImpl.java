@@ -22,6 +22,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.ThreadService;
 import org.forumj.common.exception.DBException;
+import org.forumj.common.web.Pin;
 import org.forumj.dbextreme.db.entity.*;
 
 /**
@@ -72,6 +73,10 @@ public class ThreadServiceImpl extends FJService implements ThreadService {
    @Override
    public boolean checkThreadExist(Long id) throws IOException, SQLException, ConfigurationException {
       return getThreadDao().checkThreadExist(id);
+   }
+
+   public void pin(Long threadId, Pin pin) throws ConfigurationException, IOException, SQLException {
+      getThreadDao().pin(threadId, pin);
    }
 
 }

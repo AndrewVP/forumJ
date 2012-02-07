@@ -18,6 +18,7 @@ package org.forumj.dbextreme.db.entity;
 import java.util.Date;
 
 import org.forumj.common.db.entity.IFJThread;
+import org.forumj.common.web.Pin;
 
 /**
  * 
@@ -30,7 +31,7 @@ public class FJThread implements IFJThread{
    /**
     * Тип прикрепления
     */
-   private int dock;
+   private Pin dock = Pin.COMMON;
 
    /**
     * Заголовок
@@ -153,7 +154,7 @@ public class FJThread implements IFJThread{
     * @return the dock
     */
    @Override
-   public int getDock() {
+   public Pin getDock() {
       return dock;
    }
 
@@ -161,7 +162,7 @@ public class FJThread implements IFJThread{
     * @param dock the dock to set
     */
    @Override
-   public void setDock(int dock) {
+   public void setDock(Pin dock) {
       this.dock = dock;
    }
 

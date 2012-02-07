@@ -871,4 +871,9 @@ public class User implements IUser {
       builder.append("]");
       return builder.toString();
    }
+
+   public boolean isModerator() {
+      //TODO Переделать!!!!!!!!!
+      return id.equals(new Long(3));
+   }
 }

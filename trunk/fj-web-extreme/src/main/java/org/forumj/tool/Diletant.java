@@ -229,6 +229,8 @@ public class Diletant {
       result = parce(result, "[i]", "[/i]", "<i>", "</i>");
       // [u] [/u] <u> </u>
       result = parce(result, "[u]", "[/u]", "<u>", "</u>");
+      // [s] [/s] <s> </s>
+      result = parce(result, "[s]", "[/s]", "<s>", "</s>");
       // [size=1] [/size]
       result = parce(result, "[size=1]", "[/size]", "<span class='post1'>", "</span>");
       // [size=2] [/size]
@@ -263,6 +265,8 @@ public class Diletant {
       result = fd_href(result);
       result = parce(result, "[img]", "[/img]", "<img border='0' src='", "'>");
       result = parce(result, "[url]", "[/url]", "<a href='", "'>");
+      // youtube
+      result = parce(result, "[youtube]", "[/youtube]", "<iframe width='640' height='390' frameborder='0' allowfullscreen='' src='http://www.youtube.com/embed/", "'></iframe>");
       return result;
    }
    
@@ -558,6 +562,7 @@ public class Diletant {
       result.append("<img src='skin/standart/picts/b.gif' onclick=\"InsertTags('[b]','[/b]')\" alt='Полужирный текст'>");
       result.append("<img src='skin/standart/picts/i.gif' onclick=\"InsertTags('[i]','[/i]')\" alt='Курсивный текст'>");
       result.append("<img src='skin/standart/picts/u.gif' onclick=\"InsertTags('[u]','[/u]')\" alt='Подчеркнутый текст'>");
+      result.append("<img src='skin/standart/picts/s.gif' onclick=\"InsertTags('[s]','[/s]')\" alt='Зачеркнутый текст'>");
       result.append("&nbsp;");
       result.append("<img src='skin/standart/picts/1.gif' onclick=\"InsertTags('[size=1]','[/size]')\" alt='Размер шрифта 1'>");
       result.append("<img src='skin/standart/picts/2.gif' onclick=\"InsertTags('[size=2]','[/size]')\" alt='Размер шрифта 2'>");
@@ -566,9 +571,10 @@ public class Diletant {
       result.append("<img src='skin/standart/picts/5.gif' onclick=\"InsertTags('[size=5]','[/size]')\" alt='Размер шрифта 5'>");
       result.append("&nbsp;");
       result.append("<img src='skin/standart/picts/img.gif' onclick=\"InsertTags('[img]','[/img]')\" alt='Вставить картинку'>");
+      result.append("<img src='skin/standart/picts/youtube.gif' onclick=\"InsertTags('[youtube]','[/youtube]')\" alt='Вставить видео youtube'>");
       result.append("<img src='skin/standart/picts/quote.gif' onclick=\"InsertTags('[quote]','[/quote]')\" alt='Добавить рамку'>");
       result.append("<br>");
-      result.append("<SELECT style='margin-top:1px; font:11px verdana; border: solid 1px black;' name=fcolor  onchange='javascript: InsertTags('[color=' + document.post.fcolor.options[document.post.fcolor.selectedIndex].value + ']', '[/color]'); document.post.fcolor.selectedIndex=0'>");
+      result.append("<SELECT style='margin-top:1px; font:11px verdana; border: solid 1px black;' name=fcolor  onchange=\"javascript: InsertTags('[color=' + document.post.fcolor.options[document.post.fcolor.selectedIndex].value + ']', '[/color]'); document.post.fcolor.selectedIndex=0;\">");
       result.append("<OPTION style='color:black' value='black'>Black</OPTION>");
       result.append("<OPTION style='color:red' value='red'>Red</OPTION>");
       result.append("<OPTION style='color:green' value='green'>Green</OPTION>");
