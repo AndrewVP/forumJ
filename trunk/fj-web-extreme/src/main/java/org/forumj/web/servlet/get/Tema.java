@@ -419,6 +419,9 @@ public class Tema extends FJServlet {
       }
       buffer.append("<span class='tbtextnread'>" + HtmlChars.convertHtmlSymbols(author.getNick()) + "</span>&nbsp;•");
       buffer.append("&nbsp;<img border='0' src='smiles/icon_minipost.gif'>&nbsp;<span class='posthead'>" + postTime.toString("dd.MM.yyyy HH:mm") + "</span>&nbsp;");
+      if (user.isModerator()){
+         buffer.append("•&nbsp;<span class='posthead'>" + post.getHead().getIp() + "</span>&nbsp;" );
+      }
       if (!ignored && user.isLogined() && post.getHead().getAuth() != user.getId()){
          buffer.append("•&nbsp;<a class='posthead' href='ignor.php?idi=" + post.getHead().getAuth() + "&idt=" + thread.getId() + "&idp=" + post.getId() + "&pg=" + pageNumber + "' rel='nofollow'>" + locale.getString("mess68") + "</a>");
       }
@@ -620,10 +623,10 @@ public class Tema extends FJServlet {
 
          buffer.append("<td align='CENTER' class='internal'>");
          buffer.append(questNode.getGol() + "</td>");
-         buffer.append("<td class='internal'><TABLE cellSpacing=0 cellPadding=0 width='" + Math.floor((questNode.getGol()/(nvcs == 0 ? 1 : nvcs))*300) + "' border=0><TR><TD align=left bgColor=red><FONT size=-3>&nbsp;</FONT></TD></TR></TABLE>");
+         buffer.append("<td class='internal'><TABLE cellSpacing=0 cellPadding=0 width='" + Math.floor((questNode.getGol().doubleValue()/(nvcs == 0 ? 1 : nvcs))*300) + "' border=0><TR><TD align=left bgColor=red><FONT size=-3>&nbsp;</FONT></TD></TR></TABLE>");
          buffer.append("</td>");
          buffer.append("<td class='internal'>");
-         buffer.append(Math.floor((questNode.getGol()/(nvcs == 0 ? 1 : nvcs))*100) + "%");
+         buffer.append(Math.floor((questNode.getGol().doubleValue()/(nvcs == 0 ? 1 : nvcs))*1000)/10 + "%");
          buffer.append("</td></tr>");
 
       }
