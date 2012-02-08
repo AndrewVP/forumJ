@@ -1,0 +1,75 @@
+﻿/*Копирайт*/
+.copy        { font-family: serif; font-size: 8pt; font-weight:bold }
+/* Ссылки */
+a:link   { text-decoration: none; color: #000000}
+a:visited {text-decoration: none; color: #000000; font-style:italic}
+a:hover  {color: #000000; text-decoration: underline}
+
+/*Форма без полей*/
+.frmsmall { padding:0px; margin:0px }
+
+/* Меню профиля */
+.mnuprof { font-family: Verdana; font-size: 10pt; color: #000000 }
+
+/* Текст поста */
+.post { font-family: Verdana; font-size: 10pt; color: #000000 }
+
+/* Заголовок поста служебная инфа */
+.posthead { font-family: Verdana; font-size: 8pt; color: #000000 }
+
+/*Таблица профиля, результаты голосования*/
+
+/*Внешняя граница*/
+.control     {width:100%; border-style:ridge; border-width:2px; border-collapse: collapse; background-color:#f7f7f7; border-color:#f1f7fC}
+
+/*Цитаты*/
+.tdquote     {width:100%; border-style:ridge; border-width:2px; border-collapse: collapse; background-color:#f7f7f7; border-color:#f1f7fC}
+
+/* Текст цитаты */
+.quote { font-family: Verdana; font-size: 8pt; color: #000000 }
+
+/*Заголовки*/
+.heads   {background-color:#D1D7DC}
+
+/*Внутренности списка веток*/
+.trees   {background-color:#f7f7f7}
+
+/*Внутренние границы*/
+.internal     {border:1px ridge; border-collapse: collapse; padding: 3px; border-color:#f1f7fC;}
+
+/*Таблица "разметки" контента*/
+.content {border-collapse: collapse; border-width:0px; width:100%}
+
+/*Строки таблицы веток*/
+.matras   {background-color:#e1e3e5}
+
+/*Левая ячейка таблицы голосования*/
+.voice_left {padding:5px; width:30%; vertical-align: top}
+.voice_right {padding:5px; width:70%}
+
+/* Текст внутри таблиц профиля, голосования (не везде вставлен) */
+.tbtext { font-family: Verdana; font-size: 10pt; color: #000000 }
+.tbtextnread { font-family: Verdana; font-size: 10pt; color: #000000; font-weight:bold }
+
+/* Меню форума */
+.mnuforum { font-family: Verdana; font-size: 9pt; font-weight: normal; color: #000000 }
+
+/* Ветки форума */
+.trforum { font-family: Verdana; font-size: 10pt; font-weight: normal; color: #000000 }
+
+/* Заголовки таблицы форума */
+.hdforum { font-family: Verdana; font-size: 8pt; font-weight: bold; color: #000000 }
+
+/* Ник */
+.nik { font-family: Arial; font-size: 12pt; font-weight: bold; color: #000000 }
+
+/* Ники в списке посетителей */
+.nick { font-family: Arial; font-size: 10pt; font-weight: bold; color: #000000 }
+
+/*ячейки таблицы счетчика страниц*/
+.page {border-style:ridge; border-width:2px; padding-left: 2px; padding-right: 2px; 
+               padding-top: 0; padding-bottom: 0; background-color:#D1D7DC; border-color:#f1f7fC}
+               
+/*ячейка текущей страницы таблицы счетчика страниц*/
+.pagecurrent {border: 2px ridge #f1f7fC; padding-left: 2px; padding-right: 2px; 
+               padding-top: 0; padding-bottom: 0; background-color:#F7F7F7}

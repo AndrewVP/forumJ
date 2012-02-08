@@ -1,0 +1,1 @@
+INSERT INTO ignor (type, user, ignor, begin, end) VALUES (1, ?, ?, NOW(), ADDDATE(NOW(), INTERVAL 7 DAY))

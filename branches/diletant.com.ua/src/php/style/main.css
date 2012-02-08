@@ -1,0 +1,23 @@
+.a       { font-family: Arial; font-size: 8pt; font-weight: bold; color:#000000 }
+.TM          { border-bottom:2px solid #336033; background-color:#C0C5C0 }
+.BM          { border-top:2px solid #336033; background-color:#C0C5C0 }
+.DL      { border:2px solid #336033; background-color: #F1F1F1; padding-left:2px; padding-right:5px; padding-top:2px; padding-bottom:2px }
+.DH      { background-color: #DFE2DF; padding-left:5px; padding-right:0; padding-top:0; padding-bottom:0 }
+.N1      { font-family: Tahoma; font-size: 10pt; color: #000000; text-indent: 5; margin-left: 5; margin-right: 5; margin-bottom: 5 }
+.HT      { font-family: Times New Roman; font-size: 8pt; color: 'red'; font-weight: bold }
+.LN      { font-family: Tahoma; font-size: 10px; text-align: justify; color: #000000; text-decoration: none }
+.NEWS    { font-family: Tahoma; font-size: 8pt; text-align: justify; text-indent: 5 }
+.DT      { font-family: Times New Roman; font-size: 8pt; text-align:left; text-indent:5; color:#335033 }
+.C1      { font-family: Tahoma; font-size: 10pt; text-align: justify; text-indent: 5 }
+.HT2     { font-family: Tahoma; font-size: 10pt; font-weight: bold }
+.T2      { font-family: Tahoma; font-size: 8pt }
+.T1      { font-family: Tahoma; font-size: 8pt; text-align: justify; text-indent: 7; color="#000000"}
+.HT1     { font-family: Tahoma; font-size: 12pt; font-weight: bold; text-align: center }
+.d       { font-family: Arial; font-size: 10pt; font-weight: bold }
+.c       { font-family: Times New Roman; font-size: 8pt; color: #000000; font-style: italic }
+.b       { font-family: Arial Black; font-size: 10pt; color:#FFFFFF; margin-left:5 }
+.HN2     { font-family: Tahoma; font-size: 10pt; font-weight: bold }
+.N2      { font-family: Tahoma; font-size: 8pt }
+a:link   { text-decoration: none; color: #000000}
+a:visited {text-decoration: none; color: #000000; font-style:italic}
+a:hover  {color: #000000; text-decoration: underline}
