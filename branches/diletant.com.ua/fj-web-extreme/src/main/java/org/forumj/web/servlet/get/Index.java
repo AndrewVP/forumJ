@@ -495,7 +495,7 @@ public class Index extends FJServlet {
                k2=k2+1;
             }
             if (k==1){
-               buffer.append("<a href='tema.php?page=" +k+ "&id=" +thread.getId().toString()+ "'>" +k+ "</a>,&nbsp;&nbsp;");
+               buffer.append("<a href='tema.php?page=" +k+ "&id=" +thread.getId().toString()+ "'>" +k+ "</a>,&nbsp;");
             }
             if ((Math.floor((pcount+1)/user.getPt())-k2*10 + 1)< 10 && (k-k2*10) != 0 && k!=1){
                buffer.append("<a href='tema.php?page=" +k+ "&id=" +thread.getId().toString()+ "'>" +k+ "</a>");
