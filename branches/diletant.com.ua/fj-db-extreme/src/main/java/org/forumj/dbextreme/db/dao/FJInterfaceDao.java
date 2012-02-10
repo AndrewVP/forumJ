@@ -111,6 +111,9 @@ public class FJInterfaceDao extends FJDao {
       boolean error = true;
       try {
          conn = connection == null ? getConnection() : connection;
+         if (connection == null){
+            conn.setAutoCommit(false);
+         }
          st = conn.prepareStatement(query);
          st.setLong(1, interfaceId);
          st.setLong(2, folderId);

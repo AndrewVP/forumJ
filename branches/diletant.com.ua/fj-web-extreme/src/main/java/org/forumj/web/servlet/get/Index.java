@@ -355,7 +355,7 @@ public class Index extends FJServlet {
             buffer.append("<span class=mnuforum>" + locale.getString("mess83") + "</span>");
             buffer.append("<select class='mnuforumSm' size='1' name='VIEW'>");
             buffer.append("<option selected value='" + foldersList.get(0).getId() + "'><span class=mnuprof>" + foldersList.get(0).getName() + "</span></option>");
-            for (int fl1=1; fl1< foldersList.size()-1; fl1++){
+            for (int fl1=1; fl1< foldersList.size(); fl1++){
                buffer.append("<option value='" + foldersList.get(fl1).getId() + "'><span class=mnuprof>" + foldersList.get(fl1).getName() + "</span></option>");
             }        
             buffer.append("</select>");
@@ -519,6 +519,7 @@ public class Index extends FJServlet {
          if (thread.getDock() != NOTICE){
             buffer.append("<a href='" + FJUrl.PIN_THREAD + "?id=" + thread.getId() + "&pin=" + NOTICE.getCode() + "'>" +locale.getString("MSG_NOTICE_PIN")+ "</a>&nbsp;");
          }
+         buffer.append("<a href='delone.php?id=" +thread.getId().toString()+ "&usr=0&page=" +thread.getPg()+ "'>" + locale.getString("mess70") + "</a>");
          buffer.append("</font>");
       }
       buffer.append("</p></td>");
