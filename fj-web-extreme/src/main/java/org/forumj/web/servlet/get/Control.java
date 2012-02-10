@@ -919,7 +919,7 @@ public class Control extends FJServlet {
          IFJInterface interf = interfaceService.findInterface(user, viewId);
          // Выбираем список папок в интерфейсе
          List<IFJFolder> folders = folderService.findAllFolders(user, interf);
-         buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess78") + "<u>" + interf.getName() + "</u></b></div>");
+         buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess78") + "&nbsp;<u>" + interf.getName() + "</u></b></div>");
          buffer.append("<form method='POST' class='content' action='delvfolder.php'>");
          buffer.append("<table class='control'><tr class=heads>");
          // Заголовки таблицы
@@ -993,7 +993,7 @@ public class Control extends FJServlet {
          buffer.append("<td colspan=2 class='internal' align='right'>"); 
          buffer.append("<span class=tbtextnread>" + locale.getString("mess69") + "&nbsp;&nbsp;</span>");
          buffer.append("<select size='1' name='ACT'>");
-         buffer.append("<option selected value='add'><span class='mnuprof'>" + locale.getString("mess79") + interf.getName() + "&nbsp;&nbsp;</span></option>");
+         buffer.append("<option selected value='add'><span class='mnuprof'>" + locale.getString("mess79") + "&nbsp;" + interf.getName() + "&nbsp;&nbsp;</span></option>");
          buffer.append("</select>&nbsp;");
          buffer.append("<input type='hidden' value='" + foldersAmount + "' name='NRW'>");
          // Прередаем нужные пераметры...

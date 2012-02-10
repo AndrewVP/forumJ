@@ -16,9 +16,7 @@
 package org.forumj.common.tool;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
-
-import com.humaorie.strtotime.StrToTime;
+import java.util.Date;
 
 /**
  * 
@@ -55,63 +53,9 @@ public class Time {
     * @param unknown_type $mask
     */
    public String toString(String mask){
-      return (new SimpleDateFormat(mask)).format(new Date(timestamp - HOUR));
+      return (new SimpleDateFormat(mask)).format(new Date(timestamp));
    }
    
-   /**
-    * Удаляет из времени часы, минуты и секунды
-    *
-    */
-   public void setClearTime(){
-       this.timestamp = StrToTime.strtotime(toString("dd.MM.yyyy HH:mm")).getTime();
-   }
-   
-   /**
-    * Возвращает метку времени без часов, минут и секунд
-    *
-    */
-   public long getClearTime(){
-       return StrToTime.strtotime(this.toString("dd.MM.yyyy HH:mm")).getTime();
-   }
-   
-   /**
-    * Устанавливает метку времени
-    *
-    * @param unknown_type $timestamp
-    */
-   public void setTimestamp(long timestamp){
-      this.timestamp = timestamp;
-   }
-   
-   /**
-    * Возвращает метку времени
-    *
-    * @return unknown
-    */
-   public long getTimestamp(){
-      return this.timestamp;
-   }
-   
-   /**
-    * Добавляет к метке времени соответствующее количество периодов
-    *
-    * @param unknown_type $value
-    * @param unknown_type $seconds
-    */
-   public void add(long value, long seconds){
-      this.timestamp += value * seconds;
-   }
-
-   /**
-    * Вычитает из метки времени соответствующее количество периодов
-    *
-    * @param unknown_type $value
-    * @param unknown_type $seconds
-    */
-   public void sub(long value, long seconds){
-      this.timestamp -= value * seconds;
-   }
-
    public static String date(String mask , long timestamp){
       return (new Time(timestamp)).toString(mask);
    }
