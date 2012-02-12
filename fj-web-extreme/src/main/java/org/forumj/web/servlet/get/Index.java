@@ -15,10 +15,10 @@
  */
 package org.forumj.web.servlet.get;
 
+import static org.forumj.common.web.Pin.*;
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
-import static org.forumj.common.web.Pin.*;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -293,7 +293,7 @@ public class Index extends FJServlet {
          // Выводим строки
          for (int threadIndex = 0; threadIndex < threadsList.size(); threadIndex++) {
             IFJThread thread = threadsList.get(threadIndex);
-            buffer.append(writeThread(thread, user, locale, threadIndex));
+            buffer.append(writeThread(thread, user, locale, threadIndex, pageNumber));
          }
          // Главные ссылки внизу страницы
          buffer.append("</table>");
@@ -430,7 +430,7 @@ public class Index extends FJServlet {
       writer.write(out.replace("ъъ_ъ", format.format(allTime/1000)));
    }
 
-   private StringBuffer writeThread(IFJThread thread, IUser user, LocaleString locale, int threadIndex) throws InvalidKeyException{
+   private StringBuffer writeThread(IFJThread thread, IUser user, LocaleString locale, int threadIndex, int pageNumber) throws InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       if (thread.getDisain() == 1) { 
          buffer.append("<tr class=trees >");
@@ -440,7 +440,9 @@ public class Index extends FJServlet {
       // Картинки
       // Пиктограммка опроса
       buffer.append("<td width='10' align='center' style='padding:0px 5px 0px 5px'>");
-      if (thread.getType() == 1 || thread.getType() == 2){
+      if (thread.isClosed()){
+         buffer.append("<img border='0' src='skin/standart/picts/closed.png'>");
+      }else if (thread.isQuest()){
          buffer.append("<img border='0' src='smiles/quest.gif'>");
       }else{
          if (thread.getDock()== NOTICE){
@@ -459,7 +461,7 @@ public class Index extends FJServlet {
       // Добавляем смайлики
       str_head = Diletant.fd_head(str_head);
       // Опрос? Добавляем "метку"
-      if (thread.getType() == 1 || thread.getType() == 2){
+      if (thread.isQuest()){
          str_head="<b>" +locale.getString("mess9")+ "</b> " +str_head;
       }
       // Подписываем прикрепленные
@@ -479,7 +481,7 @@ public class Index extends FJServlet {
       }
       // Cсылки на страницы в ветке
       int pcount = thread.getPcount();
-      if (pcount+1>user.getPt() || user.isModerator()) {
+      if (pcount+1>user.getPt() || user.isModerator()|| thread.getAuthId().equals(user.getId())) {
          buffer.append("<br />");
       }
       if (pcount+1>user.getPt()) {
@@ -519,7 +521,16 @@ public class Index extends FJServlet {
          if (thread.getDock() != NOTICE){
             buffer.append("<a href='" + FJUrl.PIN_THREAD + "?id=" + thread.getId() + "&pin=" + NOTICE.getCode() + "'>" +locale.getString("MSG_NOTICE_PIN")+ "</a>&nbsp;");
          }
-         buffer.append("<a href='delone.php?id=" +thread.getId().toString()+ "&usr=0&page=" +thread.getPg()+ "'>" + locale.getString("mess70") + "</a>");
+         buffer.append("<a href='delone.php?id=" +thread.getId().toString()+ "&usr=0&page=" + pageNumber + "'>" + locale.getString("mess70") + "</a>");
+         buffer.append("&nbsp;</font>");
+      }
+      if (user.isModerator() || thread.getAuthId().equals(user.getId())){
+         buffer.append("<font face='Verdana' size='1pt'>");
+         if (thread.isClosed()){
+            buffer.append("<a href='close?id=" +thread.getId().toString()+ "&close=0&page=" + pageNumber + "'>" + locale.getString("MSG_OPEN_THREAD") + "</a>");
+         }else{
+            buffer.append("<a href='close?id=" +thread.getId().toString()+ "&close=1&page=" + pageNumber + "'>" + locale.getString("MSG_CLOSE_THREAD") + "</a>");
+         }
          buffer.append("</font>");
       }
       buffer.append("</p></td>");

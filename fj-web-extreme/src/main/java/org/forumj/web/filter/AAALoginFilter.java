@@ -35,7 +35,7 @@ import org.forumj.common.db.service.*;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @WebFilter(servletNames={INDEX, VIEW_THREAD, LOGIN, NEW_THREAD, NEW_QUESTION, SETTINGS, REGISTRATION, ADD_THREAD, ADD_POST, SEND_PIVATE_MESSAGE, ADD_IGNOR, ADD_QUESTION
-      , ADD_SUBSCRIBE, ADD_VOTE})
+      , ADD_SUBSCRIBE, ADD_VOTE, CLOSE_THREAD, PIN_THREAD})
 public class AAALoginFilter implements Filter {
 
    /**

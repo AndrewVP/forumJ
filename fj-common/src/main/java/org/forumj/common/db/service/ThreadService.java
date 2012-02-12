@@ -60,4 +60,6 @@ public interface ThreadService {
    public void setSeen(IUser user, Long threadId) throws ConfigurationException, SQLException, IOException;
    
    public void pin(Long threadId, Pin pin) throws ConfigurationException, IOException, SQLException;
+
+   public void close(Long threadId, boolean closed) throws ConfigurationException, IOException, SQLException;
 }
