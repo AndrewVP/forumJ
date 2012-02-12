@@ -79,4 +79,9 @@ public class ThreadServiceImpl extends FJService implements ThreadService {
       getThreadDao().pin(threadId, pin);
    }
 
+   @Override
+   public void close(Long threadId, boolean closed) throws ConfigurationException, IOException, SQLException {
+      getThreadDao().close(threadId, closed);
+   }
+
 }

@@ -25,6 +25,7 @@ import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.common.tool.*;
+import org.forumj.common.web.ThreadType;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
@@ -103,7 +104,7 @@ public class Quest extends FJServlet {
                      thread.setSnid(0);
                      thread.setFolderId((long) 1);
                      thread.setPcount(1);
-                     thread.setType(usersCanAddAnswers ? 2 :1);
+                     thread.setType(ThreadType.valueOfInteger(usersCanAddAnswers ? 2 :1));
                      thread.setAnswers(answers);
                      thread.setQuestion(question);
                      treadService.create(thread, post);

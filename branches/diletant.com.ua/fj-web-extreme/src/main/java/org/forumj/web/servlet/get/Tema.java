@@ -28,6 +28,7 @@ import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.common.tool.*;
+import org.forumj.common.web.ThreadType;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
@@ -234,7 +235,7 @@ public class Tema extends FJServlet {
          // Главное "меню"
          buffer.append(menu(request, user, locale, false));
          buffer.append("</table></td></tr>");
-         if (user.isLogined()){
+         if (user.isLogined() && !user.isBanned() && !thread.isClosed()){
             //Форма подписки/отписки  на ветку
             //Мы уже подписаны?
             String action = "";
@@ -524,7 +525,7 @@ public class Tema extends FJServlet {
       buffer.append("<tr><td align=\"CENTER\">");
       List<IQuestNode> nodes = post.getAnswers();
       boolean userVoted = voiceService.isUserVoted(thread.getId(), user.getId());
-      if (user.isLogined() && !userVoted){
+      if (user.isLogined() && !userVoted && !thread.isClosed()){
          buffer.append("<form  action='voice.php' method='POST'><table class=content>");
          for (int nodeIndex = 1; nodeIndex < nodes.size(); nodeIndex++) {
             IQuestNode questNode = nodes.get(nodeIndex);
@@ -563,7 +564,7 @@ public class Tema extends FJServlet {
          buffer.append("</table></form>");
          buffer.append("</td></tr>");
          //Users can add custom answers 
-         if (thread.getType() == 2){
+         if (thread.getType() == ThreadType.QUEST2){
             boolean userVotes = false;
             for (int nodeIndex = 1; nodeIndex < nodes.size(); nodeIndex++) {
                IQuestNode questNode = nodes.get(nodeIndex);
@@ -631,7 +632,7 @@ public class Tema extends FJServlet {
 
       }
       buffer.append("</table>");
-      if (user.isLogined() && userVoted){
+      if (user.isLogined() && userVoted && !thread.isClosed()){
          buffer.append("<form method=\"POST\" action=\"delvoice.php\" align=\"CENTER\">");
          buffer.append("<input type=hidden name=\"IDT\" size=\"20\" value=\"" + thread.getId() + "\">");
          buffer.append(fd_form_add(user));

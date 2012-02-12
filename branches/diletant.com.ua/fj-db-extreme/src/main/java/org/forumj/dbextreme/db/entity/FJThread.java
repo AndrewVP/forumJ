@@ -18,13 +18,15 @@ package org.forumj.dbextreme.db.entity;
 import java.util.Date;
 
 import org.forumj.common.db.entity.IFJThread;
-import org.forumj.common.web.Pin;
+import org.forumj.common.web.*;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 public class FJThread implements IFJThread{
+   
+   private boolean closed = false;
    
    private Long lastPostId = null;
 
@@ -86,7 +88,7 @@ public class FJThread implements IFJThread{
    /**
     * Тип ветки
     */
-   private int type;
+   private ThreadType type = ThreadType.COMMON;
 
    /**
     * Папка
@@ -298,7 +300,7 @@ public class FJThread implements IFJThread{
     * @return the type
     */
    @Override
-   public int getType() {
+   public ThreadType getType() {
       return type;
    }
 
@@ -306,7 +308,7 @@ public class FJThread implements IFJThread{
     * @param type the type to set
     */
    @Override
-   public void setType(int type) {
+   public void setType(ThreadType type) {
       this.type = type;
    }
 
@@ -424,7 +426,17 @@ public class FJThread implements IFJThread{
 
    @Override
    public boolean isQuest(){
-      return type == 1 || type == 2;
+      return type == ThreadType.QUEST1 || type == ThreadType.QUEST2;
+   }
+
+   @Override
+   public boolean isClosed() {
+      return closed;
+   }
+
+   @Override
+   public void setClosed(boolean closed) {
+      this.closed = closed; 
    }
    
 }

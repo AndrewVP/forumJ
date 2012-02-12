@@ -205,6 +205,8 @@ public class QueryBuilder {
    private static String seenByUserQuery = null;
 
    private static String pinQuery = null;
+
+   private static String closeThreadQuery = null;
    
    private static String seenByGuestQuery = null;
    
@@ -858,6 +860,13 @@ public class QueryBuilder {
          pinQuery = loadQuery("sql/pin.sql");
       }
       return pinQuery;
+   }
+   
+   public static String getCloseThreadQuery() throws IOException{
+      if (closeThreadQuery == null){
+         closeThreadQuery = loadQuery("sql/close_thread.sql");
+      }
+      return closeThreadQuery;
    }
    
    public static String getSeenByGuestQuery() throws IOException{

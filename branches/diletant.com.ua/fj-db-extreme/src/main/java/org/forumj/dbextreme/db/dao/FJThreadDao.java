@@ -20,7 +20,7 @@ import java.util.Date;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.exception.DBException;
-import org.forumj.common.web.Pin;
+import org.forumj.common.web.*;
 import org.forumj.dbextreme.db.entity.*;
 
 /**
@@ -44,7 +44,7 @@ public class FJThreadDao extends FJDao {
          st.setDate(3, new java.sql.Date(date.getTime()));
          st.setDate(4, new java.sql.Date(date.getTime()));
          st.setString(5, thread.getNick());
-         st.setInt(6, thread.getType());
+         st.setInt(6, thread.getType().getType());
          st.executeUpdate();
          ResultSet idRs = st.getGeneratedKeys();
          if (idRs.next()){
@@ -139,9 +139,10 @@ public class FJThreadDao extends FJDao {
             thread.setSnid(rs.getInt(SEEN_ID_FIELD_NAME));
             thread.setSnall(rs.getInt(SEEN_ALL_FIELD_NAME));
             thread.setDock(Pin.valueOfInteger(rs.getInt(DOCK_FIELD_NAME)));
-            thread.setType(rs.getInt(TYPE_FIELD_NAME));
+            thread.setType(ThreadType.valueOfInteger(rs.getInt(TYPE_FIELD_NAME)));
             thread.setFolderId(rs.getLong(FOLDER_ID_FIELD_NAME));
             thread.setPcount(rs.getInt(POSTS_COUNT_FIELD_NAME));
+            thread.setClosed(rs.getBoolean(CLOSED_FIELD_NAME));
          }
       }finally{
          readFinally(conn, st);
@@ -162,7 +163,8 @@ public class FJThreadDao extends FJDao {
          st.setInt(6, thread.getDock().getCode());
          st.setLong(7, thread.getFolderId());
          st.setInt(8, thread.getPcount());
-         st.setLong(9, thread.getId());
+         st.setBoolean(9, thread.isClosed());
+         st.setLong(10, thread.getId());
          st.executeUpdate();
       }finally{
          readFinally(null, st);
@@ -401,6 +403,8 @@ public class FJThreadDao extends FJDao {
          "titles.lpostuser, "+
          "titles.lpostnick, "+
          "titles.id_last_post, "+
+         "titles.closed, "+
+         "titles.auth, "+
          folderName + 
          "users.nick "+
          "FROM "+
@@ -459,7 +463,9 @@ public class FJThreadDao extends FJDao {
             thr.setPcount(rs.getInt("npost")-1);
             thr.setSnid(rs.getInt("seenid"));
             thr.setSnall(rs.getInt("seenall"));
-            thr.setType(rs.getInt("type"));
+            thr.setType(ThreadType.valueOfInteger(rs.getInt("type")));
+            thr.setClosed(rs.getBoolean("closed"));
+            thr.setAuthId(rs.getLong("auth"));
             thr.setFolder(rs.getString("_flname"));
             result.getThreads().add(thr);
             disain = disain * -1;
@@ -505,6 +511,21 @@ public class FJThreadDao extends FJDao {
          conn = getConnection();
          st = conn.prepareStatement(query);
          st.setInt(1, pin.getCode());
+         st.setLong(2, threadId);
+         st.executeUpdate();
+      }finally{
+         readFinally(conn, st);
+      }
+   }
+
+   public void close(Long threadId, boolean closed) throws IOException, ConfigurationException, SQLException {
+      String query = getCloseThreadQuery();
+      PreparedStatement st = null;
+      Connection conn = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setBoolean(1, closed);
          st.setLong(2, threadId);
          st.executeUpdate();
       }finally{

@@ -604,14 +604,12 @@ public class Diletant {
       buffer.append("<html>");
       buffer.append("<head>");
       buffer.append("<meta http-equiv='content-type' content='text/html; charset=windows-1251'>");
-      buffer.append("<meta http-equiv='Refresh' content='5; url=auth.php?id=4.php'>");
+      buffer.append("<meta http-equiv='Refresh' content='0; url=index.php'>");
       buffer.append("<title>");
-      buffer.append("Мы не во всем Дилетанты!");
       buffer.append("</title>");
       buffer.append("</head>");
       // Цвет фона страницы
       buffer.append("<body bgcolor=#EFEFEF>");
-      buffer.append("<font size='5'><b>Входить надо как все нормальные люди!</b></font>");
       buffer.append("</body>");
       buffer.append("</html>");
       return buffer;
