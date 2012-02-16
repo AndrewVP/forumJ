@@ -49,6 +49,15 @@ public class Post extends FJServlet {
                      session.setAttribute("locale", new LocaleString(localeName, "messages", localeName));
                   }
                   buffer.append(successPostOut("0", FJUrl.SETTINGS + "?id=12"));
+                  break;
+               case SET_EMAIL:
+                  String emailParameter = request.getParameter("mail");
+                  if (emailParameter != null && !emailParameter.trim().isEmpty()){
+                     user.setEmail(emailParameter);
+                     FJServiceHolder.getUserService().update(user);
+                  }
+                  buffer.append(successPostOut("0", FJUrl.SETTINGS + "?id=13"));
+                  break;
                default:
                   break;
                }

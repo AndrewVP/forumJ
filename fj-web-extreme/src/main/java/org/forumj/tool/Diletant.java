@@ -29,7 +29,13 @@ public class Diletant {
    public static String fd_head(String result){
       result = result.replace("[span class='found']", "<span class='found'>"); 
       result = result.replace("[/span]", "</span>"); 
-      result = fd_smiles(result);
+      result = fd_smiles(result, false);
+      result = fd_cenz(result);
+      return result;
+   }
+
+   public static String fd_head_for_mail(String result){
+      result = fd_smiles(result, true);
       result = fd_cenz(result);
       return result;
    }
@@ -41,103 +47,104 @@ public class Diletant {
       return text;
    }
 
-   public static String fd_smiles(String tmptxt) {
-      tmptxt = tmptxt.replace(":)","<img border='0' src='smiles/smile_.gif'>");
-      tmptxt = tmptxt.replace(":(","<img border='0' src='smiles/sad.gif'>");
-      tmptxt=tmptxt.replace(":D","<img border='0' src='smiles/biggrin.gif'>");
-      tmptxt=tmptxt.replace(":[russian]","<img border='0' src='smiles/russian.gif'>");
-      tmptxt=tmptxt.replace(":[pioners]","<img border='0' src='smiles/take_example.gif'>");
-      tmptxt=tmptxt.replace(":[beer]","<img border='0' src='smiles/drinks.gif'>");
-      tmptxt=tmptxt.replace(":[no-no]","<img border='0' src='smiles/acute.gif'>");
-      tmptxt=tmptxt.replace(":[nea]","<img border='0' src='smiles/nea.gif'>");
-      tmptxt=tmptxt.replace(":[babruysk]","<img border='0' src='smiles/to_babruysk.gif'>");
-      tmptxt=tmptxt.replace(":[ohi]","<img border='0' src='smiles/girl_sigh.gif'>");
-      tmptxt=tmptxt.replace(":[klizma]","<img border='0' src='smiles/girl_hospital.gif'>");
-      tmptxt=tmptxt.replace(":[king]","<img border='0' src='smiles/king2.gif'>");
-      tmptxt=tmptxt.replace(":g)","<img border='0' src='smiles/girl_smile.gif'>");
-      tmptxt=tmptxt.replace(":g(","<img border='0' src='smiles/girl_sad.gif'>");
-      tmptxt=tmptxt.replace(":[blum]","<img border='0' src='smiles/girl_blum.gif'>");
-      tmptxt=tmptxt.replace(":[ghaha]","<img border='0' src='smiles/girl_haha.gif'>");
-      tmptxt=tmptxt.replace(":[gwacko]","<img border='0' src='smiles/girl_wacko.gif'>");
-      tmptxt=tmptxt.replace(":[gmad]","<img border='0' src='smiles/girl_mad.gif'>");
-      tmptxt=tmptxt.replace(":[ghide]","<img border='0' src='smiles/girl_hide.gif'>");
-      tmptxt=tmptxt.replace(":[glove]","<img border='0' src='smiles/girl_in_love.gif'>");
-      tmptxt=tmptxt.replace(":[gfish]","<img border='0' src='smiles/girl_prepare_fish.gif'>");
-      tmptxt=tmptxt.replace(":[gcrazy]","<img border='0' src='smiles/girl_crazy.gif'>");
-      tmptxt=tmptxt.replace(":[mblum]","<img border='0' src='smiles/blum3.gif'>");
-      tmptxt=tmptxt.replace(":[toclue]","<img border='0' src='smiles/to_clue.gif'>");
-      tmptxt=tmptxt.replace(":[snooks]","<img border='0' src='smiles/snooks.gif'>");
-      tmptxt=tmptxt.replace(":[scare]","<img border='0' src='smiles/scare.gif'>");
-      tmptxt=tmptxt.replace(":[scare2]","<img border='0' src='smiles/scare2.gif'>");
-      tmptxt=tmptxt.replace(":[gwerewolf]","<img border='0' src='smiles/girl_werewolf.gif'>");
-      tmptxt=tmptxt.replace(":[gdevil]","<img border='0' src='smiles/girl_devil.gif'>");
-      tmptxt=tmptxt.replace(":[friends]","<img border='0' src='smiles/friends.gif'>");
-      tmptxt=tmptxt.replace(":[taunt]","<img border='0' src='smiles/taunt.gif'>");
-      tmptxt=tmptxt.replace(":[offtopic]","<img border='0' src='smiles/offtopic.gif'>");
-      tmptxt=tmptxt.replace(":[queen]","<img border='0' src='smiles/queen.gif'>");
-      tmptxt=tmptxt.replace(":[butcher]","<img border='0' src='smiles/butcher.gif'>");
-      tmptxt=tmptxt.replace(":[rtfm]","<img border='0' src='smiles/rtfm.gif'>");
-      tmptxt=tmptxt.replace(":[shok]","<img border='0' src='smiles/shok.gif'>");
-      tmptxt=tmptxt.replace(":[kr2]","<img border='0' src='smiles/KidRock_02.gif'>");
-      tmptxt=tmptxt.replace(":[kr5]","<img border='0' src='smiles/KidRock_05.gif'>");
-      tmptxt=tmptxt.replace(":[kr7]","<img border='0' src='smiles/KidRock_07.gif'>");
-      tmptxt=tmptxt.replace(":[kr4]","<img border='0' src='smiles/KidRock_04.gif'>");
-      tmptxt=tmptxt.replace(":[whistle]","<img border='0' src='smiles/whistle.gif'>");
-      tmptxt=tmptxt.replace(":[whatever]","<img border='0' src='smiles/whatever_01.gif'>");
-      tmptxt=tmptxt.replace(":[vinsent]","<img border='0' src='smiles/vinsent.gif'>");
-      tmptxt=tmptxt.replace(":[victory]","<img border='0' src='smiles/victory.gif'>");
-      tmptxt=tmptxt.replace(":[triniti]","<img border='0' src='smiles/triniti.gif'>");
-      tmptxt=tmptxt.replace(":[tommy]","<img border='0' src='smiles/tommy.gif'>");
-      tmptxt=tmptxt.replace(":[to_keep_order]","<img border='0' src='smiles/to_keep_order.gif'>");
-      tmptxt=tmptxt.replace(":[tease]","<img border='0' src='smiles/tease.gif'>");
-      tmptxt=tmptxt.replace(":[suicide]","<img border='0' src='smiles/suicide.gif'>");
-      tmptxt=tmptxt.replace(":[spruce_up]","<img border='0' src='smiles/spruce_up.gif'>");
-      tmptxt=tmptxt.replace(":[slow]","<img border='0' src='smiles/slow.gif'>");
-      tmptxt=tmptxt.replace(":[skull]","<img border='0' src='smiles/skull.gif'>");
-      tmptxt=tmptxt.replace(":[rofl]","<img border='0' src='smiles/rofl.gif'>");
-      tmptxt=tmptxt.replace(":[read]","<img border='0' src='smiles/read.gif'>");
-      tmptxt=tmptxt.replace(":[rabbi]","<img border='0' src='smiles/rabbi.gif'>");
-      tmptxt=tmptxt.replace(":[punish]","<img border='0' src='smiles/punish.gif'>");
-      tmptxt=tmptxt.replace(":[pooh_door]","<img border='0' src='smiles/pooh_door.gif'>");
-      tmptxt=tmptxt.replace(":[pioneer]","<img border='0' src='smiles/pioneer.gif'>");
-      tmptxt=tmptxt.replace(":[ok]","<img border='0' src='smiles/ok.gif'>");
-      tmptxt=tmptxt.replace(":[new_russian]","<img border='0' src='smiles/new_russian.gif'>");
-      tmptxt=tmptxt.replace(":[moil]","<img border='0' src='smiles/moil.gif'>");
-      tmptxt=tmptxt.replace(":[lazy2]","<img border='0' src='smiles/lazy2.gif'>");
-      tmptxt=tmptxt.replace(":[jc]","<img border='0' src='smiles/Just_Cuz_11.gif'>");
-      tmptxt=tmptxt.replace(":[hi]","<img border='0' src='smiles/hi.gif'>");
-      tmptxt=tmptxt.replace(":[help]","<img border='0' src='smiles/help.gif'>");
-      tmptxt=tmptxt.replace(":[heat]","<img border='0' src='smiles/heat.gif'>");
-      tmptxt=tmptxt.replace(":[good]","<img border='0' src='smiles/good.gif'>");
-      tmptxt=tmptxt.replace(":[fuck]","<img border='0' src='smiles/fuck.gif'>");
-      tmptxt=tmptxt.replace(":[fool]","<img border='0' src='smiles/fool.gif'>");
-      tmptxt=tmptxt.replace(":[flirt]","<img border='0' src='smiles/flirt.gif'>");
-      tmptxt=tmptxt.replace(":[dntknw]","<img border='0' src='smiles/dntknw.gif'>");
-      tmptxt=tmptxt.replace(":[dance2]","<img border='0' src='smiles/dance2.gif'>");
-      tmptxt=tmptxt.replace(":[brunette]","<img border='0' src='smiles/brunette.gif'>");
-      tmptxt=tmptxt.replace(":[angel]","<img border='0' src='smiles/angel.gif'>");
-      tmptxt=tmptxt.replace(":[aleksey_01]","<img border='0' src='smiles/aleksey_01.gif'>");
-      tmptxt=tmptxt.replace(":[girl_cray2]","<img border='0' src='smiles/girl_cray2.gif'>");
-      tmptxt=tmptxt.replace(":[girl_cray3]","<img border='0' src='smiles/girl_cray3.gif'>");
-      tmptxt=tmptxt.replace(":[girl_impossible]","<img border='0' src='smiles/girl_impossible.gif'>");
-      tmptxt=tmptxt.replace(":[girl_wink]","<img border='0' src='smiles/girl_wink.gif'>");
-      tmptxt=tmptxt.replace(":[girl_dance]","<img border='0' src='smiles/girl_dance.gif'>");
-      tmptxt=tmptxt.replace(":[snoozer_18]","<img border='0' src='smiles/snoozer_18.gif'>");
-      tmptxt=tmptxt.replace(":[drag_10]","<img border='0' src='smiles/drag_10.gif'>");
-      tmptxt=tmptxt.replace(":[Koshechka_09]","<img border='0' src='smiles/Koshechka_09.gif'>");
-      tmptxt=tmptxt.replace(":[Koshechka_11]","<img border='0' src='smiles/Koshechka_11.gif'>");
-      tmptxt=tmptxt.replace(":[libelle_1]","<img border='0' src='smiles/libelle_1.gif'>");
-      tmptxt=tmptxt.replace(":[connie_6]","<img border='0' src='smiles/connie_6.gif'>");
-      tmptxt=tmptxt.replace(":[connie_1]","<img border='0' src='smiles/connie_1.gif'>");
-      tmptxt=tmptxt.replace(":[aftar]","<img border='0' src='smiles/aftar.gif'>");
-      tmptxt=tmptxt.replace(":[party]","<img border='0' src='smiles/party.gif'>");
-      tmptxt=tmptxt.replace(":[smoke]","<img border='0' src='smiles/smoke.gif'>");
-      tmptxt=tmptxt.replace(":[feminist]","<img border='0' src='smiles/feminist.gif'>");
-      tmptxt=tmptxt.replace(":[spam_light]","<img border='0' src='smiles/spam_light.gif'>");
-      tmptxt=tmptxt.replace(":[laie_32]","<img border='0' src='smiles/laie_32.gif'>");
-      tmptxt=tmptxt.replace(":[laie_44]","<img border='0' src='smiles/laie_44.gif'>");
-      tmptxt=tmptxt.replace(":[laie_48]","<img border='0' src='smiles/laie_48.gif'>");
-//      tmptxt=tmptxt.replace(";)","<img border='0' src='smiles/wink3.gif'>");
+   public static String fd_smiles(String tmptxt, boolean forMail) {
+      String add = forMail ? "http://www.diletant.com.ua/forum/" : ""; 
+      tmptxt = tmptxt.replace(":)","<img border='0' src='" + add + "smiles/smile_.gif'>");
+      tmptxt = tmptxt.replace(":(","<img border='0' src='" + add + "smiles/sad.gif'>");
+      tmptxt=tmptxt.replace(":D","<img border='0' src='" + add + "smiles/biggrin.gif'>");
+      tmptxt=tmptxt.replace(":[russian]","<img border='0' src='" + add + "smiles/russian.gif'>");
+      tmptxt=tmptxt.replace(":[pioners]","<img border='0' src='" + add + "smiles/take_example.gif'>");
+      tmptxt=tmptxt.replace(":[beer]","<img border='0' src='" + add + "smiles/drinks.gif'>");
+      tmptxt=tmptxt.replace(":[no-no]","<img border='0' src='" + add + "smiles/acute.gif'>");
+      tmptxt=tmptxt.replace(":[nea]","<img border='0' src='" + add + "smiles/nea.gif'>");
+      tmptxt=tmptxt.replace(":[babruysk]","<img border='0' src='" + add + "smiles/to_babruysk.gif'>");
+      tmptxt=tmptxt.replace(":[ohi]","<img border='0' src='" + add + "smiles/girl_sigh.gif'>");
+      tmptxt=tmptxt.replace(":[klizma]","<img border='0' src='" + add + "smiles/girl_hospital.gif'>");
+      tmptxt=tmptxt.replace(":[king]","<img border='0' src='" + add + "smiles/king2.gif'>");
+      tmptxt=tmptxt.replace(":g)","<img border='0' src='" + add + "smiles/girl_smile.gif'>");
+      tmptxt=tmptxt.replace(":g(","<img border='0' src='" + add + "smiles/girl_sad.gif'>");
+      tmptxt=tmptxt.replace(":[blum]","<img border='0' src='" + add + "smiles/girl_blum.gif'>");
+      tmptxt=tmptxt.replace(":[ghaha]","<img border='0' src='" + add + "smiles/girl_haha.gif'>");
+      tmptxt=tmptxt.replace(":[gwacko]","<img border='0' src='" + add + "smiles/girl_wacko.gif'>");
+      tmptxt=tmptxt.replace(":[gmad]","<img border='0' src='" + add + "smiles/girl_mad.gif'>");
+      tmptxt=tmptxt.replace(":[ghide]","<img border='0' src='" + add + "smiles/girl_hide.gif'>");
+      tmptxt=tmptxt.replace(":[glove]","<img border='0' src='" + add + "smiles/girl_in_love.gif'>");
+      tmptxt=tmptxt.replace(":[gfish]","<img border='0' src='" + add + "smiles/girl_prepare_fish.gif'>");
+      tmptxt=tmptxt.replace(":[gcrazy]","<img border='0' src='" + add + "smiles/girl_crazy.gif'>");
+      tmptxt=tmptxt.replace(":[mblum]","<img border='0' src='" + add + "smiles/blum3.gif'>");
+      tmptxt=tmptxt.replace(":[toclue]","<img border='0' src='" + add + "smiles/to_clue.gif'>");
+      tmptxt=tmptxt.replace(":[snooks]","<img border='0' src='" + add + "smiles/snooks.gif'>");
+      tmptxt=tmptxt.replace(":[scare]","<img border='0' src='" + add + "smiles/scare.gif'>");
+      tmptxt=tmptxt.replace(":[scare2]","<img border='0' src='" + add + "smiles/scare2.gif'>");
+      tmptxt=tmptxt.replace(":[gwerewolf]","<img border='0' src='" + add + "smiles/girl_werewolf.gif'>");
+      tmptxt=tmptxt.replace(":[gdevil]","<img border='0' src='" + add + "smiles/girl_devil.gif'>");
+      tmptxt=tmptxt.replace(":[friends]","<img border='0' src='" + add + "smiles/friends.gif'>");
+      tmptxt=tmptxt.replace(":[taunt]","<img border='0' src='" + add + "smiles/taunt.gif'>");
+      tmptxt=tmptxt.replace(":[offtopic]","<img border='0' src='" + add + "smiles/offtopic.gif'>");
+      tmptxt=tmptxt.replace(":[queen]","<img border='0' src='" + add + "smiles/queen.gif'>");
+      tmptxt=tmptxt.replace(":[butcher]","<img border='0' src='" + add + "smiles/butcher.gif'>");
+      tmptxt=tmptxt.replace(":[rtfm]","<img border='0' src='" + add + "smiles/rtfm.gif'>");
+      tmptxt=tmptxt.replace(":[shok]","<img border='0' src='" + add + "smiles/shok.gif'>");
+      tmptxt=tmptxt.replace(":[kr2]","<img border='0' src='" + add + "smiles/KidRock_02.gif'>");
+      tmptxt=tmptxt.replace(":[kr5]","<img border='0' src='" + add + "smiles/KidRock_05.gif'>");
+      tmptxt=tmptxt.replace(":[kr7]","<img border='0' src='" + add + "smiles/KidRock_07.gif'>");
+      tmptxt=tmptxt.replace(":[kr4]","<img border='0' src='" + add + "smiles/KidRock_04.gif'>");
+      tmptxt=tmptxt.replace(":[whistle]","<img border='0' src='" + add + "smiles/whistle.gif'>");
+      tmptxt=tmptxt.replace(":[whatever]","<img border='0' src='" + add + "smiles/whatever_01.gif'>");
+      tmptxt=tmptxt.replace(":[vinsent]","<img border='0' src='" + add + "smiles/vinsent.gif'>");
+      tmptxt=tmptxt.replace(":[victory]","<img border='0' src='" + add + "smiles/victory.gif'>");
+      tmptxt=tmptxt.replace(":[triniti]","<img border='0' src='" + add + "smiles/triniti.gif'>");
+      tmptxt=tmptxt.replace(":[tommy]","<img border='0' src='" + add + "smiles/tommy.gif'>");
+      tmptxt=tmptxt.replace(":[to_keep_order]","<img border='0' src='" + add + "smiles/to_keep_order.gif'>");
+      tmptxt=tmptxt.replace(":[tease]","<img border='0' src='" + add + "smiles/tease.gif'>");
+      tmptxt=tmptxt.replace(":[suicide]","<img border='0' src='" + add + "smiles/suicide.gif'>");
+      tmptxt=tmptxt.replace(":[spruce_up]","<img border='0' src='" + add + "smiles/spruce_up.gif'>");
+      tmptxt=tmptxt.replace(":[slow]","<img border='0' src='" + add + "smiles/slow.gif'>");
+      tmptxt=tmptxt.replace(":[skull]","<img border='0' src='" + add + "smiles/skull.gif'>");
+      tmptxt=tmptxt.replace(":[rofl]","<img border='0' src='" + add + "smiles/rofl.gif'>");
+      tmptxt=tmptxt.replace(":[read]","<img border='0' src='" + add + "smiles/read.gif'>");
+      tmptxt=tmptxt.replace(":[rabbi]","<img border='0' src='" + add + "smiles/rabbi.gif'>");
+      tmptxt=tmptxt.replace(":[punish]","<img border='0' src='" + add + "smiles/punish.gif'>");
+      tmptxt=tmptxt.replace(":[pooh_door]","<img border='0' src='" + add + "smiles/pooh_door.gif'>");
+      tmptxt=tmptxt.replace(":[pioneer]","<img border='0' src='" + add + "smiles/pioneer.gif'>");
+      tmptxt=tmptxt.replace(":[ok]","<img border='0' src='" + add + "smiles/ok.gif'>");
+      tmptxt=tmptxt.replace(":[new_russian]","<img border='0' src='" + add + "smiles/new_russian.gif'>");
+      tmptxt=tmptxt.replace(":[moil]","<img border='0' src='" + add + "smiles/moil.gif'>");
+      tmptxt=tmptxt.replace(":[lazy2]","<img border='0' src='" + add + "smiles/lazy2.gif'>");
+      tmptxt=tmptxt.replace(":[jc]","<img border='0' src='" + add + "smiles/Just_Cuz_11.gif'>");
+      tmptxt=tmptxt.replace(":[hi]","<img border='0' src='" + add + "smiles/hi.gif'>");
+      tmptxt=tmptxt.replace(":[help]","<img border='0' src='" + add + "smiles/help.gif'>");
+      tmptxt=tmptxt.replace(":[heat]","<img border='0' src='" + add + "smiles/heat.gif'>");
+      tmptxt=tmptxt.replace(":[good]","<img border='0' src='" + add + "smiles/good.gif'>");
+      tmptxt=tmptxt.replace(":[fuck]","<img border='0' src='" + add + "smiles/fuck.gif'>");
+      tmptxt=tmptxt.replace(":[fool]","<img border='0' src='" + add + "smiles/fool.gif'>");
+      tmptxt=tmptxt.replace(":[flirt]","<img border='0' src='" + add + "smiles/flirt.gif'>");
+      tmptxt=tmptxt.replace(":[dntknw]","<img border='0' src='" + add + "smiles/dntknw.gif'>");
+      tmptxt=tmptxt.replace(":[dance2]","<img border='0' src='" + add + "smiles/dance2.gif'>");
+      tmptxt=tmptxt.replace(":[brunette]","<img border='0' src='" + add + "smiles/brunette.gif'>");
+      tmptxt=tmptxt.replace(":[angel]","<img border='0' src='" + add + "smiles/angel.gif'>");
+      tmptxt=tmptxt.replace(":[aleksey_01]","<img border='0' src='" + add + "smiles/aleksey_01.gif'>");
+      tmptxt=tmptxt.replace(":[girl_cray2]","<img border='0' src='" + add + "smiles/girl_cray2.gif'>");
+      tmptxt=tmptxt.replace(":[girl_cray3]","<img border='0' src='" + add + "smiles/girl_cray3.gif'>");
+      tmptxt=tmptxt.replace(":[girl_impossible]","<img border='0' src='" + add + "smiles/girl_impossible.gif'>");
+      tmptxt=tmptxt.replace(":[girl_wink]","<img border='0' src='" + add + "smiles/girl_wink.gif'>");
+      tmptxt=tmptxt.replace(":[girl_dance]","<img border='0' src='" + add + "smiles/girl_dance.gif'>");
+      tmptxt=tmptxt.replace(":[snoozer_18]","<img border='0' src='" + add + "smiles/snoozer_18.gif'>");
+      tmptxt=tmptxt.replace(":[drag_10]","<img border='0' src='" + add + "smiles/drag_10.gif'>");
+      tmptxt=tmptxt.replace(":[Koshechka_09]","<img border='0' src='" + add + "smiles/Koshechka_09.gif'>");
+      tmptxt=tmptxt.replace(":[Koshechka_11]","<img border='0' src='" + add + "smiles/Koshechka_11.gif'>");
+      tmptxt=tmptxt.replace(":[libelle_1]","<img border='0' src='" + add + "smiles/libelle_1.gif'>");
+      tmptxt=tmptxt.replace(":[connie_6]","<img border='0' src='" + add + "smiles/connie_6.gif'>");
+      tmptxt=tmptxt.replace(":[connie_1]","<img border='0' src='" + add + "smiles/connie_1.gif'>");
+      tmptxt=tmptxt.replace(":[aftar]","<img border='0' src='" + add + "smiles/aftar.gif'>");
+      tmptxt=tmptxt.replace(":[party]","<img border='0' src='" + add + "smiles/party.gif'>");
+      tmptxt=tmptxt.replace(":[smoke]","<img border='0' src='" + add + "smiles/smoke.gif'>");
+      tmptxt=tmptxt.replace(":[feminist]","<img border='0' src='" + add + "smiles/feminist.gif'>");
+      tmptxt=tmptxt.replace(":[spam_light]","<img border='0' src='" + add + "smiles/spam_light.gif'>");
+      tmptxt=tmptxt.replace(":[laie_32]","<img border='0' src='" + add + "smiles/laie_32.gif'>");
+      tmptxt=tmptxt.replace(":[laie_44]","<img border='0' src='" + add + "smiles/laie_44.gif'>");
+      tmptxt=tmptxt.replace(":[laie_48]","<img border='0' src='" + add + "smiles/laie_48.gif'>");
+//      tmptxt=tmptxt.replace(";)","<img border='0' src='" + add + "smiles/wink3.gif'>");
 
       return tmptxt;
    }   
@@ -215,7 +222,14 @@ public class Diletant {
 
    public static String fd_body(String result) {
       result=fd_bbcode(result);
-      result=fd_smiles(result);
+      result=fd_smiles(result, false);
+      result=fd_cenz(result);
+      return result;
+   }
+
+   public static String fd_body_for_mail(String result) {
+      result=fd_bbcode_for_mail(result);
+      result=fd_smiles(result, true);
       result=fd_cenz(result);
       return result;
    }
@@ -260,13 +274,62 @@ public class Diletant {
       // [color=brown] [/color]
       result = parce(result, "[color=brown]", "[/color]", "<font color='brown'>", "</font>");
       // [quote] [/quote]
-      result = parce(result, "[quote]", "[/quote]", "<table align='center' width='90%'><tr><td class=tdquote><span class='quote'>", " </span></td></tr></table>");
+      result = parce(result, "[quote]", "[/quote]", "<table align='center' width='90%'><tr><td class='tdquote'><span class='quote'>", " </span></td></tr></table>");
       // [img] [/img] (<img border='0' src=') ('>)
       result = fd_href(result);
       result = parce(result, "[img]", "[/img]", "<img border='0' src='", "'>");
       result = parce(result, "[url]", "[/url]", "<a href='", "'>");
       // youtube
       result = parce(result, "[youtube]", "[/youtube]", "<iframe width='640' height='390' frameborder='0' allowfullscreen='' src='http://www.youtube.com/embed/", "'></iframe>");
+      return result;
+   }
+   
+   public static String fd_bbcode_for_mail(String body) {
+      String result = body.replace("\r\n","<br />").replace("\\", "");
+      // [b] [/b] <b> </b>
+      result = parce(result, "[b]", "[/b]", "<b>", "</b>");
+      // [i] [/i] <i> </i>
+      result = parce(result, "[i]", "[/i]", "<i>", "</i>");
+      // [u] [/u] <u> </u>
+      result = parce(result, "[u]", "[/u]", "<u>", "</u>");
+      // [s] [/s] <s> </s>
+      result = parce(result, "[s]", "[/s]", "<s>", "</s>");
+      // [size=1] [/size]
+      result = parce(result, "[size=1]", "[/size]", "<span style='font-family: Verdana; font-size: 7pt'>", "</span>");
+      // [size=2] [/size]
+      result = parce(result, "[size=2]", "[/size]", "<span style='font-family: Verdana; font-size: 8pt'>", "</span>");
+      // [size=3] [/size]
+      result = parce(result, "[size=3]", "[/size]", "<span style='font-family: Verdana; font-size: 10pt'>", "</span>");
+      // [size=4] [/size]
+      result = parce(result, "[size=4]", "[/size]", "<span style='font-family: Verdana; font-size: 11pt'>", "</span>");
+      // [size=5] [/size]
+      result = parce(result, "[size=5]", "[/size]", "<span style='font-family: Verdana; font-size: 12pt'>", "</span>");
+      // [color=red] [/color]
+      result = parce(result, "[color=red]", "[/color]", "<font color='red'>", "</font>");
+      // [color=green] [/color]
+      result = parce(result, "[color=green]", "[/color]", "<font color='green'>", "</font>");
+      // [color=blue] [/color]
+      result = parce(result, "[color=blue]", "[/color]", "<font color='blue'>", "</font>");
+      // [color=yellow] [/color]
+      result = parce(result, "[color=yellow]", "[/color]", "<font color='yellow'>", "</font>");
+      // [color=purple] [/color]
+      result = parce(result, "[color=purple]", "[/color]", "<font color='purple'>", "</font>");
+      // [color=orange] [/color]
+      result = parce(result, "[color=orange]", "[/color]", "<font color='orange'>", "</font>");
+      // [color=teal] [/color]
+      result = parce(result, "[color=teal]", "[/color]", "<font color='teal'>", "</font>");
+      // [color=gray] [/color]
+      result = parce(result, "[color=gray]", "[/color]", "<font color='gray'>", "</font>");
+      // [color=brown] [/color]
+      result = parce(result, "[color=brown]", "[/color]", "<font color='brown'>", "</font>");
+      // [quote] [/quote]
+      result = parce(result, "[quote]", "[/quote]", "<table align='center' width='90%'><tr><td style='width:100%; border-style:ridge; border-width:2px; border-collapse: collapse; background-color:#f7f7f7; border-color:#f1f7fC'><span style='font-family: Verdana; font-size: 8pt; color: #000000'>", " </span></td></tr></table>");
+      // [img] [/img] (<img border='0' src=') ('>)
+      result = fd_href(result);
+      result = parce(result, "[img]", "[/img]", "<img border='0' src='", "'>");
+      result = parce(result, "[url]", "[/url]", "<a href='", "'></a>");
+      // youtube
+      result = parce(result, "[youtube]", "[/youtube]", "<a href='http://www.youtube.com/watch?v=", "'>www.youtube.com</a>");
       return result;
    }
    

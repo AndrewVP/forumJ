@@ -151,7 +151,7 @@ public class Quest extends FJServlet {
       buffer.append(quest_submit(locale));
       buffer.append("<link rel='icon' href='/favicon.ico' type='image/x-icon'>");
       buffer.append("<link rel='shortcut icon' href='/favicon.ico' type='image/x-icon'>");
-      buffer.append("<title>" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head))) + "</title>");
+      buffer.append("<title>" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)), false) + "</title>");
       buffer.append("</head>");
       buffer.append("<body bgcolor='#EFEFEF'>");
       buffer.append("<table class='content'>");
@@ -159,7 +159,7 @@ public class Quest extends FJServlet {
       buffer.append("<td  class='internal'>");
       /*Тема*/
       buffer.append("<div class=nik>");
-      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)))+ "</b>");
+      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)), false)+ "</b>");
       buffer.append("</div>");
       buffer.append("</td>");
       buffer.append("</tr>");
@@ -213,7 +213,7 @@ public class Quest extends FJServlet {
       buffer.append("<p align='CENTER'>");
       buffer.append("<font size='4'>");
       buffer.append("<b>");
-      buffer.append(fd_smiles(question.replace("\\", "")));
+      buffer.append(fd_smiles(question.replace("\\", ""), false));
       buffer.append("</b>");
       buffer.append("</font>");
       buffer.append("</p>");
@@ -235,7 +235,7 @@ public class Quest extends FJServlet {
          buffer.append("<input type='radio' name='ANSWER' value='" + (i + 1) + "'" + check + ">");
          buffer.append("</td>");
          buffer.append("<td class=voice_right nowrap align='left'>");
-         buffer.append(fd_smiles(fd_href(answer.replace("\\", ""))));
+         buffer.append(fd_smiles(fd_href(answer.replace("\\", "")), false));
          buffer.append("</td>");
          buffer.append("</tr>");
       }

@@ -94,6 +94,8 @@ public class QueryBuilder {
    
    private static String loadMailQuery = null;
 
+   private static String loadOutMailQuery = null;
+   
    private static String deleteFromOutboxQuery = null;
    
    private static String deleteFromInboxQuery = null;
@@ -121,6 +123,8 @@ public class QueryBuilder {
    private static String deleteSubscribeByIdQuery = null;
    
    private static String deleteSubscribeByKeyQuery = null;
+   
+   private static String subscribersMailQuery = null;
    
    private static String isSubscribeKeyPresentQuery = null;
 
@@ -588,6 +592,13 @@ public class QueryBuilder {
       return loadMailQuery;
    }
    
+   public static String getLoadOutMailQuery() throws IOException{
+      if (loadOutMailQuery  == null){
+         loadOutMailQuery  = loadQuery("sql/load_out_mail.sql");
+      }
+      return loadOutMailQuery;
+   }
+   
    public static String getDeleteFromOutboxQuery() throws IOException{
       if (deleteFromOutboxQuery  == null){
          deleteFromOutboxQuery  = loadQuery("sql/delete_from_outbox.sql");
@@ -684,6 +695,13 @@ public class QueryBuilder {
          deleteSubscribeByKeyQuery = loadQuery("sql/delete_subscribe_by_key.sql");
       }
       return deleteSubscribeByKeyQuery;
+   }
+   
+   public static String getSubscribersMailQuery() throws IOException{
+      if (subscribersMailQuery == null){
+         subscribersMailQuery = loadQuery("sql/subscribers_mail.sql");
+      }
+      return subscribersMailQuery;
    }
    
    public static String getIsSubscribeKeyPresentQuery() throws IOException{

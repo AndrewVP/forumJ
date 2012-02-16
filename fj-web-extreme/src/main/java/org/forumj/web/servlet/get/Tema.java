@@ -441,7 +441,7 @@ public class Tema extends FJServlet {
          buffer.append("<div style='padding:10px;'>");
          //avatar
          if (user.getWantSeeAvatars() && author.getAvatarApproved() && author.getAvatar() != null && !author.getAvatar().trim().isEmpty() && author.getShowAvatar()){
-            buffer.append("<a href='control.php?id=9'><img border='0' src='" + author.getAvatar() + "' rel=\"nofollow\"></a>");
+            buffer.append("<a href='control.php?id=9' rel='nofollow'><img border='0' src='" + author.getAvatar() + "'></a>");
          }else{
             buffer.append("<a href='control.php?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>");
          }
@@ -542,10 +542,10 @@ public class Tema extends FJServlet {
                   buffer.append("<b>" + locale.getString("mess144") + "</b>");
                }
                buffer.append("</td><td class='voice_right' align='left'>");
-               buffer.append("<input type='radio' name='ANSWER' value='" + questNode.getId() + "'>&nbsp;" + fd_smiles(fd_href(removeSlashes(questNode.getNode()))) + "<br>");
+               buffer.append("<input type='radio' name='ANSWER' value='" + questNode.getId() + "'>&nbsp;" + fd_smiles(fd_href(removeSlashes(questNode.getNode())), false) + "<br>");
             }else {
                buffer.append("</td><td class='voice_right' align='left'>");
-               buffer.append("<input type='radio' name='ANSWER' value='" + questNode.getId() + "'" + check + ">&nbsp;" + fd_smiles(fd_href(removeSlashes(questNode.getNode()))) + "<br>");
+               buffer.append("<input type='radio' name='ANSWER' value='" + questNode.getId() + "'" + check + ">&nbsp;" + fd_smiles(fd_href(removeSlashes(questNode.getNode())), false) + "<br>");
             }
             buffer.append("</td></tr>");
          }

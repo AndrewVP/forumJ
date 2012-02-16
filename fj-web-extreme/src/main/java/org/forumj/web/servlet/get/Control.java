@@ -122,6 +122,16 @@ public class Control extends FJServlet {
          buffer.append("<a class='mnuprof' href='control.php?id=1'>" + locale.getString("mess24") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
+         /*e-mail*/
+         buffer.append("<table class='control'><tr class='heads'>");
+         buffer.append("<th class='internal'>");
+         buffer.append("<div class='mnuprof'>" + locale.getString("MSG_EMAIL") + "</div>");
+         buffer.append("</th>");
+         buffer.append("</tr><tr>");
+         buffer.append("<td class='internal'>");
+         buffer.append("<a class='mnuprof' href='control.php?id=13'>" + locale.getString("MSG_EMAIL") + "</a><br>");
+         buffer.append("</td>");
+         buffer.append("</tr></table>");
          // Личная переписка
          buffer.append("<table class='control'><tr class='heads'>");
          buffer.append("<th class='internal'>");
@@ -256,7 +266,11 @@ public class Control extends FJServlet {
             break;
          case 12:
             // Язык интерфейса
-            buffer.append(langage(locale, user));
+            buffer.append(language(locale, user));
+            break;
+         case 13:
+            // E-mail
+            buffer.append(eMail(locale, user));
             break;
          }
          buffer.append("</td>");
@@ -759,7 +773,7 @@ public class Control extends FJServlet {
       //Выводим письмо
       if (msg != null){
          // Находим его
-         IFJMail mail = mailService.loadMail(user, msg, false);
+         IFJMail mail = mailService.loadMail(user, msg, true);
          if (mail != null){
             buffer.append("<tr class=heads><td colspan=4 class=internal>");
             // Кому.
@@ -1272,8 +1286,31 @@ public class Control extends FJServlet {
       return buffer;
    }
 
+   /*e-mail*/
+   private StringBuffer eMail(LocaleString locale, IUser user) throws InvalidKeyException {
+      StringBuffer buffer = new StringBuffer();
+      buffer.append("<div class='mnuprof' align='LEFT' style='padding: 10px 0 5px 0'>");
+      buffer.append("<b>");
+      buffer.append(locale.getString("MSG_YUOR_EMAIL"));
+      buffer.append("</b>");
+      buffer.append("</div>");
+      String eMail = "";
+      if (user.getEmail() != null && !"".equals(user.getEmail().trim())){
+         eMail=HTMLEntities.htmlentities(user.getEmail());
+      }
+      buffer.append("<form method='POST' name='email_form' class='content' action='" + FJUrl.POST + "'>");
+      buffer.append(fd_input("mail", eMail, "50", "1"));
+      buffer.append("<div style='padding: 5px 0 0 0'>");
+      buffer.append("<input type='hidden' name='command' value='" + Command.SET_EMAIL.getCommand() + "' />");
+      buffer.append(fd_button(locale.getString("mess85"),"document.email_form.submit();", Command.SET_EMAIL.getCommand(), "1"));
+      buffer.append(fd_form_add(user));
+      buffer.append("</div>");
+      buffer.append("</form>");
+      return buffer;
+   }
+   
    /*язык интерфейса*/
-   private StringBuffer langage(LocaleString locale, IUser user) throws InvalidKeyException {
+   private StringBuffer language(LocaleString locale, IUser user) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='LEFT' style='padding: 10px 0 5px 0'>");
       buffer.append("<b>");
@@ -1293,8 +1330,8 @@ public class Control extends FJServlet {
       } 
       buffer.append("</select>");     
       buffer.append("<div style='padding: 5px 0 0 0'>");
-      buffer.append("<input type='hidden' name='command' value='set_locale' />");
-      buffer.append(fd_button(locale.getString("mess85"),"document.locale.submit();",Command.SET_LOCALE.getCommand(), "1"));
+      buffer.append("<input type='hidden' name='command' value='" + Command.SET_LOCALE.getCommand() + "' />");
+      buffer.append(fd_button(locale.getString("mess85"),"document.locale.submit();", Command.SET_LOCALE.getCommand(), "1"));
       buffer.append(fd_form_add(user));
       buffer.append("</div>");
       buffer.append("</form>");

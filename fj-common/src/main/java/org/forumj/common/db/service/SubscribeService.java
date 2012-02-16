@@ -68,4 +68,6 @@ public interface SubscribeService {
     */
    public Boolean isUserSubscribed(Long idUser, Long threadId) throws ConfigurationException, SQLException, IOException;
    
+   public List<IUser> getSubscribedUsers(Long threadId, Long userId) throws ConfigurationException, SQLException, IOException;
+   
 }
