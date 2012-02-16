@@ -70,4 +70,8 @@ public class SubscribeServiceImpl extends FJService implements SubscribeService 
    public IFJSubscribe getSubscribeObject(){
       return new FJSubscribe();
    }
+
+   public List<IUser> getSubscribedUsers(Long threadId, Long userId) throws ConfigurationException, SQLException, IOException {
+      return getSubscribedao().getSubscribedUsers(threadId, userId);
+   }
 }

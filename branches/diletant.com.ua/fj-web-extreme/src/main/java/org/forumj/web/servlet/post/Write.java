@@ -17,6 +17,8 @@ import java.io.*;
 import java.sql.SQLException;
 import java.util.Date;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.AddressException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
@@ -27,6 +29,7 @@ import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.*;
 import org.forumj.common.tool.*;
+import org.forumj.email.FJEMail;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
@@ -58,11 +61,6 @@ public class Write extends FJServlet {
             /* Может пустое??*/
             if (head != null && body!= null && head.trim().length() > 0 && body.trim().length() > 0) {
                /* Не пустое*/
-               /* Добавляем Сообщение*/
-               //               $str_body=mysql_real_escape_string($_POST['A2']);
-               /* Текст заголовка*/
-               //               $str_head=mysql_real_escape_string($_POST['NHEAD']);
-               /* Добавляем заголовок*/
                String threadId = request.getParameter("IDT");
                /* Автор кто?*/
                Time threadTime = new Time(new Date().getTime());
@@ -78,7 +76,7 @@ public class Write extends FJServlet {
                      /* Записываем или редактируем???*/
                      if ("write_new".equalsIgnoreCase(command)){
                         /*новый пост*/
-                        write_new(body, user, domen, ip, head, Long.valueOf(threadId), postService);
+                        write_new(body, user, domen, ip, head, Long.valueOf(threadId), postService, locale);
                      }else if ("write_edit".equalsIgnoreCase(command)){
                         String postId = request.getParameter("IDB");
                         /* Редактируем старый пост*/
@@ -147,7 +145,7 @@ public class Write extends FJServlet {
       /*"Закладка" номера поста для ссылки из поиска, возврата после обработки игнора*/
       /*Тема*/
       buffer.append("<div class=nik>");
-      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)))+ "</b>");
+      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)), false)+ "</b>");
       buffer.append("</div>");
       buffer.append("</td>");
       buffer.append("</tr>");
@@ -299,7 +297,7 @@ public class Write extends FJServlet {
       return buffer;
    }
    
-   private void write_new(String body, IUser user, String domen, String ip, String head, Long threadId, PostService postService) throws DBException, ConfigurationException, IOException, SQLException{
+   private void write_new(String body, IUser user, String domen, String ip, String head, Long threadId, PostService postService, LocaleString locale) throws DBException, ConfigurationException, IOException, SQLException, AddressException, InvalidKeyException, MessagingException{
       IFJPost post = postService.getPostObject();
       IFJPostBody postBody = postService.getPostbodyObject();
       IFJPostHead postHead = postService.getPostHeadObject();
@@ -317,6 +315,7 @@ public class Write extends FJServlet {
       postHead.setThreadId(threadId);
       postHead.setCreateTime(new Date().getTime());
       postService.create(post);
+      FJEMail.sendSuscribedPost(post, user);
    }
    private void write_edit(String body, IUser user, String domen, String ip, String head, Long threadId, Long postId, PostService postService) throws DBException, ConfigurationException, IOException, SQLException{
       IFJPost post = postService.read(postId);

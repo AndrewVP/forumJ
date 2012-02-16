@@ -50,7 +50,7 @@ public class AddSubscribe extends FJServlet {
                   urlQuery += "&page=" + pageParameter;
                }
                urlQuery += "#subs";
-               buffer.append(successPostOut("3", "tema.php" + urlQuery));
+               buffer.append(successPostOut("0", "tema.php" + urlQuery));
             }
          }else{
             // Вошли незарегистрировавшись

@@ -82,6 +82,7 @@ public class User implements IUser {
 
    private Boolean hideIp = false;
 
+   //TODO Must be default value
    private Locale languge = Locale.UA;
 
    private Integer timeZone = 2; 

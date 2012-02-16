@@ -168,7 +168,7 @@ public class New extends FJServlet {
       buffer.append(new_submit(locale.getString("mess128")));
       buffer.append("<link rel='icon' href='/favicon.ico' type='image/x-icon'>");
       buffer.append("<link rel='shortcut icon' href='/favicon.ico' type='image/x-icon'>");
-      buffer.append("<title>" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head))) + "</title>");
+      buffer.append("<title>" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)), false) + "</title>");
       buffer.append("</head>");
       buffer.append("<body bgcolor=#EFEFEF>");
       buffer.append("<table class='content'>");
@@ -178,7 +178,7 @@ public class New extends FJServlet {
       /*"Закладка" номера поста для ссылки из поиска, возврата после обработки игнора*/
       /*Тема*/
       buffer.append("<div class='nik'>");
-      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)))+ "</b>");
+      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)), false)+ "</b>");
       buffer.append("</div>");
       buffer.append("</td>");
       buffer.append("</tr>");

@@ -21,7 +21,9 @@ package org.forumj.common.web;
  */
 public enum Command {
    
-   SET_LOCALE("set_locale");
+   SET_LOCALE("set_locale"),
+   SET_EMAIL("set_email"),
+   ;
    
    private String command;
 
