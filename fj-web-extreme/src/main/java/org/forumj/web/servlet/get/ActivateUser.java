@@ -45,15 +45,20 @@ public class ActivateUser extends FJServlet {
          UserService userService = FJServiceHolder.getUserService();
          String userIdParameter = request.getParameter("id");
          String codeParameter = request.getParameter("c");
-         IUser user = userService.read(Long.valueOf(userIdParameter), Integer.valueOf(codeParameter));
-         if (user != null){
-            user.setIsActive(Boolean.TRUE);
-            user.setActivateCode(0);
-            userService.update(user);
-            session.setAttribute("user", user);
-            // ставим куку
-            setcookie(response, "idu", user.getId().toString(), 1209600, request.getContextPath(), request.getServerName());
-            setcookie(response, "pass2", user.getPass2(), 1209600, request.getContextPath(), request.getServerName());
+         if (userIdParameter != null && codeParameter != null){
+            int activateCode = Integer.valueOf(codeParameter);
+            if (activateCode != 0){
+               IUser user = userService.read(Long.valueOf(userIdParameter), activateCode);
+               if (user != null){
+                  user.setIsActive(Boolean.TRUE);
+                  user.setActivateCode(0);
+                  userService.update(user);
+                  session.setAttribute("user", user);
+                  // ставим куку
+                  setcookie(response, "idu", user.getId().toString(), 1209600, request.getContextPath(), request.getServerName());
+                  setcookie(response, "pass2", user.getPass2(), 1209600, request.getContextPath(), request.getServerName());
+               }
+            }
          }
          response.sendRedirect(FJUrl.INDEX);
       } catch (Throwable e) {

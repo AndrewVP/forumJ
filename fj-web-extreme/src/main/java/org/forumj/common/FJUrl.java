@@ -23,6 +23,7 @@ public interface FJUrl {
    public static final String ADD_QUESTION = "quest.php";
    public static final String ADD_POST = "write.php";
    public static final String SETTINGS = "control.php";
+   public static final String ADMIN = "admin";
    public static final String LOGIN = "auth.php";
    public static final String DO_LOGIN = "submit.php";
    public static final String REGISTRATION = "reg.php";
