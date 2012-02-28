@@ -22,6 +22,7 @@ public interface FJServletName {
    public static final String MESSAGE = "message";
    public static final String ADD_THREAD = "New";
    public static final String SETTINGS = "Control";
+   public static final String ADMIN = "admin";
    public static final String LOGIN = "Auth";
    public static final String DO_LOGIN = "Submit";
    public static final String REGISTRATION = "Registration";
