@@ -99,6 +99,9 @@ public class Auth extends FJServlet {
             case 9:
                buffer.append("Проводить опросы могут только зарегистрированные пользователи");
                break;
+            case 10:
+               buffer.append("Ваш аккаунт не активирован");
+               break;
          }
          buffer.append("</p></td></tr>");
          // С любезностями закончили

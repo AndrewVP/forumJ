@@ -32,7 +32,7 @@ import org.forumj.common.db.service.*;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebFilter(servletNames={INDEX, VIEW_THREAD, NEW_THREAD, NEW_QUESTION, SETTINGS})
+@WebFilter(servletNames={INDEX, VIEW_THREAD, NEW_THREAD, NEW_QUESTION, SETTINGS, MESSAGE})
 public class AAAAExitFilter implements Filter {
 
    /**

@@ -45,4 +45,8 @@ public interface UserService {
    public IUser read(String nick, String password, Boolean firstPassword) throws ConfigurationException, SQLException, IOException;
 
    public IUser read(Long userId, String password, boolean firstPassword) throws ConfigurationException, SQLException, IOException;
+
+   public boolean checkCodeUsed(int activateCode) throws SQLException, ConfigurationException, IOException;
+
+   public IUser read(Long userId, int activateCode) throws ConfigurationException, SQLException, IOException;
 }

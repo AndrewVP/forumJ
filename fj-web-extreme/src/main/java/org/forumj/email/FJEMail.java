@@ -56,13 +56,13 @@ public class FJEMail {
             if (localeName == null){
                localeName = userLocale;
                locale = new LocaleString(localeName, "messages", localeName);
-               postString = prepareMail(post, author, locale);
+               postString = prepareSubscribeMail(post, author, locale);
             }else if (userLocale != localeName){
                postString = posts.get(userLocale);
                if (postString == null){
                   localeName = userLocale;
                   locale = new LocaleString(localeName, "messages", localeName);
-                  postString = prepareMail(post, author, locale);
+                  postString = prepareSubscribeMail(post, author, locale);
                   posts.put(localeName, postString);
                }
             }
@@ -73,7 +73,7 @@ public class FJEMail {
       
    }
    
-   private static String prepareMail(IFJPost post, IUser author, LocaleString locale) throws InvalidKeyException{
+   private static String prepareSubscribeMail(IFJPost post, IUser author, LocaleString locale) throws InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       Time postTime = new Time(post.getHead().getCreateTime());
       buffer.append("<html><head><meta http-equiv='content-type' content='text/html; charset=UTF-8'></head><body style='background-color:#EFEFEF;'><table>");
@@ -145,6 +145,28 @@ public class FJEMail {
       buffer.append("</table><body></html>");
       return buffer.toString();
    }
+
+   public static void sendActivateMail(IUser user, LocaleString locale) throws InvalidKeyException, AddressException, ConfigurationException, MessagingException{
+      String mail = user.getEmail();
+      String postString = prepareActivateMail(user, locale);
+      sendMail(mail, FJConfiguration.getConfig().getString("mail.from"), FJConfiguration.getConfig().getString("mail.smtp.host"), locale.getString("MSG_ACTIVATE_HEADER"), postString);
+   }
+   
+   private static String prepareActivateMail(IUser user, LocaleString locale) throws InvalidKeyException{
+      StringBuffer buffer = new StringBuffer();
+      buffer.append("<html><head><meta http-equiv='content-type' content='text/html; charset=UTF-8'></head><body style='background-color:#EFEFEF;'><table>");
+      buffer.append("<tr><td>");
+      buffer.append(locale.getString("MSG_REGISTERED"));
+      buffer.append("<br/>");
+      buffer.append(locale.getString("MSG_CLICK"));
+      buffer.append(":&nbsp;<a href='http://www.diletant.com.ua/forum/activate?id=" + user.getId() + "&c=" + user.getActivateCode() + "'>");
+      buffer.append(locale.getString("MSG_ACTIVATE"));
+      buffer.append(":&nbsp;");
+      buffer.append(user.getNick());
+      buffer.append("</a>");
+      buffer.append("</td><tr></table><body></html>");
+      return buffer.toString();
+   }
    
    public static void sendMail(String to, String from, String host, String subject, String text) throws ConfigurationException, AddressException, MessagingException{
       Properties props = new Properties();
@@ -156,11 +178,9 @@ public class FJEMail {
       msg.setFrom(new InternetAddress(from));
       InternetAddress[] address = {new InternetAddress(to)};
       msg.setRecipients(Message.RecipientType.TO, address);
-//      msg.addHeader("Content-type", "text/html");
       msg.addHeader("charset", "UTF-8");
       msg.setSubject(subject);
       msg.setSentDate(new Date());
-//      msg.setText(text);
       msg.setDataHandler(new DataHandler(new HTMLDataSource(text)));
       Transport.send(msg);
    }

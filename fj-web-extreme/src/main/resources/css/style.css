@@ -13,6 +13,10 @@
 		background-color: white;
 		margin: 20px;
 		padding: 10px;
+      font-family: Verdana;
+      font-size: 10pt;
+      color: #000000;
+		text-align: center;
 	}
 	.menuImg
 	{

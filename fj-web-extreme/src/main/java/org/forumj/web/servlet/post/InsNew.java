@@ -10,7 +10,6 @@
 package org.forumj.web.servlet.post;
 
 import static org.forumj.tool.Diletant.errorOut;
-import static org.forumj.web.servlet.tool.FJServletTools.setcookie;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -25,6 +24,8 @@ import org.forumj.common.*;
 import org.forumj.common.config.FJConfiguration;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
+import org.forumj.email.FJEMail;
+import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -70,6 +71,7 @@ public class InsNew extends FJServlet {
          {"т","t"},
          {"б","b"},
          {"б","b"},
+         {".",","},
    }; 
    
    private static Random random = new Random(new Date().getTime());
@@ -122,12 +124,15 @@ public class InsNew extends FJServlet {
                   user.setPp(FJConfiguration.getConfig().getInt("fj.default.threadsOnPage"));
                   user.setPt(FJConfiguration.getConfig().getInt("fj.default.postsOnPage"));
                   user.setView(FJConfiguration.getConfig().getInt("fj.default.viewId"));
+                  user.setIsActive(Boolean.FALSE);
+                  int activateCode = generateRandom();
+                  while (userService.checkCodeUsed(activateCode)){
+                     activateCode = generateRandom();
+                  }
+                  user.setActivateCode(activateCode);
                   userService.create(user);
-                  session.setAttribute("user", user);
-                  // ставим куку
-                  setcookie(response, "idu", user.getId().toString(), 1209600, request.getContextPath(), request.getServerName());
-                  setcookie(response, "pass2", user.getPass2(), 1209600, request.getContextPath(), request.getServerName());
-                  response.sendRedirect("index.php");
+                  FJEMail.sendActivateMail(user, (LocaleString) session.getAttribute("locale"));
+                  response.sendRedirect(FJUrl.MESSAGE + "?id=1");
                }
             }
          }
