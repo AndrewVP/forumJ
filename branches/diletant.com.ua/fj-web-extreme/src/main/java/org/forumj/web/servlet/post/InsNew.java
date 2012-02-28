@@ -71,6 +71,7 @@ public class InsNew extends FJServlet {
          {"т","t"},
          {"б","b"},
          {"б","b"},
+//symbols         
          {".",","},
    }; 
    
