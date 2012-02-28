@@ -64,4 +64,13 @@ public class UserServiceImpl extends FJService implements UserService {
    public List<String> check(List<String> nicks) throws ConfigurationException, SQLException, IOException {
       return getUserDao().check(nicks);
    }
+
+   public boolean checkCodeUsed(int activateCode) throws SQLException, ConfigurationException, IOException {
+      return getUserDao().checkCodeUsed(activateCode);
+   }
+
+   @Override
+   public IUser read(Long userId, int activateCode) throws ConfigurationException, SQLException, IOException {
+      return getUserDao().read(userId, activateCode);
+   }
 }

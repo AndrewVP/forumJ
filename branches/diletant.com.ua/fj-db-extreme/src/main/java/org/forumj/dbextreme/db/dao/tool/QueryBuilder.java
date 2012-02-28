@@ -128,6 +128,8 @@ public class QueryBuilder {
    
    private static String isSubscribeKeyPresentQuery = null;
 
+   private static String isActivateCodeUsedQuery = null;
+   
    private static String createSubscribeQuery = null;
 
    private static String updateUserQuery = null;
@@ -189,6 +191,8 @@ public class QueryBuilder {
    private static String readUserByNickAndSecondPasswordQuery = null;
    
    private static String readUserByIdQuery = null;
+   
+   private static String readUserByIdAndAcivateCodeQuery = null;
    
    private static String readUserByNickQuery = null;
    
@@ -711,6 +715,13 @@ public class QueryBuilder {
       return isSubscribeKeyPresentQuery;
    }
    
+   public static String getIsActivateCodeUsedQuery() throws IOException{
+      if (isActivateCodeUsedQuery == null){
+         isActivateCodeUsedQuery = loadQuery("sql/is_activate_code_used.sql");
+      }
+      return isActivateCodeUsedQuery;
+   }
+   
    public static String getCreateSubscribeQuery() throws IOException{
       if (createSubscribeQuery == null){
          createSubscribeQuery = loadQuery("sql/create_subscribe.sql");
@@ -814,6 +825,13 @@ public class QueryBuilder {
          readUserByIdQuery = loadQuery("sql/read_user_by_id.sql");
       }
       return readUserByIdQuery;
+   }
+   
+   public static String getReadUserByIdAndAcivateCodeQuery() throws IOException{
+      if (readUserByIdAndAcivateCodeQuery == null){
+         readUserByIdAndAcivateCodeQuery = loadQuery("sql/read_user_by_id_and_activate_code.sql");
+      }
+      return readUserByIdAndAcivateCodeQuery;
    }
    
    public static String getReadUserByNickQuery() throws IOException{

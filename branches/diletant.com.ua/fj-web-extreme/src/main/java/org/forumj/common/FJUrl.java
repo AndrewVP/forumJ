@@ -17,6 +17,7 @@ public interface FJUrl {
    public static final String INDEX = "index.php";
    public static final String VIEW_THREAD = "tema.php";
    public static final String NEW_THREAD = "mess.php";
+   public static final String MESSAGE = "message";
    public static final String ADD_THREAD = "new.php";
    public static final String NEW_QUESTION = "opr.php";
    public static final String ADD_QUESTION = "quest.php";
@@ -29,6 +30,7 @@ public interface FJUrl {
    public static final String UPDATE_IGNORING = "amn.php";
    public static final String DELETE_MAIL = "delmail.php";
    public static final String MOVE_THREAD_TO_RECYCLE = "delone.php";
+   public static final String ACTIVATE_USER = "activate";
    public static final String PIN_THREAD = "pin";
    public static final String CLOSE_THREAD = "close";
    public static final String DELETE_SUBSCRIBE = "delonesubs.php";
