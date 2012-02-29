@@ -15,16 +15,16 @@
  */
 
 .topOfPage, q, h1, h2, h3, .headerTitle, .headerLinks, .headerLinks *, .sideBox div, #footer *
-{ /* Text Color: */  color: #a0a0ff; }
+{ /* Text Color: */  color: #000000; }
 
 q, h2,  #header, .sideBox, .sideBox div, #footer
 { /* Border Color: */  border-color: #c0c0ff; }
 
 #header, .sideBox div, .sideBox a:hover
-{ /* Background Color (darker): */  background-color: #f0f0ff; }
+{ /* Background Color (darker): */  background-color: #F1F1F1; }
 
 q, .sideBox a, .sideBox span, #footer
-{ /* Background Color (lighter): */  background-color: #fcfcff; }
+{ /* Background Color (lighter): */  background-color: #f7f7f7; }
 
 
 /* ###### Browser-specific Styles ###### */

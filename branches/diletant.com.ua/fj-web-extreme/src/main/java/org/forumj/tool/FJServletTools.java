@@ -173,14 +173,13 @@ public class FJServletTools {
 
    public static StringBuffer logo(HttpServletRequest request){
       StringBuffer buffer = new StringBuffer();
-      String ref=request.getContextPath();
+      String ref = request.getContextPath();
       buffer.append("<tr>");
       buffer.append("<td width='100%'>");
       buffer.append("<table border='0' width='100%' style='border-collapse: collapse'>");
       buffer.append("<tr>");
       buffer.append("<td>");
       buffer.append("<a href='/'><img border='0' src='" + ref + "/images/all/title.gif'></a><br>");
-      buffer.append("<a href='/' class=tbtextnread>www.Дилетант.com.ua</a>");
       buffer.append("</td>");
       buffer.append("<td align=center>");
       buffer.append("<a href='http://www.donor.org.ua/index.php?module=help' target=\"_blank\" title='Украинская Открытая Ассоциация Организаций, Групп и Лиц, работающих с детьми, страдающими онкозаболеваниями'><img src='banner/donor_2.gif'></a>");
