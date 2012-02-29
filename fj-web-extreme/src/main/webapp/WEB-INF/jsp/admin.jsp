@@ -6,7 +6,6 @@
 <head>
     <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/admin.css"/>" title="Purple Haze Stylesheet" />
-    
 <title>Admin</title>
 </head>
 <body>
