@@ -1,9 +1,3 @@
-/* TITLE: Stylesheet for Purple Haze
-/* URI  : /purplehaze/purplehaze.css
-/* MODIF: 2002-12-15 17:34 +0800
-
-
-/* ###### Color Scheme ###### */
 
 /*
  * CHANGING THE COLOR SCHEME
@@ -17,7 +11,7 @@
 .topOfPage, q, h1, h2, h3, .headerTitle, .headerLinks, .headerLinks *, .sideBox div, #footer *
 { /* Text Color: */  color: #000000; }
 
-q, h2,  #header, .sideBox, .sideBox div, #footer
+q, h2,  .sideBox, .sideBox div, #footer
 { /* Border Color: */  border-color: #c0c0ff; }
 
 #header, .sideBox div, .sideBox a:hover
@@ -129,31 +123,35 @@ q {
 /* ###### Header ###### */
 
 #header {
-  border-bottom: 2px solid;
-  height: 5em;
-  margin-bottom: 5mm;
-  padding: 1em 2.5mm 0 5mm;
+	position: relative;
+  height: 100px;
 }
 
-.headerTitle {
-  font-size: 300%;
+.logo {
+	position: absolute;
+	left: 10px;
+}
+.top-banner {
+   position: absolute;
+   right: 100px;
 }
 
-.headerLinks {
-  text-align: right;
+.fj-menu-ext{
+	border-width: 1px;
+	border-style:solid;
+	border-color: #787B7E;
+	margin: 10px;
+	border-radius: 3px;
 }
-
-.headerLinks * {
-  text-decoration: none;
-  font-weight: bold;
-  padding-right: 1ex;
+.fj-menu-int{
+   height:21px;
+	border-width: 1px;
+   border-style:solid;
+	border-color: #EFEFEF;
+	background-image: url(picts/tbl/bg.gif);
+   padding: 0 0 0 5px;
+   border-radius: 2px;
 }
-
-.headerLinks a:hover {
-  text-decoration: underline;
-}
-
-
 /* ###### Side Box ###### */
 
 .sideBox {
