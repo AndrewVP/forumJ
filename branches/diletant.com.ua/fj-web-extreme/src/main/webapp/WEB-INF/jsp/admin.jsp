@@ -5,22 +5,23 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
-    <link rel="stylesheet" type="text/css" href="<c:url value="/css/admin.css"/>" title="Purple Haze Stylesheet" />
+    <link rel="stylesheet" type="text/css" href="<c:url value="/css/admin.css"/>"/>
+    <link rel="stylesheet" type="text/css" href="<c:url value="/classes/css/style.css"/>"/>
 <title>Admin</title>
 </head>
 <body>
-    <div id="top"></div>
-  
     <!-- ###### Header ###### -->
 
     <div id="header">
-      <span class="headerTitle">Welcome to Purple Haze!</span>
-      <div class="headerLinks">
-        <a href="http://www.oswd.org/">OSWD</a>|
-        <a href="http://www.oswd.org/browse.php">Designs</a>|
-        <span>Purple Haze</span>
+      <a href='/' class='logo'><img src='<c:url value="/images/all/title.gif"/>' /></a>
+      <a href='http://www.donor.org.ua/index.php?module=help' class='top-banner' target="_blank" title='Украинская Открытая Ассоциация Организаций, Групп и Лиц, работающих с детьми, страдающими онкозаболеваниями'><img src='<c:url value="banner/donor_2.gif"/>' /></a>
+    </div>
 
-      </div>
+    <div class="fj-menu-ext">
+    <div class="fj-menu-int">
+            <img src='picts/index.gif' border='0' class='menuImg' />
+            <a class='mnuforumSm' href='<c:url value="index.php"/>'>locale.getString("mess135")</a>
+    </div>
     </div>
 
     <!-- ###### Side Boxes ###### -->

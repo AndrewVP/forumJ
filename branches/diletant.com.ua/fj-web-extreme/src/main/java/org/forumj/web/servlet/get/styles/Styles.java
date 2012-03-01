@@ -26,7 +26,7 @@ import javax.servlet.http.*;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/css/*"}, name="styles")
+@WebServlet(urlPatterns = {"*.css"}, name="styles")
 public class Styles extends HttpServlet {
 
    String realPath = null;

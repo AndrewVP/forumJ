@@ -255,7 +255,7 @@
       color: #000000;
       border-color:#787B7E;
    }
-   A.pageLink
+   a.pageLink
    {
       margin-left:2px;
       border-style:solid;
@@ -268,7 +268,7 @@
       font-weight: normal;
       color: #000000;
    }
-   A.pageLink:hover
+   a.pageLink:hover
    {
       margin-left:2px;
       border: 1px solid #f1f7fC;
@@ -281,7 +281,7 @@
       border-color:#787B7E;
       text-decoration: none;
    }
-   A.mnuforumSm
+   a.mnuforumSm
    {
       color: #000000;
       text-decoration: none;
@@ -291,7 +291,7 @@
       padding: 3px 3px 3px 3px;
    }
 
-   A.mnuforumSm:hover
+   a.mnuforumSm:hover
    {
       background-color: #F7F7F7;
       font-weight: normal;
