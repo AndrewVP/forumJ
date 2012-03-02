@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ page contentType="text/xhtml+xml; charset=UTF-8" %>
+<%@ page language="java" %>
+<%@ page pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <meta http-equiv="content-type" content="application/xhtml+xml; charset=utf-8" />
+    <meta http-equiv="content-type" content="text/xhtml+xml; charset=utf-8" />
     <link rel="stylesheet" type="text/css" href="<c:url value="/css/admin.css"/>"/>
     <link rel="stylesheet" type="text/css" href="<c:url value="/classes/css/style.css"/>"/>
 <title>Admin</title>
@@ -18,10 +20,7 @@
     </div>
 
     <div class="fj-menu-ext">
-    <div class="fj-menu-int">
-            <img src='picts/index.gif' border='0' class='menuImg' />
-            <a class='mnuforumSm' href='<c:url value="index.php"/>'>locale.getString("mess135")</a>
-    </div>
+    <div class="fj-menu-int"><img src='picts/index.gif' class='mnu_pict'/><a class='mnu_lnk' href='<c:url value="index.php"/>'>Список тем</a></div>
     </div>
 
     <!-- ###### Side Boxes ###### -->

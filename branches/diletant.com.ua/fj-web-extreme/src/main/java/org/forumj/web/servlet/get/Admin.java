@@ -37,8 +37,8 @@ public class Admin extends FJServlet {
     */
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-      HttpSession session = request.getSession();
       RequestDispatcher dispatcher = request.getRequestDispatcher("/WEB-INF/jsp/admin.jsp");
+      response.setContentType("text/html; charset=UTF-8");
       dispatcher.include(request, response);
    }
    

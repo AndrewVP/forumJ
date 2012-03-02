@@ -144,14 +144,47 @@ q {
 	border-radius: 3px;
 }
 .fj-menu-int{
-   height:21px;
+   height:23px;
 	border-width: 1px;
    border-style:solid;
 	border-color: #EFEFEF;
 	background-image: url(picts/tbl/bg.gif);
-   padding: 0 0 0 5px;
+   padding:  0 0 0 5px;
+   background-repeat:repeat-x;
+   background-color:red;
    border-radius: 2px;
+   overflow: hidden;
 }
+
+   .mnu_lnk
+   {
+      color: #000000;
+      text-decoration: none;
+      font-weight: normal;
+      font-family: Verdana;
+      font-size: 9pt;
+      padding: 2px 3px 3px 3px;
+      position: relative;
+      top:1px;
+   }
+
+   .mnu_lnk:HOVER
+   {
+      background-image: url(picts/tbl/bg_.gif);
+      padding: 1px 2px 2px 2px;
+      text-decoration: none;
+      border-style: solid;
+      border-color: red;
+      border-width: 1px;
+   border-radius: 3px;
+}
+   
+   .mnu_pict{
+      position: relative;
+      top:4px;
+	
+}
+
 /* ###### Side Box ###### */
 
 .sideBox {
