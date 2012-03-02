@@ -288,21 +288,18 @@
       font-weight: normal;
       font-family: Verdana;
       font-size: 9pt;
-      padding: 3px 3px 3px 3px;
+      padding: 3px;
    }
 
    a.mnuforumSm:hover
    {
-      background-color: #F7F7F7;
-      font-weight: normal;
-      font-family: Verdana;
-      font-size: 9pt;
-      color: #000000;
-      padding: 2px 2px 2px 2px;
+      background-image: url(css/picts/tbl/bg_.gif);
+      padding: 1px 2px 2px 2px;
       text-decoration: none;
       border-style: solid;
-      border-color: #787b7e;
+      border-color: #467C41;
       border-width: 1px;
+   border-radius: 3px;
    }
    .leftTop
    {
