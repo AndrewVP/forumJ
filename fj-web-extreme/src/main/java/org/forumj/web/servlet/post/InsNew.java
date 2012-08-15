@@ -21,6 +21,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.checkip.CheckIp;
 import org.forumj.common.*;
 import org.forumj.common.config.FJConfiguration;
 import org.forumj.common.db.entity.IUser;
@@ -81,13 +82,17 @@ public class InsNew extends FJServlet {
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       try {
+         String ip = request.getRemoteAddr();
+         boolean spammer = ip != null && CheckIp.isSpammerIp(ip);
          HttpSession session = request.getSession();
          String nickParameter = request.getParameter("R1");
          String pass1Parameter = request.getParameter("R2");
          String pass2Parameter = request.getParameter("R22");
          String email1Parameter = request.getParameter("R3");
          String email2Parameter = request.getParameter("R33");
-         if (isEmptyParameter(nickParameter)){
+         if (spammer){
+            response.sendRedirect("");
+         }else if (isEmptyParameter(nickParameter)){
             response.sendRedirect("reg.php?id=6");
          }else if (isEmptyParameter(pass1Parameter) || isEmptyParameter(pass2Parameter)){
             response.sendRedirect("reg.php?id=10");

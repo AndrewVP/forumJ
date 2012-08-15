@@ -38,6 +38,8 @@ public class FJServiceHolder {
 
    private static ActionService actionService = null;
    
+   private static FJIpAddressService ipAddressService = null;
+   
    static{
       try {
          countService = (CountService) Class.forName(FJConfiguration.getConfig().getString("service.countService.class")).newInstance();
@@ -53,6 +55,7 @@ public class FJServiceHolder {
          voiceService = (VoiceService) Class.forName(FJConfiguration.getConfig().getString("service.voiceService.class")).newInstance();
          postService = (PostService) Class.forName(FJConfiguration.getConfig().getString("service.postService.class")).newInstance();
          actionService = (ActionService) Class.forName(FJConfiguration.getConfig().getString("service.actionService.class")).newInstance();
+         ipAddressService = (FJIpAddressService) Class.forName(FJConfiguration.getConfig().getString("service.ipAddressService.class")).newInstance();
       } catch (ConfigurationException e) {
          // TODO Auto-generated catch block
          e.printStackTrace();
@@ -118,5 +121,9 @@ public class FJServiceHolder {
 
    public static ActionService getActionService(){
       return actionService;
+   }
+
+   public static FJIpAddressService getIpAddressService() {
+      return ipAddressService;
    }
 }
