@@ -27,6 +27,7 @@ import javax.servlet.http.*;
 
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.net.QuotedPrintableCodec;
+import org.forumj.checkip.CheckIp;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
 
@@ -84,9 +85,19 @@ public class AAALoginFilter implements Filter {
             }
          }
          if (user == null){
-            request.getSession().setAttribute("user", userService.readUser(0l));
+            user = userService.readUser(0l);
+            request.getSession().setAttribute("user", user);
          }
          if (ok){
+            if (user != null && user.isLogined()){
+               String ip = request.getRemoteAddr();
+               if (ip != null && CheckIp.isSpammerIp(ip)){
+                  setcookie(response, "idu", "", 0, request.getContextPath(), request.getServerName());
+                  setcookie(response, "pass2", "", 0, request.getContextPath(), request.getServerName());
+                  user = userService.readUser(0l);
+                  request.getSession().setAttribute("user", user);
+               }
+            }
             chain.doFilter(request, response);
          }else{
             goAwayStupidHackers(response, request.getContextPath() + "/", request);

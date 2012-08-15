@@ -15,6 +15,11 @@
 			<artifactId>fj-common</artifactId>
 			<version>${project.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>org.forumj</groupId>
+			<artifactId>fj-check-ip</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
   <build>
       <finalName>fj-web-extreme</finalName>
