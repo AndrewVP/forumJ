@@ -578,3 +578,18 @@ CREATE TABLE IF NOT EXISTS `voice` (
   KEY `head` (`head`),
   KEY `node` (`node`)
 ) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `ip_address`
+--
+
+CREATE TABLE IF NOT EXISTS `ip_address` (
+  `id` int(11) NOT NULL auto_increment,
+  `ip` varchar(15) NOT NULL ,
+  `spammer` boolean NOT NULL,
+  `source` varchar(100) NOT NULL default '',
+  `last_check` timestamp NOT NULL,
+  PRIMARY KEY  (`id`),
+  KEY `ip` (`ip`, `spammer`)
+) DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ENGINE = InnoDB;
