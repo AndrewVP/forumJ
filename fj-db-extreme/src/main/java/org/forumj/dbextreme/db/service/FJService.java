@@ -47,6 +47,8 @@ public class FJService {
 
    private static final FJQuestNodeDao questNodeDao = new FJQuestNodeDao();
    
+   private static final FJIpAddressDao ipAddressDao = new FJIpAddressDao();
+   
    
    /**
     * @return the questnodedao
@@ -132,4 +134,7 @@ public class FJService {
       return forumDao;
    }
 
+   public static FJIpAddressDao getIpaddressdao() {
+      return ipAddressDao;
+   }
 }
