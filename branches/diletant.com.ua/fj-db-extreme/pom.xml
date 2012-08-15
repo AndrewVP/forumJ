@@ -14,6 +14,7 @@
 			<groupId>org.forumj.common</groupId>
 			<artifactId>fj-common</artifactId>
 			<version>${project.version}</version>
+         <scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<build>

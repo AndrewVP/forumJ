@@ -70,6 +70,12 @@ public class QueryBuilder {
 
    private static String updateIgnorQuery = null;
 
+   private static String updateIpAddressQuery = null;
+   
+   private static String createIpAddressQuery = null;
+   
+   private static String checkSpammerQuery = null;
+   
    private static String createIgnorQuery = null;
    
    private static String createAnswerQuery = null;
@@ -510,6 +516,27 @@ public class QueryBuilder {
          updateIgnorQuery = loadQuery("sql/update_ignor.sql");
       }
       return updateIgnorQuery;
+   }
+
+   public static String getUpdateIpAddressQuery() throws IOException{
+      if (updateIpAddressQuery == null){
+         updateIpAddressQuery = loadQuery("sql/update_ip_address.sql");
+      }
+      return updateIpAddressQuery;
+   }
+   
+   public static String getCreateIpAddressQuery() throws IOException{
+      if (createIpAddressQuery == null){
+         createIpAddressQuery = loadQuery("sql/create_ip_address.sql");
+      }
+      return createIpAddressQuery;
+   }
+   
+   public static String getCheckSpammerQuery() throws IOException{
+      if (checkSpammerQuery == null){
+         checkSpammerQuery = loadQuery("sql/check_spammer.sql");
+      }
+      return checkSpammerQuery;
    }
    
    public static String getCreateIgnorQuery() throws IOException{
