@@ -16,6 +16,7 @@
 package org.forumj.web.servlet.get.images;
 
 import java.io.*;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -30,8 +31,13 @@ public class Images extends HttpServlet {
 
    private static final long serialVersionUID = -8810949466796099480L;
 
-   String realPath = null;
+   private String realPath = null;
 
+   private Map<String, List<byte[]>> cache = new HashMap<String, List<byte[]>>();
+   
+   private Object cacheMonitor = new Object(); 
+
+   
    /**
     * {@inheritDoc}
     */
@@ -43,19 +49,52 @@ public class Images extends HttpServlet {
       String photoExt = req.getPathInfo().split("\\.")[1];
       String mimeType = "image/" + photoExt.toLowerCase();
       resp.setContentType(mimeType);
-      String filePath = realPath + "img" + req.getRequestURI().substring(req.getRequestURI().split("/")[1].length() + 1);
-      File file = new File(filePath);
-      if (file.exists()){
-         resp.setContentLength((int)file.length());
-         FileInputStream in = new FileInputStream(file);
-         OutputStream out = resp.getOutputStream();
-         byte[] buf = new byte[1024];
-         int count = 0;
-         while ((count = in.read(buf)) >= 0) {
-            out.write(buf, 0, count);
+      String fileKey = "img" + req.getRequestURI().substring(req.getRequestURI().split("/")[1].length() + 1);
+      String filePath = realPath + fileKey;
+      List<byte[]> resource = cache.get(fileKey);
+      if (resource == null){
+         synchronized (cacheMonitor) {
+            resource = cache.get(fileKey);
+            if (resource == null){
+               resource = getFileAsArray(filePath);
+               cache.put(fileKey, resource);
+            }
          }
-         in.close();
-         out.close();
       }
+      OutputStream out = resp.getOutputStream();
+      for (int i = 0; i < resource.size(); i++) {
+         byte[] potion = resource.get(i);
+         out.write(potion, 0 , potion.length);
+      }
+   }
+
+   protected List<byte[]> getFileAsArray(String fileName) throws IOException {
+      List<byte[]> result = new ArrayList<byte[]>();
+      File file = new File(fileName);
+      if (file.exists()){
+         InputStream in = null;
+         Reader reader = null;
+         try {
+            in = new FileInputStream(file);
+            final byte[] chars = new byte[1024];
+            int read;
+            in = new FileInputStream(file);
+            while ((read = in.read(chars)) > -1) {
+               final byte[] realChars = new byte[read];
+               for (int i = 0; i < read; i++) {
+                  realChars[i] = chars[i];
+               }
+               result.add(realChars);
+            }
+         } finally {
+            if (reader != null) {
+               reader.close();
+            }
+            if (in != null) {
+               in.close();
+            }
+         }
+      }
+      return result;
    }
 }
