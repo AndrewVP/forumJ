@@ -27,7 +27,7 @@ import org.forumj.common.db.entity.IFJIpAddress;
  */
 public interface FJIpAddressService {
 
-   public void createIpAddresscreate(IFJIpAddress ipAddress) throws SQLException, ConfigurationException, IOException;
+   public void createIpAddress(IFJIpAddress ipAddress) throws SQLException, ConfigurationException, IOException;
 
    public Boolean isSpammer(String ip) throws IOException, SQLException, ConfigurationException;
 

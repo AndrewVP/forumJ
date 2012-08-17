@@ -1,7 +1,7 @@
 package org.forumj.web.filter;
 
 import static org.forumj.common.FJServletName.*;
-import static org.forumj.tool.Diletant.errorOut;
+import static org.forumj.tool.Diletant.*;
 
 import java.io.*;
 
@@ -23,7 +23,7 @@ import org.forumj.web.servlet.tool.FJServletTools;
       ADD_IGNOR, COUNT ,
       DELETE_SUBSCRIBES, DELETE_ONE_SUBSCRIBE_BY_EMAIL, DELETE_FOLDER_FROM_VIEW, DELETE_VIEW, SET_DEFAULT_VIEW, 
       SET_FOOTER, SET_LOCATION, ADD_VOTE, DO_REGISTRATION, MESSAGE, ACTIVATE_USER})
-      public class ActionFilter implements Filter{
+public class ActionFilter implements Filter{
 
    /**
     * {@inheritDoc}

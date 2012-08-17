@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.forumj.checkip;
+package org.forumj.checkip.connector.stopforumspamcom;
 
 /**
  * @author andrew

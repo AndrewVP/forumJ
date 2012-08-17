@@ -84,5 +84,6 @@
    	<module>fj-common</module>
    	<module>fj-db-extreme</module>
    	<module>fj-tools</module>
+   	<module>fj-check-ip</module>
    </modules>
 </project>

@@ -36,6 +36,8 @@ public class Images extends HttpServlet {
    private Map<String, List<byte[]>> cache = new HashMap<String, List<byte[]>>();
    
    private Object cacheMonitor = new Object(); 
+   
+   private Date dateHeader = new Date();
 
    
    /**
@@ -49,6 +51,10 @@ public class Images extends HttpServlet {
       String photoExt = req.getPathInfo().split("\\.")[1];
       String mimeType = "image/" + photoExt.toLowerCase();
       resp.setContentType(mimeType);
+      resp.setDateHeader("Last-Modified", dateHeader.getTime());
+      resp.setDateHeader("Expires", dateHeader.getTime() + 600000000);
+      resp.setHeader("max-age", "600000");
+      resp.setHeader("Cache-Control", "private");
       String fileKey = "img" + req.getRequestURI().substring(req.getRequestURI().split("/")[1].length() + 1);
       String filePath = realPath + fileKey;
       List<byte[]> resource = cache.get(fileKey);

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.forumj.checkip;
+package org.forumj.checkip.connector.stopforumspamcom;
 
 import org.xml.sax.*;
 import org.xml.sax.helpers.DefaultHandler;
@@ -14,14 +14,11 @@ public class SaxHandler extends DefaultHandler{
 
    private String tempVal;
    
-   //to maintain context
    private IpResponseContent content;
    
-   //Event Handlers
    public void startElement(String uri, String localName, String qName, Attributes attributes) throws SAXException {
-      //reset
       tempVal = "";
-      if(qName.equalsIgnoreCase("response")) {
+      if("response".equalsIgnoreCase(qName)) {
          content = new IpResponseContent();
          content.setSuccess(Boolean.parseBoolean(attributes.getValue("success")));
       }
