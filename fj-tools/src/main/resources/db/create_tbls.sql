@@ -551,6 +551,7 @@ CREATE TABLE IF NOT EXISTS `users` (
   `ban` tinyint(4) NOT NULL default '0',
   `activate_code` int(11) NOT NULL default '0',
   `is_active` tinyint(4) NOT NULL default '0',
+  `is_approoved` tinyint(4) NOT NULL default '0',
   PRIMARY KEY  (`id`),
   KEY `pass` (`pass`),
   KEY `pass2` (`pass2`),
