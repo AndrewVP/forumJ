@@ -414,6 +414,7 @@ public class Control extends FJServlet {
          }
          // Баннер внизу, счетчики и копирайт.
          buffer.append(footer(request));
+         buffer.append("</table>");
          buffer.append("</body>");
          buffer.append("</html>");
       } catch (Throwable e) {

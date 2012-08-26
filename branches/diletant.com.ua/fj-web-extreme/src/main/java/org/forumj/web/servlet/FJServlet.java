@@ -9,7 +9,14 @@
  */
 package org.forumj.web.servlet;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.Reader;
 import java.net.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.http.HttpServlet;
 
@@ -33,5 +40,35 @@ public class FJServlet extends HttpServlet {
 //      result = InetAddress.getByAddress(ipAddr).getCanonicalHostName();
       return ip;
    }
+
+   protected List<byte[]> getFileAsArray(String fileName) throws IOException {
+	      List<byte[]> result = new ArrayList<byte[]>();
+	      File file = new File(fileName);
+	      if (file.exists()){
+	         InputStream in = null;
+	         Reader reader = null;
+	         try {
+	            in = new FileInputStream(file);
+	            final byte[] chars = new byte[1024];
+	            int read;
+	            in = new FileInputStream(file);
+	            while ((read = in.read(chars)) > -1) {
+	               final byte[] realChars = new byte[read];
+	               for (int i = 0; i < read; i++) {
+	                  realChars[i] = chars[i];
+	               }
+	               result.add(realChars);
+	            }
+	         } finally {
+	            if (reader != null) {
+	               reader.close();
+	            }
+	            if (in != null) {
+	               in.close();
+	            }
+	         }
+	      }
+	      return result;
+	   }
    
 }
