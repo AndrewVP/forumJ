@@ -66,6 +66,14 @@ public class Settings extends FJServlet {
          MailService mailService = FJServiceHolder.getMailService();
          SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
          InterfaceService interfaceService = FJServiceHolder.getInterfaceService();
+         generateLangLinks(request);
+         String ru = getRus();
+         String ua = getUkr();
+         String exit = getExitUrl();
+         request.setAttribute("ua", ua);
+         request.setAttribute("ru", ru);
+         request.setAttribute("exit", exit);
+         request.setAttribute("id", id);
       } catch (Throwable e) {
          e.printStackTrace();
       }

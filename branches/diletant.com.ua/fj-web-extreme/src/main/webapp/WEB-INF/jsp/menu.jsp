@@ -38,7 +38,7 @@
    </a>
    </td>
    <td class=bg align='right'>
-   <a class='mnuforumSm' href='" + ukr + "' rel='nofollow'>Українська</a>•<a class='mnuforumSm' href='"+ rus + "' rel='nofollow'>Русский</a>
+   <a class='mnuforumSm' href='<c:out value="${ua}"/>' rel='nofollow'>Українська</a>•<a class='mnuforumSm' href='<c:out value="${ru}"/>' rel='nofollow'>Русский</a>
    </td>
 </c:if>
 <c:if test='${sessionScope["user"].logined}'>
@@ -70,16 +70,13 @@
    <a class='mnuforumSm' href='control.php?id=2' rel='nofollow'>
          <fmt:message key="mess23"/>
    </a>
-<!-- 
-         String exitUrl = request.getContextPath() + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + (query == null || "".equalsIgnoreCase(query.trim()) ? "?exit=0" : query.trim() + "&exit=0
- -->         
    <img src='picts/key_delete.gif' border='0' class='menuImg'>
-   <a class='mnuforumSm' href='" + exitUrl + "' rel='nofollow'>
+   <a class='mnuforumSm' href='<c:out value="${exit}"/>' rel='nofollow'>
          <fmt:message key="mess6"/>
    </a>
    </td>
    <td class=bg align='right'>
-   <a class='mnuforumSm' href='" + ukr + "' rel='nofollow'>Українська</a>•<a class='mnuforumSm' href='" + rus + "' rel='nofollow'>Русский</a>
+   <a class='mnuforumSm' href='<c:out value="${ua}"/>' rel='nofollow'>Українська</a>•<a class='mnuforumSm' href='<c:out value="${ru}"/>' rel='nofollow'>Русский</a>
    </td>
 </c:if>
 <td class=right></td>

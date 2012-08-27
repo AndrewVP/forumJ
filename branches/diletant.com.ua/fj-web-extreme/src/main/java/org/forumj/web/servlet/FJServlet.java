@@ -9,16 +9,11 @@
  */
 package org.forumj.web.servlet;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Reader;
-import java.net.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.net.UnknownHostException;
+import java.util.*;
 
-import javax.servlet.http.HttpServlet;
+import javax.servlet.http.*;
 
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
@@ -26,6 +21,10 @@ import javax.servlet.http.HttpServlet;
 @SuppressWarnings("serial")
 public class FJServlet extends HttpServlet {
    
+   private String ukr;
+   private String rus;
+   private String exitUrl;
+
    protected boolean isEmptyParameter(String parameter){
       return (parameter == null || "".equals(parameter));
    }
@@ -70,5 +69,38 @@ public class FJServlet extends HttpServlet {
 	      }
 	      return result;
 	   }
+
+   protected void generateLangLinks(HttpServletRequest request){
+      Enumeration<String> parameters = request.getParameterNames();
+      boolean first = true;
+      String query = "";
+      while (parameters.hasMoreElements()){
+         String parameterName = parameters.nextElement();
+         if (!parameterName.equalsIgnoreCase("lang") && !parameterName.equalsIgnoreCase("exit")){
+            if(first){
+               query = "?";
+               first = false;
+            }else{
+               query += "&";
+            }
+            query += parameterName + "=" + request.getParameter(parameterName);  
+         }
+      }
+      exitUrl = request.getContextPath() + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + (query == null || "".equalsIgnoreCase(query.trim()) ? "?exit=0" : query.trim() + "&exit=0");
+      ukr = request.getContextPath() + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + ("".equalsIgnoreCase(query.trim()) ? "?lang=ua" : query.trim() + "&lang=ua");
+      rus = request.getContextPath() + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + ("".equalsIgnoreCase(query.trim()) ? "?lang=ru" : query.trim() + "&lang=ru");
+   }
+
+   protected String getUkr() {
+      return ukr;
+   }
+
+   protected String getRus() {
+      return rus;
+   }
+
+   protected String getExitUrl() {
+      return exitUrl;
+   }
    
 }
