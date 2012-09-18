@@ -180,6 +180,14 @@ mess129=<fmt:message key="mess129"/>;
 
          </td>
          <td valign="top" style='padding-left:5px;'>
+         <c:choose>
+      <c:when test="${id eq 1}">
+         <%@ include file="settings/settings_inc1.jsp" %>
+      </c:when>
+      <c:otherwise>
+          page id not defined
+      </c:otherwise>
+  </c:choose>
          </td>
          </tr>
          </table>
@@ -200,10 +208,8 @@ mess129=<fmt:message key="mess129"/>;
          </tr>
 <!-- 
          // Форма отправки письма личной переписки   
-         if (id>1 && id<6){
-         }
 -->
-            <c:if test='${id > 1 && id < 6}'>
+            <c:if test='${id gt 1 && id lt 6}'>
          <%@ include file="settings_mail_form.jsp" %>
             </c:if>
 <!-- 
