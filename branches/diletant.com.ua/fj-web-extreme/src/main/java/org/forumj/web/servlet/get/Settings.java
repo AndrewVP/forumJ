@@ -18,6 +18,7 @@ package org.forumj.web.servlet.get;
 import static org.forumj.tool.FJServletTools.cache;
 
 import java.io.IOException;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -26,7 +27,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.FJServiceHolder;
 import org.forumj.common.db.service.FolderService;
 import org.forumj.common.db.service.IgnorService;
@@ -74,6 +75,17 @@ public class Settings extends FJServlet {
          request.setAttribute("ru", ru);
          request.setAttribute("exit", exit);
          request.setAttribute("id", id);
+         switch (id) {
+         //Игнор
+         case 1:
+            // Выбираем список Игнорируемых
+            List<IIgnor> ignorList = ignorService.readUserIgnor(user.getId());
+            request.setAttribute("ignorList", ignorList);
+            break;
+
+         default:
+            break;
+         }
       } catch (Throwable e) {
          e.printStackTrace();
       }
