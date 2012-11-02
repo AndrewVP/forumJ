@@ -56,7 +56,7 @@ public class CheckIp {
             ipAddress.setLastCheck(new Date());
             ipAddress.setSource("http://www.stopforumspam.com");
             ipAddress.setSpammer(content.isSpammer());
-            FJServiceHolder.getIpAddressService().createIpAddresscreate(ipAddress);
+            FJServiceHolder.getIpAddressService().createIpAddress(ipAddress);
          }
          result = content != null && content.isSuccess() && content.isSpammer();
       } finally {
