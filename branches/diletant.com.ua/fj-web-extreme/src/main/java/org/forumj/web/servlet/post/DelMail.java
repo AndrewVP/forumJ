@@ -67,7 +67,7 @@ public class DelMail extends FJServlet {
                   }
                }
             }
-            buffer.append(successPostOut("0", "control.php?id=" + idParameter));
+            buffer.append(successPostOut("0", FJUrl.SETTINGS + "?id=" + idParameter));
          }else{
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());

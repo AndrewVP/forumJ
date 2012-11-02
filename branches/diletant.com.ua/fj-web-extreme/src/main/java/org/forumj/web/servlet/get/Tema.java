@@ -160,7 +160,7 @@ public class Tema extends FJServlet {
                }
                else {
                   buffer.append("<td class='page'>");
-                  buffer.append("<a class=mnuforum href='tema.php?page="+i1 + "&id="+threadId + "'>"+i1 + "</a>");
+                  buffer.append("<a class=mnuforum href='" + FJUrl.VIEW_THREAD + "?page="+i1 + "&id="+threadId + "'>"+i1 + "</a>");
                   buffer.append("</td>");
                }
             }
@@ -223,7 +223,7 @@ public class Tema extends FJServlet {
                }
                else {
                   buffer.append("<td class='page'>");
-                  buffer.append("<a class=mnuforum href='tema.php?page="+i1 + "&id="+threadId + "'>"+i1 + "</a>");
+                  buffer.append("<a class=mnuforum href='" + FJUrl.VIEW_THREAD + "?page="+i1 + "&id="+threadId + "'>"+i1 + "</a>");
                   buffer.append("</td>");
                }
             }
@@ -242,16 +242,16 @@ public class Tema extends FJServlet {
             String mess = "";
             if (subscribeService.isUserSubscribed(threadId, user.getId())){
                //Подписка есть, предлагаем отказаться
-               action="delonesubs.php?pg="+pageNumber;
-               mess=locale.getString("mess90");
+               action = FJUrl.DELETE_SUBSCRIBE + "?pg=" + pageNumber;
+               mess = locale.getString("mess90");
             }else{
                //Подписки нет - тогда предлагаем подписаться
-               action="addsubs.php?pg="+pageNumber;
+               action= FJUrl.ADD_SUBSCRIBE + "?pg="+pageNumber;
                mess=locale.getString("mess89");   
             }
             buffer.append("<tr>");
             buffer.append("<td align=right>");
-            buffer.append("<form id='subs' action='" + action + "' method='POST'>");
+            buffer.append("<form id='subs' action='" + action + "' method='post'>");
             buffer.append("<table>");
             buffer.append("<tr>");
             buffer.append("<td>");
@@ -282,7 +282,7 @@ public class Tema extends FJServlet {
             buffer.append("<table>");
             buffer.append("<tr>");
             buffer.append("<td>");
-            buffer.append("<form name='post' action='write.php' method='POST'>");
+            buffer.append("<form name='post' action='" + FJUrl.ADD_POST + "' method='post'>");
             buffer.append("<table width='100%'>");
             //Тема
             buffer.append("<tr>");
@@ -410,7 +410,7 @@ public class Tema extends FJServlet {
       buffer.append("<td  class=internal>");
       if (post.isLastPost()) buffer.append("<a name='end'></a>");
       buffer.append("<a name='" + post.getId() + "'>&nbsp;</a>");
-      buffer.append("<a class=nik href='tema.php?id=" + post.getThreadId() + "&msg=" + post.getId() + "#" + post.getId() + "'  rel='nofollow'><b>&nbsp;&nbsp;" + fd_head(HTMLEntities.htmlentities(removeSlashes(post.getHead().getTitle()))) + "</b></a>");
+      buffer.append("<a class=nik href='" + FJUrl.VIEW_THREAD + "?id=" + post.getThreadId() + "&msg=" + post.getId() + "#" + post.getId() + "'  rel='nofollow'><b>&nbsp;&nbsp;" + fd_head(HTMLEntities.htmlentities(removeSlashes(post.getHead().getTitle()))) + "</b></a>");
       buffer.append("</td></tr>");
       buffer.append("<tr><td>");
       boolean ignored = false;
@@ -424,7 +424,7 @@ public class Tema extends FJServlet {
          buffer.append("•&nbsp;<span class='posthead'>" + post.getHead().getIp() + "</span>&nbsp;" );
       }
       if (!ignored && user.isLogined() && post.getHead().getAuth() != user.getId()){
-         buffer.append("•&nbsp;<a class='posthead' href='ignor.php?idi=" + post.getHead().getAuth() + "&idt=" + thread.getId() + "&idp=" + post.getId() + "&pg=" + pageNumber + "' rel='nofollow'>" + locale.getString("mess68") + "</a>");
+         buffer.append("•&nbsp;<a class='posthead' href='" + FJUrl.ADD_IGNOR + "?idi=" + post.getHead().getAuth() + "&idt=" + thread.getId() + "&idp=" + post.getId() + "&pg=" + pageNumber + "' rel='nofollow'>" + locale.getString("mess68") + "</a>");
       }
       buffer.append("</td></tr>");
       buffer.append("<tr><td>");
@@ -441,9 +441,9 @@ public class Tema extends FJServlet {
          buffer.append("<div style='padding:10px;'>");
          //avatar
          if (user.getWantSeeAvatars() && author.getAvatarApproved() && author.getAvatar() != null && !author.getAvatar().trim().isEmpty() && author.getShowAvatar()){
-            buffer.append("<a href='control.php?id=9' rel='nofollow'><img border='0' src='" + author.getAvatar() + "'></a>");
+            buffer.append("<a href='" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='" + author.getAvatar() + "'></a>");
          }else{
-            buffer.append("<a href='control.php?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>");
+            buffer.append("<a href='" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>");
          }
          buffer.append("</div>");
          buffer.append("<span class='posthead'><u>" + locale.getString("mess111") + "</u></span><br>");
@@ -494,14 +494,14 @@ public class Tema extends FJServlet {
             //               }
             if (user.getId().equals(author.getId())) {
                buffer.append("<td align='CENTER' width='70'>");
-               buffer.append("<span class='posthead'><a href='tema.php?id=" + thread.getId() + "&reply=" + post.getId() + "#edit' rel=\"nofollow\">" + locale.getString("mess141") + "</a></span>");
+               buffer.append("<span class='posthead'><a href='" + FJUrl.VIEW_THREAD + "?id=" + thread.getId() + "&reply=" + post.getId() + "#edit' rel=\"nofollow\">" + locale.getString("mess141") + "</a></span>");
                buffer.append("</td>");
             }else{
                buffer.append("<td align='CENTER' width='70'>");
-               buffer.append("<span class='posthead'><a href='tema.php?id=" + thread.getId() + "&reply=" + post.getId() + "#edit' rel=\"nofollow\">" + locale.getString("mess139") + "</a></span>");
+               buffer.append("<span class='posthead'><a href='" + FJUrl.VIEW_THREAD + "?id=" + thread.getId() + "&reply=" + post.getId() + "#edit' rel=\"nofollow\">" + locale.getString("mess139") + "</a></span>");
                buffer.append("</td>");
                buffer.append("<td align='CENTER' width='70'>");
-               buffer.append("<span class='posthead'><a href='tema.php?id=" + thread.getId() + "&reply=" + post.getId() + "&ans=1#edit' rel=\"nofollow\">" + locale.getString("mess140") + "</a></span>");
+               buffer.append("<span class='posthead'><a href='" + FJUrl.VIEW_THREAD + "?id=" + thread.getId() + "&reply=" + post.getId() + "&ans=1#edit' rel=\"nofollow\">" + locale.getString("mess140") + "</a></span>");
                buffer.append("</td>");
             }
          }
@@ -526,7 +526,7 @@ public class Tema extends FJServlet {
       List<IQuestNode> nodes = post.getAnswers();
       boolean userVoted = voiceService.isUserVoted(thread.getId(), user.getId());
       if (user.isLogined() && !userVoted && !thread.isClosed()){
-         buffer.append("<form  action='voice.php' method='POST'><table class=content>");
+         buffer.append("<form  action='" + FJUrl.VOICE + "' method='post'><table class=content>");
          for (int nodeIndex = 1; nodeIndex < nodes.size(); nodeIndex++) {
             IQuestNode questNode = nodes.get(nodeIndex);
             buffer.append("<tr><td class=voice_left align='right'>");
@@ -557,7 +557,7 @@ public class Tema extends FJServlet {
             buffer.append("<input type=hidden name=\"PS21\" size=\"20\" value=\"" + user.getPass2() + "\">");
          }
          else {
-            buffer.append("<input type=hidden name=\"PS11\" size=\"20\" value=\"" + user.getPass() + "\">");
+            buffer.append("<input type=hidden name='PS11' size='20' value='" + user.getPass() + "'>");
          }
          buffer.append("<input type='submit' value='" + locale.getString("mess145") + "' name='OK'>");
          buffer.append("</td></tr>");
@@ -572,21 +572,21 @@ public class Tema extends FJServlet {
             }
             if (!userVotes){
                buffer.append("<tr><td>");
-               buffer.append("<form  action=\"uservoice.php\" method=\"POST\"><table align=\"CENTER\">");
+               buffer.append("<form  action='" + FJUrl.ADD_VOTE + "' method='post'><table align='center'>");
                buffer.append("<tr><td>");
                buffer.append(locale.getString("mess153") + ":<br>");
-               buffer.append("<input type=\"text\" name=\"P\" size=\"100\">");
-               buffer.append("<input type=hidden name=\"IDU2\" size=\"20\" value=\"" + user.getId() + "\">");
-               buffer.append("<input type=hidden name=\"AUT2\" size=\"20\" value=\"" + user.getNick() + "\">");
-               buffer.append("<input type=hidden name=\"IDT2\" size=\"20\" value=\"" + thread.getId() + "\">");
+               buffer.append("<input type='text' name='P' size='100'>");
+               buffer.append("<input type=hidden name='IDU2' size='20' value='" + user.getId() + "'>");
+               buffer.append("<input type=hidden name='AUT2' size='20' value='" + user.getNick() + "'>");
+               buffer.append("<input type=hidden name='IDT2' size='20' value='" + thread.getId() + "'>");
                if (user.getPass2() != null) {
-                  buffer.append("<input type=hidden name=\"PS22\" size=\"20\" value=\"" + user.getPass2() + "\">");
+                  buffer.append("<input type=hidden name='PS22' size='20' value='" + user.getPass2() + "'>");
                }
                else {
-                  buffer.append("<input type=hidden name=\"PS12\" size=\"20\" value=\"" + user.getPass() + "\">");
+                  buffer.append("<input type=hidden name='PS12' size='20' value='" + user.getPass() + "'>");
                }
                buffer.append("</td></tr>");
-               buffer.append("<tr><td align=\"CENTER\">");
+               buffer.append("<tr><td align='center'>");
                buffer.append("<input type='checkbox' name='HD' value='1' checked>&nbsp;" + locale.getString("mess146") + "<br>");
                buffer.append("<input type='submit' value='" + locale.getString("mess145") + "' name='OK'>");
                buffer.append("</td></tr>");
@@ -595,10 +595,10 @@ public class Tema extends FJServlet {
             }
          }
       }
-      buffer.append("<tr><td align=\"CENTER\">");
+      buffer.append("<tr><td align='CENTER'>");
       buffer.append("<b>" + locale.getString("mess152") + ": " + nvcs + "</b>");
       buffer.append("</td></tr>");
-      buffer.append("<tr><td align=\"CENTER\">");
+      buffer.append("<tr><td align='CENTER'>");
       buffer.append("<table align='CENTER' class=control>");
       buffer.append("<tr class=heads><th class='internal'>");
       buffer.append(locale.getString("mess147"));
@@ -633,8 +633,8 @@ public class Tema extends FJServlet {
       }
       buffer.append("</table>");
       if (user.isLogined() && userVoted && !thread.isClosed()){
-         buffer.append("<form method=\"POST\" action=\"delvoice.php\" align=\"CENTER\">");
-         buffer.append("<input type=hidden name=\"IDT\" size=\"20\" value=\"" + thread.getId() + "\">");
+         buffer.append("<form method='post' action='" + FJUrl.DELETE_VOICE + "' align='center'>");
+         buffer.append("<input type=hidden name='IDT' size='20' value='" + thread.getId() + "'>");
          buffer.append(fd_form_add(user));
          buffer.append("<input type='submit' value='" + locale.getString("mess161") + "'>");
          buffer.append("</form>");

@@ -49,7 +49,7 @@ public class SetLocation extends FJServlet {
             UserService userService = FJServiceHolder.getUserService();
             userService.update(user);
             //TODO Magic integer!
-            buffer.append(successPostOut("0", "control.php?id=10"));
+            buffer.append(successPostOut("0", FJUrl.SETTINGS + "?id=10"));
          }else{
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());

@@ -119,7 +119,7 @@ public class Control extends FJServlet {
          buffer.append("</th>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='control.php?id=1'>" + locale.getString("mess24") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=1'>" + locale.getString("mess24") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
          /*e-mail*/
@@ -129,7 +129,7 @@ public class Control extends FJServlet {
          buffer.append("</th>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='control.php?id=13'>" + locale.getString("MSG_EMAIL") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=13'>" + locale.getString("MSG_EMAIL") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
          // Личная переписка
@@ -139,19 +139,19 @@ public class Control extends FJServlet {
          buffer.append("</th>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='control.php?id=2'>" + locale.getString("mess54") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=2'>" + locale.getString("mess54") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='control.php?id=3'>" + locale.getString("mess57") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=3'>" + locale.getString("mess57") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='control.php?id=4'>" + locale.getString("mess55") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=4'>" + locale.getString("mess55") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='control.php?id=5'>" + locale.getString("mess56") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=5'>" + locale.getString("mess56") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
          // Интерфейсы
@@ -161,11 +161,11 @@ public class Control extends FJServlet {
          buffer.append("</th>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='control.php?id=6'>" + locale.getString("mess71") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=6'>" + locale.getString("mess71") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='control.php?id=7'>" + locale.getString("mess72") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=7'>" + locale.getString("mess72") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
          // Подписка
@@ -175,7 +175,7 @@ public class Control extends FJServlet {
          buffer.append("</th>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='control.php?id=8'>" + locale.getString("mess86") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=8'>" + locale.getString("mess86") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
          // Аватара
@@ -185,7 +185,7 @@ public class Control extends FJServlet {
          buffer.append("</th>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='control.php?id=9'>" + locale.getString("mess93") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=9'>" + locale.getString("mess93") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
          // Местонахождение
@@ -195,12 +195,12 @@ public class Control extends FJServlet {
          buffer.append("</th>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='control.php?id=10'>" + locale.getString("mess104") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=10'>" + locale.getString("mess104") + "</a><br>");
          buffer.append("</td>");
          /*Locale*/
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='control.php?id=12'>" + locale.getString("MSG_INTERF_LOCALE") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=12'>" + locale.getString("MSG_INTERF_LOCALE") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
          /*Подпись*/
@@ -210,7 +210,7 @@ public class Control extends FJServlet {
          buffer.append("</th>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='control.php?id=11'>" + locale.getString("mess138") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=11'>" + locale.getString("mess138") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
 
@@ -295,7 +295,7 @@ public class Control extends FJServlet {
             buffer.append("<table>");
             buffer.append("<tr>");
             buffer.append("<td>");
-            buffer.append("<form name='post' action='send.php?id=" + id + "' method='POST'>");
+            buffer.append("<form name='post' action='" + FJUrl.SEND_PIVATE_MESSAGE + "?id=" + id + "' method='post'>");
             buffer.append("<table width='100%'>");
             buffer.append("<tr>");
             buffer.append("<td width='100%'>");
@@ -499,7 +499,7 @@ public class Control extends FJServlet {
             buffer.append("</td>");
             // Изменение
             buffer.append("<td class='internal'>");
-            buffer.append("<form method='POST' action='amn.php' class=frmsmall>");
+            buffer.append("<form method='post' action='" + FJUrl.UPDATE_IGNORING + "' class=frmsmall>");
             buffer.append("<select size='1' name='D'>");
             buffer.append("<option selected value='01'><span class='mnuprof'>1</span></option>");
             for (int xo1=2; xo1<32; xo1++){
@@ -573,7 +573,7 @@ public class Control extends FJServlet {
          }
       }
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess17") + "</b></div>");
-      buffer.append("<form method='POST' class='content' action='delmail.php?id=2'>");
+      buffer.append("<form method='post' class='content' action='" + FJUrl.DELETE_MAIL + "?id=2'>");
       buffer.append("<table class='control'><tr class='heads'>");
       mailService.receiveMail(user.getId());
       // Выбираем почту
@@ -597,12 +597,12 @@ public class Control extends FJServlet {
             // Тема письма
             if (gridMail.getReadDate() == null){
                buffer.append("<td class='internal'><div class='tbtextnread'>");
-               buffer.append("<a href='control.php?id=2&msg=" + gridMail.getId() + "'>" + fd_head(gridMail.getSubject()) + "</a>");
+               buffer.append("<a href='" + FJUrl.SETTINGS + "?id=2&msg=" + gridMail.getId() + "'>" + fd_head(gridMail.getSubject()) + "</a>");
                buffer.append("</div></td>");
             }
             else {
                buffer.append("<td class='internal'><div class='tbtext'>");
-               buffer.append("<a href='control.php?id=2&msg=" + gridMail.getId() + "'>" + fd_head(gridMail.getSubject()) + "</a>");
+               buffer.append("<a href='" + FJUrl.SETTINGS + "?id=2&msg=" + gridMail.getId() + "'>" + fd_head(gridMail.getSubject()) + "</a>");
                buffer.append("</div></td>");
             }
             // Когда пришло.
@@ -677,7 +677,7 @@ public class Control extends FJServlet {
             buffer.append("</div></td>");
             // Тема письма
             buffer.append("<td class='internal'><div class=tbtext>");
-            buffer.append("<a href='control.php?id=3&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
+            buffer.append("<a href='" + FJUrl.SETTINGS + "?id=3&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
             buffer.append("</div></td>");
             // Когда отправлено
             buffer.append("<td class='internal' width='120'><div class=tbtext>");
@@ -713,7 +713,7 @@ public class Control extends FJServlet {
    private StringBuffer case4(LocaleString locale, IUser user, Long msg, MailService mailService) throws ConfigurationException, IOException, SQLException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess16") + "</b></div>");
-      buffer.append("<form method='POST' class='content' action='delmail.php?id=4'>");
+      buffer.append("<form method='post' class='content' action='" + FJUrl.DELETE_MAIL + "?id=4'>");
       buffer.append("<table class='control'><tr class=heads>");
       // Выбираем почту
       List<IFJMail> mails = mailService.loadOutReceivedBox(user);
@@ -739,7 +739,7 @@ public class Control extends FJServlet {
             buffer.append("</div></td>");
             // Тема письма
             buffer.append("<td class='internal'><div class=tbtext>");
-            buffer.append("<a href='control.php?id=4&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
+            buffer.append("<a href='" + FJUrl.SETTINGS + "?id=4&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
             buffer.append("</div></td>");
             // Когда отправлено.
             buffer.append("<td class='internal' width='120'><div class=tbtext>");
@@ -817,7 +817,7 @@ public class Control extends FJServlet {
             buffer.append("</div></td>");
             // Тема письма
             buffer.append("<td class='internal'><div class=tbtext>");
-            buffer.append("<a href='control.php?id=5&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
+            buffer.append("<a href='" + FJUrl.SETTINGS + "?id=5&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
             buffer.append("</div></td>");
             // Когда создано.
             buffer.append("<td class='internal' width='120'><div class=tbtext>");
@@ -857,7 +857,7 @@ public class Control extends FJServlet {
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess76") + "</b></div>");
       // Интерфейс по умолчанию
       // 
-      buffer.append("<form method='POST' class='content' action='defview.php'>");
+      buffer.append("<form method='post' class='content' action='" + FJUrl.SET_DEFAULT_VIEW + "'>");
       buffer.append("<span class=tbtext><b>" + locale.getString("mess84") + "</b></span>");
       buffer.append("<select size='1' name='DVIEW'>");
       for (int interfIndex=0; interfIndex < interfaces.size(); interfIndex++){
@@ -875,7 +875,7 @@ public class Control extends FJServlet {
       buffer.append(fd_form_add(user));
       buffer.append("</form>");
 
-      buffer.append("<form method='POST' class='content' action='delview.php?'>");
+      buffer.append("<form method='post' class='content' action='" + FJUrl.DELETE_VIEW + "?'>");
       buffer.append("<table class='control'><tr class=heads>");
       // Заголовки таблицы
       // Имя интерфейса
@@ -895,7 +895,7 @@ public class Control extends FJServlet {
          buffer.append("<tr>");
          // Интерфейс
          buffer.append("<td class='internal'><div class=tbtext>");
-         buffer.append("<a href=control.php?id=6&view=" + interf.getId() + ">" + name + "</a>");
+         buffer.append("<a href=" + FJUrl.SETTINGS + "?id=6&view=" + interf.getId() + ">" + name + "</a>");
          buffer.append("</div></td>");
          // Флажок.
          buffer.append("<td class='internal'>");
@@ -922,7 +922,7 @@ public class Control extends FJServlet {
       buffer.append("</tr>");
       buffer.append("</table>");
       buffer.append("</form>");  
-      buffer.append("<form method='POST' class='content' action='newview.php'>");
+      buffer.append("<form method='post' class='content' action='" + FJUrl.NEW_VIEW + "'>");
       buffer.append("<span class=tbtext>" + locale.getString("mess77") + ":&nbsp;</span>"); 
       buffer.append("<input type='text' size=50 name='FOLD'>");
       buffer.append("&nbsp;<input type='submit' value='" + locale.getString("mess75") + "' >");
@@ -935,7 +935,7 @@ public class Control extends FJServlet {
          // Выбираем список папок в интерфейсе
          List<IFJFolder> folders = folderService.findAllFolders(user, interf);
          buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess78") + "&nbsp;<u>" + interf.getName() + "</u></b></div>");
-         buffer.append("<form method='POST' class='content' action='delvfolder.php'>");
+         buffer.append("<form method='post' class='content' action='" + FJUrl.DELETE_FOLDER_FROM_VIEW + "'>");
          buffer.append("<table class='control'><tr class=heads>");
          // Заголовки таблицы
          // Имя папки
@@ -980,7 +980,7 @@ public class Control extends FJServlet {
          List<IFJFolder> foldersNotIn = folderService.findAllFoldersNotIn(user, interf);
          int foldersAmount = foldersNotIn.size();
          buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess73") + "</b></div>");
-         buffer.append("<form method='POST' class='content' action='delfolder.php?id=6&view=" + viewId + "'>");
+         buffer.append("<form method='post' class='content' action='" + FJUrl.FOLDER_TOOLS + "?id=6&view=" + viewId + "'>");
          buffer.append("<table class='control'><tr class=heads>");
          // Заголовки таблицы
          // Имя папки
@@ -1019,7 +1019,7 @@ public class Control extends FJServlet {
          buffer.append("</table>");
          buffer.append("</form>");  
          // Добавление новой папки
-         buffer.append("<form method='POST' class='content' action='newfolder.php?id=6&view=" + viewId + "'>");
+         buffer.append("<form method='post' class='content' action='" + FJUrl.NEW_FOLDER + "?id=6&view=" + viewId + "'>");
          buffer.append("<span class=tbtext>" + locale.getString("mess74") + ":&nbsp;</span>"); 
          buffer.append("<input type='text' size=50 name='FOLD'>");
          buffer.append("&nbsp;<input type='submit' value='" + locale.getString("mess75") + "' >");
@@ -1036,7 +1036,7 @@ public class Control extends FJServlet {
       List<IFJFolder> folders = folderService.getUserFolders(user);
       int foldersAmount = folders.size();
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess73") + "</b></div>");
-      buffer.append("<form method='POST' class='content' action='delfolder.php?id=7'>");
+      buffer.append("<form method='post' class='content' action='" + FJUrl.FOLDER_TOOLS + "?id=7'>");
       buffer.append("<table class='control'><tr class=heads>");
       // Заголовки таблицы
       // Имя папки
@@ -1076,7 +1076,7 @@ public class Control extends FJServlet {
       buffer.append("</table>");
       buffer.append("</form>");  
       // Добавление новой папки
-      buffer.append("<form method='POST' class='content' action='newfolder.php?id=7'>");
+      buffer.append("<form method='post' class='content' action='" + FJUrl.NEW_FOLDER + "?id=7'>");
       buffer.append("<span class=tbtext>" + locale.getString("mess74") + ":&nbsp;</span>"); 
       buffer.append("<input type='text' size=50 name='FOLD'>");
       buffer.append("&nbsp;<input type='submit' value='" + locale.getString("mess75") + "' >");
@@ -1090,7 +1090,7 @@ public class Control extends FJServlet {
       // Выбираем список подписаных веток
       List<IFJSubscribe> subscribes = subscribeService.findAllSubscribes(user, new Integer(1));
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess87") + "</b></div>");
-      buffer.append("<form method='POST' class='content' action='delsubs.php?id=8'>");
+      buffer.append("<form method='post' class='content' action='" + FJUrl.DELETE_SUBSCRIBES + "?id=8'>");
       buffer.append("<table class='control'><tr class=heads>");
       // Заголовки таблицы
       // Тема ветки
@@ -1104,7 +1104,7 @@ public class Control extends FJServlet {
          // Ветка
          buffer.append("<tr>");
          buffer.append("<td class='internal'><div class=tbtext>");
-         buffer.append("<a href='tema.php?id=" + subscribe.getTitleId() + "&end=1#end'>" + Diletant.fd_head(HtmlChars.convertHtmlSymbols(removeSlashes(subscribe.getHead()))) + "</a>");
+         buffer.append("<a href='" + FJUrl.VIEW_THREAD + "?id=" + subscribe.getTitleId() + "&end=1#end'>" + Diletant.fd_head(HtmlChars.convertHtmlSymbols(removeSlashes(subscribe.getHead()))) + "</a>");
          buffer.append("</div></td>");
          // Флажок.
          buffer.append("<td class='internal'>");
@@ -1160,7 +1160,7 @@ public class Control extends FJServlet {
          buffer.append("</div>");
          buffer.append("<br>");
       }
-      buffer.append("<form method='POST' class='content' action='setavatar.php?id=9'>");
+      buffer.append("<form method='post' class='content' action='" + FJUrl.SET_AVATAR + "?id=9'>");
       buffer.append(locale.getString("mess97") + "&nbsp;");
       buffer.append("<input type=text size=100 name='avatar' value='" + HTMLEntities.htmlentities(user.getAvatar()) + "'>");
       buffer.append("<br>");
@@ -1179,7 +1179,7 @@ public class Control extends FJServlet {
       buffer.append("<input type='submit' value='" + locale.getString("mess75") + "'>");
       buffer.append(fd_form_add(user));
       buffer.append("</form>");
-      buffer.append("<form method='POST' class='content' action='vavatar.php?id=9'>");
+      buffer.append("<form method='post' class='content' action='" + FJUrl.V_AVATAR + "?id=9'>");
       if (user.getAvatar() != null) {
          buffer.append("<input type=checkbox checked  name='v_avatar'>");
          buffer.append("&nbsp;" + locale.getString("mess98"));
@@ -1204,7 +1204,7 @@ public class Control extends FJServlet {
       buffer.append("</div>");
       buffer.append("<br>");
       buffer.append("<div>");
-      buffer.append("<form method='POST' class='content' action='setlocation.php?id=10'>");
+      buffer.append("<form method='post' class='content' action='" + FJUrl.SET_LOCATION + "?id=10'>");
       buffer.append(fd_form_add(user));
       buffer.append("<table>");
       buffer.append("<tr>");
@@ -1277,7 +1277,7 @@ public class Control extends FJServlet {
       if (user.getFooter() != null && !"".equals(user.getFooter())){
          $textArea=HTMLEntities.htmlentities(user.getFooter());
       }
-      buffer.append("<form method='POST' name='footer' class='content' action='setfooter.php?id=11'>");
+      buffer.append("<form method='post' name='footer' class='content' action='" + FJUrl.SET_FOOTER + "?id=11'>");
       buffer.append("<textarea name='foot' cols=50 rows=15 onkeyup='checkLength(this, 255);' onkeypress='this.onkeyup();' onChange='this.onkeyup();' onFocus='this.onkeyup();' onBlur='this.onkeyup();' onSelect='this.onkeyup();' onMouseOut='this.onkeyup();' onMouseMove='this.onkeyup();'>" + $textArea + "</textarea>");
       buffer.append("<div style='padding: 5px 0 0 0'>");
       buffer.append(fd_button(locale.getString("mess85"),"document.footer.submit();","foot_ok", "1"));
@@ -1299,7 +1299,7 @@ public class Control extends FJServlet {
       if (user.getEmail() != null && !"".equals(user.getEmail().trim())){
          eMail=HTMLEntities.htmlentities(user.getEmail());
       }
-      buffer.append("<form method='POST' name='email_form' class='content' action='" + FJUrl.POST + "'>");
+      buffer.append("<form method='post' name='email_form' class='content' action='" + FJUrl.POST + "'>");
       buffer.append(fd_input("mail", eMail, "50", "1"));
       buffer.append("<div style='padding: 5px 0 0 0'>");
       buffer.append("<input type='hidden' name='command' value='" + Command.SET_EMAIL.getCommand() + "' />");
@@ -1318,7 +1318,7 @@ public class Control extends FJServlet {
       buffer.append(locale.getString("MSG_DEFAULT_LOCALE"));
       buffer.append("</b>");
       buffer.append("</div>");
-      buffer.append("<form method='POST' name='locale' class='content' action='" + FJUrl.POST + "'>");
+      buffer.append("<form method='post' name='locale' class='content' action='" + FJUrl.POST + "'>");
       buffer.append("<select name='locale'>");
       for (Locale localeParameter: Locale.values()){
          buffer.append("<option value='" + localeParameter.getCode() + "'");

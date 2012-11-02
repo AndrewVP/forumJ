@@ -120,7 +120,7 @@ public class Index extends FJServlet {
          if (user.isLogined()) {
             int mailCount = indexService.getNewMailCount(user.getId());
             if (mailCount > 0) {
-               newMail="<a class=hdforum href='control.php?id=2' rel='nofollow'><font color=red>" + locale.getString("mess66") + " " + mailCount +" " + locale.getString("mess67") + "</font></a>";
+               newMail="<a class=hdforum href='" + FJUrl.SETTINGS + "?id=2' rel='nofollow'><font color=red>" + locale.getString("mess66") + " " + mailCount +" " + locale.getString("mess67") + "</font></a>";
             }
          }
          // Таблица главных ссылок
@@ -154,7 +154,7 @@ public class Index extends FJServlet {
          buffer.append("</span>");
          buffer.append("</td>");
          buffer.append("<td class=bg2 align=right>");
-         buffer.append("<form method='post' name='view_form' action='slctview.php' class=frmsmall>");
+         buffer.append("<form method='post' name='view_form' action='" + FJUrl.SELECT_VIEW + "' class=frmsmall>");
          /*Выводим интерфейсы*/
          buffer.append("<span class=mnuforum>");
          buffer.append(locale.getString("mess80"));
@@ -222,14 +222,14 @@ public class Index extends FJServlet {
                   buffer.append("<font class='pagecurrent'><b>" + i1 + "</b></font>");
                }
                else {
-                  buffer.append("<a class='pageLink' href='index.php?page=" + i1 + "'>" + i1 + "</a>");
+                  buffer.append("<a class='pageLink' href='" + FJUrl.INDEX + "?page=" + i1 + "'>" + i1 + "</a>");
                }
             }
          }
          buffer.append("<font class='page' style='margin-left:5px;'><b>" + locale.getString("mess136") + "&nbsp;" + (couP-1) + "</b></font>");
          buffer.append("</td>");
          buffer.append("<td align='right'>");
-         buffer.append("<form name='str' method='get' class=frmsmall action='index.php'>");
+         buffer.append("<form name='str' method='get' class=frmsmall action='" + FJUrl.INDEX + "'>");
          buffer.append("<font class=page style='margin-right:4px;'>");
          buffer.append("<b>");
          buffer.append(locale.getString("mess137"));
@@ -257,7 +257,7 @@ public class Index extends FJServlet {
          if (user.isLogined()){
             // Форма выводится только для зарегистрированых
             buffer.append("</table>");        
-            buffer.append("<form method='post' name='del_form' action='movetitle.php?page=" + pageNumber + "' class=frmsmall>");
+            buffer.append("<form method='post' name='del_form' action='" + FJUrl.MOVE_TITLE + "?page=" + pageNumber + "' class=frmsmall>");
             buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          }
          buffer.append("<tr>");
@@ -327,7 +327,7 @@ public class Index extends FJServlet {
                   buffer.append("<font class='pagecurrent'><b>" + i1 + "</b></font>");
                }
                else {
-                  buffer.append("<a class='pageLink' href='index.php?page=" + i1 + "'>" + i1 + "</a>");
+                  buffer.append("<a class='pageLink' href='" + FJUrl.INDEX + "?page=" + i1 + "'>" + i1 + "</a>");
                }
             }
          }
@@ -467,16 +467,16 @@ public class Index extends FJServlet {
       // Подписываем прикрепленные
       switch (thread.getDock()){
       case PIN:
-         buffer.append("<font class=trforum><b>" +locale.getString("mess7")+ " </b><a href='tema.php?id=" +thread.getId().toString() + "'>" +str_head+ "</a></font>");
+         buffer.append("<font class=trforum><b>" +locale.getString("mess7")+ " </b><a href='" + FJUrl.VIEW_THREAD + "?id=" +thread.getId().toString() + "'>" +str_head+ "</a></font>");
          break;
       case NOTICE:
-         buffer.append("<font class=trforum><b>" +locale.getString("mess8")+ " </b><a href='tema.php?id=" +thread.getId().toString() + "'>" +str_head+ "</a></font>");
+         buffer.append("<font class=trforum><b>" +locale.getString("mess8")+ " </b><a href='" + FJUrl.VIEW_THREAD + "?id=" +thread.getId().toString() + "'>" +str_head+ "</a></font>");
          break;
       case BIRTHDAY:
-         buffer.append("<font class=trforum><b>" +locale.getString("mess163")+ " </b><a href='tema.php?id=" +thread.getId().toString() + "'>" +str_head+ "</a></font>");
+         buffer.append("<font class=trforum><b>" +locale.getString("mess163")+ " </b><a href='" + FJUrl.VIEW_THREAD + "?id=" +thread.getId().toString() + "'>" +str_head+ "</a></font>");
          break;
       case COMMON:
-         buffer.append("<font class=trforum><a href='tema.php?id=" +thread.getId().toString()+ "'>" +str_head+ "</a></font>");
+         buffer.append("<font class=trforum><a href='" + FJUrl.VIEW_THREAD + "?id=" +thread.getId().toString()+ "'>" +str_head+ "</a></font>");
          break;
       }
       // Cсылки на страницы в ветке
@@ -491,16 +491,16 @@ public class Index extends FJServlet {
          for (int k=1; k<=Math.floor((pcount+1)/user.getPt()) + 1; k++) {
             k1=k1+1;
             if (k1==10){
-               buffer.append("<a href='tema.php?page=" +k+ "&id=" +thread.getId().toString()+ "'>" +k+ "</a>");
+               buffer.append("<a href='" + FJUrl.VIEW_THREAD + "?page=" +k+ "&id=" +thread.getId().toString()+ "'>" +k+ "</a>");
                if (k != Math.floor((pcount+1)/user.getPt()) + 1) buffer.append(",&nbsp;");
                k1=0;
                k2=k2+1;
             }
             if (k==1){
-               buffer.append("<a href='tema.php?page=" +k+ "&id=" +thread.getId().toString()+ "'>" +k+ "</a>,&nbsp;");
+               buffer.append("<a href='" + FJUrl.VIEW_THREAD + "?page=" +k+ "&id=" +thread.getId().toString()+ "'>" +k+ "</a>,&nbsp;");
             }
             if ((Math.floor((pcount+1)/user.getPt())-k2*10 + 1)< 10 && (k-k2*10) != 0 && k!=1){
-               buffer.append("<a href='tema.php?page=" +k+ "&id=" +thread.getId().toString()+ "'>" +k+ "</a>");
+               buffer.append("<a href='" + FJUrl.VIEW_THREAD + "?page=" +k+ "&id=" +thread.getId().toString()+ "'>" +k+ "</a>");
                if (k != Math.floor((pcount+1)/user.getPt()) + 1) buffer.append(",&nbsp;");
             }
 
@@ -521,7 +521,7 @@ public class Index extends FJServlet {
          if (thread.getDock() != NOTICE){
             buffer.append("<a href='" + FJUrl.PIN_THREAD + "?id=" + thread.getId() + "&pin=" + NOTICE.getCode() + "'>" +locale.getString("MSG_NOTICE_PIN")+ "</a>&nbsp;");
          }
-         buffer.append("<a href='delone.php?id=" +thread.getId().toString()+ "&usr=0&page=" + pageNumber + "'>" + locale.getString("mess70") + "</a>");
+         buffer.append("<a href='" + FJUrl.MOVE_THREAD_TO_RECYCLE + "?id=" +thread.getId().toString()+ "&usr=0&page=" + pageNumber + "'>" + locale.getString("mess70") + "</a>");
          buffer.append("&nbsp;</font>");
       }
       if (user.isModerator() || thread.getAuthId().equals(user.getId())){
@@ -548,7 +548,7 @@ public class Index extends FJServlet {
       // Автор последнего поста
       buffer.append("<td width='120' align=center><div class='mnuforum'><font size='1pt'>" +HtmlChars.convertHtmlSymbols(thread.getLastPostNick())+ "</font></div>");
       // Время последнего поста
-      buffer.append("<div class='mnuforum'><a href='tema.php?id=" + thread.getId().toString() + "&end=1#end' rel='nofollow'><font size='1pt'>" + Time.date("dd.MM.yy HH:mm",thread.getLastPostTime().getTime()) + "</font></a></div>");
+      buffer.append("<div class='mnuforum'><a href='" + FJUrl.VIEW_THREAD + "?id=" + thread.getId().toString() + "&end=1#end' rel='nofollow'><font size='1pt'>" + Time.date("dd.MM.yy HH:mm",thread.getLastPostTime().getTime()) + "</font></a></div>");
       buffer.append("</td>");
       // Папка
       buffer.append("<td align='center' valign='middle'>");
@@ -560,7 +560,7 @@ public class Index extends FJServlet {
          buffer.append("<input type='checkbox' id='ch" +threadIndex+ "' name='" +threadIndex+ "' value='" +thread.getId().toString()+ "'>");
          buffer.append("</td>");
          buffer.append("<td style='padding:0px 5px 0px 5px' align='right'>");
-         buffer.append("<a href='delone.php?id=" +thread.getId().toString()+ "&usr=" +String.valueOf(user.getId())+ "&page=" +thread.getPg()+ "'><img border='0' src='picts/del1.gif'></a>");
+         buffer.append("<a href='" + FJUrl.MOVE_THREAD_TO_RECYCLE + "?id=" +thread.getId().toString()+ "&usr=" +String.valueOf(user.getId())+ "&page=" +thread.getPg()+ "'><img border='0' src='picts/del1.gif'></a>");
          buffer.append("</td>");
       }
       return buffer;

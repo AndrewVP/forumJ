@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
+<%@page import="org.forumj.common.FJUrl"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -66,7 +67,7 @@ mess129=<fmt:message key="mess129"/>;
          </tr>
          <tr>
          <td class='internal'>
-         <a class='mnuprof' href='control.php?id=1'><fmt:message key="mess24"/></a><br/>
+         <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=1'><fmt:message key="mess24"/></a><br/>
          </td>
          </tr>
          </table>
@@ -79,7 +80,7 @@ mess129=<fmt:message key="mess129"/>;
          </th>
          </tr><tr>
          <td class='internal'>
-         <a class='mnuprof' href='control.php?id=13'><fmt:message key="MSG_EMAIL"/></a><br/>
+         <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=13'><fmt:message key="MSG_EMAIL"/></a><br/>
          </td>
          </tr></table>
 <!-- 
@@ -91,19 +92,19 @@ mess129=<fmt:message key="mess129"/>;
          </th>
          </tr><tr>
          <td class='internal'>
-         <a class='mnuprof' href='control.php?id=2'><fmt:message key="mess54"/></a><br/>
+         <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=2'><fmt:message key="mess54"/></a><br/>
          </td>
          </tr><tr>
          <td class='internal'>
-         <a class='mnuprof' href='control.php?id=3'><fmt:message key="mess57"/></a><br/>
+         <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=3'><fmt:message key="mess57"/></a><br/>
          </td>
          </tr><tr>
          <td class='internal'>
-         <a class='mnuprof' href='control.php?id=4'><fmt:message key="mess55"/></a><br/>
+         <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=4'><fmt:message key="mess55"/></a><br/>
          </td>
          </tr><tr>
          <td class='internal'>
-         <a class='mnuprof' href='control.php?id=5'><fmt:message key="mess56"/></a><br/>
+         <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=5'><fmt:message key="mess56"/></a><br/>
          </td>
          </tr></table>
 <!-- 
@@ -115,11 +116,11 @@ mess129=<fmt:message key="mess129"/>;
          </th>
          </tr><tr>
          <td class='internal'>
-         <a class='mnuprof' href='control.php?id=6'><fmt:message key="mess71"/></a><br/>
+         <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=6'><fmt:message key="mess71"/></a><br/>
          </td>
          </tr><tr>
          <td class='internal'>
-         <a class='mnuprof' href='control.php?id=7'><fmt:message key="mess72"/></a><br/>
+         <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=7'><fmt:message key="mess72"/></a><br/>
          </td>
          </tr></table>
 <!-- 
@@ -131,7 +132,7 @@ mess129=<fmt:message key="mess129"/>;
          </th>
          </tr><tr>
          <td class='internal'>
-         <a class='mnuprof' href='control.php?id=8'><fmt:message key="mess86"/></a><br/>
+         <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=8'><fmt:message key="mess86"/></a><br/>
          </td>
          </tr></table>
 <!-- 
@@ -143,7 +144,7 @@ mess129=<fmt:message key="mess129"/>;
          </th>
          </tr><tr>
          <td class='internal'>
-         <a class='mnuprof' href='control.php?id=9'><fmt:message key="mess93"/></a><br/>
+         <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=9'><fmt:message key="mess93"/></a><br/>
          </td>
          </tr></table>
 <!-- 
@@ -155,14 +156,14 @@ mess129=<fmt:message key="mess129"/>;
          </th>
          </tr><tr>
          <td class='internal'>
-         <a class='mnuprof' href='control.php?id=10'><fmt:message key="mess104"/></a><br/>
+         <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=10'><fmt:message key="mess104"/></a><br/>
          </td>
 <!-- 
          /*Locale*/
 -->
          </tr><tr>
          <td class='internal'>
-         <a class='mnuprof' href='control.php?id=12'><fmt:message key="MSG_INTERF_LOCALE"/></a><br/>
+         <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=12'><fmt:message key="MSG_INTERF_LOCALE"/></a><br/>
          </td>
          </tr></table>
 <!-- 
@@ -174,7 +175,7 @@ mess129=<fmt:message key="mess129"/>;
          </th>
          </tr><tr>
          <td class='internal'>
-         <a class='mnuprof' href='control.php?id=11'><fmt:message key="mess138"/></a><br/>
+         <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=11'><fmt:message key="mess138"/></a><br/>
          </td>
          </tr></table>
 

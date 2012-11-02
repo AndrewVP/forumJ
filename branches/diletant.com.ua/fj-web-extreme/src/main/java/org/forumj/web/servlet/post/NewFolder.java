@@ -59,7 +59,7 @@ public class NewFolder extends FJServlet {
             if (viewIdParameter != null && !"".equals(viewIdParameter)){
                urlQuery += "&view=" + viewIdParameter;
             }
-            buffer.append(successPostOut("0", "control.php" + urlQuery));
+            buffer.append(successPostOut("0", FJUrl.SETTINGS + urlQuery));
          }else{
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());

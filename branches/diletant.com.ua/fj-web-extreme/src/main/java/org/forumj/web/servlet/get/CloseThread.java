@@ -59,7 +59,7 @@ public class CloseThread extends FJServlet {
             if (canClose){
                service.close(idThread, closeParameter.equalsIgnoreCase("1"));
             }
-            buffer.append(successPostOut("0", "index.php?page=" + pageParameter));
+            buffer.append(successPostOut("0", FJUrl.INDEX + "?page=" + pageParameter));
          }else{
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());

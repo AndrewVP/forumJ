@@ -64,7 +64,7 @@ public class Send extends FJServlet {
                buffer.append(view(mail, locale, request));
             }else{
                mailService.create(mail);
-               buffer.append(successPostOut("0", "control.php?id=" + idParameter));
+               buffer.append(successPostOut("0", FJUrl.SETTINGS + "?id=" + idParameter));
             }
          }else{
             // Вошли незарегистрировавшись
@@ -145,7 +145,7 @@ public class Send extends FJServlet {
       buffer.append("<table>");
       buffer.append("<tr>");
       buffer.append("<td>");
-      buffer.append("<form name='post' action='send.php' method='POST'>");
+      buffer.append("<form name='post' action='" + FJUrl.SEND_PIVATE_MESSAGE + "' method='post'>");
       buffer.append("<table width='100%'>");
       buffer.append("<tr>");
       buffer.append("<td width='100%'>");

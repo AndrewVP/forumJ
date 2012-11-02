@@ -84,18 +84,18 @@ public class Write extends FJServlet {
                      }
                      /* Отправляем в форум*/
                      /*Остаемся в ветке?*/
-                     String exit = "index.php";
+                     String exit = FJUrl.INDEX;
                      if (request.getParameter("no_exit") != null){
-                        exit="tema.php?id=" + threadId + "&end=1#end";
+                        exit=FJUrl.VIEW_THREAD + "?id=" + threadId + "&end=1#end";
                      }
                      buffer.append(successPostOut("0", exit));
                   }
                }else{
                   /* Отправляем в форум*/
                   /*Остаемся в ветке?*/
-                  String exit = "index.php";
+                  String exit = FJUrl.INDEX;
                   if (request.getParameter("no_exit") != null){
-                     exit="tema.php?id=" + threadId + "&end=1#end";
+                     exit=FJUrl.VIEW_THREAD + "?id=" + threadId + "&end=1#end";
                   }
                   buffer.append(successPostOut("0", exit));
                }
@@ -170,9 +170,9 @@ public class Write extends FJServlet {
       buffer.append("<td valign=top class='matras' style='padding:10px;'>");
       buffer.append("<div>");
       if (user.getWantSeeAvatars() && user.getAvatarApproved() && user.getAvatar() != null && !user.getAvatar().trim().isEmpty() && user.getShowAvatar()){
-         buffer.append("<a href='control.php?id=9'><img border='0' src='" + user.getAvatar() + "' rel=\"nofollow\"></a>");
+         buffer.append("<a href='" + FJUrl.SETTINGS + "?id=9'><img border='0' src='" + user.getAvatar() + "' rel=\"nofollow\"></a>");
       }else{
-         buffer.append("<a href='control.php?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>");
+         buffer.append("<a href='" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>");
       }
       buffer.append("</div>");
       buffer.append("<span class='posthead'><u>" + locale.getString("mess111") + "</u></span><br>");
@@ -213,7 +213,7 @@ public class Write extends FJServlet {
       buffer.append("<table>");
       buffer.append("<tr>");
       buffer.append("<td>");
-      buffer.append("<form name='post' action='write.php' method='POST'>");
+      buffer.append("<form name='post' action='" + FJUrl.ADD_POST + "' method='post'>");
       buffer.append("<table width='100%'>");
       /*Тема*/
       buffer.append("<tr>");

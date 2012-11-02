@@ -62,7 +62,7 @@ public class MoveTitle extends FJServlet {
             if (!isEmptyParameter(pageParameter)){
                page = "?page=" + pageParameter;
             }
-            buffer.append(successPostOut("0", "index.php" + page));
+            buffer.append(successPostOut("0", FJUrl.INDEX + page));
          }else{
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());

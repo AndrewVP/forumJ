@@ -47,7 +47,7 @@ public class Voice extends FJServlet {
                   questService.addVote(threadId, answerId, user);
                }
                String urlQuery = "?id=" + threadIdParameter;
-               buffer.append(successPostOut("0", "tema.php" + urlQuery));
+               buffer.append(successPostOut("0", FJUrl.VIEW_THREAD + urlQuery));
             }
          }else{
             // Вошли незарегистрировавшись

@@ -36,7 +36,7 @@ public class SlctView extends FJServlet {
             session.setAttribute("view", Integer.valueOf(viewParameter));
             session.setAttribute("vname", null);
          }
-         buffer.append(successPostOut("0", "index.php"));
+         buffer.append(successPostOut("0", FJUrl.INDEX));
       } catch (Throwable e) {
          buffer = new StringBuffer();
          buffer.append(errorOut(e));

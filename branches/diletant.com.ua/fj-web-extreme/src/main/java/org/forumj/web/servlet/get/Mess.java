@@ -80,7 +80,7 @@ public class Mess extends FJServlet {
          buffer.append("<table width=100%>");
          buffer.append("<tr>");
          buffer.append("<td>");
-         buffer.append("<form name='post' action='new.php' method='POST'>");
+         buffer.append("<form name='post' action='" + FJUrl.ADD_THREAD + "' method='post'>");
          buffer.append("<table width='100%'>");
          /*Тема*/
          buffer.append("<tr>");
