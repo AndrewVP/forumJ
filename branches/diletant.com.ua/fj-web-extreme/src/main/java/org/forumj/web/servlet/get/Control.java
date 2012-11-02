@@ -1141,7 +1141,7 @@ public class Control extends FJServlet {
          buffer.append("</b>");
          buffer.append("</div>");
          buffer.append("<div>");
-         buffer.append("<img border='0' src='" + user.getAvatar() + "'>");
+         buffer.append("<img border='0' src='" + user.getAvatar() + "?seed=" + (new Date()).getTime() + "'>");
          buffer.append("</div>");
          buffer.append("<br>");
          buffer.append("<div>");
@@ -1160,9 +1160,9 @@ public class Control extends FJServlet {
          buffer.append("</div>");
          buffer.append("<br>");
       }
-      buffer.append("<form method='post' class='content' action='" + FJUrl.SET_AVATAR + "?id=9'>");
+      buffer.append("<form method='post' class='content' action='" + FJUrl.SET_AVATAR + "?id=9' enctype='multipart/form-data'>");
       buffer.append(locale.getString("mess97") + "&nbsp;");
-      buffer.append("<input type=text size=100 name='avatar' value='" + HTMLEntities.htmlentities(user.getAvatar()) + "'>");
+      buffer.append("<input type='file' size=100 name='avatar'>");
       buffer.append("<br>");
       buffer.append("<br>");
       if (user.getShowAvatar()) {

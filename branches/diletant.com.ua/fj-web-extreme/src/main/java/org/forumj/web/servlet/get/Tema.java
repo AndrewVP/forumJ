@@ -441,7 +441,7 @@ public class Tema extends FJServlet {
          buffer.append("<div style='padding:10px;'>");
          //avatar
          if (user.getWantSeeAvatars() && author.getAvatarApproved() && author.getAvatar() != null && !author.getAvatar().trim().isEmpty() && author.getShowAvatar()){
-            buffer.append("<a href='" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='" + author.getAvatar() + "'></a>");
+            buffer.append("<a href='" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='" + author.getAvatar() + "?seed=" + (new Date()).getTime() + "'></a>");
          }else{
             buffer.append("<a href='" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>");
          }

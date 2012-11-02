@@ -33,7 +33,6 @@ public class Images extends HttpServlet {
 
    private String realPath = null;
 
-   private Map<String, List<byte[]>> cache = new HashMap<String, List<byte[]>>();
    
    private Object cacheMonitor = new Object(); 
    
