@@ -52,7 +52,7 @@ public class UserVoice extends FJServlet {
                      questService.addCustomAnswer(threadId, answerParameter, answerType, user);
                   }
                }
-               buffer.append(successPostOut("0", "tema.php?id=" + threadIdParameter));
+               buffer.append(successPostOut("0", FJUrl.VIEW_THREAD + "?id=" + threadIdParameter));
             }
          }else{
             // Вошли незарегистрировавшись

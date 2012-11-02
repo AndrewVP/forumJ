@@ -108,7 +108,7 @@ public class Quest extends FJServlet {
                      thread.setAnswers(answers);
                      thread.setQuestion(question);
                      treadService.create(thread, post);
-                     buffer.append(successPostOut("0", "index.php"));
+                     buffer.append(successPostOut("0", FJUrl.INDEX));
                   }
                }else{
                   // Пустая
@@ -187,9 +187,9 @@ public class Quest extends FJServlet {
       buffer.append("<td valign=top class='matras' style='padding:10px;'>");
       buffer.append("<div>");
       if (user.getWantSeeAvatars() && user.getAvatarApproved() && user.getAvatar() != null && !user.getAvatar().trim().isEmpty() && user.getShowAvatar()){
-         buffer.append("<a href='control.php?id=9'><img border='0' src='" + user.getAvatar() + "' rel=\"nofollow\"></a>");
+         buffer.append("<a href='" + FJUrl.SETTINGS + "?id=9'><img border='0' src='" + user.getAvatar() + "' rel=\"nofollow\"></a>");
       }else{
-         buffer.append("<a href='control.php?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>");
+         buffer.append("<a href='" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>");
       }
       buffer.append("</div>");
       buffer.append("<span class='posthead'><u>" + locale.getString("mess111") + "</u></span><br>");
@@ -277,7 +277,7 @@ public class Quest extends FJServlet {
       buffer.append("<table>");
       buffer.append("<tr>");
       buffer.append("<td>");
-      buffer.append("<form method='POST' name='post' action='quest.php'>");
+      buffer.append("<form method='post' name='post' action='" + FJUrl.ADD_QUESTION + "'>");
       buffer.append("<table>");
       buffer.append("<tr>");
       buffer.append("<td>");

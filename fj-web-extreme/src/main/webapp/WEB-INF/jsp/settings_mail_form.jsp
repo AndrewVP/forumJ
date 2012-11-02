@@ -1,3 +1,4 @@
+<%@page import="org.forumj.common.FJUrl"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -10,7 +11,7 @@
 <table>
 <tr>
 <td>
-<form name='post' action='send.php?id=<c:out value="${id}"/>' method='post'>
+<form name='post' action='<%=FJUrl.SEND_PIVATE_MESSAGE%>?id=<c:out value="${id}"/>' method='post'>
 <table width='100%'>
 <tr>
 <td width='100%'>

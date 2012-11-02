@@ -70,7 +70,7 @@ public class Registration extends FJServlet {
             // Форма регистрации
             buffer.append("<tr>");
             buffer.append("<td width='100%'>");
-            buffer.append("<form  action='insnew.php' method='POST'>"); 
+            buffer.append("<form  action='" + FJUrl.DO_REGISTRATION + "' method='post'>"); 
             buffer.append("<table>");
             buffer.append("<tr>");
             buffer.append("<td>");

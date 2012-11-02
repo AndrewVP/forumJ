@@ -39,7 +39,7 @@ public class OkAvatar extends FJServlet {
          IUser user = userService.readUser(userId);
          buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
          buffer.append("<html><head><title></title><meta http-equiv='content-type' content='text/html; charset=UTF-8'></head><body><table><tr><td>");
-         buffer.append("<form action='s_avatar.php?qqnn=" + userIdParameter + "' method='post'>");
+         buffer.append("<form action='" + FJUrl.S_AVATAR + "?qqnn=" + userIdParameter + "' method='post'>");
          buffer.append("<input size='100' type='text' name='avatar' value='" + user.getAvatar() + "'><br><br><br>");
          if (user.getShowAvatar()){
             buffer.append("<input type=checkbox checked  name='s_avatar'>&nbsp;Показывать<br><br>");  

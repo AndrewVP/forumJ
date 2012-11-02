@@ -1,3 +1,4 @@
+<%@page import="org.forumj.common.FJUrl"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -36,7 +37,7 @@
 				<c:if test='${ignor.type != 0}'><td class='internal' align='CENTER'><span class='mnuprof'><fmt:message key="mess26" /></span></td></c:if>
 				<% // Form for change %>
 				<td class='internal'>
-					<form method='POST' action='amn.php' class=frmsmall>
+					<form method='post' action='<%=FJUrl.UPDATE_IGNORING%>' class=frmsmall>
                   <% // Day %>
 						<select size='1' name='D'>
 							<option class='mnuprof' selected value='1'>1</option>

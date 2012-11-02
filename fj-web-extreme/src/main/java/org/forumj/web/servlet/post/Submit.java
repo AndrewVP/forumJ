@@ -51,16 +51,16 @@ public class Submit extends FJServlet {
             setcookie(response, "idu", userId.toString(), 1209600, request.getContextPath(), request.getServerName());
             setcookie(response, "pass2", password2, 1209600, request.getContextPath(), request.getServerName());
             // Возвращаем на форум
-            String out = "<html><head><meta http-equiv='Refresh' content='0; url=index.php'></head><body></body></html>";
+            String out = "<html><head><meta http-equiv='Refresh' content='0; url=" + FJUrl.INDEX + "'></head><body></body></html>";
             response.setContentType("text/html; charset=UTF-8");
             PrintWriter writer = response.getWriter();
             writer.write(out);
          }else if (user != null && !user.getIsActive()){
             // не активирован
-            response.sendRedirect(request.getContextPath() + "/auth.php?id=10");
+            response.sendRedirect(request.getContextPath() + "/" + FJUrl.LOGIN + "?id=10");
          }else{
             // не угадал пароль
-            response.sendRedirect(request.getContextPath() + "/auth.php?id=6");
+            response.sendRedirect(request.getContextPath() + "/" + FJUrl.LOGIN + "?id=6");
          }      
       } catch (Throwable e) {
          e.printStackTrace();

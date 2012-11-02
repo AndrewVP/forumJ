@@ -96,22 +96,22 @@ public class InsNew extends FJServlet {
          if (spammer){
             response.sendRedirect("");
          }else if (isEmptyParameter(nickParameter)){
-            response.sendRedirect("reg.php?id=6");
+            response.sendRedirect(FJUrl.REGISTRATION + "?id=6");
          }else if (isEmptyParameter(pass1Parameter) || isEmptyParameter(pass2Parameter)){
-            response.sendRedirect("reg.php?id=10");
+            response.sendRedirect(FJUrl.REGISTRATION + "?id=10");
          }else if (isEmptyParameter(email1Parameter) || isEmptyParameter(email2Parameter)){
-            response.sendRedirect("reg.php?id=11");
+            response.sendRedirect(FJUrl.REGISTRATION + "?id=11");
          }else if (!email1Parameter.equals(email2Parameter)){
-            response.sendRedirect("reg.php?id=8");
+            response.sendRedirect(FJUrl.REGISTRATION + "?id=8");
          }else if (!pass1Parameter.equals(pass2Parameter)){
-            response.sendRedirect("reg.php?id=7");
+            response.sendRedirect(FJUrl.REGISTRATION + "?id=7");
          }else{
             String nick = prepareNick(nickParameter);
             UserService userService = FJServiceHolder.getUserService();
             NicksListHolder holder = new NicksListHolder(nick, userService);
             if (isDuplicate(nick, holder, 0, ruseng) || holder.checkIsDuplicate()){
                session.setAttribute("nick", nickParameter);
-               response.sendRedirect("reg.php?id=5");
+               response.sendRedirect(FJUrl.REGISTRATION + "?id=5");
             }else{
                IUser user = userService.readUserByMail(email1Parameter);
                if (user != null){
@@ -120,7 +120,7 @@ public class InsNew extends FJServlet {
                   System.out.println(new Date().toString() + ":Registration fail, mail: " + email1Parameter + " , nick: " + nick);
                   System.out.println("-------------------------------------------------------");
                   System.out.println();
-                  response.sendRedirect("reg.php?id=12");
+                  response.sendRedirect(FJUrl.REGISTRATION + "?id=12");
                }else{
                   user = userService.getUserObject();
                   user.setNick(nick);

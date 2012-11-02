@@ -18,6 +18,7 @@ package org.forumj.tool;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.forumj.common.FJUrl;
 import org.forumj.common.db.entity.IUser;
 
 /**
@@ -667,7 +668,7 @@ public class Diletant {
       buffer.append("<html>");
       buffer.append("<head>");
       buffer.append("<meta http-equiv='content-type' content='text/html; charset=windows-1251'>");
-      buffer.append("<meta http-equiv='Refresh' content='0; url=index.php'>");
+      buffer.append("<meta http-equiv='Refresh' content='0; url=" + FJUrl.INDEX + "'>");
       buffer.append("<title>");
       buffer.append("</title>");
       buffer.append("</head>");
@@ -706,7 +707,7 @@ public class Diletant {
       buffer.append("<html>");
       buffer.append("<head>");
       buffer.append("<meta http-equiv='content-type' content='text/html; charset=windows-1251'>");
-      buffer.append("<meta http-equiv='Refresh' content='5; url=index.php'>");
+      buffer.append("<meta http-equiv='Refresh' content='5; url=" + FJUrl.INDEX + "'>");
       buffer.append("<title>");
       buffer.append("Мы не во всем Дилетанты!");
       buffer.append("</title>");
@@ -724,7 +725,7 @@ public class Diletant {
       buffer.append("<html>");
       buffer.append("<head>");
       buffer.append("<meta http-equiv='content-type' content='text/html; charset=windows-1251'>");
-      buffer.append("<meta http-equiv='Refresh' content='5; url=index.php'>");
+      buffer.append("<meta http-equiv='Refresh' content='5; url=" + FJUrl.INDEX + "'>");
       buffer.append("<title>");
       buffer.append("Мы не во всем Дилетанты!");
       buffer.append("</title>");

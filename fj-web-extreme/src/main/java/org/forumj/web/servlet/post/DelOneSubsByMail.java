@@ -37,7 +37,7 @@ public class DelOneSubsByMail extends FJServlet {
             SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
             Long key = Long.valueOf(keyParameter);
             subscribeService.deleteSubscribeByKey(key);
-            buffer.append(successPostOut("0", "index.php"));
+            buffer.append(successPostOut("0", FJUrl.INDEX));
          }
       } catch (Throwable e) {
          buffer = new StringBuffer();

@@ -61,7 +61,7 @@ public class DelOne extends FJServlet {
             if (pageParameter != null && !"".equals(pageParameter)){
                urlQuery += "?page=" + pageParameter;
             }
-            buffer.append(successPostOut("0", "index.php" + urlQuery));
+            buffer.append(successPostOut("0", FJUrl.INDEX + "" + urlQuery));
          }else{
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());

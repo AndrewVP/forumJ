@@ -46,7 +46,7 @@ public class SetAvatar extends FJServlet {
             UserService userService = FJServiceHolder.getUserService();
             userService.update(user);
             // TODO NLS!
-            String text="Изменена Аватара <a href='http://www.diletant.com.ua/forum/ok_avatar.php?qqnn=" + user.getId() + "'>" + user.getNick() + "</a>";
+            String text="Изменена Аватара <a href='http://www.diletant.com.ua/forum/" + FJUrl.OK_AVATAR + "?qqnn=" + user.getId() + "'>" + user.getNick() + "</a>";
             String from = FJConfiguration.getConfig().getString("mail.from");
             String host = FJConfiguration.getConfig().getString("mail.smtp.host");
             String subject="Avatar changed";
@@ -60,7 +60,7 @@ public class SetAvatar extends FJServlet {
                
             }
             //TODO Magic integer!
-            buffer.append(successPostOut("0", "control.php?id=9"));
+            buffer.append(successPostOut("0", FJUrl.SETTINGS + "?id=9"));
          }else{
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());

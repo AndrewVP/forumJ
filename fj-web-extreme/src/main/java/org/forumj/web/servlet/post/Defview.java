@@ -42,7 +42,7 @@ public class Defview extends FJServlet {
                user.setView(Integer.valueOf(defaultViewParameter));
                userService.update(user);
             }
-            buffer.append(successPostOut("0", "control.php?id=6"));
+            buffer.append(successPostOut("0", FJUrl.SETTINGS + "?id=6"));
          }else{
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());

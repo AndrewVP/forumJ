@@ -1,3 +1,4 @@
+<%@page import="org.forumj.common.FJUrl"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -15,13 +16,13 @@
 <c:if test='${!sessionScope["user"].logined}'>
    <td class=bg align='LEFT'>
       <c:if test='${index == null}'>
-         <img src='picts/index.gif' border='0' class='menuImg'><a class='mnuforumSm' href='index.php'><fmt:message key="mess135"/></a>
+         <img src='picts/index.gif' border='0' class='menuImg'><a class='mnuforumSm' href='<%=FJUrl.INDEX%>'><fmt:message key="mess135"/></a>
       </c:if>
    <img src='picts/new_top.gif' border='0' class='menuImg'>
-   <a class='mnuforumSm' href='auth.php' rel='nofollow'><fmt:message key="mess4"/>
+   <a class='mnuforumSm' href='<%=FJUrl.LOGIN%>' rel='nofollow'><fmt:message key="mess4"/>
    </a>
    <img src='picts/new_quest.gif' border='0' class='menuImg'>
-   <a class='mnuforumSm' href='auth.php' rel='nofollow'>
+   <a class='mnuforumSm' href='<%=FJUrl.LOGIN%>' rel='nofollow'>
          <fmt:message key="mess3"/>
    </a>
    <img src='picts/new_search.gif' border='0' class='menuImg'>
@@ -29,11 +30,11 @@
          <fmt:message key="mess30"/>
    </a>
    <img src='picts/key_add.gif' border='0' class='menuImg'>
-   <a class='mnuforumSm' href='auth.php?id=1' rel='nofollow'>
+   <a class='mnuforumSm' href='<%=FJUrl.LOGIN%>?id=1' rel='nofollow'>
          <fmt:message key="mess1"/>
    </a>
    <img src='picts/new_user.gif' border='0' class='menuImg'>
-   <a class='mnuforumSm' href='reg.php?id=1' rel='nofollow'>
+   <a class='mnuforumSm' href='<%=FJUrl.REGISTRATION%>?id=1' rel='nofollow'>
          <fmt:message key="mess2"/>
    </a>
    </td>
@@ -48,14 +49,14 @@
    <c:out value='${sessionScope["user"].nick}'/>
    </span>
       <c:if test='${index == null}'>
-      <img src='picts/index.gif' border='0' class='menuImg'><a class='mnuforumSm' href='index.php'><fmt:message key="mess135"/></a>
+      <img src='picts/index.gif' border='0' class='menuImg'><a class='mnuforumSm' href='<%=FJUrl.INDEX%>'><fmt:message key="mess135"/></a>
       </c:if>
    <img src='picts/new_top.gif' border='0' class='menuImg'>
-   <a class='mnuforumSm' href='mess.php' rel='nofollow'>
+   <a class='mnuforumSm' href='<%=FJUrl.NEW_THREAD%>' rel='nofollow'>
          <fmt:message key="mess4"/>
    </a>
    <img src='picts/new_quest.gif' border='0' class='menuImg'>
-   <a class='mnuforumSm' href='opr.php' rel='nofollow'>
+   <a class='mnuforumSm' href='<%=FJUrl.NEW_QUESTION%>' rel='nofollow'>
          <fmt:message key="mess3"/>
    </a>
    <img src='picts/new_search.gif' border='0' class='menuImg'>
@@ -63,11 +64,11 @@
          <fmt:message key="mess30"/>
    </a>
    <img src='picts/profile.gif' border='0' class='menuImg'>
-   <a class='mnuforumSm' href='control.php' rel='nofollow'>
+   <a class='mnuforumSm' href='<%=FJUrl.SETTINGS%>' rel='nofollow'>
          <fmt:message key="mess31"/>
    </a>
    <img src='picts/email.gif' border='0' class='menuImg'>
-   <a class='mnuforumSm' href='control.php?id=2' rel='nofollow'>
+   <a class='mnuforumSm' href='<%=FJUrl.SETTINGS%>?id=2' rel='nofollow'>
          <fmt:message key="mess23"/>
    </a>
    <img src='picts/key_delete.gif' border='0' class='menuImg'>

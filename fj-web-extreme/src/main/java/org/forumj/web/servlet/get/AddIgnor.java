@@ -49,7 +49,7 @@ public class AddIgnor extends FJServlet {
                if (pageParameter != null){
                   add = "&page=" + pageParameter;
                }
-               buffer.append(successPostOut("0", "tema.php?id=" + threadIdParameter + add + "#" + postIdParameter));
+               buffer.append(successPostOut("0", FJUrl.VIEW_THREAD + "?id=" + threadIdParameter + add + "#" + postIdParameter));
             }
          }else{
             // Вошли незарегистрировавшись
