@@ -1,0 +1,1 @@
+SELECT id, body FROM @@TABLE@@ WHERE id IN

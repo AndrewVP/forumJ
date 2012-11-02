@@ -1,0 +1,1 @@
+INSERT INTO voice (head, node, user) VALUES (?, ?, ?)
