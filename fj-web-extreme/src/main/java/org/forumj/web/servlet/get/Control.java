@@ -37,6 +37,7 @@ import org.forumj.common.web.Command;
 import org.forumj.common.web.Locale;
 import org.forumj.tool.*;
 import org.forumj.web.servlet.FJServlet;
+import org.forumj.web.tool.ErrorCode;
 
 import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 
@@ -59,10 +60,17 @@ public class Control extends FJServlet {
          //Предотвращаем кеширование
          cache(response);
          // Функции   
-         // номер страницы
          Integer id = request.getParameter("id") == null ? 1 : Integer.valueOf(request.getParameter("id"));
          Long msg = request.getParameter("msg") == null ? null : Long.valueOf(request.getParameter("msg"));
          Long view = request.getParameter("view") == null ? null : Long.valueOf(request.getParameter("view"));
+         String errorCodes = request.getParameter("errcode");
+         List<ErrorCode> errors = new ArrayList<ErrorCode>();
+         if (errorCodes != null && !errorCodes.trim().isEmpty()){
+        	 String[] errCodes = errorCodes.split(",");
+        	 for (String errorCode : errCodes) {
+				errors.add(ErrorCode.fromErrorCode(Integer.valueOf(errorCode)));
+			}
+         }
          // Загружаем локализацию
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          IUser user = (IUser) session.getAttribute("user");
@@ -254,7 +262,7 @@ public class Control extends FJServlet {
             break;
          case 9:
             // Аватара
-            buffer.append(case9(locale, user));
+            buffer.append(case9(locale, user, errors));
             break;
          case 10:
             // Местонахождение
@@ -1131,7 +1139,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case9(LocaleString locale, IUser user)
+   private StringBuffer case9(LocaleString locale, IUser user, List<ErrorCode> errors)
          throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
       if (user.getAvatar() != null && user.getAvatarApproved()) {
@@ -1144,32 +1152,40 @@ public class Control extends FJServlet {
          buffer.append("<img border='0' src='" + user.getAvatar() + "?seed=" + (new Date()).getTime() + "'>");
          buffer.append("</div>");
          buffer.append("<br>");
-         buffer.append("<div>");
-         buffer.append(locale.getString("mess95"));
-         buffer.append("</div>");
+//         buffer.append("<div>");
+//         buffer.append(locale.getString("mess95"));
+//         buffer.append("</div>");
          buffer.append("<br>");
       } else {
+      }
          buffer.append("<div class='mnuprof' align='CENTER'>");
          buffer.append("<b>");
          buffer.append(locale.getString("mess92"));
          buffer.append("</b>");
          buffer.append("</div>");
          buffer.append("<br>");
-         buffer.append("<div>");
-         buffer.append(locale.getString("mess96"));
-         buffer.append("</div>");
-         buffer.append("<br>");
-      }
+//         buffer.append("<div>");
+//         buffer.append(locale.getString("mess96"));
+//         buffer.append("</div>");
+//         buffer.append("<br>");
       buffer.append("<form method='post' class='content' action='" + FJUrl.SET_AVATAR + "?id=9' enctype='multipart/form-data'>");
+      for (ErrorCode errorCode : errors) {
+    	  if(errorCode.getFieldName().equalsIgnoreCase("avatar")){
+    		  buffer.append("<span style='color:red;'>");
+    		  buffer.append(locale.getString(errorCode.getErrorMessageNls()));
+    		  buffer.append("</span>");
+    		  buffer.append("<br/>");
+    	  }
+      }
       buffer.append(locale.getString("mess97") + "&nbsp;");
-      buffer.append("<input type='file' size=100 name='avatar'>");
+      buffer.append("<input type='file' size='20' name='avatar'>");
       buffer.append("<br>");
       buffer.append("<br>");
       if (user.getShowAvatar()) {
          buffer.append("<input type=checkbox checked  name='s_avatar'>");
          buffer.append("&nbsp;" + locale.getString("mess94"));
-         buffer.append("<br>");
-         buffer.append("<br>");
+         buffer.append("<br/>");
+         buffer.append("<br/>");
       } else {
          buffer.append("<input type=checkbox  name='s_avatar'>");
          buffer.append("&nbsp;" + locale.getString("mess94"));

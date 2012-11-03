@@ -2,17 +2,14 @@
  */
 package org.forumj.web.servlet.get.includes;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.HashMap;
+import java.io.*;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.*;
 
 import org.forumj.web.servlet.FJServlet;
+import org.forumj.web.servlet.tool.ResourcesCache;
 
 
 /**
@@ -26,7 +23,7 @@ public class IncludesBase extends FJServlet {
    
    private String realPath = null;
    
-   private Map<String, List<byte[]>> cache = new HashMap<String, List<byte[]>>();
+   private ResourcesCache cache = ResourcesCache.getInstance(); 
    
    private Object cacheMonitor = new Object(); 
 

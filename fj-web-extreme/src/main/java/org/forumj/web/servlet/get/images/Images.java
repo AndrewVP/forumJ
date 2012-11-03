@@ -22,6 +22,8 @@ import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
+import org.forumj.web.servlet.tool.ResourcesCache;
+
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
@@ -33,8 +35,7 @@ public class Images extends HttpServlet {
 
    private String realPath = null;
 
-   
-   private Object cacheMonitor = new Object(); 
+   private ResourcesCache cache = ResourcesCache.getInstance(); 
    
    private Date dateHeader = new Date();
 
@@ -54,22 +55,17 @@ public class Images extends HttpServlet {
       resp.setDateHeader("Expires", dateHeader.getTime() + 600000000);
       resp.setHeader("max-age", "600000");
       resp.setHeader("Cache-Control", "private");
-      String fileKey = "img" + req.getRequestURI().substring(req.getRequestURI().split("/")[1].length() + 1);
-      String filePath = realPath + fileKey;
+      String fileKey = req.getRequestURI().substring(req.getRequestURI().split("/")[1].length() + 1);
+      String filePath = realPath + "img" + fileKey;
       List<byte[]> resource = cache.get(fileKey);
       if (resource == null){
-         synchronized (cacheMonitor) {
-            resource = cache.get(fileKey);
-            if (resource == null){
-               resource = getFileAsArray(filePath);
-               cache.put(fileKey, resource);
-            }
-         }
+    	  resource = getFileAsArray(filePath);
+    	  cache.put(fileKey, resource);
       }
       OutputStream out = resp.getOutputStream();
       for (int i = 0; i < resource.size(); i++) {
          byte[] potion = resource.get(i);
-         out.write(potion, 0 , potion.length);
+         out.write(potion, 0, potion.length);
       }
    }
 
