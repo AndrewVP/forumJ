@@ -149,7 +149,7 @@ public class SetAvatar extends FJServlet {
 		}
 	}
 	private String createOriginalImage(Image image, Long photoId, String fileExtention, ImageSize imageSize) throws IOException{
-		return createImage(image, photoId, fileExtention, BufferedImage.TYPE_INT_RGB, imageSize, fileExtention.toUpperCase());
+		return createImage(image, photoId, fileExtention, Image.SCALE_SMOOTH, imageSize, fileExtention.toUpperCase());
 	}
 	
 	private String moveUploadedImage(Image image, Long photoId, String fileExtention, ImageSize imageSize, FileItem file) throws Exception{
@@ -201,6 +201,8 @@ public class SetAvatar extends FJServlet {
 		BufferedImage thumbsImage = new BufferedImage(destSize.getWidth(), destSize.getHeight(), imgType);
 		Graphics2D graphics2D = thumbsImage.createGraphics();
 		graphics2D.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
+		graphics2D.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+		graphics2D.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 		graphics2D.drawImage(image, 0, 0, destSize.getWidth(), destSize.getHeight(), null);
 		return thumbsImage;
 	}
