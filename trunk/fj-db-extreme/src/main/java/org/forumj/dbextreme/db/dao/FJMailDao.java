@@ -117,7 +117,12 @@ public class FJMailDao extends FJDao {
    
    public IFJMail loadMail(IUser user, Long mailId, boolean userIsSender) throws IOException, ConfigurationException, SQLException{
       FJMail result = null;
-      String loadMailQuery = getLoadMailQuery();
+      String loadMailQuery;
+      if (userIsSender){
+         loadMailQuery = getLoadOutMailQuery();
+      }else{
+         loadMailQuery = getLoadMailQuery();
+      }
       Connection conn = null;
       PreparedStatement st = null;
       try {

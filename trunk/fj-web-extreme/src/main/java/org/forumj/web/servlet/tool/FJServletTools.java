@@ -5,8 +5,7 @@ import java.io.*;
 import javax.servlet.http.*;
 
 import org.apache.commons.codec.EncoderException;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.net.*;
+import org.apache.commons.codec.net.QuotedPrintableCodec;
 import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.tool.LocaleString;
 
@@ -158,18 +157,20 @@ public class FJServletTools {
    
    public static boolean isRobot(HttpServletRequest request){
       String uas = request.getHeader("user-agent");
-      if (uas.contains("StackRambler") ||
-            uas.contains("Googlebot") ||
-            uas.contains("Yandex") ||
-            uas.contains("msnbot") ||
-            uas.contains("Jyxobot") ||
-            uas.contains("METASpider") ||
-            uas.contains("bingbot/2.0") ||
-            uas.contains("Ezooms/1.0") ||
-            uas.contains("MJ12bot") ||
-            uas.contains("linkdex.com/v2.0") ||
-            uas.contains("Slurp")){
-         return true;
+      if (uas != null){
+          if (uas.contains("StackRambler") ||
+                  uas.contains("Googlebot") ||
+                  uas.contains("Yandex") ||
+                  uas.contains("msnbot") ||
+                  uas.contains("Jyxobot") ||
+                  uas.contains("METASpider") ||
+                  uas.contains("bingbot/2.0") ||
+                  uas.contains("Ezooms/1.0") ||
+                  uas.contains("MJ12bot") ||
+                  uas.contains("linkdex.com/v2.0") ||
+                  uas.contains("Slurp")){
+              return true;
+          }
       }
       return false;
    }

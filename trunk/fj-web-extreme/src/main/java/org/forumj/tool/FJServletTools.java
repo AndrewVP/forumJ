@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.servlet.http.*;
 
+import org.forumj.common.FJUrl;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.exception.InvalidKeyException;
 
@@ -40,14 +41,14 @@ public class FJServletTools {
       String rus = request.getContextPath() + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + ("".equalsIgnoreCase(query.trim()) ? "?lang=ru" : query.trim() + "&lang=ru");
       buffer.append("<tr>");
       buffer.append("<td>");
-      buffer.append("<table class=control>");
+      buffer.append("<table class='control'>");
       buffer.append("<tr>");
-      buffer.append("<td class=leftTop></td>");
-      buffer.append("<td class=top colspan='2'></td>");
-      buffer.append("<td class=rightTop></td>");
+      buffer.append("<td class='leftTop'></td>");
+      buffer.append("<td class='top' colspan='2'></td>");
+      buffer.append("<td class='rightTop'></td>");
       buffer.append("</tr>");
-      buffer.append("<tr class=heads>");
-      buffer.append("<td class=left></td>");
+      buffer.append("<tr class='heads'>");
+      buffer.append("<td class='left'></td>");
       /*Логин есть?*/
       if (!user.isLogined()){
          /*
@@ -58,44 +59,44 @@ public class FJServletTools {
          if(!index){
             /*Список тем*/
             buffer.append("<img src='picts/index.gif' border='0' class='menuImg'>");
-            buffer.append("<a class=mnuforumSm href='index.php'>");
+            buffer.append("<a class='mnuforumSm' href='" + FJUrl.INDEX + "'>");
             buffer.append(locale.getString("mess135"));
             buffer.append("</a>");
          }
          /*Новая тема*/
          buffer.append("<img src='picts/new_top.gif' border='0' class='menuImg'>");
-         buffer.append("<a class=mnuforumSm href='auth.php' rel='nofollow'>");
+         buffer.append("<a class='mnuforumSm' href='" + FJUrl.LOGIN + "' rel='nofollow'>");
          buffer.append(locale.getString("mess4"));
          buffer.append("</a>");
          /*Новый опрос*/
          buffer.append("<img src='picts/new_quest.gif' border='0' class='menuImg'>");
-         buffer.append("<a class=mnuforumSm href='auth.php' rel='nofollow'>");
+         buffer.append("<a class='mnuforumSm' href='" + FJUrl.LOGIN + "' rel='nofollow'>");
          buffer.append(locale.getString("mess3"));
          buffer.append("</a>");
          /*Поиск*/
          buffer.append("<img src='picts/new_search.gif' border='0' class='menuImg'>");
-         buffer.append("<a class=mnuforumSm href='search.php' rel='nofollow'>");
+         buffer.append("<a class='mnuforumSm' href='search.php' rel='nofollow'>");
          buffer.append(locale.getString("mess30"));
          buffer.append("</a>");
          /*Вход*/
          buffer.append("<img src='picts/key_add.gif' border='0' class='menuImg'>");
-         buffer.append("<a class=mnuforumSm href='auth.php?id=1' rel='nofollow'>");
+         buffer.append("<a class='mnuforumSm' href='" + FJUrl.LOGIN + "?id=1' rel='nofollow'>");
          buffer.append(locale.getString("mess1"));
          buffer.append("</a>");
          /*Регистрация*/
          buffer.append("<img src='picts/new_user.gif' border='0' class='menuImg'>");
-         buffer.append("<a class=mnuforumSm href='reg.php?id=1' rel='nofollow'>");
+         buffer.append("<a class='mnuforumSm' href='" + FJUrl.REGISTRATION + "?id=1' rel='nofollow'>");
          buffer.append(locale.getString("mess2"));
          buffer.append("</a>");
          buffer.append("</td>");
          buffer.append("<td class=bg align='right'>");
          /*Укр. интерфейс*/
-         buffer.append("<a class=mnuforumSm href='" + ukr + "' rel='nofollow'>");
+         buffer.append("<a class='mnuforumSm' href='" + ukr + "' rel='nofollow'>");
          buffer.append("Українська");
          buffer.append("</a>");
          buffer.append("•");
          /*Рус. интерфейс*/
-         buffer.append("<a class=mnuforumSm href='"+ rus + "' rel='nofollow'>");
+         buffer.append("<a class='mnuforumSm' href='"+ rus + "' rel='nofollow'>");
          buffer.append("Русский");
          buffer.append("</a>");
          buffer.append("</td>");
@@ -110,50 +111,50 @@ public class FJServletTools {
          if(!index){
             /*Список тем*/
             buffer.append("<img src='picts/index.gif' border='0' class='menuImg'>");
-            buffer.append("<a class=mnuforumSm href='index.php'>");
+            buffer.append("<a class='mnuforumSm' href='" + FJUrl.INDEX + "'>");
             buffer.append(locale.getString("mess135"));
             buffer.append("</a>");
          }
          /*Новая тема*/
          buffer.append("<img src='picts/new_top.gif' border='0' class='menuImg'>");
-         buffer.append("<a class=mnuforumSm href='mess.php' rel='nofollow'>");
+         buffer.append("<a class='mnuforumSm' href='" + FJUrl.NEW_THREAD + "' rel='nofollow'>");
          buffer.append(locale.getString("mess4"));
          buffer.append("</a>");
          /*Новый опрос*/
          buffer.append("<img src='picts/new_quest.gif' border='0' class='menuImg'>");
-         buffer.append("<a class=mnuforumSm href='opr.php' rel='nofollow'>");
+         buffer.append("<a class='mnuforumSm' href='" + FJUrl.NEW_QUESTION + "' rel='nofollow'>");
          buffer.append(locale.getString("mess3"));
          buffer.append("</a>");
          /*Поиск*/
          buffer.append("<img src='picts/new_search.gif' border='0' class='menuImg'>");
-         buffer.append("<a class=mnuforumSm href='search.php' rel='nofollow'>");
+         buffer.append("<a class='mnuforumSm' href='search.php' rel='nofollow'>");
          buffer.append(locale.getString("mess30"));
          buffer.append("</a>");
          /* Личные настройки*/
          buffer.append("<img src='picts/profile.gif' border='0' class='menuImg'>");
-         buffer.append("<a class=mnuforumSm href='control.php' rel='nofollow'>");
+         buffer.append("<a class='mnuforumSm' href='" + FJUrl.SETTINGS + "' rel='nofollow'>");
          buffer.append(locale.getString("mess31"));
          buffer.append("</a>");
          /* Переписка*/
          buffer.append("<img src='picts/email.gif' border='0' class='menuImg'>");
-         buffer.append("<a class=mnuforumSm href='control.php?id=2' rel='nofollow'>");
+         buffer.append("<a class='mnuforumSm' href='" + FJUrl.SETTINGS + "?id=2' rel='nofollow'>");
          buffer.append(locale.getString("mess23"));
          buffer.append("</a>");
          /*Выход*/
          String exitUrl = request.getContextPath() + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + (query == null || "".equalsIgnoreCase(query.trim()) ? "?exit=0" : query.trim() + "&exit=0");
          buffer.append("<img src='picts/key_delete.gif' border='0' class='menuImg'>");
-         buffer.append("<a class=mnuforumSm href='" + exitUrl + "' rel='nofollow'>");
+         buffer.append("<a class='mnuforumSm' href='" + exitUrl + "' rel='nofollow'>");
          buffer.append(locale.getString("mess6"));
          buffer.append("</a>");
          buffer.append("</td>");
          /* Укр. интерфейс*/
          buffer.append("<td class=bg align='right'>");
-         buffer.append("<a class=mnuforumSm href='" + ukr + "' rel='nofollow'>");
+         buffer.append("<a class='mnuforumSm' href='" + ukr + "' rel='nofollow'>");
          buffer.append("Українська");
          buffer.append("</a>");
          buffer.append("•");
          /* Рус. интерфейс*/
-         buffer.append("<a class=mnuforumSm href='" + rus + "' rel='nofollow'>");
+         buffer.append("<a class='mnuforumSm' href='" + rus + "' rel='nofollow'>");
          buffer.append("Русский");
          buffer.append("</a>");
          buffer.append("</td>");
@@ -173,17 +174,16 @@ public class FJServletTools {
 
    public static StringBuffer logo(HttpServletRequest request){
       StringBuffer buffer = new StringBuffer();
-      String ref=request.getContextPath();
+      String ref = request.getContextPath();
       buffer.append("<tr>");
       buffer.append("<td width='100%'>");
       buffer.append("<table border='0' width='100%' style='border-collapse: collapse'>");
       buffer.append("<tr>");
       buffer.append("<td>");
       buffer.append("<a href='/'><img border='0' src='" + ref + "/images/all/title.gif'></a><br>");
-      buffer.append("<a href='/' class=tbtextnread>www.Дилетант.com.ua</a>");
       buffer.append("</td>");
       buffer.append("<td align=center>");
-      buffer.append("<a href='http://www.donor.org.ua/index.php?module=help' target=\"_blank\" title='Украинская Открытая Ассоциация Организаций, Групп и Лиц, работающих с детьми, страдающими онкозаболеваниями'><img src='banner/donor_2.gif'></a>");
+      buffer.append("<a href='http://www.donor.org.ua/" + FJUrl.INDEX + "?module=help' target=\"_blank\" title='Украинская Открытая Ассоциация Организаций, Групп и Лиц, работающих с детьми, страдающими онкозаболеваниями'><img src='banner/donor_2.gif'></a>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table></td></tr>");
@@ -198,7 +198,7 @@ public class FJServletTools {
       buffer.append("<table width='100%'>");
       buffer.append("<tr>");
       buffer.append("<td align=\"center\">");
-      buffer.append("<a href='http://www.donor.org.ua/index.php?module=help' target=\"_blank\" title='Украинская Открытая Ассоциация Организаций, Групп и Лиц, работающих с детьми, страдающими онкозаболеваниями'><img src='" + ref + "/banner/donor_2.gif'></a>");
+      buffer.append("<a href='http://www.donor.org.ua/" + FJUrl.INDEX + "?module=help' target=\"_blank\" title='Украинская Открытая Ассоциация Организаций, Групп и Лиц, работающих с детьми, страдающими онкозаболеваниями'><img src='" + ref + "/banner/donor_2.gif'></a>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table>");

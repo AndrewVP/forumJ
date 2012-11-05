@@ -29,7 +29,7 @@ import org.forumj.dbextreme.db.entity.FJIpAddress;
  */
 public class FJIpAddressServiceImpl extends FJService implements FJIpAddressService {
 
-   public void createIpAddresscreate(IFJIpAddress ipAddress) throws SQLException, ConfigurationException, IOException{
+   public void createIpAddress(IFJIpAddress ipAddress) throws SQLException, ConfigurationException, IOException{
       getIpaddressdao().create(ipAddress);
    }
 
@@ -40,14 +40,4 @@ public class FJIpAddressServiceImpl extends FJService implements FJIpAddressServ
    public IFJIpAddress getIpAddressObject() {
       return new FJIpAddress();
    }
-
-/* (non-Javadoc)
- * @see org.forumj.common.db.service.FJIpAddressService#createIpAddress(org.forumj.common.db.entity.IFJIpAddress)
- */
-@Override
-public void createIpAddress(IFJIpAddress ipAddress) throws SQLException,
-        ConfigurationException, IOException {
-    // TODO Auto-generated method stub
-    
-}
 }

@@ -49,6 +49,7 @@ public class FJService {
    
    private static final FJIpAddressDao ipAddressDao = new FJIpAddressDao();
    
+   
    /**
     * @return the questnodedao
     */

@@ -1,7 +1,7 @@
 package org.forumj.web.filter;
 
 import static org.forumj.common.FJServletName.*;
-import static org.forumj.tool.Diletant.errorOut;
+import static org.forumj.tool.Diletant.*;
 
 import java.io.*;
 
@@ -13,7 +13,7 @@ import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.web.servlet.tool.FJServletTools;
 /**
- * Filter for transcoding {@link String} parameters from ISO-8859-1 to UTF-8 in the {@link ServletRequest}
+ * Filter for logging
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
@@ -22,8 +22,8 @@ import org.forumj.web.servlet.tool.FJServletTools;
       SEND_PIVATE_MESSAGE, DELETE_MAIL, MOVE_THREAD_TO_RECYCLE, DELETE_SUBSCRIBE,DELETE_VOICE, VOICE,
       ADD_IGNOR, COUNT ,
       DELETE_SUBSCRIBES, DELETE_ONE_SUBSCRIBE_BY_EMAIL, DELETE_FOLDER_FROM_VIEW, DELETE_VIEW, SET_DEFAULT_VIEW, 
-      SET_FOOTER, SET_LOCATION, ADD_VOTE, DO_REGISTRATION})
-      public class ActionFilter implements Filter{
+      SET_FOOTER, SET_LOCATION, ADD_VOTE, DO_REGISTRATION, MESSAGE, ACTIVATE_USER})
+public class ActionFilter implements Filter{
 
    /**
     * {@inheritDoc}

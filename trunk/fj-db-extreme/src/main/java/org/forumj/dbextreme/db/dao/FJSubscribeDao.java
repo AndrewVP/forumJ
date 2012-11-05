@@ -24,7 +24,8 @@ import java.util.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
-import org.forumj.dbextreme.db.entity.FJSubscribe;
+import org.forumj.common.web.Locale;
+import org.forumj.dbextreme.db.entity.*;
 
 /**
  * 
@@ -168,5 +169,31 @@ public class FJSubscribeDao extends FJDao {
          readFinally(conn, st);
       }
       return false;
+   }
+   
+   public List<IUser> getSubscribedUsers(Long threadId, Long userId) throws ConfigurationException, SQLException, IOException{
+      List<IUser> result = new ArrayList<IUser>();
+      String query = getSubscribersMailQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setLong(1, threadId);
+         st.setLong(2, userId);
+         ResultSet rs = st.executeQuery();
+         while (rs.next()){
+            IUser user = new User();
+            user.setEmail(rs.getString("mail"));
+            int lang = rs.getInt("lang");
+            if (lang != 0){
+               user.setLanguge(Locale.valueOfInteger(lang));
+            }
+            result.add(user);
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
    }
 }

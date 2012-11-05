@@ -25,6 +25,7 @@ import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.common.tool.*;
+import org.forumj.common.web.ThreadType;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
@@ -103,11 +104,11 @@ public class Quest extends FJServlet {
                      thread.setSnid(0);
                      thread.setFolderId((long) 1);
                      thread.setPcount(1);
-                     thread.setType(usersCanAddAnswers ? 2 :1);
+                     thread.setType(ThreadType.valueOfInteger(usersCanAddAnswers ? 2 :1));
                      thread.setAnswers(answers);
                      thread.setQuestion(question);
                      treadService.create(thread, post);
-                     buffer.append(successPostOut("0", "index.php"));
+                     buffer.append(successPostOut("0", FJUrl.INDEX));
                   }
                }else{
                   // Пустая
@@ -150,7 +151,7 @@ public class Quest extends FJServlet {
       buffer.append(quest_submit(locale));
       buffer.append("<link rel='icon' href='/favicon.ico' type='image/x-icon'>");
       buffer.append("<link rel='shortcut icon' href='/favicon.ico' type='image/x-icon'>");
-      buffer.append("<title>" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head))) + "</title>");
+      buffer.append("<title>" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)), false) + "</title>");
       buffer.append("</head>");
       buffer.append("<body bgcolor='#EFEFEF'>");
       buffer.append("<table class='content'>");
@@ -158,7 +159,7 @@ public class Quest extends FJServlet {
       buffer.append("<td  class='internal'>");
       /*Тема*/
       buffer.append("<div class=nik>");
-      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)))+ "</b>");
+      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)), false)+ "</b>");
       buffer.append("</div>");
       buffer.append("</td>");
       buffer.append("</tr>");
@@ -186,9 +187,9 @@ public class Quest extends FJServlet {
       buffer.append("<td valign=top class='matras' style='padding:10px;'>");
       buffer.append("<div>");
       if (user.getWantSeeAvatars() && user.getAvatarApproved() && user.getAvatar() != null && !user.getAvatar().trim().isEmpty() && user.getShowAvatar()){
-         buffer.append("<a href='control.php?id=9'><img border='0' src='" + user.getAvatar() + "' rel=\"nofollow\"></a>");
+         buffer.append("<a href='" + FJUrl.SETTINGS + "?id=9'><img border='0' src='" + user.getAvatar() + "' rel=\"nofollow\"></a>");
       }else{
-         buffer.append("<a href='control.php?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>");
+         buffer.append("<a href='" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>");
       }
       buffer.append("</div>");
       buffer.append("<span class='posthead'><u>" + locale.getString("mess111") + "</u></span><br>");
@@ -212,7 +213,7 @@ public class Quest extends FJServlet {
       buffer.append("<p align='CENTER'>");
       buffer.append("<font size='4'>");
       buffer.append("<b>");
-      buffer.append(fd_smiles(question.replace("\\", "")));
+      buffer.append(fd_smiles(question.replace("\\", ""), false));
       buffer.append("</b>");
       buffer.append("</font>");
       buffer.append("</p>");
@@ -234,7 +235,7 @@ public class Quest extends FJServlet {
          buffer.append("<input type='radio' name='ANSWER' value='" + (i + 1) + "'" + check + ">");
          buffer.append("</td>");
          buffer.append("<td class=voice_right nowrap align='left'>");
-         buffer.append(fd_smiles(fd_href(answer.replace("\\", ""))));
+         buffer.append(fd_smiles(fd_href(answer.replace("\\", "")), false));
          buffer.append("</td>");
          buffer.append("</tr>");
       }
@@ -276,7 +277,7 @@ public class Quest extends FJServlet {
       buffer.append("<table>");
       buffer.append("<tr>");
       buffer.append("<td>");
-      buffer.append("<form method='POST' name='post' action='quest.php'>");
+      buffer.append("<form method='post' name='post' action='" + FJUrl.ADD_QUESTION + "'>");
       buffer.append("<table>");
       buffer.append("<tr>");
       buffer.append("<td>");

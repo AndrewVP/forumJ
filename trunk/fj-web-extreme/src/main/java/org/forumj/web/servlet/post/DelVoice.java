@@ -48,7 +48,7 @@ public class DelVoice extends FJServlet {
                QuestService questService = FJServiceHolder.getQuestService();
                Long threadId = Long.valueOf(threadIdParameter);
                questService.repealVote(threadId, user);
-               buffer.append(successPostOut("0", "tema.php?id=" + threadIdParameter));
+               buffer.append(successPostOut("0", FJUrl.VIEW_THREAD + "?id=" + threadIdParameter));
             }
          }else{
             // Вошли незарегистрировавшись

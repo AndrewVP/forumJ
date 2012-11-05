@@ -51,7 +51,7 @@ public class Pin extends FJServlet {
                Integer pinCode = Integer.valueOf(pinParameter);
                service.pin(idThread, org.forumj.common.web.Pin.valueOfInteger(pinCode));
             }
-            buffer.append(successPostOut("0", "index.php"));
+            buffer.append(successPostOut("0", FJUrl.INDEX));
          }else{
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());

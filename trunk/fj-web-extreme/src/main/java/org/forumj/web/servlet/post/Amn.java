@@ -56,7 +56,7 @@ public class Amn extends FJServlet {
             ignor.setType(ignorTypeParameter == null ? 0 : 1);
             ignor.setEnd(newEndDate);
             service.updateIgnor(ignor);
-            buffer.append(successPostOut("0", "control.php?id=1"));
+            buffer.append(successPostOut("0", FJUrl.SETTINGS + "?id=1"));
          }else{
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());

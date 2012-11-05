@@ -21,7 +21,6 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
-import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
@@ -81,7 +80,7 @@ public class Opr extends FJServlet {
          buffer.append("<table>");
          buffer.append("<tr>");
          buffer.append("<td>");
-         buffer.append("<form method='POST' name='post' action='quest.php'>");
+         buffer.append("<form method='post' name='post' action='" + FJUrl.ADD_QUESTION + "'>");
          buffer.append("<table>");
          buffer.append("<tr>");
          buffer.append("<td>");

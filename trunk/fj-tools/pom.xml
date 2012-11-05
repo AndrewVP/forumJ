@@ -4,7 +4,6 @@
     <artifactId>forumj</artifactId>
     <groupId>org.forumj</groupId>
     <version>0.0.2-SNAPSHOT</version>
-    <relativePath>..</relativePath>
   </parent>
   <groupId>org.forumj.tools</groupId>
   <artifactId>fj-tools</artifactId>

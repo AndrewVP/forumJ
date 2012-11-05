@@ -7,4 +7,5 @@ UPDATE titles
 , dock = ?
 , folder = ?
 , npost = ?
+, closed = ?
 WHERE id = ?

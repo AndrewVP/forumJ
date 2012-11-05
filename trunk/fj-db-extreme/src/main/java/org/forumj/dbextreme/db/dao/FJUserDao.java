@@ -81,6 +81,24 @@ public class FJUserDao extends FJDao {
       return result;
    }
 
+   public IUser read(Long userId, int activateCode) throws ConfigurationException, SQLException, IOException{
+      IUser result = null;
+      String query = getReadUserByIdAndAcivateCodeQuery();
+      PreparedStatement st = null;
+      Connection cn = null;
+      try {
+         cn = getConnection();
+         st = cn.prepareStatement(query) ;
+         st.setLong(1, userId);
+         st.setInt(2, activateCode);
+         ResultSet rs = st.executeQuery();
+         result = loadUser(rs);
+      }finally{
+         readFinally(cn, st);
+      }
+      return result;
+   }
+   
    public IUser read(String nick) throws ConfigurationException, SQLException, IOException{
       IUser result = null;
       String query = getReadUserByNickQuery();
@@ -276,5 +294,24 @@ public class FJUserDao extends FJDao {
          readFinally(conn, st);
       }
       return result;
+   }
+   
+   public boolean checkCodeUsed(int activateCode) throws SQLException, ConfigurationException, IOException{
+      String query = getIsActivateCodeUsedQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setInt(1, activateCode);
+         ResultSet rs = st.executeQuery();
+         if (rs.next()){
+            return true;
+         }else{
+            return false;
+         }
+      }finally{
+         readFinally(conn, st);
+      }
    }
 }

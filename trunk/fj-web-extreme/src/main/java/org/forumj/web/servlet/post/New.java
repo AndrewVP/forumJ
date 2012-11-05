@@ -94,7 +94,6 @@ public class New extends FJServlet {
                   thread.setSnid(0);
                   thread.setFolderId((long) 1);
                   thread.setPcount(1);
-                  thread.setType(0);
                   thread.setDock(Pin.COMMON);
                   treadService.create(thread, post);
                   // Подготавливаем текст поста.          
@@ -132,7 +131,7 @@ public class New extends FJServlet {
                   //mail("an.diletant@mail.ru", $subject, $strMailAll, $headers);
                   //mail("andrew@sunbay.com", $subject, $strMailAll, $headers);
                   // Отправляем в форум
-                  buffer.append(successPostOut("0", "index.php"));
+                  buffer.append(successPostOut("0", FJUrl.INDEX));
                }
             }else{
                // Пустая
@@ -169,7 +168,7 @@ public class New extends FJServlet {
       buffer.append(new_submit(locale.getString("mess128")));
       buffer.append("<link rel='icon' href='/favicon.ico' type='image/x-icon'>");
       buffer.append("<link rel='shortcut icon' href='/favicon.ico' type='image/x-icon'>");
-      buffer.append("<title>" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head))) + "</title>");
+      buffer.append("<title>" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)), false) + "</title>");
       buffer.append("</head>");
       buffer.append("<body bgcolor=#EFEFEF>");
       buffer.append("<table class='content'>");
@@ -179,7 +178,7 @@ public class New extends FJServlet {
       /*"Закладка" номера поста для ссылки из поиска, возврата после обработки игнора*/
       /*Тема*/
       buffer.append("<div class='nik'>");
-      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)))+ "</b>");
+      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)), false)+ "</b>");
       buffer.append("</div>");
       buffer.append("</td>");
       buffer.append("</tr>");
@@ -205,9 +204,9 @@ public class New extends FJServlet {
       buffer.append("<td valign=top class='matras' style='padding:10px;'>");
       buffer.append("<div>");
       if (user.getWantSeeAvatars() && user.getAvatarApproved() && user.getAvatar() != null && !user.getAvatar().trim().isEmpty() && user.getShowAvatar()){
-         buffer.append("<a href='control.php?id=9'><img border='0' src='" + user.getAvatar() + "' rel=\"nofollow\"></a>");
+         buffer.append("<a href='" + FJUrl.SETTINGS + "?id=9'><img border='0' src='" + user.getAvatar() + "' rel=\"nofollow\"></a>");
       }else{
-         buffer.append("<a href='control.php?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>");
+         buffer.append("<a href='" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>");
       }
       buffer.append("</div>");
       buffer.append("<span class='posthead'><u>" + locale.getString("mess111") + "</u></span><br>");
@@ -248,7 +247,7 @@ public class New extends FJServlet {
       buffer.append("<table>");
       buffer.append("<tr>");
       buffer.append("<td>");
-      buffer.append("<form name='post' action='new.php' method='POST'>");
+      buffer.append("<form name='post' action='" + FJUrl.ADD_THREAD + "' method='post'>");
       buffer.append("<table width='100%'>");
       buffer.append("<tr>");
       buffer.append("<td colspan='2' align='CENTER'>");

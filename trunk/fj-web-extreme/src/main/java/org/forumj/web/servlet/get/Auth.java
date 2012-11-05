@@ -65,7 +65,7 @@ public class Auth extends FJServlet {
          buffer.append(menu(request, user, locale, false));
          // Форма авторизации
          buffer.append("<tr><td width='100%' align='center'><table width='100%'><tr><td>");
-         buffer.append("<form  action='submit.php' method='POST'>");
+         buffer.append("<form  action='" + FJUrl.DO_LOGIN + "' method='post'>");
          buffer.append("<table><tr><td><p>");
          // Определяем, откуда мы сюда попали?
          switch (Integer.valueOf(gid)){
@@ -98,6 +98,9 @@ public class Auth extends FJServlet {
                break;
             case 9:
                buffer.append("Проводить опросы могут только зарегистрированные пользователи");
+               break;
+            case 10:
+               buffer.append("Ваш аккаунт не активирован");
                break;
          }
          buffer.append("</p></td></tr>");

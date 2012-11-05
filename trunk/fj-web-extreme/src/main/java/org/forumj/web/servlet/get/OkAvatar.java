@@ -12,13 +12,11 @@ package org.forumj.web.servlet.get;
 import static org.forumj.tool.Diletant.errorOut;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
@@ -41,7 +39,7 @@ public class OkAvatar extends FJServlet {
          IUser user = userService.readUser(userId);
          buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
          buffer.append("<html><head><title></title><meta http-equiv='content-type' content='text/html; charset=UTF-8'></head><body><table><tr><td>");
-         buffer.append("<form action='s_avatar.php?qqnn=" + userIdParameter + "' method='post'>");
+         buffer.append("<form action='" + FJUrl.S_AVATAR + "?qqnn=" + userIdParameter + "' method='post'>");
          buffer.append("<input size='100' type='text' name='avatar' value='" + user.getAvatar() + "'><br><br><br>");
          if (user.getShowAvatar()){
             buffer.append("<input type=checkbox checked  name='s_avatar'>&nbsp;Показывать<br><br>");  
