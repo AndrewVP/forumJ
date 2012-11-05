@@ -13,6 +13,10 @@
 		background-color: white;
 		margin: 20px;
 		padding: 10px;
+      font-family: Verdana;
+      font-size: 10pt;
+      color: #000000;
+		text-align: center;
 	}
 	.menuImg
 	{
@@ -251,7 +255,7 @@
       color: #000000;
       border-color:#787B7E;
    }
-   A.pageLink
+   a.pageLink
    {
       margin-left:2px;
       border-style:solid;
@@ -264,7 +268,7 @@
       font-weight: normal;
       color: #000000;
    }
-   A.pageLink:hover
+   a.pageLink:hover
    {
       margin-left:2px;
       border: 1px solid #f1f7fC;
@@ -277,28 +281,25 @@
       border-color:#787B7E;
       text-decoration: none;
    }
-   A.mnuforumSm
+   a.mnuforumSm
    {
       color: #000000;
       text-decoration: none;
       font-weight: normal;
       font-family: Verdana;
       font-size: 9pt;
-      padding: 3px 3px 3px 3px;
+      padding: 3px;
    }
 
-   A.mnuforumSm:hover
+   a.mnuforumSm:hover
    {
-      background-color: #F7F7F7;
-      font-weight: normal;
-      font-family: Verdana;
-      font-size: 9pt;
-      color: #000000;
-      padding: 2px 2px 2px 2px;
+      background-image: url(css/picts/tbl/bg_.gif);
+      padding: 1px 2px 2px 2px;
       text-decoration: none;
       border-style: solid;
-      border-color: #787b7e;
+      border-color: #467C41;
       border-width: 1px;
+   border-radius: 3px;
    }
    .leftTop
    {

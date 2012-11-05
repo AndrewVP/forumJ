@@ -51,7 +51,7 @@ public class DelSubs extends FJServlet {
                   }
                }
             }
-            buffer.append(successPostOut("0", "control.php?id=8"));
+            buffer.append(successPostOut("0", FJUrl.SETTINGS + "?id=8"));
          }else{
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());

@@ -9,6 +9,7 @@
  */
 package org.forumj.web.servlet.post;
 
+import static org.forumj.tool.Diletant.errorOut;
 import static org.forumj.web.servlet.tool.FJServletTools.setcookie;
 
 import java.io.*;
@@ -42,7 +43,7 @@ public class Submit extends FJServlet {
          String passwordParameter = request.getParameter("T2");
          UserService userService = FJServiceHolder.getUserService();
          IUser user = userService.read(nickParameter, passwordParameter, true);
-         if(user != null) {
+         if(user != null && user.getIsActive()) {
             session.setAttribute("user", user);
             Long userId = user.getId();
             String password2 = user.getPass2();
@@ -50,16 +51,25 @@ public class Submit extends FJServlet {
             setcookie(response, "idu", userId.toString(), 1209600, request.getContextPath(), request.getServerName());
             setcookie(response, "pass2", password2, 1209600, request.getContextPath(), request.getServerName());
             // Возвращаем на форум
-            String out = "<html><head><meta http-equiv='Refresh' content='0; url=index.php'></head><body></body></html>";
+            String out = "<html><head><meta http-equiv='Refresh' content='0; url=" + FJUrl.INDEX + "'></head><body></body></html>";
             response.setContentType("text/html; charset=UTF-8");
             PrintWriter writer = response.getWriter();
             writer.write(out);
+         }else if (user != null && !user.getIsActive()){
+            // не активирован
+            response.sendRedirect(request.getContextPath() + "/" + FJUrl.LOGIN + "?id=10");
          }else{
-            // пароль не совпал
-            response.sendRedirect(request.getContextPath() + "/auth.php?id=6");
+            // не угадал пароль
+            response.sendRedirect(request.getContextPath() + "/" + FJUrl.LOGIN + "?id=6");
          }      
       } catch (Throwable e) {
          e.printStackTrace();
+         StringBuffer buffer = new StringBuffer();
+         buffer.append(errorOut(e));
+         response.setContentType("text/html; charset=UTF-8");
+         PrintWriter writer = response.getWriter();
+         String out = buffer.toString();
+         writer.write(out);
       }
    }
 

@@ -46,7 +46,7 @@ public class DelOneSubs extends FJServlet {
                if (pageParameter != null && !"".equals(pageParameter)){
                   urlQuery += "&page=" + pageParameter;
                }
-               buffer.append(successPostOut("0", "tema.php" + urlQuery));
+               buffer.append(successPostOut("0", FJUrl.VIEW_THREAD + urlQuery));
             }
          }else{
             // Вошли незарегистрировавшись

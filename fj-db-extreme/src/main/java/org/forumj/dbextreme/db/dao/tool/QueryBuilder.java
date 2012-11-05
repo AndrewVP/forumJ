@@ -100,6 +100,8 @@ public class QueryBuilder {
    
    private static String loadMailQuery = null;
 
+   private static String loadOutMailQuery = null;
+   
    private static String deleteFromOutboxQuery = null;
    
    private static String deleteFromInboxQuery = null;
@@ -128,8 +130,12 @@ public class QueryBuilder {
    
    private static String deleteSubscribeByKeyQuery = null;
    
+   private static String subscribersMailQuery = null;
+   
    private static String isSubscribeKeyPresentQuery = null;
 
+   private static String isActivateCodeUsedQuery = null;
+   
    private static String createSubscribeQuery = null;
 
    private static String updateUserQuery = null;
@@ -192,6 +198,8 @@ public class QueryBuilder {
    
    private static String readUserByIdQuery = null;
    
+   private static String readUserByIdAndAcivateCodeQuery = null;
+   
    private static String readUserByNickQuery = null;
    
    private static String readUserByMailQuery = null;
@@ -211,6 +219,8 @@ public class QueryBuilder {
    private static String seenByUserQuery = null;
 
    private static String pinQuery = null;
+
+   private static String closeThreadQuery = null;
    
    private static String seenByGuestQuery = null;
    
@@ -507,7 +517,7 @@ public class QueryBuilder {
       }
       return updateIgnorQuery;
    }
-   
+
    public static String getUpdateIpAddressQuery() throws IOException{
       if (updateIpAddressQuery == null){
          updateIpAddressQuery = loadQuery("sql/update_ip_address.sql");
@@ -613,6 +623,13 @@ public class QueryBuilder {
       return loadMailQuery;
    }
    
+   public static String getLoadOutMailQuery() throws IOException{
+      if (loadOutMailQuery  == null){
+         loadOutMailQuery  = loadQuery("sql/load_out_mail.sql");
+      }
+      return loadOutMailQuery;
+   }
+   
    public static String getDeleteFromOutboxQuery() throws IOException{
       if (deleteFromOutboxQuery  == null){
          deleteFromOutboxQuery  = loadQuery("sql/delete_from_outbox.sql");
@@ -711,11 +728,25 @@ public class QueryBuilder {
       return deleteSubscribeByKeyQuery;
    }
    
+   public static String getSubscribersMailQuery() throws IOException{
+      if (subscribersMailQuery == null){
+         subscribersMailQuery = loadQuery("sql/subscribers_mail.sql");
+      }
+      return subscribersMailQuery;
+   }
+   
    public static String getIsSubscribeKeyPresentQuery() throws IOException{
       if (isSubscribeKeyPresentQuery == null){
          isSubscribeKeyPresentQuery = loadQuery("sql/is_subscribe_key_present.sql");
       }
       return isSubscribeKeyPresentQuery;
+   }
+   
+   public static String getIsActivateCodeUsedQuery() throws IOException{
+      if (isActivateCodeUsedQuery == null){
+         isActivateCodeUsedQuery = loadQuery("sql/is_activate_code_used.sql");
+      }
+      return isActivateCodeUsedQuery;
    }
    
    public static String getCreateSubscribeQuery() throws IOException{
@@ -823,6 +854,13 @@ public class QueryBuilder {
       return readUserByIdQuery;
    }
    
+   public static String getReadUserByIdAndAcivateCodeQuery() throws IOException{
+      if (readUserByIdAndAcivateCodeQuery == null){
+         readUserByIdAndAcivateCodeQuery = loadQuery("sql/read_user_by_id_and_activate_code.sql");
+      }
+      return readUserByIdAndAcivateCodeQuery;
+   }
+   
    public static String getReadUserByNickQuery() throws IOException{
       if (readUserByNickQuery == null){
          readUserByNickQuery = loadQuery("sql/read_user_by_nick.sql");
@@ -885,6 +923,13 @@ public class QueryBuilder {
          pinQuery = loadQuery("sql/pin.sql");
       }
       return pinQuery;
+   }
+   
+   public static String getCloseThreadQuery() throws IOException{
+      if (closeThreadQuery == null){
+         closeThreadQuery = loadQuery("sql/close_thread.sql");
+      }
+      return closeThreadQuery;
    }
    
    public static String getSeenByGuestQuery() throws IOException{

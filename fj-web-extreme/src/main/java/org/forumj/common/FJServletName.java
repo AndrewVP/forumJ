@@ -19,8 +19,10 @@ public interface FJServletName {
    public static final String NEW_QUESTION = "Opr";
    public static final String ADD_QUESTION = "Quest";
    public static final String NEW_THREAD = "Mess";
+   public static final String MESSAGE = "message";
    public static final String ADD_THREAD = "New";
    public static final String SETTINGS = "Control";
+   public static final String ADMIN = "admin";
    public static final String LOGIN = "Auth";
    public static final String DO_LOGIN = "Submit";
    public static final String REGISTRATION = "Registration";
@@ -29,7 +31,9 @@ public interface FJServletName {
    public static final String ADD_POST = "Write";
    public static final String DELETE_MAIL = "DelMail";
    public static final String MOVE_THREAD_TO_RECYCLE = "DelOne";
+   public static final String ACTIVATE_USER = "activate";
    public static final String PIN_THREAD = "Pin";
+   public static final String CLOSE_THREAD = "CloseThread";
    public static final String DELETE_SUBSCRIBE = "DelOneSubs";
    public static final String DELETE_SUBSCRIBES = "DelSubs";
    public static final String DELETE_ONE_SUBSCRIBE_BY_EMAIL = "DelOneSubsByMail";

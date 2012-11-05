@@ -43,18 +43,25 @@ public class DelOne extends FJServlet {
          HttpSession session = request.getSession();
          String idThreadParameter = request.getParameter("id");
          String pageParameter = request.getParameter("page");
+         String usrParameter = request.getParameter("usr");
          IUser user = (IUser) session.getAttribute("user");
          FolderService service = FJServiceHolder.getFolderService();
          if (user != null && !user.isBanned() && user.isLogined()){
             if (idThreadParameter != null && !"".equals(idThreadParameter)){
                Long idThread = Long.valueOf(idThreadParameter);
-               service.moveToRecyclebin(idThread, user);
+               if (user.isModerator() && usrParameter != null && usrParameter.equals("0")){
+                  UserService userService = FJServiceHolder.getUserService();
+                  user = userService.readUser(0l);
+                  service.moveToRecyclebin(idThread, user);
+               }else{
+                  service.moveToRecyclebin(idThread, user);
+               }
             }
             String urlQuery = "";
             if (pageParameter != null && !"".equals(pageParameter)){
                urlQuery += "?page=" + pageParameter;
             }
-            buffer.append(successPostOut("0", "index.php" + urlQuery));
+            buffer.append(successPostOut("0", FJUrl.INDEX + "" + urlQuery));
          }else{
             // Вошли незарегистрировавшись
             buffer.append(unRegisteredPostOut());
