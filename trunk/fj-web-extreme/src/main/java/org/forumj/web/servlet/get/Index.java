@@ -563,6 +563,7 @@ public class Index extends FJServlet {
          buffer.append("<a href='" + FJUrl.MOVE_THREAD_TO_RECYCLE + "?id=" +thread.getId().toString()+ "&usr=" +String.valueOf(user.getId())+ "&page=" +thread.getPg()+ "'><img border='0' src='picts/del1.gif'></a>");
          buffer.append("</td>");
       }
+      buffer.append("</tr>");
       return buffer;
    }
 }
