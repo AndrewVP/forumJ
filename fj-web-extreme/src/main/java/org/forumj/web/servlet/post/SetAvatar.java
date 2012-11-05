@@ -24,6 +24,7 @@ import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.forumj.common.*;
 import org.forumj.common.config.FJConfiguration;
 import org.forumj.common.db.entity.IUser;
@@ -136,15 +137,29 @@ public class SetAvatar extends FJServlet {
 		return result;
 	}
 
-	private String createAvatar(Long userId, FileItem file) throws IOException{
+	private String createAvatar(Long userId, FileItem file) throws Exception{
 		String originalFileExtention = getFileExtention(file.getName());
 		Image image = getImage(file);
 		ImageSize imageSize = getImageSize(image);
-		return createOriginalImage(image, userId, originalFileExtention, imageSize);
+		ImageSize destImageSize = makeOriginalImageSize(imageSize);
+		if (destImageSize.getHeight() == 0 && destImageSize.getWidth() == 0){
+		    return moveUploadedImage(image, userId, originalFileExtention, destImageSize, file);
+		}else{
+		    return createOriginalImage(image, userId, originalFileExtention, destImageSize);
+		}
 	}
 	private String createOriginalImage(Image image, Long photoId, String fileExtention, ImageSize imageSize) throws IOException{
-		ImageSize destImageSize = makeOriginalImageSize(imageSize);
-		return createImage(image, photoId, fileExtention, BufferedImage.TYPE_INT_RGB, destImageSize, fileExtention.toUpperCase());
+		return createImage(image, photoId, fileExtention, BufferedImage.TYPE_INT_RGB, imageSize, fileExtention.toUpperCase());
+	}
+	
+	private String moveUploadedImage(Image image, Long photoId, String fileExtention, ImageSize imageSize, FileItem file) throws Exception{
+        String imagePath = makeAvatarPath(photoId);
+        checkAndCreateImagePath(imagePath);
+        String fileName = makeImageName(photoId, imagePath, fileExtention);
+        File destFile = new File(fileName);
+        DiskFileItem item = (DiskFileItem) file;
+        item.write(destFile);
+        return makeImageName(photoId, makeAvatarUrl(photoId), fileExtention);
 	}
 
 	private String createImage(Image image, Long photoId, String fileExtention, int imageType, ImageSize imageSize, String imageFormat) throws IOException{
