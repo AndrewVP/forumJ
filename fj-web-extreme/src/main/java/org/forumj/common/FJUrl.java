@@ -14,6 +14,8 @@ package org.forumj.common;
  */
 public interface FJUrl {
    
+   public static final String MAIN = "main";
+
    public static final String INDEX = "index";
    public static final String VIEW_THREAD = "tema";
    

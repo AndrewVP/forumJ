@@ -15,6 +15,8 @@
  */
 package org.forumj.common.web;
 
+import org.forumj.common.exception.FJWebException;
+
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
@@ -23,6 +25,9 @@ public enum Command {
    
    SET_LOCALE("set_locale"),
    SET_EMAIL("set_email"),
+   GET_LOGO("get_logo"),
+   GET_FOOTER("get_footer"),
+   GET_MENU("get_menu"),
    ;
    
    private String command;
@@ -38,15 +43,15 @@ public enum Command {
       return command;
    }
    
-   public static Command valueOfString(String command){
+   public static Command valueOfString(String command) throws FJWebException{
       if (command != null && !command.trim().isEmpty()){
          for(Command result : values()){
             if (result.getCommand().equalsIgnoreCase(command)) return result;
          }
       }else{
-         throw new NullPointerException("Command parameter can't be null!");
+         throw new FJWebException("Command parameter can't be null!");
       }
-      throw new IllegalArgumentException("Illegal command parameter: " + command);
+      throw new FJWebException("Illegal command parameter: " + command);
    }
 
 }

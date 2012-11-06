@@ -14,6 +14,7 @@ package org.forumj.common;
  */
 public interface FJServletName {
 
+   public static final String MAIN = "Main";
    public static final String INDEX = "Index";
    public static final String VIEW_THREAD = "tema";
    public static final String NEW_QUESTION = "Opr";
