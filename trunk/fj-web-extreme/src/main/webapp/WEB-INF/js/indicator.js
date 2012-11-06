@@ -24,10 +24,6 @@ function getIndicatorInfo() {
 
 	request.onreadystatechange = updateIndicator;
 	request.send(params);
-//   var url = "count.php?idb=" + m_xb + "&idt=" + m_xt + "&ids=" + idss;
-//   request.open("GET", url, true);
-//   request.onreadystatechange = updateIndicator;
-//   request.send(null);
 }
 
 function updateIndicator() {
