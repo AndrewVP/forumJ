@@ -3,8 +3,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <fmt:setBundle basename='nls.messages'/>
-<tr>
-<td>
 <table class='control'>
 <tr>
 <td class='leftTop'></td>
@@ -15,7 +13,7 @@
 <td class='left'></td>
 <c:if test='${!sessionScope["user"].logined}'>
    <td class=bg align='LEFT'>
-      <c:if test='${index == null}'>
+      <c:if test='${component != 0}'>
          <img src='picts/index.gif' border='0' class='menuImg'><a class='mnuforumSm' href='<%=FJUrl.INDEX%>'><fmt:message key="mess135"/></a>
       </c:if>
    <img src='picts/new_top.gif' border='0' class='menuImg'>
@@ -26,11 +24,11 @@
          <fmt:message key="mess3"/>
    </a>
    <img src='picts/new_search.gif' border='0' class='menuImg'>
-   <a class='mnuforumSm' href='search.php' rel='nofollow'>
+   <a class='mnuforumSm' href='' rel='nofollow'>
          <fmt:message key="mess30"/>
    </a>
    <img src='picts/key_add.gif' border='0' class='menuImg'>
-   <a class='mnuforumSm' href='<%=FJUrl.LOGIN%>?id=1' rel='nofollow'>
+   <a class='mnuforumSm' onclick="loginClick()" rel='nofollow'>
          <fmt:message key="mess1"/>
    </a>
    <img src='picts/new_user.gif' border='0' class='menuImg'>
@@ -48,7 +46,7 @@
    <span class=nik>
    <c:out value='${sessionScope["user"].nick}'/>
    </span>
-      <c:if test='${index == null}'>
+      <c:if test='${component != 0}'>
       <img src='picts/index.gif' border='0' class='menuImg'><a class='mnuforumSm' href='<%=FJUrl.INDEX%>'><fmt:message key="mess135"/></a>
       </c:if>
    <img src='picts/new_top.gif' border='0' class='menuImg'>
@@ -72,7 +70,7 @@
          <fmt:message key="mess23"/>
    </a>
    <img src='picts/key_delete.gif' border='0' class='menuImg'>
-   <a class='mnuforumSm' href='<c:out value="${exit}"/>' rel='nofollow'>
+   <a class='mnuforumSm' onclick='logoutClick()' rel='nofollow'>
          <fmt:message key="mess6"/>
    </a>
    </td>
@@ -88,5 +86,3 @@
 <td class=rightBtm></td>
 </tr>
 </table>
-</td>
-</tr>     

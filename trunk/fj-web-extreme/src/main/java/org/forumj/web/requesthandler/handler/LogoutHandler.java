@@ -15,9 +15,13 @@
  */
 package org.forumj.web.requesthandler.handler;
 
-import javax.servlet.*;
+import static org.forumj.web.servlet.tool.FJServletTools.*;
+
+import javax.servlet.AsyncContext;
 import javax.servlet.http.*;
 
+import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.service.*;
 import org.forumj.common.exception.FJWebException;
 import org.forumj.web.requesthandler.BaseHandler;
 
@@ -25,16 +29,21 @@ import org.forumj.web.requesthandler.BaseHandler;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class LogoHandler extends BaseHandler{
+public class LogoutHandler extends BaseHandler{
 
     @Override
     protected void doHandle(AsyncContext context) throws FJWebException {
         try{
             HttpServletRequest request = (HttpServletRequest) context.getRequest();
             HttpServletResponse response = (HttpServletResponse) context.getResponse();
-            response.setContentType("text/html; charset=UTF-8");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/logo.jsp");
-            dispatcher.include(request, response);
+            IUser user = (IUser) request.getSession().getAttribute("user");
+            if (user == null || user.isLogined()){
+                UserService userService = FJServiceHolder.getUserService();
+                request.getSession().setAttribute("user", userService.readUser(0l));
+                setcookie(response, "idu", "", 0, request.getContextPath(), request.getServerName());
+                setcookie(response, "pass2", "", 0, request.getContextPath(), request.getServerName());
+            }
+            response.setStatus(HttpServletResponse.SC_OK);
         }catch (Throwable e){
             throw new FJWebException(e);
         }

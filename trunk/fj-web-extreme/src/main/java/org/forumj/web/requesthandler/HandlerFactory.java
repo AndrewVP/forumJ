@@ -15,9 +15,9 @@
  */
 package org.forumj.web.requesthandler;
 
+import org.forumj.common.Command;
 import org.forumj.common.exception.FJWebException;
-import org.forumj.common.web.Command;
-import org.forumj.web.requesthandler.handler.LogoHandler;
+import org.forumj.web.requesthandler.handler.*;
 
 /**
  * 
@@ -29,8 +29,20 @@ public class HandlerFactory{
         switch(command){
         case GET_LOGO:
             return new LogoHandler();
+        case GET_MAIN:
+            return new MainHandler();
+        case GET_MENU:
+            return new MenuHandler();
+        case LOGOUT:
+            return new LogoutHandler();
+        case GET_LOGIN:
+            return new GetLoginHandler();
+        case FORUM_INDEX:
+            return new ForumIndexHandler();
+        case FORUM_THREAD:
+            return new ForumThreadHandler();
         default:
-            throw new FJWebException("Uniplemented command parameter: " + command.getCommand());
+            throw new FJWebException("Unimplemented command parameter: " + command.getCommand());
         }
     }
 }

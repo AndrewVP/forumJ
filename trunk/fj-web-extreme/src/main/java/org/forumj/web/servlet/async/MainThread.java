@@ -18,9 +18,8 @@ package org.forumj.web.servlet.async;
 import javax.servlet.AsyncContext;
 import javax.servlet.http.HttpServletRequest;
 
-import org.forumj.common.FJRequestParameter;
+import org.forumj.common.*;
 import org.forumj.common.exception.FJWebException;
-import org.forumj.common.web.Command;
 import org.forumj.web.requesthandler.*;
 
 /**
