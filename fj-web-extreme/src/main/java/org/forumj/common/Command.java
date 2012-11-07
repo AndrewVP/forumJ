@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.forumj.common.web;
+package org.forumj.common;
 
 import org.forumj.common.exception.FJWebException;
 
@@ -28,6 +28,11 @@ public enum Command {
    GET_LOGO("get_logo"),
    GET_FOOTER("get_footer"),
    GET_MENU("get_menu"),
+   GET_MAIN("get_main"),
+   LOGOUT("logout"),
+   GET_LOGIN("get_login"),
+   FORUM_INDEX("forum_index"),
+   FORUM_THREAD("forum_thread"),
    ;
    
    private String command;

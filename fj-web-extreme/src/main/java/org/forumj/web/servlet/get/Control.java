@@ -33,7 +33,6 @@ import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.common.tool.HtmlChars;
-import org.forumj.common.web.Command;
 import org.forumj.common.web.Locale;
 import org.forumj.tool.*;
 import org.forumj.web.servlet.FJServlet;

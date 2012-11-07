@@ -20,12 +20,20 @@ import javax.servlet.http.*;
 
 import org.forumj.common.exception.FJWebException;
 import org.forumj.web.requesthandler.BaseHandler;
+import org.forumj.web.requesthandler.prehandler.*;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class LogoHandler extends BaseHandler{
+public class MainHandler extends BaseHandler{
+
+    public MainHandler(){
+        super();
+        addPreHandler(new UTF8PreHandler());
+        addPreHandler(new LoginPreHandler());
+        addPreHandler(new LocalePreHandler());
+    }
 
     @Override
     protected void doHandle(AsyncContext context) throws FJWebException {
@@ -33,7 +41,7 @@ public class LogoHandler extends BaseHandler{
             HttpServletRequest request = (HttpServletRequest) context.getRequest();
             HttpServletResponse response = (HttpServletResponse) context.getResponse();
             response.setContentType("text/html; charset=UTF-8");
-            RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/logo.jsp");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/main.jsp");
             dispatcher.include(request, response);
         }catch (Throwable e){
             throw new FJWebException(e);

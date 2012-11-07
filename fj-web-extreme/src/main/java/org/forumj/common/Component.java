@@ -15,12 +15,35 @@
  */
 package org.forumj.common;
 
+
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public interface FJRequestParameter{
+public enum Component {
 
-    public static final String COMMAND = "command";
-    public static final String COMPONENT = "component";
+    FORUM_INDEX(0),
+    FORUM_THREAD(1);
+
+    private int componentId;
+    
+    public static final Component DEFAUL_COMPONENT = FORUM_INDEX;  
+
+    /**
+     * @param command
+     */
+    private Component(int componentId) {
+       this.componentId = componentId;
+    }
+
+    public int getId() {
+       return componentId;
+    }
+    
+    public static Component fromId(int id){
+          for(Component result : values()){
+             if (result.getId() == id) return result;
+          }
+          return DEFAUL_COMPONENT;
+    }
 }
