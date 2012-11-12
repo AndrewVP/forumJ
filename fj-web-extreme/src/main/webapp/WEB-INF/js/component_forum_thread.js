@@ -7,16 +7,16 @@ function configForumThread(id){
 	        type: "POST",
 	        data: dataForSend,
 	        success: function(data, status) {
-//            	if (data.exception){
-//            		showError(data);
+            	if (data.exception){
+            		showError(data);
 //            	}else if (data.accessDenied){
 //                    logout();
-//            	}else{
+            	}else{
 	        	content.fadeOut(function(){
 	        		content.html(data);
 	        		content.fadeIn();
             		});
-//            	}
+            	}
 	        }
 	    });
 	};

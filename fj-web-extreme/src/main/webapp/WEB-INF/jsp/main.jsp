@@ -10,6 +10,8 @@
 <meta http-equiv='content-type' content='text/html; charset=UTF-8'>
 <link rel="stylesheet" href="css/reset.css" type="text/css" />
 <link rel="stylesheet" href="css/style.css" type="text/css" />
+<link rel="stylesheet" href="css/jquery-ui-1.9.1.custom.min.css" type="text/css" />
+<link rel="stylesheet" href="css/jPaginator.css" type="text/css" />
 <script type="text/javascript">
 var layout="";
 var logo="";
@@ -18,6 +20,7 @@ var content="";
 var bottomMenu="";
 var usersOnline="";
 var footer="";
+var errorDiv = ""; 
 var currentComponent=<%=Component.DEFAUL_COMPONENT.getId()%>;;
 var mainUrl="<%=request.getContextPath()%>/<%=FJUrl.MAIN%>";
 var COMMAND_PARAMETER="<%=FJRequestParameter.COMMAND%>";
@@ -32,11 +35,14 @@ var FORUM_INDEX_COMPONENT=<%=Component.FORUM_INDEX.getId()%>;
 var FORUM_THREAD_COMPONENT=<%=Component.FORUM_THREAD.getId()%>;
 </script>
 <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.9.1.custom.min.js"></script>
+<script type="text/javascript" src="js/jPaginator.js"></script>
 <script type="text/javascript" src="js/jsmain_chek.js"></script>
 <script type="text/javascript" src="js/component_logo.js"></script>
 <script type="text/javascript" src="js/component_menu.js"></script>
 <script type="text/javascript" src="js/component_forum_index.js"></script>
 <script type="text/javascript" src="js/component_forum_thread.js"></script>
+<script type="text/javascript" src="js/component_login.js"></script>
 <script type="text/javascript" src="js/common.js"></script>
 <script type="text/javascript" src="js/indicator.js"></script>
 <script type="text/javascript" src="js/jsview_ok.js"></script>
@@ -46,6 +52,7 @@ var FORUM_THREAD_COMPONENT=<%=Component.FORUM_THREAD.getId()%>;
 </head>
 
 <body class='mainBodyBG'>
+<div id="error" style="display:none;" title="Error"></div>
 <div id='layout'>
 	<div id='logo'>
 	</div>

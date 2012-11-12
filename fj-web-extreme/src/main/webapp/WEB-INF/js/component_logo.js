@@ -6,16 +6,16 @@ function configLogo(){
 	        type: "POST",
 	        data: dataForSend,
 	        success: function(data, status) {
-//            	if (data.exception){
-//            		showError(data);
+            	if (data.exception){
+            		showError(data);
 //            	}else if (data.accessDenied){
 //                    logout();
-//            	}else{
+            	}else{
             		logo.fadeOut(function(){
             			logo.html(data);
             			logo.fadeIn();
             		});
-//            	}
+            	}
 	        }
 	    });
 	};

@@ -85,73 +85,65 @@ public class ForumIndexHandler extends BaseHandler{
                   newMail="<a class=hdforum href='" + FJUrl.SETTINGS + "?id=2' rel='nofollow'><font color=red>" + locale.getString("mess66") + " " + mailCount +" " + locale.getString("mess67") + "</font></a>";
                }
             }
+            buffer.append("<script language='javascript' type='text/javascript'>");
+            buffer.append("// <!-- \n");
+            buffer.append("var FORUM_PAGES=" + couP + ";");
+            buffer.append("\n// -->");
+            buffer.append("</script>");
             // Интерфейс
             // Имя текущего
             if (session.getAttribute("vname") == null){
                session.setAttribute("vname", indexService.getViewName(Long.valueOf((Integer)session.getAttribute("view"))));
             }
             List<IFJInterface> viewsList = indexService.getViews(userId);
-            buffer.append("<div>");
-
-            buffer.append("<table class=control>");
-            buffer.append("<tr>");
-            buffer.append("<td class=leftTop></td>");
-            buffer.append("<td class=top colspan=3></td>");
-            buffer.append("<td class=rightTop></td>");
-            buffer.append("</tr>");
-            buffer.append("<tr class=heads>");
-            buffer.append("<td class=left></td>");
-            buffer.append("<td class=bg2 align=left>");
-            buffer.append("<span class=mnuforum>");
-            buffer.append(locale.getString("mess81"));
-            buffer.append("</span>");
-            buffer.append("<span class=nik>");
-            buffer.append(session.getAttribute("vname"));
-            buffer.append("</span>");
-            buffer.append("</td>");
-            buffer.append("<td class=bg2 align=right>");
-            buffer.append("<form method='post' name='view_form' action='" + FJUrl.SELECT_VIEW + "' class=frmsmall>");
-            /*Выводим интерфейсы*/
-            buffer.append("<span class=mnuforum>");
-            buffer.append(locale.getString("mess80"));
-            buffer.append("</span>");
-            buffer.append("<select class='mnuforumSm'  size='1pt' name='VIEW'>");
-            IFJInterface fjinterface = viewsList.get(0);
-            buffer.append("<option selected class=mnuprof value='" + fjinterface.getId() + "'>");
-            buffer.append(fjinterface.getName());
-            buffer.append("</option>");
-            for (int vw1=1; vw1< viewsList.size(); vw1++)
+            buffer.append("<div id='interfaces'>");
+            buffer.append("<ul>");
+            IFJInterface fjinterface;
+            for (int vw1=0; vw1< viewsList.size(); vw1++)
             {
                fjinterface = viewsList.get(vw1);
-               buffer.append("<option class=mnuprof value='" + fjinterface.getId() + "'>");
-               buffer.append(fjinterface.getName());
-               buffer.append("</option>");
+               buffer.append("<li><a href='#tabs-1' id='" + fjinterface.getId() + "'>" + fjinterface.getName() + "</a></li>");
             }
-            buffer.append("</select>");
-            buffer.append("</form>");
-            buffer.append("</td>");
-            buffer.append("<td class=bg2 align=right>");
-            buffer.append(fd_button("OK","document.view_form.submit();","view_ok", "1"));
-            buffer.append("</td>");
-            buffer.append("<td class=right></td>");
-            buffer.append("</tr>");
-            buffer.append("<tr>");
-            buffer.append("<td class=leftBtm></td>");
-            buffer.append("<td class=btm colspan=3></td>");
-            buffer.append("<td class=rightBtm></td>");
-            buffer.append("</tr>");
-            buffer.append("</table>");
-
-            buffer.append("</div>");        
-            // Стройка!!!
+            buffer.append("</ul>");
+            buffer.append("<div id='" + viewsList.get(0).getId() + "'>");
             buffer.append("<div>");
-            buffer.append("<table width='100%'>");
+            // Стройка!!!
             String mess = "";
             if (!user.isLogined()){
-               mess=locale.getString("mess133");
+                mess=locale.getString("mess133");
             }else{
-               mess=locale.getString("mess134");
+                mess=locale.getString("mess134");
             }
+            buffer.append("<div>");
+            buffer.append("<h1 style='color:red'>");
+            buffer.append(mess);
+            buffer.append("</h1>");
+            buffer.append("</div>");
+            //pager
+            buffer.append("<div id='top_pager'>");
+            buffer.append("<!-- optional left control buttons-->");
+            buffer.append("<nav id='top_pager_m_left' class='jPaginatorMax'></nav><nav id='top_pager_o_left' class='jPaginatorOver'></nav>");
+
+            buffer.append("<div class='paginator_p_wrap'>");
+            buffer.append("<div class='paginator_p_bloc'>");
+            buffer.append("<!--<a class='paginator_p'></a> // page number : dynamically added -->");
+            buffer.append("</div>");
+            buffer.append("</div>");
+
+            buffer.append("<!-- optional right control buttons-->");
+            buffer.append("<nav id='top_pager_o_right' class='jPaginatorOver'></nav><nav id='top_pager_m_right' class='jPaginatorMax'></nav>");
+
+
+            buffer.append("<!-- slider -->");
+            buffer.append("<div class='paginator_slider' class='ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all'>");
+            buffer.append("<a class='ui-slider-handle ui-state-default ui-corner-all' href='#'></a>");
+            buffer.append("</div>");
+
+            buffer.append("</div>");
+
+            
+            
+            buffer.append("<table width='100%'>");
             buffer.append("<tr><td colspan='3'><p><font face='Arial' color='red' size='3'><span style='text-decoration: none'><b>");
             buffer.append(mess);
             buffer.append("</b></span></font></p></td>");
@@ -332,7 +324,8 @@ public class ForumIndexHandler extends BaseHandler{
                buffer.append("</form>");
             }
             buffer.append("</div>");
-            buffer.append("<div>");
+            buffer.append("</div>");
+            buffer.append("</div>");
             Double allTime = (double) ((new Date().getTime() - startTime));
             DecimalFormat format = new DecimalFormat("##0.###");
             response.setContentType("text/html; charset=UTF-8");
