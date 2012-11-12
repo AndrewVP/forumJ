@@ -15,11 +15,16 @@
  */
 package org.forumj.web.requesthandler;
 
+import java.io.PrintWriter;
 import java.util.*;
 
 import javax.servlet.AsyncContext;
+import javax.servlet.http.HttpServletResponse;
 
 import org.forumj.common.exception.FJWebException;
+import org.forumj.web.tool.ErrorResponse;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 
@@ -39,14 +44,23 @@ public abstract class BaseHandler implements Handler{
             }
             context.complete();
         }catch (Exception e){
-            handleException(e);
+            handleException(e, context);
         }
     }
 
     protected abstract void doHandle(AsyncContext context) throws FJWebException ;
 
-    protected void handleException(Throwable exception) throws FJWebException{
-        throw new FJWebException(exception);
+    protected void handleException(Throwable exception, AsyncContext context){
+        try{
+            HttpServletResponse response = (HttpServletResponse) context.getResponse();
+            response.setContentType("application/json; charset=UTF-8");
+            PrintWriter writer = response.getWriter();
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.writeValue(writer, new ErrorResponse(exception));
+        }catch (Throwable e){
+            // TODO Log!!
+            e.printStackTrace();
+        }
     }
 
     protected void addPreHandler(PreHandler handler){

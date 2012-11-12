@@ -7,11 +7,11 @@ function configMenu(){
 	        type: "POST",
 	        data: dataForSend,
 	        success: function(data, status) {
-//            	if (data.exception){
-//            		showError(data);
+            	if (data.exception){
+            		showError(data);
 //            	}else if (data.accessDenied){
 //                    logout();
-//            	}else{
+            	}else{
 	        	topMenu.fadeOut(function(){
 	        		topMenu.html(data);
 	        		topMenu.fadeIn();
@@ -20,7 +20,7 @@ function configMenu(){
 	        		bottomMenu.html(data);
 	        		bottomMenu.fadeIn();
 	        	});
-//            	}
+            	}
 	        }
 	    });
 	};
@@ -33,14 +33,14 @@ function logoutClick(){
         type: "POST",
         data: dataForSend,
         success: function(data, status) {
-//            	if (data.exception){
-//            		showError(data);
+            	if (data.exception){
+            		showError(data);
 //            	}else if (data.accessDenied){
 //                    logout();
-//            	}else{
+            	}else{
         	logo.reload();
         	topMenu.reload(currentComponent);
-//            	}
+            	}
         }
     });
 }
@@ -52,16 +52,16 @@ function loginClick(){
 		type: "POST",
 		data: dataForSend,
 		success: function(data, status) {
-//            	if (data.exception){
-//            		showError(data);
+            	if (data.exception){
+            		showError(data);
 //            	}else if (data.accessDenied){
 //                    logout();
-//            	}else{
+            	}else{
 			content.fadeOut(function(){
 				content.html(data);
 				content.fadeIn();
         		});
-//            	}
+            	}
 		}
 	});
 }

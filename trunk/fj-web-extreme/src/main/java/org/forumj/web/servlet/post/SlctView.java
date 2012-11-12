@@ -25,6 +25,7 @@ import org.forumj.web.servlet.FJServlet;
  */
 @SuppressWarnings("serial")
 @WebServlet(urlPatterns = {"/" + FJUrl.SELECT_VIEW}, name=FJServletName.SELECT_VIEW)
+@Deprecated
 public class SlctView extends FJServlet {
 
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

@@ -6,12 +6,32 @@ function linkObjects(){
 	content = $("#content"); 
 	usersOnline = $("#usersOnline"); 
 	footer = $("#footer"); 
+	errorDiv = $("#error");
 }
 
 function configObjects(){
 	configLogo();	
 	configMenu();	
 	configForumIndex();
+}
+
+function showError(errObject){
+	var errText = "<h2>" + errObject.message + "</h2>";
+	for (var errorCount in errObject.stackTrace){
+		errText +='<p>' + errObject.stackTrace[errorCount] + '</p>';
+	}
+	errorDiv.html(errText);
+	errorDiv.dialog({
+		resizable: true,
+		height:500,
+		width:700,
+		modal: true,
+		buttons: {
+			"Ok": function() {
+				$( this ).dialog( "close" );
+			}
+		}
+	});
 }
 
 function initObjects(){

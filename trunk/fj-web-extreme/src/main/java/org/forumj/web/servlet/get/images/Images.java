@@ -28,7 +28,7 @@ import org.forumj.web.servlet.tool.ResourcesCache;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {"/css/picts/*","/picts/*", "/images/*", "/skin/*", "/banner/*", "/smiles/*", "/avatars/*"}, name="picts")
+@WebServlet(urlPatterns = {"/css/images/*","/css/picts/*","/picts/*", "/images/*", "/skin/*", "/banner/*", "/smiles/*", "/avatars/*"}, name="picts")
 public class Images extends HttpServlet {
 
    private static final long serialVersionUID = -8810949466796099480L;
