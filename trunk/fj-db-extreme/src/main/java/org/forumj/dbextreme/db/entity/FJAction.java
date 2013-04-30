@@ -89,7 +89,7 @@ public class FJAction implements IFJAction {
     * @see org.forumj.dbextreme.db.entity.IFJAction#getIserId()
     */
    @Override
-   public long getUserId() {
+   public Long getUserId() {
       return userId;
    }
 
@@ -97,7 +97,7 @@ public class FJAction implements IFJAction {
     * @see org.forumj.dbextreme.db.entity.IFJAction#setIserId(long)
     */
    @Override
-   public void setUserId(long userId) {
+   public void setUserId(Long userId) {
       this.userId = userId;
    }
 
