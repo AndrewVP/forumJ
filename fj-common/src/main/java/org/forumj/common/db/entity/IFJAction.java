@@ -37,12 +37,12 @@ public interface IFJAction {
    /**
     * @return the iserId
     */
-   public long getUserId();
+   public Long getUserId();
 
    /**
     * @param iserId the iserId to set
     */
-   public void setUserId(long userId);
+   public void setUserId(Long userId);
 
    /**
     * @return the date

@@ -355,7 +355,7 @@ public class User implements IUser {
     * @return the ban
     */
     @Override
-   public int getBan() {
+   public Integer getBan() {
        return ban;
     }
 
@@ -363,7 +363,7 @@ public class User implements IUser {
      * @param ban the ban to set
      */
     @Override
-   public void setBan(int ban) {
+   public void setBan(Integer ban) {
        this.ban = ban;
     }
 
@@ -371,7 +371,7 @@ public class User implements IUser {
      * @return the view
      */
     @Override
-   public int getView() {
+   public Integer getView() {
        return view;
     }
 
@@ -379,7 +379,7 @@ public class User implements IUser {
      * @param view the view to set
      */
     @Override
-   public void setView(int view) {
+   public void setView(Integer view) {
        this.view = view;
     }
 
@@ -387,7 +387,7 @@ public class User implements IUser {
      * @return the pg
      */
     @Override
-   public int getPp() {
+   public Integer getPp() {
        return pp;
     }
 
@@ -395,7 +395,7 @@ public class User implements IUser {
      * @param pg the pg to set
      */
     @Override
-   public void setPp(int pp) {
+   public void setPp(Integer pp) {
        this.pp = pp;
     }
 
@@ -403,7 +403,7 @@ public class User implements IUser {
      * @return the pt
      */
     @Override
-   public int getPt() {
+   public Integer getPt() {
        return pt;
     }
 
@@ -411,7 +411,7 @@ public class User implements IUser {
      * @param pt the pt to set
      */
     @Override
-   public void setPt(int pt) {
+   public void setPt(Integer pt) {
        this.pt = pt;
     }
 
