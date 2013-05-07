@@ -19,7 +19,6 @@ import java.util.Date;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
 import org.forumj.dbextreme.db.entity.*;
-import org.forumj.dbextreme.db.service.FJService;
 
 /**
  *
@@ -152,7 +151,7 @@ public class FJQuestNodeDao extends FJDao {
             answer.setUserId(user.getId());
             Long nodeId = create(answer, conn);
             if (nodeId != null){
-               FJVoiceDao voiceDao = FJService.getVoiceDao(); 
+               FJVoiceDao voiceDao = new FJVoiceDao(); 
                FJVoice voice = new FJVoice();
                voice.setThreadId(threadId);
                voice.setNodeId(nodeId);

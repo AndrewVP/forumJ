@@ -6,7 +6,6 @@
     <version>0.0.2-SNAPSHOT</version>
   </parent>
   <artifactId>fj-db-hibernate</artifactId>
-  <groupId>org.forumj.db</groupId>
   <dependencies>
   	<dependency>
   		<groupId>mysql</groupId>
@@ -24,7 +23,7 @@
   		<version>${org.hibernate-version}</version>
   	</dependency>
   	<dependency>
-  		<groupId>org.forumj.common</groupId>
+  		<groupId>org.forumj</groupId>
   		<artifactId>fj-common</artifactId>
   		<version>${project.version}</version>
   		<scope>provided</scope>

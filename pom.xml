@@ -81,5 +81,6 @@
 		<module>fj-tools</module>
 		<module>fj-check-ip</module>
 		<module>fj-db-hibernate</module>
+		<module>fj-business</module>
 	</modules>
 </project>

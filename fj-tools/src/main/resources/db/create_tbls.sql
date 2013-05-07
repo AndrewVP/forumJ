@@ -499,6 +499,7 @@ CREATE TABLE IF NOT EXISTS `titles` (
   `type` tinyint(4) NOT NULL default '0',
   `folder` int(11) NOT NULL default '1',
   `npost` int(11) NOT NULL default '1',
+  `closed` boolean NOT NULL default false,
   PRIMARY KEY  (`id`),
   KEY `type` (`type`),
   KEY `auth` (`auth`),

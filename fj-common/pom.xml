@@ -4,9 +4,8 @@
     <artifactId>forumj</artifactId>
     <groupId>org.forumj</groupId>
     <version>0.0.2-SNAPSHOT</version>
-    <relativePath>..</relativePath>
   </parent>
-  <groupId>org.forumj.common</groupId>
+  <groupId>org.forumj</groupId>
   <artifactId>fj-common</artifactId>
   <build>
       <finalName>fj-common</finalName>
