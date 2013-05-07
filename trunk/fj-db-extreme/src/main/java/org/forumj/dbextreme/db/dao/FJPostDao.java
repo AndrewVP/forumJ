@@ -22,7 +22,6 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.exception.DBException;
 import org.forumj.dbextreme.db.entity.*;
-import org.forumj.dbextreme.db.service.FJService;
 
 /**
  *
@@ -203,7 +202,7 @@ public class FJPostDao extends FJDao {
    }
    
    private FJPostHead readHead(Long id, String tableHead, Connection conn) throws SQLException, IOException, ConfigurationException{
-      FJUserDao userDao = FJService.getUserDao();
+      FJUserDao userDao = new FJUserDao();
       String readPostHeadQuery = getReadPostHeadQuery(tableHead);
       FJPostHead result = null;
       PreparedStatement st = null;

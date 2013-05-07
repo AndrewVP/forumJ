@@ -6,7 +6,6 @@
 		<groupId>org.forumj</groupId>
 		<version>0.0.2-SNAPSHOT</version>
 	</parent>
-	<groupId>org.forumj.web</groupId>
 	<artifactId>fj-web-extreme</artifactId>
 	<packaging>war</packaging>
 	<dependencies>
