@@ -7,7 +7,7 @@
 	<version>0.0.1-SNAPSHOT</version>
 	<name>forumj</name>
 	<properties>
-		<java-version>1.6</java-version>
+		<java-version>1.7</java-version>
 		<project-encoding>UTF-8</project-encoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -72,7 +72,6 @@
 				</configuration>
 			</plugin>
 		</plugins>
-		<finalName>fj</finalName>
 	</build>
 	<modules>
 		<module>fj-web-extreme</module>

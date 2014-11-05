@@ -46,6 +46,11 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>org.forumj.db</groupId>
+			<artifactId>fj-db-extreme</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
 			<version>1.2.2</version>
@@ -62,7 +67,7 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<finalName>fj-web-extreme</finalName>
+		<finalName>forum</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
