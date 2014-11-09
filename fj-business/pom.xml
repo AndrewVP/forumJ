@@ -7,6 +7,9 @@
 		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 	<artifactId>fj-business</artifactId>
+    <build>
+        <finalName>fj-business</finalName>
+    </build>
 	<dependencies>
 		<dependency>
 			<groupId>org.forumj</groupId>

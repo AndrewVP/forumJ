@@ -7,10 +7,11 @@
 		<version>0.0.2-SNAPSHOT</version>
 		<relativePath>..</relativePath>
 	</parent>
+    
 	<artifactId>fj-check-ip</artifactId>
 	<dependencies>
 		<dependency>
-			<groupId>org.forumj.common</groupId>
+			<groupId>org.forumj</groupId>
 			<artifactId>fj-common</artifactId>
 			<version>${project.version}</version>
 			<scope>provided</scope>
