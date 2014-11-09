@@ -1,9 +1,9 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@page import="org.forumj.common.Component"%>
 <%@page import="org.forumj.common.Command"%>
 <%@page import="org.forumj.common.FJRequestParameter"%>
 <%@page import="org.forumj.common.FJUrl"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
 <!doctype html public "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
@@ -11,7 +11,6 @@
 <link rel="stylesheet" href="css/reset.css" type="text/css" />
 <link rel="stylesheet" href="css/style.css" type="text/css" />
 <link rel="stylesheet" href="css/jquery-ui-1.9.1.custom.min.css" type="text/css" />
-<link rel="stylesheet" href="css/jPaginator.css" type="text/css" />
 <script type="text/javascript">
 var layout="";
 var logo="";
@@ -36,7 +35,6 @@ var FORUM_THREAD_COMPONENT=<%=Component.FORUM_THREAD.getId()%>;
 </script>
 <script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" src="js/jquery-ui-1.9.1.custom.min.js"></script>
-<script type="text/javascript" src="js/jPaginator.js"></script>
 <script type="text/javascript" src="js/jsmain_chek.js"></script>
 <script type="text/javascript" src="js/component_logo.js"></script>
 <script type="text/javascript" src="js/component_menu.js"></script>

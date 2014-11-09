@@ -23,7 +23,7 @@ import java.io.PrintWriter;
 import java.text.DecimalFormat;
 import java.util.*;
 
-import javax.servlet.AsyncContext;
+import javax.servlet.*;
 import javax.servlet.http.*;
 
 import org.forumj.common.FJUrl;
@@ -46,7 +46,6 @@ public class ForumIndexHandler extends BaseHandler{
             HttpServletRequest request = (HttpServletRequest) context.getRequest();
             HttpServletResponse response = (HttpServletResponse) context.getResponse();
             long startTime = new Date().getTime();
-            StringBuffer buffer = new StringBuffer();
             HttpSession session = request.getSession();
             //Предотвращаем кеширование
             cache(response);
@@ -85,6 +84,22 @@ public class ForumIndexHandler extends BaseHandler{
                   newMail="<a class=hdforum href='" + FJUrl.SETTINGS + "?id=2' rel='nofollow'><font color=red>" + locale.getString("mess66") + " " + mailCount +" " + locale.getString("mess67") + "</font></a>";
                }
             }
+            if (session.getAttribute("vname") == null){
+                session.setAttribute("vname", indexService.getViewName(Long.valueOf((Integer)session.getAttribute("view"))));
+            }
+            List<IFJInterface> viewsList = indexService.getViews(userId);
+            response.setContentType("text/html; charset=UTF-8");
+            RequestDispatcher dispatcher = request.getRequestDispatcher("WEB-INF/jsp/forum_index.jsp");
+            dispatcher.include(request, response);
+        }catch (Throwable e){
+            throw new FJWebException(e);
+        }
+    }
+        
+        public void old(int couP, List<IFJInterface> viewsList, IUser user, LocaleString locale, int pageNumber, String newMail, long threadsCount, List<IFJThread> threadsList, FolderService folderService, HttpSession session, HttpServletResponse response, long startTime) throws Exception{
+            StringBuffer buffer = new StringBuffer();
+            
+            
             buffer.append("<script language='javascript' type='text/javascript'>");
             buffer.append("// <!-- \n");
             buffer.append("var FORUM_PAGES=" + couP + ";");
@@ -92,17 +107,14 @@ public class ForumIndexHandler extends BaseHandler{
             buffer.append("</script>");
             // Интерфейс
             // Имя текущего
-            if (session.getAttribute("vname") == null){
-               session.setAttribute("vname", indexService.getViewName(Long.valueOf((Integer)session.getAttribute("view"))));
-            }
-            List<IFJInterface> viewsList = indexService.getViews(userId);
+            
             buffer.append("<div id='interfaces'>");
             buffer.append("<ul>");
             IFJInterface fjinterface;
             for (int vw1=0; vw1< viewsList.size(); vw1++)
             {
-               fjinterface = viewsList.get(vw1);
-               buffer.append("<li><a href='#tabs-1' id='" + fjinterface.getId() + "'>" + fjinterface.getName() + "</a></li>");
+                fjinterface = viewsList.get(vw1);
+                buffer.append("<li><a href='#tabs-1' id='" + fjinterface.getId() + "'>" + fjinterface.getName() + "</a></li>");
             }
             buffer.append("</ul>");
             buffer.append("<div id='" + viewsList.get(0).getId() + "'>");
@@ -114,35 +126,6 @@ public class ForumIndexHandler extends BaseHandler{
             }else{
                 mess=locale.getString("mess134");
             }
-            buffer.append("<div>");
-            buffer.append("<h1 style='color:red'>");
-            buffer.append(mess);
-            buffer.append("</h1>");
-            buffer.append("</div>");
-            //pager
-            buffer.append("<div id='top_pager'>");
-            buffer.append("<!-- optional left control buttons-->");
-            buffer.append("<nav id='top_pager_m_left' class='jPaginatorMax'></nav><nav id='top_pager_o_left' class='jPaginatorOver'></nav>");
-
-            buffer.append("<div class='paginator_p_wrap'>");
-            buffer.append("<div class='paginator_p_bloc'>");
-            buffer.append("<!--<a class='paginator_p'></a> // page number : dynamically added -->");
-            buffer.append("</div>");
-            buffer.append("</div>");
-
-            buffer.append("<!-- optional right control buttons-->");
-            buffer.append("<nav id='top_pager_o_right' class='jPaginatorOver'></nav><nav id='top_pager_m_right' class='jPaginatorMax'></nav>");
-
-
-            buffer.append("<!-- slider -->");
-            buffer.append("<div class='paginator_slider' class='ui-slider ui-slider-horizontal ui-widget ui-widget-content ui-corner-all'>");
-            buffer.append("<a class='ui-slider-handle ui-state-default ui-corner-all' href='#'></a>");
-            buffer.append("</div>");
-
-            buffer.append("</div>");
-
-            
-            
             buffer.append("<table width='100%'>");
             buffer.append("<tr><td colspan='3'><p><font face='Arial' color='red' size='3'><span style='text-decoration: none'><b>");
             buffer.append(mess);
@@ -161,16 +144,16 @@ public class ForumIndexHandler extends BaseHandler{
             if (couP-pageNumber<5) i4=couP;
             int i2 = 0;
             for (int i1=i3; i1<i4; i1++){
-               i2=i2+1;
-               if ((i1>(pageNumber-5) && i1<(pageNumber+5)) || i2==10 || i1==1 || i1==(couP-1)){
-                  if (i2==10) i2=0;
-                  if (i1==pageNumber){
-                     buffer.append("<font class='pagecurrent'><b>" + i1 + "</b></font>");
-                  }
-                  else {
-                     buffer.append("<a class='pageLink' href='" + FJUrl.INDEX + "?page=" + i1 + "'>" + i1 + "</a>");
-                  }
-               }
+                i2=i2+1;
+                if ((i1>(pageNumber-5) && i1<(pageNumber+5)) || i2==10 || i1==1 || i1==(couP-1)){
+                    if (i2==10) i2=0;
+                    if (i1==pageNumber){
+                        buffer.append("<font class='pagecurrent'><b>" + i1 + "</b></font>");
+                    }
+                    else {
+                        buffer.append("<a class='pageLink' href='" + FJUrl.INDEX + "?page=" + i1 + "'>" + i1 + "</a>");
+                    }
+                }
             }
             buffer.append("<font class='page' style='margin-left:5px;'><b>" + locale.getString("mess136") + "&nbsp;" + (couP-1) + "</b></font>");
             buffer.append("</td>");
@@ -201,11 +184,10 @@ public class ForumIndexHandler extends BaseHandler{
             // Таблица Заголовков тем
             buffer.append("<div>");
             if (user.isLogined()){
-               // Форма выводится только для зарегистрированых
-               buffer.append("<form method='post' name='del_form' action='" + FJUrl.MOVE_TITLE + "?page=" + pageNumber + "' class=frmsmall>");
+                // Форма выводится только для зарегистрированых
+                buffer.append("<form method='post' name='del_form' action='" + FJUrl.MOVE_TITLE + "?page=" + pageNumber + "' class=frmsmall>");
             }
-            buffer.append("<tr>");
-            buffer.append("<td height='400' valign='top'>");
+            buffer.append("<div style='height:400px'>");
             buffer.append("<table class='content'>");
             // Заголовки таблицы
             buffer.append("<tr><td class=internal align='left' colspan='3'><span class=hdforum2>Тема:  </span>" + newMail + " </td>");
@@ -221,26 +203,27 @@ public class ForumIndexHandler extends BaseHandler{
             buffer.append("<td class=internal align='center'><span class=hdforum2>" + locale.getString("mess82") + "</span></td>");
             // Флажок (только для авторизованых)
             if (user.isLogined()) {
-               buffer.append("<td class=internal align='center'>");
-               buffer.append("<input type='checkbox' id='main_ch' onclick='m_chek()'>");
-               buffer.append("</td>");
-               buffer.append("<td class=internal></td>");
+                buffer.append("<td class=internal align='center'>");
+                buffer.append("<input type='checkbox' id='main_ch' onclick='m_chek()'>");
+                buffer.append("</td>");
+                buffer.append("<td class=internal></td>");
             }
             buffer.append("</tr>");
             // Определяем кол-во строк таблицы
             long i5=pageNumber*user.getPp();
             if (i5>threadsCount) {
-               i5=threadsCount-(pageNumber-1)*user.getPp();
+                i5=threadsCount-(pageNumber-1)*user.getPp();
             }else{
-               i5=user.getPp();
+                i5=user.getPp();
             }
             // Выводим строки
             for (int threadIndex = 0; threadIndex < threadsList.size(); threadIndex++) {
-               IFJThread thread = threadsList.get(threadIndex);
-               buffer.append(writeThread(thread, user, locale, threadIndex, pageNumber));
+                IFJThread thread = threadsList.get(threadIndex);
+                buffer.append(writeThread(thread, user, locale, threadIndex, pageNumber));
             }
             // Главные ссылки внизу страницы
             buffer.append("</table>");
+            buffer.append("</div>");
 //            buffer.append("<script type='text/javascript'>");
 //            buffer.append("if (request){");
 //            if(threads.getIndctrIds() == null || threads.getIndctrIds().trim().length() == 0){
@@ -251,10 +234,6 @@ public class ForumIndexHandler extends BaseHandler{
 //            buffer.append("getIndicatorInfo();");
 //            buffer.append("}");
 //            buffer.append("</script>");
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            buffer.append("<tr>");
-            buffer.append("<td width='100%'>");
             buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
             buffer.append("<tr><td colspan='4' style='padding:2px'>");
             buffer.append("<font class=page><b>" + locale.getString("mess22") + "&nbsp;</b></font>");
@@ -264,78 +243,78 @@ public class ForumIndexHandler extends BaseHandler{
             if (couP-pageNumber<5) i4=couP;
             i2=0;
             for (int i1=i3; i1<i4; i1++){
-               i2=i2+1;
-               if ((i1>(pageNumber-5) && i1<(pageNumber+5)) || i2==10 || i1==1 || i1==(couP-1)){
-                  if (i2==10) i2=0;
-                  if (i1==pageNumber){
-                     buffer.append("<font class='pagecurrent'><b>" + i1 + "</b></font>");
-                  }
-                  else {
-                     buffer.append("<a class='pageLink' href='" + FJUrl.INDEX + "?page=" + i1 + "'>" + i1 + "</a>");
-                  }
-               }
+                i2=i2+1;
+                if ((i1>(pageNumber-5) && i1<(pageNumber+5)) || i2==10 || i1==1 || i1==(couP-1)){
+                    if (i2==10) i2=0;
+                    if (i1==pageNumber){
+                        buffer.append("<font class='pagecurrent'><b>" + i1 + "</b></font>");
+                    }
+                    else {
+                        buffer.append("<a class='pageLink' href='" + FJUrl.INDEX + "?page=" + i1 + "'>" + i1 + "</a>");
+                    }
+                }
             }
             buffer.append("<font class='page' style='margin-left:5px;'><b>" + locale.getString("mess136") + "&nbsp;" + (couP-1) + "</b></font>");
             buffer.append("</td>");
             buffer.append("</tr>");
             // Сервис интерфейса
             if (user.isLogined()) {
-               // Выбираем доступные папки
-               List<IFJFolder> foldersList = folderService.getUserFolders(user);
-               buffer.append("<tr>");
-               buffer.append("<table class=control>");        
-               buffer.append("<tr>");
-               buffer.append("<td class=leftTop></td>");
-               buffer.append("<td class=top colspan=3></td>");
-               buffer.append("<td class=rightTop></td>");
-               buffer.append("</tr>");
-               buffer.append("<tr class=heads>");
-               buffer.append("<td class=left></td>");
-               buffer.append("<td class=bg2 align=left>");
-               buffer.append("<span class=mnuforum>" + locale.getString("mess81") + "</span><span class=nik>" + session.getAttribute("vname") + "</span>");
-               buffer.append("</td>");
-               buffer.append("<td class=bg2 align=right>");
-               // Выводим папки
-               buffer.append("<span class=mnuforum>" + locale.getString("mess83") + "</span>");
-               buffer.append("<select class='mnuforumSm' size='1' name='VIEW'>");
-               buffer.append("<option selected value='" + foldersList.get(0).getId() + "'><span class=mnuprof>" + foldersList.get(0).getName() + "</span></option>");
-               for (int fl1=1; fl1< foldersList.size(); fl1++){
-                  buffer.append("<option value='" + foldersList.get(fl1).getId() + "'><span class=mnuprof>" + foldersList.get(fl1).getName() + "</span></option>");
-               }        
-               buffer.append("</select>");
-               // Прередаем нужные пераметры...
-               buffer.append(fd_form_add(user));
-               buffer.append("<input type=hidden name=\"NRW\" id='nrw' value=\"" + i5 + "\">");
-               // Кнопка
-               buffer.append("</td>");        
-               buffer.append("<td class=bg2 align=right>");
-               buffer.append(fd_button("OK","document.del_form.submit();","del_ok", "1"));
-               buffer.append("</td>");        
-               buffer.append("<td class=right></td>");
-               buffer.append("</tr>");
-               buffer.append("<tr>");
-               buffer.append("<td class=leftBtm></td>");
-               buffer.append("<td class=btm colspan=3></td>");
-               buffer.append("<td class=rightBtm></td>");
-               buffer.append("</tr>");
-               buffer.append("</table>");        
-               buffer.append("</tr>");
-               buffer.append("</table>");        
-               buffer.append("</form>");
+                // Выбираем доступные папки
+                List<IFJFolder> foldersList = folderService.getUserFolders(user);
+                buffer.append("<tr>");
+                buffer.append("<table class=control>");        
+                buffer.append("<tr>");
+                buffer.append("<td class=leftTop></td>");
+                buffer.append("<td class=top colspan=3></td>");
+                buffer.append("<td class=rightTop></td>");
+                buffer.append("</tr>");
+                buffer.append("<tr class=heads>");
+                buffer.append("<td class=left></td>");
+                buffer.append("<td class=bg2 align=left>");
+                buffer.append("<span class=mnuforum>" + locale.getString("mess81") + "</span><span class=nik>" + session.getAttribute("vname") + "</span>");
+                buffer.append("</td>");
+                buffer.append("<td class=bg2 align=right>");
+                // Выводим папки
+                buffer.append("<span class=mnuforum>" + locale.getString("mess83") + "</span>");
+                buffer.append("<select class='mnuforumSm' size='1' name='VIEW'>");
+                buffer.append("<option selected value='" + foldersList.get(0).getId() + "'><span class=mnuprof>" + foldersList.get(0).getName() + "</span></option>");
+                for (int fl1=1; fl1< foldersList.size(); fl1++){
+                    buffer.append("<option value='" + foldersList.get(fl1).getId() + "'><span class=mnuprof>" + foldersList.get(fl1).getName() + "</span></option>");
+                }        
+                buffer.append("</select>");
+                // Прередаем нужные пераметры...
+                buffer.append(fd_form_add(user));
+                buffer.append("<input type=hidden name=\"NRW\" id='nrw' value=\"" + i5 + "\">");
+                // Кнопка
+                buffer.append("</td>");        
+                buffer.append("<td class=bg2 align=right>");
+                buffer.append(fd_button("OK","document.del_form.submit();","del_ok", "1"));
+                buffer.append("</td>");        
+                buffer.append("<td class=right></td>");
+                buffer.append("</tr>");
+                buffer.append("<tr>");
+                buffer.append("<td class=leftBtm></td>");
+                buffer.append("<td class=btm colspan=3></td>");
+                buffer.append("<td class=rightBtm></td>");
+                buffer.append("</tr>");
+                buffer.append("</table>");        
+                buffer.append("</tr>");
+                buffer.append("</table>");        
+                buffer.append("</form>");
+            }else{
+                buffer.append("</table>");        
             }
             buffer.append("</div>");
             buffer.append("</div>");
             buffer.append("</div>");
+            
             Double allTime = (double) ((new Date().getTime() - startTime));
             DecimalFormat format = new DecimalFormat("##0.###");
             response.setContentType("text/html; charset=UTF-8");
             PrintWriter writer = response.getWriter();
             String out = buffer.toString();
             writer.write(out.replace("ъъ_ъ", format.format(allTime/1000)));
-        }catch (Throwable e){
-            throw new FJWebException(e);
         }
-    }
 
     private StringBuffer writeThread(IFJThread thread, IUser user, LocaleString locale, int threadIndex, int pageNumber) throws InvalidKeyException{
         StringBuffer buffer = new StringBuffer();
