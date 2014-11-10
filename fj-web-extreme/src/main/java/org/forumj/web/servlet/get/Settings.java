@@ -42,7 +42,7 @@ import org.forumj.web.servlet.FJServlet;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/settings"}, name = "settings")
+//@WebServlet(urlPatterns = {"/settings"}, name = "settings")
 public class Settings extends FJServlet {
 
    /**
