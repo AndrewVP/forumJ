@@ -79,7 +79,6 @@ public class Images extends HttpServlet {
             in = new FileInputStream(file);
             final byte[] chars = new byte[1024];
             int read;
-            in = new FileInputStream(file);
             while ((read = in.read(chars)) > -1) {
                final byte[] realChars = new byte[read];
                for (int i = 0; i < read; i++) {
