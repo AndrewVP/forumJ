@@ -45,7 +45,7 @@ import com.tecnick.htmlutils.htmlentities.HTMLEntities;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/" + FJUrl.SETTINGS}, name = FJServletName.SETTINGS)
+//@WebServlet(urlPatterns = {"/" + FJUrl.SETTINGS}, name = FJServletName.SETTINGS)
 public class Control extends FJServlet {
 
    /**
@@ -65,10 +65,10 @@ public class Control extends FJServlet {
          String errorCodes = request.getParameter("errcode");
          List<ErrorCode> errors = new ArrayList<ErrorCode>();
          if (errorCodes != null && !errorCodes.trim().isEmpty()){
-        	 String[] errCodes = errorCodes.split(",");
-        	 for (String errorCode : errCodes) {
-				errors.add(ErrorCode.fromErrorCode(Integer.valueOf(errorCode)));
-			}
+            String[] errCodes = errorCodes.split(",");
+            for (String errorCode : errCodes) {
+               errors.add(ErrorCode.fromErrorCode(Integer.valueOf(errorCode)));
+            }
          }
          // Загружаем локализацию
          LocaleString locale = (LocaleString) session.getAttribute("locale");
@@ -1151,30 +1151,30 @@ public class Control extends FJServlet {
          buffer.append("<img border='0' src='" + user.getAvatar() + "?seed=" + (new Date()).getTime() + "'>");
          buffer.append("</div>");
          buffer.append("<br>");
-//         buffer.append("<div>");
-//         buffer.append(locale.getString("mess95"));
-//         buffer.append("</div>");
+         //         buffer.append("<div>");
+         //         buffer.append(locale.getString("mess95"));
+         //         buffer.append("</div>");
          buffer.append("<br>");
       } else {
       }
-         buffer.append("<div class='mnuprof' align='CENTER'>");
-         buffer.append("<b>");
-         buffer.append(locale.getString("mess92"));
-         buffer.append("</b>");
-         buffer.append("</div>");
-         buffer.append("<br>");
-//         buffer.append("<div>");
-//         buffer.append(locale.getString("mess96"));
-//         buffer.append("</div>");
-//         buffer.append("<br>");
+      buffer.append("<div class='mnuprof' align='CENTER'>");
+      buffer.append("<b>");
+      buffer.append(locale.getString("mess92"));
+      buffer.append("</b>");
+      buffer.append("</div>");
+      buffer.append("<br>");
+      //         buffer.append("<div>");
+      //         buffer.append(locale.getString("mess96"));
+      //         buffer.append("</div>");
+      //         buffer.append("<br>");
       buffer.append("<form method='post' class='content' action='" + FJUrl.SET_AVATAR + "?id=9' enctype='multipart/form-data'>");
       for (ErrorCode errorCode : errors) {
-    	  if(errorCode.getFieldName().equalsIgnoreCase("avatar")){
-    		  buffer.append("<span style='color:red;'>");
-    		  buffer.append(locale.getString(errorCode.getErrorMessageNls()));
-    		  buffer.append("</span>");
-    		  buffer.append("<br/>");
-    	  }
+         if(errorCode.getFieldName().equalsIgnoreCase("avatar")){
+            buffer.append("<span style='color:red;'>");
+            buffer.append(locale.getString(errorCode.getErrorMessageNls()));
+            buffer.append("</span>");
+            buffer.append("<br/>");
+         }
       }
       buffer.append(locale.getString("mess97") + "&nbsp;");
       buffer.append("<input type='file' size='20' name='avatar'>");
@@ -1324,7 +1324,7 @@ public class Control extends FJServlet {
       buffer.append("</form>");
       return buffer;
    }
-   
+
    /*язык интерфейса*/
    private StringBuffer language(LocaleString locale, IUser user) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
@@ -1353,5 +1353,5 @@ public class Control extends FJServlet {
       buffer.append("</form>");
       return buffer;
    }
-   
+
 }

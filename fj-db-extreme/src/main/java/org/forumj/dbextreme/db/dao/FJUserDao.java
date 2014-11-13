@@ -116,6 +116,24 @@ public class FJUserDao extends FJDao {
       return result;
    }
 
+   public List<IUser> readAll() throws ConfigurationException, SQLException, IOException{
+      List<IUser> result = new ArrayList<IUser>();
+      String query = getReadAllUsersQuery();
+      Connection conn = null;
+      Statement st = null;
+      try {
+         conn = getConnection();
+         st = conn.createStatement();
+         ResultSet rs = st.executeQuery(query);
+         while (rs.next()){
+            result.add(loadUser(rs));
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
+   }
+   
    public IUser readByMail(String mail) throws ConfigurationException, SQLException, IOException{
       IUser result = null;
       String query = getReadUserByMailQuery();

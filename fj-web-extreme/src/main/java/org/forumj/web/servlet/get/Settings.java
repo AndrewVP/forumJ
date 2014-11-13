@@ -27,13 +27,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.forumj.common.*;
 import org.forumj.common.db.entity.*;
-import org.forumj.common.db.service.FJServiceHolder;
-import org.forumj.common.db.service.FolderService;
-import org.forumj.common.db.service.IgnorService;
-import org.forumj.common.db.service.InterfaceService;
-import org.forumj.common.db.service.MailService;
-import org.forumj.common.db.service.SubscribeService;
+import org.forumj.common.db.service.*;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
@@ -42,8 +38,10 @@ import org.forumj.web.servlet.FJServlet;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-//@WebServlet(urlPatterns = {"/settings"}, name = "settings")
+@WebServlet(urlPatterns = {"/" + FJUrl.SETTINGS}, name = FJServletName.SETTINGS)
 public class Settings extends FJServlet {
+   
+   private Control oldStyle = new Control(); 
 
    /**
     * {@inheritDoc}
@@ -51,40 +49,50 @@ public class Settings extends FJServlet {
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       try {
-         HttpSession session = request.getSession();
-         //Предотвращаем кеширование
-         cache(response);
-         // Функции   
-         // номер страницы
          Integer id = request.getParameter("id") == null ? 1 : Integer.valueOf(request.getParameter("id"));
-         Long msg = request.getParameter("msg") == null ? null : Long.valueOf(request.getParameter("msg"));
-         Long view = request.getParameter("view") == null ? null : Long.valueOf(request.getParameter("view"));
-         // Загружаем локализацию
-         LocaleString locale = (LocaleString) session.getAttribute("locale");
-         IUser user = (IUser) session.getAttribute("user");
-         IgnorService ignorService = FJServiceHolder.getIgnorService();
-         FolderService folderService = FJServiceHolder.getFolderService();
-         MailService mailService = FJServiceHolder.getMailService();
-         SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
-         InterfaceService interfaceService = FJServiceHolder.getInterfaceService();
-         generateLangLinks(request);
-         String ru = getRus();
-         String ua = getUkr();
-         String exit = getExitUrl();
-         request.setAttribute("ua", ua);
-         request.setAttribute("ru", ru);
-         request.setAttribute("exit", exit);
-         request.setAttribute("id", id);
-         switch (id) {
-         //Игнор
-         case 1:
-            // Выбираем список Игнорируемых
-            List<IIgnor> ignorList = ignorService.readUserIgnor(user.getId());
-            request.setAttribute("ignorList", ignorList);
-            break;
+         if (id != 1 && id != 14){
+            oldStyle.doGet(request, response);
+         }else{
+            HttpSession session = request.getSession();
+            //Предотвращаем кеширование
+            cache(response);
+            Long msg = request.getParameter("msg") == null ? null : Long.valueOf(request.getParameter("msg"));
+            Long view = request.getParameter("view") == null ? null : Long.valueOf(request.getParameter("view"));
+            // Загружаем локализацию
+            LocaleString locale = (LocaleString) session.getAttribute("locale");
+            IUser user = (IUser) session.getAttribute("user");
+            IgnorService ignorService = FJServiceHolder.getIgnorService();
+            FolderService folderService = FJServiceHolder.getFolderService();
+            MailService mailService = FJServiceHolder.getMailService();
+            SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
+            InterfaceService interfaceService = FJServiceHolder.getInterfaceService();
+            UserService userService = FJServiceHolder.getUserService();
+            generateLangLinks(request);
+            String ru = getRus();
+            String ua = getUkr();
+            String exit = getExitUrl();
+            request.setAttribute("ua", ua);
+            request.setAttribute("ru", ru);
+            request.setAttribute("exit", exit);
+            request.setAttribute("id", id);
+            switch (id) {
+            //Игнор
+            case 1:
+               // Выбираем список Игнорируемых
+               List<IIgnor> ignorList = ignorService.readUserIgnor(user.getId());
+               request.setAttribute("ignorList", ignorList);
+               break;
 
-         default:
-            break;
+               //Users
+            case 14:
+               // Load users list
+               List<IUser> usersList = userService.readAll();
+               request.setAttribute("usersList", usersList);
+               break;
+               
+            default:
+               break;
+            }
          }
       } catch (Throwable e) {
          e.printStackTrace();

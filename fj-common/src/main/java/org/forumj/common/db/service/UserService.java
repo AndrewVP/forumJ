@@ -49,4 +49,6 @@ public interface UserService {
    public boolean checkCodeUsed(int activateCode) throws SQLException, ConfigurationException, IOException;
 
    public IUser read(Long userId, int activateCode) throws ConfigurationException, SQLException, IOException;
+   
+   public List<IUser> readAll() throws ConfigurationException, SQLException, IOException;
 }

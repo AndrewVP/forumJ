@@ -13,32 +13,32 @@
 <script type="text/javascript" src="js/checklength.js"></script>
 <script type="text/javascript" src="js/jstags.js"></script>
 <script type="text/javascript">
-//<!--
+//
 mess132=<fmt:message key="mess132"/>;
 mess128=<fmt:message key="mess128"/>;
 mess129=<fmt:message key="mess129"/>;
-// -->
+// 
 </script>
 <script type="text/javascript" src="js/send_submit.js"></script>
 <link rel="icon" href="/favicon.ico" type="image/x-icon" />
 <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
 <title><fmt:message key="mess127"/></title>
 </head>
-<!-- 
-         // Цвет фона страницы
--->
+ 
+         <%/* Цвет фона страницы */%>
+
          <body class='mainBodyBG'>
-<!-- 
-         // Главная таблица
--->
+ 
+         <%/* Главная таблица */%>
+
          <table border='0' style='border-collapse: collapse' width='100%'>
-<!-- 
-         // Таблица с лого и верхним баннером
--->
+ 
+         <%/* Таблица с лого и верхним баннером */%>
+
          <%@ include file="logo.jsp" %>
-<!-- 
-         // Таблица главных ссылок
--->
+ 
+         <%/* Таблица главных ссылок */%>
+
          <tr>
          <td width='100%'>
          <table border='0' style='border-collapse: collapse' width='100%'>
@@ -46,18 +46,18 @@ mess129=<fmt:message key="mess129"/>;
          </table></td></tr>
          <tr>
          <td>
-<!-- 
-         // Таблица форума
--->
+ 
+         <%/* Таблица форума */%>
+
          <table class='content'><tr><td>
-<!-- 
-         // Таблица контента
--->
+ 
+         <%/* Таблица контента */%>
+
          <table class='content'><tr>
-<!-- 
-         // Ссылки на сервисы
-         // Игнор-лист.
--->
+ 
+         <%/* Ссылки на сервисы */%>
+         <%/* Игнор-лист. */%>
+
          <td height='300' valign="top" width='150'>
          <table class='control'>
          <tr class='heads'>
@@ -71,9 +71,9 @@ mess129=<fmt:message key="mess129"/>;
          </td>
          </tr>
          </table>
-<!-- 
-         /*e-mail*/
--->
+
+         <%/* e-mail */%>
+
          <table class='control'><tr class='heads'>
          <th class='internal'>
          <div class='mnuprof'><fmt:message key="MSG_EMAIL"/></div>
@@ -83,9 +83,9 @@ mess129=<fmt:message key="mess129"/>;
          <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=13'><fmt:message key="MSG_EMAIL"/></a><br/>
          </td>
          </tr></table>
-<!-- 
-         // Личная переписка
--->
+ 
+         <%/* Личная переписка */%>
+
          <table class='control'><tr class='heads'>
          <th class='internal'>
          <div class='mnuprof'><fmt:message key="mess23"/></div>
@@ -107,9 +107,9 @@ mess129=<fmt:message key="mess129"/>;
          <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=5'><fmt:message key="mess56"/></a><br/>
          </td>
          </tr></table>
-<!-- 
-         // Интерфейсы
--->
+ 
+         <%/* Интерфейсы */%>
+
          <table class='control'><tr class='heads'>
          <th class='internal'>
          <div class='mnuprof'><fmt:message key="mess71"/></div>
@@ -123,9 +123,9 @@ mess129=<fmt:message key="mess129"/>;
          <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=7'><fmt:message key="mess72"/></a><br/>
          </td>
          </tr></table>
-<!-- 
-         // Подписка
--->
+ 
+         <%/* Подписка */%>
+
          <table class='control'><tr class='heads'>
          <th class='internal'>
          <div class='mnuprof'><fmt:message key="mess86"/></div>
@@ -135,9 +135,9 @@ mess129=<fmt:message key="mess129"/>;
          <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=8'><fmt:message key="mess86"/></a><br/>
          </td>
          </tr></table>
-<!-- 
-         // Аватара
--->
+ 
+         <%/* Аватара */%>
+
          <table class='control'><tr class='heads'>
          <th class='internal'>
          <div class='mnuprof'><fmt:message key="mess93"/></div>
@@ -147,9 +147,9 @@ mess129=<fmt:message key="mess129"/>;
          <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=9'><fmt:message key="mess93"/></a><br/>
          </td>
          </tr></table>
-<!-- 
-         // Местонахождение
--->
+ 
+         <%/* Местонахождение */%>
+
          <table class='control'><tr class='heads'>
          <th class='internal'>
          <div class='mnuprof'><fmt:message key="mess104"/></div>
@@ -158,17 +158,17 @@ mess129=<fmt:message key="mess129"/>;
          <td class='internal'>
          <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=10'><fmt:message key="mess104"/></a><br/>
          </td>
-<!-- 
-         /*Locale*/
--->
+
+         <%/*Locale*/%>
+
          </tr><tr>
          <td class='internal'>
          <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=12'><fmt:message key="MSG_INTERF_LOCALE"/></a><br/>
          </td>
          </tr></table>
-<!-- 
-         /*Подпись*/
--->
+
+         <%/*Подпись*/%>
+
          <table class='control'><tr class='heads'>
          <th class='internal'>
          <div class='mnuprof'><fmt:message key="mess138"/></div>
@@ -179,11 +179,25 @@ mess129=<fmt:message key="mess129"/>;
          </td>
          </tr></table>
 
+         <%/*Users*/%>
+         <table class='control'><tr class='heads'>
+         <th class='internal'>
+         <div class='mnuprof'><fmt:message key="MSG_USERS"/></div>
+         </th>
+         </tr><tr>
+         <td class='internal'>
+         <a class='mnuprof' href='<%=FJUrl.SETTINGS%>?id=14'><fmt:message key="MSG_USERS"/></a><br/>
+         </td>
+         </tr></table>
+
          </td>
          <td valign="top" style='padding-left:5px;'>
          <c:choose>
       <c:when test="${id eq 1}">
          <%@ include file="settings/settings_inc1.jsp" %>
+      </c:when>
+      <c:when test="${id eq 14}">
+         <%@ include file="settings/settings_inc14.jsp" %>
       </c:when>
       <c:otherwise>
           page id not defined
@@ -197,9 +211,9 @@ mess129=<fmt:message key="mess129"/>;
          </table>
          </td>
          </tr>
-<!-- 
-         // Главное "меню"
--->
+ 
+         <%/* Главное "меню" */%>
+
          <tr>
          <td width='100%'>
          <table border='0' style='border-collapse: collapse' width='100%'>
@@ -207,15 +221,15 @@ mess129=<fmt:message key="mess129"/>;
          </table>
          </td>
          </tr>
-<!-- 
-         // Форма отправки письма личной переписки   
--->
+ 
+         <%/* Форма отправки письма личной переписки    */%>
+
             <c:if test='${id gt 1 && id lt 6}'>
          <%@ include file="settings_mail_form.jsp" %>
             </c:if>
-<!-- 
-         // Баннер внизу, счетчики и копирайт.
--->
+ 
+         <%/* Баннер внизу, счетчики и копирайт. */%>
+
          <%@ include file="footer.jsp" %>
 
             </table>
