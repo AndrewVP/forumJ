@@ -73,4 +73,9 @@ public class UserServiceImpl extends FJService implements UserService {
    public IUser read(Long userId, int activateCode) throws ConfigurationException, SQLException, IOException {
       return getUserDao().read(userId, activateCode);
    }
+
+   @Override
+   public List<IUser> readAll() throws ConfigurationException, SQLException, IOException {
+      return getUserDao().readAll();
+   }
 }

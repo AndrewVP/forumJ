@@ -202,6 +202,8 @@ public class QueryBuilder {
    
    private static String readUserByNickQuery = null;
    
+   private static String readAllUsersQuery = null;
+   
    private static String readUserByMailQuery = null;
    
    private static String readPostsQuery = null;
@@ -866,6 +868,13 @@ public class QueryBuilder {
          readUserByNickQuery = loadQuery("sql/read_user_by_nick.sql");
       }
       return readUserByNickQuery;
+   }
+   
+   public static String getReadAllUsersQuery() throws IOException{
+      if (readAllUsersQuery == null){
+         readAllUsersQuery = loadQuery("sql/read_all_users.sql");
+      }
+      return readAllUsersQuery;
    }
    
    public static String getReadUserByMailQuery() throws IOException{
