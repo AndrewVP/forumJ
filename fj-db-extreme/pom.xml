@@ -13,7 +13,7 @@
 			<groupId>org.forumj</groupId>
 			<artifactId>fj-common</artifactId>
 			<version>${project.version}</version>
-         <scope>provided</scope>
+			<scope>provided</scope>
 		</dependency>
 	</dependencies>
 	<build>
