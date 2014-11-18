@@ -33,9 +33,8 @@ var FORUM_THREAD_COMMAND="<%=Command.FORUM_THREAD.getCommand()%>";
 var FORUM_INDEX_COMPONENT=<%=Component.FORUM_INDEX.getId()%>;
 var FORUM_THREAD_COMPONENT=<%=Component.FORUM_THREAD.getId()%>;
 </script>
-<link rel="stylesheet" href="css/w2ui/w2ui-1.4.2.min.css" type="text/css" />
-<script type="text/javascript" src="js/jquery/jquery-2.1.0.min.js"></script>
-<script type="text/javascript" src="js/w2ui/w2ui-1.4.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+<script type="text/javascript" src="js/jquery-ui-1.9.1.custom.min.js"></script>
 <script type="text/javascript" src="js/jsmain_chek.js"></script>
 <script type="text/javascript" src="js/component_logo.js"></script>
 <script type="text/javascript" src="js/component_menu.js"></script>
@@ -51,21 +50,20 @@ var FORUM_THREAD_COMPONENT=<%=Component.FORUM_THREAD.getId()%>;
 </head>
 
 <body class='mainBodyBG'>
-<div id="layout" style="width: 100%; height: 100%;"></div>
-<script type="text/javascript">
-$(function () {
-    var pstyle = 'border: 1px solid #dfdfdf; padding: 5px;';
-    $('#layout').w2layout({
-        name: 'layout',
-        panels: [
-            { type: 'top', size: 100, style: pstyle, content: 'top' },
-            { type: 'left', size: 200, style: pstyle, content: 'left' },
-            { type: 'main', style: pstyle, content: 'main' },
-            { type: 'bottom', size: 100, style: pstyle, content: 'bottom' }
-        ]
-    });
-});
-w2ui['layout'].toggle('left');
-</script>
+<div id="error" style="display:none;" title="Error"></div>
+<div id='layout'>
+	<div id='logo'>
+	</div>
+	<div id='topMenu'>
+	</div>
+	<div id='content'>
+	</div>
+	<div id='bottomMenu'>
+	</div>
+	<div id='usersOnline'>
+	</div>
+	<div id='footer'>
+	</div>
+</div>
 </body>
 </html>
