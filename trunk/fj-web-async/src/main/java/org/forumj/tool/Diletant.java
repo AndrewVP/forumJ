@@ -349,24 +349,38 @@ public class Diletant {
    }
 
    public static String fd_href(String href_head){
-      String postbody;
-      try {
-         postbody = href_head.replace("<br", " <br") + " ";
-         int pos=0;
-         while ((" " + postbody).indexOf("http://", pos) > 0) {
-            int npos=(" " + postbody).indexOf("http://", pos)-1;
-            int epos = postbody.indexOf(" ", npos);
-            int slpos = (" " + postbody).indexOf("/", npos+8);
-            if (npos < 5 || !postbody.substring(npos-5, npos).equals("[img]")) postbody=postbody.substring(0, npos) + "<a href='" + postbody.substring(npos, epos) + "'><span class='nick'>" + postbody.substring(npos + 7, slpos - 1) + "</span></a>" + postbody.substring(epos);
-            pos=epos;
-         }
-      } catch (Exception e) {
-         System.out.println(href_head);
-         e.printStackTrace();
-         postbody = href_head;
-      }
-      return postbody;
-   }      
+	   String postbody;
+	   try {
+		   postbody = href_head.replace("<br", " <br") + " ";
+		   int pos=0;
+		   while (postbody.indexOf("http://", pos) > -1) {
+			   int npos = postbody.indexOf("http://", pos);
+			   int epos = postbody.indexOf(" ", npos);
+			   int slpos = postbody.indexOf("/", npos + 8);
+			   if (npos < 5 || !postbody.substring(npos-5, npos).equals("[img]")){
+				   StringBuffer result = new StringBuffer();
+				   result.append(postbody.substring(0, npos));
+				   result.append("<a href='");
+				   result.append(postbody.substring(npos, epos));
+				   result.append("'><span class='nick'>");
+				   if (slpos == -1 || slpos > epos){
+					   slpos = epos;
+				   }
+				   result.append(postbody.substring(npos + 7, slpos));
+				   result.append("</span></a>");
+				   result.append(postbody.substring(epos));
+				   postbody= result.toString();
+			   }
+			   pos=epos;
+		   }
+	   } catch (Exception e) {
+		   System.out.println(href_head);
+		   e.printStackTrace();
+		   postbody = href_head;
+	   }
+	   return postbody;
+   }
+
    public static StringBuffer fd_button(String mess, String  onClick, String name, String numb){
       StringBuffer result = new StringBuffer();
       result.append("<table id='" + name + "_table' class='bttn" + numb + "' onclick='" + onClick + "'>");
