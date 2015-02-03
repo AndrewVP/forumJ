@@ -183,7 +183,7 @@ public class FJServletTools {
       buffer.append("<a href='/'><img border='0' src='" + ref + "/images/all/title.gif'></a><br>");
       buffer.append("</td>");
       buffer.append("<td align=center>");
-      buffer.append("<a href='http://www.donor.org.ua/" + FJUrl.INDEX + "?module=help' target=\"_blank\" title='Украинская Открытая Ассоциация Организаций, Групп и Лиц, работающих с детьми, страдающими онкозаболеваниями'><img src='banner/donor_2.gif'></a>");
+      buffer.append("<a href='http://www.peoplesproject.com' target=\"_blank\" title='Народний проект. Всеукраїнський центр волонтерів'><img src='" + ref + "/banner/narodny.gif'></a>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table></td></tr>");
@@ -198,7 +198,7 @@ public class FJServletTools {
       buffer.append("<table width='100%'>");
       buffer.append("<tr>");
       buffer.append("<td align=\"center\">");
-      buffer.append("<a href='http://www.donor.org.ua/" + FJUrl.INDEX + "?module=help' target=\"_blank\" title='Украинская Открытая Ассоциация Организаций, Групп и Лиц, работающих с детьми, страдающими онкозаболеваниями'><img src='" + ref + "/banner/donor_2.gif'></a>");
+      buffer.append("<a href='http://www.peoplesproject.com' target=\"_blank\" title='Народний проект. Всеукраїнський центр волонтерів'><img src='" + ref + "/banner/narodny.gif'></a>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table>");
