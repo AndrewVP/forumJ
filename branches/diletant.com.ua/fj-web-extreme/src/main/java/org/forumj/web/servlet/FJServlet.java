@@ -41,34 +41,34 @@ public class FJServlet extends HttpServlet {
    }
 
    protected List<byte[]> getFileAsArray(String fileName) throws IOException {
-	      List<byte[]> result = new ArrayList<byte[]>();
-	      File file = new File(fileName);
-	      if (file.exists()){
-	         InputStream in = null;
-	         Reader reader = null;
-	         try {
-	            in = new FileInputStream(file);
-	            final byte[] chars = new byte[1024];
-	            int read;
-	            in = new FileInputStream(file);
-	            while ((read = in.read(chars)) > -1) {
-	               final byte[] realChars = new byte[read];
-	               for (int i = 0; i < read; i++) {
-	                  realChars[i] = chars[i];
-	               }
-	               result.add(realChars);
-	            }
-	         } finally {
-	            if (reader != null) {
-	               reader.close();
-	            }
-	            if (in != null) {
-	               in.close();
-	            }
-	         }
-	      }
-	      return result;
+	   List<byte[]> result = new ArrayList<byte[]>();
+	   File file = new File(fileName);
+	   if (file.exists()){
+		   InputStream in = null;
+		   try {
+			   in = new FileInputStream(file);
+			   final byte[] chars = new byte[1024];
+			   int read;
+			   do  {
+				   read = in.read(chars);
+				   if (read > 0){
+					   final byte[] realChars;
+					   if (read == 1024){
+						   realChars = chars.clone();
+					   }else{
+						   realChars = Arrays.copyOf(chars, read);
+					   }
+					   result.add(realChars);
+				   }
+			   }while(read > -1);
+		   } finally {
+			   if (in != null) {
+				   in.close();
+			   }
+		   }
 	   }
+	   return result;
+   }
 
    protected void generateLangLinks(HttpServletRequest request){
       Enumeration<String> parameters = request.getParameterNames();
