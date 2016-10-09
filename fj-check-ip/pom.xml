@@ -5,7 +5,6 @@
 		<artifactId>forumj</artifactId>
 		<groupId>org.forumj</groupId>
 		<version>0.0.2-SNAPSHOT</version>
-		<relativePath>..</relativePath>
 	</parent>
     
 	<artifactId>fj-check-ip</artifactId>
