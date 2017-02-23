@@ -82,81 +82,81 @@ public class InsNew extends FJServlet {
        return Math.abs(random.nextInt());
    }
    
-   @Override
-   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-      response.sendRedirect(FJUrl.INDEX);
-   }
-//      @Override
-//      protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//      
-//      try {
-//         String ip = request.getRemoteAddr();
-//         boolean spammer = ip != null && CheckIp.isSpammerIp(ip);
-//         HttpSession session = request.getSession();
-//         String nickParameter = request.getParameter("R1");
-//         String pass1Parameter = request.getParameter("R2");
-//         String pass2Parameter = request.getParameter("R22");
-//         String email1Parameter = request.getParameter("R3");
-//         String email2Parameter = request.getParameter("R33");
-//         if (spammer){
-//            response.sendRedirect("");
-//         }else if (isEmptyParameter(nickParameter)){
-//            response.sendRedirect(FJUrl.REGISTRATION + "?id=6");
-//         }else if (isEmptyParameter(pass1Parameter) || isEmptyParameter(pass2Parameter)){
-//            response.sendRedirect(FJUrl.REGISTRATION + "?id=10");
-//         }else if (isEmptyParameter(email1Parameter) || isEmptyParameter(email2Parameter)){
-//            response.sendRedirect(FJUrl.REGISTRATION + "?id=11");
-//         }else if (!email1Parameter.equals(email2Parameter)){
-//            response.sendRedirect(FJUrl.REGISTRATION + "?id=8");
-//         }else if (!pass1Parameter.equals(pass2Parameter)){
-//            response.sendRedirect(FJUrl.REGISTRATION + "?id=7");
-//         }else{
-//            String nick = prepareNick(nickParameter.trim());
-//            UserService userService = FJServiceHolder.getUserService();
-//            NicksListHolder holder = new NicksListHolder(nick, userService);
-//            if (isDuplicate(nick, holder, 0, ruseng) || holder.checkIsDuplicate()){
-//               session.setAttribute("nick", nickParameter);
-//               response.sendRedirect(FJUrl.REGISTRATION + "?id=5");
-//            }else{
-//            	email1Parameter = email1Parameter.trim();
-//               IUser user = userService.readUserByMail(email1Parameter);
-//               if (user != null){
-//                  System.out.println();
-//                  System.out.println("-------------------------------------------------------");
-//                  System.out.println(new Date().toString() + ":Registration fail, mail: " + email1Parameter + " , nick: " + nick);
-//                  System.out.println("-------------------------------------------------------");
-//                  System.out.println();
-//                  response.sendRedirect(FJUrl.REGISTRATION + "?id=12");
-//               }else{
-//                  user = userService.getUserObject();
-//                  user.setNick(nick);
-//                  user.setEmail(email1Parameter);
-//                  user.setPass(pass1Parameter);
-//                  user.setPass2(String.valueOf(generateRandom()));
-//                  user.setPp(FJConfiguration.getConfig().getInt("fj.default.threadsOnPage"));
-//                  user.setPt(FJConfiguration.getConfig().getInt("fj.default.postsOnPage"));
-//                  user.setView(FJConfiguration.getConfig().getInt("fj.default.viewId"));
-//                  user.setIsActive(Boolean.FALSE);
-//                  int activateCode = generateRandom();
-//                  while (userService.checkCodeUsed(activateCode)){
-//                     activateCode = generateRandom();
-//                  }
-//                  user.setActivateCode(activateCode);
-//                  userService.create(user);
-//                  FJEMail.sendActivateMail(user, (LocaleString) session.getAttribute("locale"));
-//                  response.sendRedirect(FJUrl.MESSAGE + "?id=1");
-//               }
-//            }
-//         }
-//      } catch (Throwable e) {
-//         e.printStackTrace();
-//         StringBuffer buffer = new StringBuffer();
-//         buffer.append(errorOut(e));
-//         response.setContentType("text/html; charset=UTF-8");
-//         response.getWriter().write(buffer.toString());
-//      }
+//   @Override
+//   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//      response.sendRedirect(FJUrl.INDEX);
 //   }
-   
+      @Override
+      protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+      try {
+         String ip = request.getRemoteAddr();
+         boolean spammer = ip != null && CheckIp.isSpammerIp(ip);
+         HttpSession session = request.getSession();
+         String nickParameter = request.getParameter("R1");
+         String pass1Parameter = request.getParameter("R2");
+         String pass2Parameter = request.getParameter("R22");
+         String email1Parameter = request.getParameter("R3");
+         String email2Parameter = request.getParameter("R33");
+         if (spammer){
+            response.sendRedirect(FJUrl.INDEX);
+         }else if (isEmptyParameter(nickParameter)){
+            response.sendRedirect(FJUrl.REGISTRATION + "?id=6");
+         }else if (isEmptyParameter(pass1Parameter) || isEmptyParameter(pass2Parameter)){
+            response.sendRedirect(FJUrl.REGISTRATION + "?id=10");
+         }else if (isEmptyParameter(email1Parameter) || isEmptyParameter(email2Parameter)){
+            response.sendRedirect(FJUrl.REGISTRATION + "?id=11");
+         }else if (!email1Parameter.equals(email2Parameter)){
+            response.sendRedirect(FJUrl.REGISTRATION + "?id=8");
+         }else if (!pass1Parameter.equals(pass2Parameter)){
+            response.sendRedirect(FJUrl.REGISTRATION + "?id=7");
+         }else{
+            String nick = prepareNick(nickParameter.trim());
+            UserService userService = FJServiceHolder.getUserService();
+            NicksListHolder holder = new NicksListHolder(nick, userService);
+            if (isDuplicate(nick, holder, 0, ruseng) || holder.checkIsDuplicate()){
+               session.setAttribute("nick", nickParameter);
+               response.sendRedirect(FJUrl.REGISTRATION + "?id=5");
+            }else{
+            	email1Parameter = email1Parameter.trim();
+               IUser user = userService.readUserByMail(email1Parameter);
+               if (user != null){
+                  System.out.println();
+                  System.out.println("-------------------------------------------------------");
+                  System.out.println(new Date().toString() + ":Registration fail, mail: " + email1Parameter + " , nick: " + nick);
+                  System.out.println("-------------------------------------------------------");
+                  System.out.println();
+                  response.sendRedirect(FJUrl.REGISTRATION + "?id=12");
+               }else{
+                  user = userService.getUserObject();
+                  user.setNick(nick);
+                  user.setEmail(email1Parameter);
+                  user.setPass(pass1Parameter);
+                  user.setPass2(String.valueOf(generateRandom()));
+                  user.setPp(FJConfiguration.getConfig().getInt("fj.default.threadsOnPage"));
+                  user.setPt(FJConfiguration.getConfig().getInt("fj.default.postsOnPage"));
+                  user.setView(FJConfiguration.getConfig().getInt("fj.default.viewId"));
+                  user.setIsActive(Boolean.FALSE);
+                  int activateCode = generateRandom();
+                  while (userService.checkCodeUsed(activateCode)){
+                     activateCode = generateRandom();
+                  }
+                  user.setActivateCode(activateCode);
+                  userService.create(user);
+                  FJEMail.sendActivateMail(user, (LocaleString) session.getAttribute("locale"));
+                  response.sendRedirect(FJUrl.MESSAGE + "?id=1");
+               }
+            }
+         }
+      } catch (Throwable e) {
+         e.printStackTrace();
+         StringBuffer buffer = new StringBuffer();
+         buffer.append(errorOut(e));
+         response.setContentType("text/html; charset=UTF-8");
+         response.getWriter().write(buffer.toString());
+      }
+   }
+
    private String prepareNick(String nick){
       nick = removeExtraSpaces(nick);
       return nick;
