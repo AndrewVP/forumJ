@@ -32,6 +32,8 @@ public class CheckIp {
    }
 
    public static boolean isSpammerIp(String ip) throws ConfigurationException, IOException, SQLException{
+      return false;
+/*
       Boolean result = null;
       if (ip != null){
          result = cache.get(ip);
@@ -51,6 +53,7 @@ public class CheckIp {
          }
       }
       return result;
+*/
    }
 
    private static boolean checkIsSpammerIp(String ip) throws ConnectorException, ConfigurationException, SQLException, IOException{
