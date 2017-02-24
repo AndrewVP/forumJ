@@ -93,5 +93,7 @@ public interface IUser {
    public String getEmail();
    void setReg(Timestamp reg);
    public boolean isModerator();
+   boolean isApproved();
+   void setApproved(boolean approved);
 
 }

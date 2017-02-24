@@ -72,7 +72,15 @@ public class Message extends FJServlet {
          // Сообщение
          buffer.append("<tr>");
          buffer.append("<td><div class='messageDiv'>");
-         buffer.append(locale.getString("MSG_" + msgIdParameter));
+         switch (msgIdParameter){
+            case "1":
+               buffer.append(locale.getString("MSG_ACTIVATE_MAIL_SENT"));
+               break;
+            case "2":
+               buffer.append(locale.getString("MSG_WILL_BE_APPROVED"));
+               break;
+         }
+
          buffer.append("</div></td>");
          buffer.append("</tr>");
          // Главное "меню"

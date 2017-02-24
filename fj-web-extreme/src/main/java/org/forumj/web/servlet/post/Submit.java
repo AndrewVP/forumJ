@@ -43,7 +43,7 @@ public class Submit extends FJServlet {
          String passwordParameter = request.getParameter("T2");
          UserService userService = FJServiceHolder.getUserService();
          IUser user = userService.read(nickParameter, passwordParameter, true);
-         if(user != null && user.getIsActive()) {
+         if(user != null && user.getIsActive() && user.isApproved()) {
             session.setAttribute("user", user);
             Long userId = user.getId();
             String password2 = user.getPass2();
@@ -51,12 +51,14 @@ public class Submit extends FJServlet {
             setcookie(response, "idu", userId.toString(), 1209600, request.getContextPath(), request.getServerName());
             setcookie(response, "pass2", password2, 1209600, request.getContextPath(), request.getServerName());
             // Возвращаем на форум
+            //TODO String concatenations
             String out = "<html><head><meta http-equiv='Refresh' content='0; url=" + FJUrl.INDEX + "'></head><body></body></html>";
             response.setContentType("text/html; charset=UTF-8");
             PrintWriter writer = response.getWriter();
             writer.write(out);
-         }else if (user != null && !user.getIsActive()){
+         }else if (user != null && (!user.getIsActive() || !user.isApproved())){
             // не активирован
+            //TODO Magic integers!!
             response.sendRedirect(request.getContextPath() + "/" + FJUrl.LOGIN + "?id=10");
          }else{
             // не угадал пароль

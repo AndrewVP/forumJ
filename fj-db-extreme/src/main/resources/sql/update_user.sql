@@ -31,6 +31,7 @@ SET nick = ?
 , ban = ?
 , activate_code = ?
 , is_active = ?
+, approved = ?
 WHERE
  id = ?
 

@@ -204,6 +204,10 @@ public class QueryBuilder {
    
    private static String readUserByMailQuery = null;
    
+   private static String readAllUsers = null;
+
+   private static String readUnapprovedUsers = null;
+
    private static String readPostsQuery = null;
    
    private static String postsCountInThreadQuery = null;
@@ -875,6 +879,20 @@ public class QueryBuilder {
       return readUserByMailQuery;
    }
    
+   public static String getReadAllUsersQuery() throws IOException{
+      if (readAllUsers == null){
+         readAllUsers = loadQuery("sql/read_all_users.sql");
+      }
+      return readAllUsers;
+   }
+
+   public static String getReadUnapprovedUsersQuery() throws IOException{
+      if (readUnapprovedUsers == null){
+         readUnapprovedUsers = loadQuery("sql/read_users_unapproved.sql");
+      }
+      return readUnapprovedUsers;
+   }
+
    public static String getReadPostsQuery() throws IOException{
       if (readPostsQuery == null){
          readPostsQuery = loadQuery("sql/read_posts.sql");

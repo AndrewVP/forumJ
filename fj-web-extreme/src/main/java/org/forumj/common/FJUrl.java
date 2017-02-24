@@ -33,6 +33,7 @@ public interface FJUrl {
    public static final String DELETE_MAIL = "delmail";
    public static final String MOVE_THREAD_TO_RECYCLE = "delone";
    public static final String ACTIVATE_USER = "activate";
+   public static final String APPROVE_USER = "approve";
    public static final String PIN_THREAD = "pin";
    public static final String CLOSE_THREAD = "close";
    public static final String DELETE_SUBSCRIBE = "delonesubs";
