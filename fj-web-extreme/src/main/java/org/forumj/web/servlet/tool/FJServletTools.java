@@ -159,15 +159,45 @@ public class FJServletTools {
       String uas = request.getHeader("user-agent");
       if (uas != null){
           if (uas.contains("StackRambler") ||
+                  uas.contains("Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36") ||
+                  uas.contains("bingbot") ||
+                  uas.contains("DotBot") ||
+                  uas.contains("Speedy Spider") ||
+                  uas.contains("Exabot") ||
+                  uas.contains("METASpider") ||
                   uas.contains("Googlebot") ||
                   uas.contains("Yandex") ||
                   uas.contains("msnbot") ||
                   uas.contains("Jyxobot") ||
                   uas.contains("METASpider") ||
-                  uas.contains("bingbot/2.0") ||
-                  uas.contains("Ezooms/1.0") ||
+                  uas.contains("bingbot") ||
+                  uas.contains("Ezooms") ||
+                  uas.contains("AhrefsBot") ||
+                  uas.contains("Mail.RU_Bot") ||
                   uas.contains("MJ12bot") ||
-                  uas.contains("linkdex.com/v2.0") ||
+                  uas.contains("Mail.Ru") ||
+                  uas.contains("AportCatalogRobot") ||
+                  uas.contains("MJ12bot") ||
+                  uas.contains("linkdex.com") ||
+                  uas.contains("ia_archiver") ||
+                  uas.contains("Ralocobot") ||
+                  uas.contains("TurnitinBot") ||
+                  uas.contains("Search17Bot") ||
+                  uas.contains("SiteBot") ||
+                  uas.contains("Snoopy") ||
+                  uas.contains("HuaweiSymantecSpider") ||
+                  uas.contains("vBSEO") ||
+                  uas.contains("pirst") ||
+                  uas.contains("GarlikCrawler") ||
+                  uas.contains("NetcraftSurveyAgent") ||
+                  uas.contains("Synapse") ||
+                  uas.contains("DLE_Spider") ||
+                  uas.contains("MLBot") ||
+                  uas.contains("Seznam screenshot-generator") ||
+                  uas.contains("rootlink") ||
+                  uas.contains("Wget") ||
+                  uas.contains("curl") ||
+                  uas.contains("python-requests") ||
                   uas.contains("Slurp")){
               return true;
           }
