@@ -75,6 +75,7 @@ public class Control extends FJServlet {
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          IUser user = (IUser) session.getAttribute("user");
          IgnorService ignorService = FJServiceHolder.getIgnorService();
+         UserService userService = FJServiceHolder.getUserService();
          FolderService folderService = FJServiceHolder.getFolderService();
          MailService mailService = FJServiceHolder.getMailService();
          SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
@@ -221,9 +222,27 @@ public class Control extends FJServlet {
          buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=11'>" + locale.getString("mess138") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
+         if (user.isModerator()){
+         /*Users*/
+            buffer.append("<table class='control'><tr class='heads'>");
+            buffer.append("<th class='internal'>");
+            buffer.append("<div class='mnuprof'>" + locale.getString("MSG_USERS") + "</div>");
+            buffer.append("</th>");
+         /* all Users*/
+            buffer.append("</tr><tr>");
+            buffer.append("<td class='internal'>");
+            buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=14'>" + locale.getString("MSG_USERS") + "</a><br>");
+            buffer.append("</td>");
+            buffer.append("</tr><tr>");
+            buffer.append("<td class='internal'>");
+            buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=15'>" + locale.getString("MSG_UNAPPROVED_USERS") + "</a><br>");
+            buffer.append("</td>");
+            buffer.append("</tr></table>");
+         }
 
          buffer.append("</td>");
          buffer.append("<td valign='TOP' style='padding-left:5px;'>");
+         //TODO Magic integers!!
          switch(id) {
          case 0:
             // Зашли "по умолчанию"
@@ -279,6 +298,14 @@ public class Control extends FJServlet {
          case 13:
             // E-mail
             buffer.append(eMail(locale, user));
+            break;
+         case 14:
+            // All Users
+            buffer.append(caseAllUsers(locale, user, userService));
+            break;
+         case 15:
+            // Unapproved Users
+            buffer.append(caseUnapprovedUsers(locale, user, userService));
             break;
          }
          buffer.append("</td>");
@@ -1302,6 +1329,96 @@ public class Control extends FJServlet {
       buffer.append("</form>");
       return buffer;
    }
+
+   private StringBuffer caseAllUsers(LocaleString locale, IUser currentUser, UserService userService) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
+      StringBuffer buffer = new StringBuffer();
+      buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess15") + "</b></div>");
+      buffer.append("<table class='control'><tr class=heads>");
+      if (currentUser.isModerator()){
+         // Выбираем почту
+         List<IUser> users = userService.getUsers();
+         if (users.size() > 0){
+            // Заголовки таблицы
+            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess19") + "</div></th>");
+            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess59") + "</div></th>");
+            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess61") + "</div></th>");
+            buffer.append("</tr>");
+            // Выводим сообщения
+            for (int userIndex=0; userIndex < users.size(); userIndex++){
+               IUser user = users.get(userIndex);
+               buffer.append("<tr>");
+               // Кому
+               buffer.append("<td class='internal'><div class=tbtext>");
+               buffer.append(user.getId());
+               buffer.append("</div></td>");
+               // Тема письма
+               buffer.append("<td class='internal'><div class=tbtext>");
+               buffer.append("<a href='" + FJUrl.SETTINGS + "?id=3&msg=" + user.getId() + "'>" + fd_head(user.getNick()) + "</a>");
+               buffer.append("</div></td>");
+               // Когда отправлено
+               buffer.append("<td class='internal'><div class=tbtext>");
+               buffer.append(user.getEmail());
+               buffer.append("</div></td>");
+               buffer.append("</tr>");
+            }
+         }else {
+            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess18") + "</div></th>");
+            buffer.append("</tr>");
+         }
+      }else{
+         buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess18") + "</div></th>");
+         buffer.append("</tr>");
+      }
+      buffer.append("</table>");
+      buffer.append("</form>");
+      return buffer;
+   }
+
+
+   private StringBuffer caseUnapprovedUsers(LocaleString locale, IUser currentUser, UserService userService) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
+      StringBuffer buffer = new StringBuffer();
+      buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess15") + "</b></div>");
+      buffer.append("<table class='control'><tr class=heads>");
+      if (currentUser.isModerator()){
+         // Выбираем почту
+         List<IUser> users = userService.getUnapprovedUsers();
+         if (users.size() > 0){
+            // Заголовки таблицы
+            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess19") + "</div></th>");
+            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess59") + "</div></th>");
+            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess61") + "</div></th>");
+            buffer.append("</tr>");
+            // Выводим сообщения
+            for (int userIndex=0; userIndex < users.size(); userIndex++){
+               IUser user = users.get(userIndex);
+               buffer.append("<tr>");
+               // Кому
+               buffer.append("<td class='internal'><div class=tbtext>");
+               buffer.append(user.getId());
+               buffer.append("</div></td>");
+               // Тема письма
+               buffer.append("<td class='internal'><div class=tbtext>");
+               buffer.append("<a href='" + FJUrl.APPROVE_USER + "?id=" + user.getId() + "'>" + fd_head(user.getNick()) + "</a>");
+               buffer.append("</div></td>");
+               // Когда отправлено
+               buffer.append("<td class='internal'><div class=tbtext>");
+               buffer.append(user.getEmail());
+               buffer.append("</div></td>");
+               buffer.append("</tr>");
+            }
+         }else {
+            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess18") + "</div></th>");
+            buffer.append("</tr>");
+         }
+      }else{
+         buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess18") + "</div></th>");
+         buffer.append("</tr>");
+      }
+      buffer.append("</table>");
+      buffer.append("</form>");
+      return buffer;
+   }
+
 
    /*e-mail*/
    private StringBuffer eMail(LocaleString locale, IUser user) throws InvalidKeyException {

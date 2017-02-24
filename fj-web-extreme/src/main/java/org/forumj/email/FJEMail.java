@@ -26,6 +26,8 @@ import javax.mail.*;
 import javax.mail.internet.*;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.common.FJUrl;
+import org.forumj.common.HttpParameters;
 import org.forumj.common.config.FJConfiguration;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
@@ -66,7 +68,7 @@ public class FJEMail {
                   posts.put(localeName, postString);
                }
             }
-            sendMail(mail, FJConfiguration.getConfig().getString("mail.from"), FJConfiguration.getConfig().getString("mail.smtp.host"), locale.getString("MSG_SUBSCRIBE_HEADER"), postString);
+            sendMail(mail, FJConfiguration.getConfig().getString("mail.from.subscribe"), FJConfiguration.getConfig().getString("mail.smtp.host"), locale.getString("MSG_SUBSCRIBE_HEADER"), postString);
          }
       }
 
@@ -117,19 +119,31 @@ public class FJEMail {
       buffer.append("</td><td valign='top' width='100%'>");
       buffer.append("<table width='100%'>");
       buffer.append("<tr><td>");
-      buffer.append("<p style='font-family: Verdana; font-size: 10pt; color: #000000'>" + fd_body_for_mail(HtmlChars.convertHtmlSymbols(removeSlashes(post.getBody().getBody()))) + "</p>");
+      buffer.append("<p style='font-family: Verdana; font-size: 10pt; color: #000000'>");
+      buffer.append(fd_body_for_mail(HtmlChars.convertHtmlSymbols(removeSlashes(post.getBody().getBody()))));
+      buffer.append("</p>");
       buffer.append("</td></tr>");
       buffer.append("</table></td></tr>");
       buffer.append("<tr><td style='background-color:#e1e3e5' colspan=2></td></tr>");
       buffer.append("<tr><td style='background-color:#e1e3e5'></td><td>");
-      buffer.append("<p style='font-family: Verdana; font-size: 10pt; color: #000000'>" + fd_body_for_mail(HtmlChars.convertHtmlSymbols(removeSlashes(author.getFooter()))) + "</p>");
+      buffer.append("<p style='font-family: Verdana; font-size: 10pt; color: #000000'>");
+      buffer.append(fd_body_for_mail(HtmlChars.convertHtmlSymbols(removeSlashes(author.getFooter()))));
+      buffer.append("</p>");
       buffer.append("</td></tr>");
       buffer.append("<tr><td align='RIGHT' width='100%' colspan=2>");
       if (post.getHead().getNred()>0){
          Time postEditTime = new Time(post.getHead().getEditTime());
          buffer.append("<table style='background-color:#e1e3e5' width='100%'>");
          buffer.append("<tr><td align='LEFT'>");
-         buffer.append("<span style='font-family: Verdana; font-size: 8pt; color: #000000'>" + locale.getString("mess50") + "&nbsp;" + post.getHead().getNred() + "&nbsp;" + locale.getString("mess51") + "&nbsp;" + postEditTime.toString("dd.MM.yyyy HH:mm") + "</span>");
+         buffer.append("<span style='font-family: Verdana; font-size: 8pt; color: #000000'>");
+         buffer.append(locale.getString("mess50"));
+         buffer.append("&nbsp;");
+         buffer.append(post.getHead().getNred());
+         buffer.append("&nbsp;");
+         buffer.append(locale.getString("mess51"));
+         buffer.append("&nbsp;");
+         buffer.append(postEditTime.toString("dd.MM.yyyy HH:mm"));
+         buffer.append("</span>");
       }
       else {
          buffer.append("<table style='background-color:#e1e3e5'>");
@@ -149,9 +163,44 @@ public class FJEMail {
    public static void sendActivateMail(IUser user, LocaleString locale) throws InvalidKeyException, AddressException, ConfigurationException, MessagingException{
       String mail = user.getEmail();
       String postString = prepareActivateMail(user, locale);
-      sendMail(mail, FJConfiguration.getConfig().getString("mail.from"), FJConfiguration.getConfig().getString("mail.smtp.host"), locale.getString("MSG_ACTIVATE_HEADER"), postString);
+      sendMail(mail, FJConfiguration.getConfig().getString("mail.from.registration"), FJConfiguration.getConfig().getString("mail.smtp.host"), locale.getString("MSG_ACTIVATE_HEADER"), postString);
+      String adminMail1 = FJConfiguration.getConfig().getString("mail.admin.address.1");
+      if (adminMail1 != null && !adminMail1.isEmpty()){
+         sendMail(adminMail1, FJConfiguration.getConfig().getString("mail.from.registration"), FJConfiguration.getConfig().getString("mail.smtp.host"), locale.getString("MSG_ACTIVATE_HEADER"), postString);
+      }
+      String adminMail2 = FJConfiguration.getConfig().getString("mail.admin.address.2");
+      if (adminMail2 != null && !adminMail2.isEmpty()){
+         sendMail(adminMail2, FJConfiguration.getConfig().getString("mail.from.registration"), FJConfiguration.getConfig().getString("mail.smtp.host"), locale.getString("MSG_ACTIVATE_HEADER"), postString);
+      }
+      String adminMail3 = FJConfiguration.getConfig().getString("mail.admin.address.3");
+      if (adminMail3 != null && !adminMail3.isEmpty()){
+         sendMail(adminMail3, FJConfiguration.getConfig().getString("mail.from.registration"), FJConfiguration.getConfig().getString("mail.smtp.host"), locale.getString("MSG_ACTIVATE_HEADER"), postString);
+      }
    }
    
+   public static void sendApproveMail(IUser user, LocaleString locale) throws InvalidKeyException, AddressException, ConfigurationException, MessagingException{
+      String mail = user.getEmail();
+      String postString = prepareApproveMail(user, locale);
+      String adminMail1 = FJConfiguration.getConfig().getString("mail.admin.address.1");
+      if (adminMail1 != null && !adminMail1.isEmpty()){
+         sendMail(adminMail1, FJConfiguration.getConfig().getString("mail.from.registration"), FJConfiguration.getConfig().getString("mail.smtp.host"), locale.getString("MSG_APPROVE_HEADER"), postString);
+      }
+      String adminMail2 = FJConfiguration.getConfig().getString("mail.admin.address.2");
+      if (adminMail2 != null && !adminMail2.isEmpty()){
+         sendMail(adminMail2, FJConfiguration.getConfig().getString("mail.from.registration"), FJConfiguration.getConfig().getString("mail.smtp.host"), locale.getString("MSG_APPROVE_HEADER"), postString);
+      }
+      String adminMail3 = FJConfiguration.getConfig().getString("mail.admin.address.3");
+      if (adminMail3 != null && !adminMail3.isEmpty()){
+         sendMail(adminMail3, FJConfiguration.getConfig().getString("mail.from.registration"), FJConfiguration.getConfig().getString("mail.smtp.host"), locale.getString("MSG_APPROVE_HEADER"), postString);
+      }
+   }
+
+   public static void sendApprovedMail(IUser user, LocaleString locale) throws InvalidKeyException, AddressException, ConfigurationException, MessagingException{
+      String mail = user.getEmail();
+      String postString = prepareApprovedMail(user, locale);
+      sendMail(mail, FJConfiguration.getConfig().getString("mail.from.registration"), FJConfiguration.getConfig().getString("mail.smtp.host"), locale.getString("MSG_ACCOUNT_APPROVED"), postString);
+   }
+
    private static String prepareActivateMail(IUser user, LocaleString locale) throws InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<html><head><meta http-equiv='content-type' content='text/html; charset=UTF-8'></head><body style='background-color:#EFEFEF;'><table>");
@@ -159,7 +208,17 @@ public class FJEMail {
       buffer.append(locale.getString("MSG_REGISTERED"));
       buffer.append("<br/>");
       buffer.append(locale.getString("MSG_CLICK"));
-      buffer.append(":&nbsp;<a href='http://www.diletant.com.ua/forum/activate?id=" + user.getId() + "&c=" + user.getActivateCode() + "'>");
+      buffer.append(":&nbsp;<a href='http://www.diletant.com.ua/forum/");
+      buffer.append(FJUrl.ACTIVATE_USER);
+      buffer.append("?");
+      buffer.append(HttpParameters.USER_ID);
+      buffer.append("=");
+      buffer.append(user.getId());
+      buffer.append("&");
+      buffer.append(HttpParameters.ACTIVATE_EMAIL_CODE);
+      buffer.append("=");
+      buffer.append(user.getActivateCode());
+      buffer.append("'>");
       buffer.append(locale.getString("MSG_ACTIVATE"));
       buffer.append(":&nbsp;");
       buffer.append(user.getNick());
@@ -168,6 +227,32 @@ public class FJEMail {
       return buffer.toString();
    }
    
+   private static String prepareApproveMail(IUser user, LocaleString locale) throws InvalidKeyException{
+      StringBuffer buffer = new StringBuffer();
+      buffer.append("<html><head><meta http-equiv='content-type' content='text/html; charset=UTF-8'></head><body style='background-color:#EFEFEF;'><table>");
+      buffer.append("<tr><td>");
+      buffer.append(user.getNick());
+      buffer.append(":&nbsp;<a href='http://www.diletant.com.ua/forum/");
+      buffer.append(FJUrl.SETTINGS);
+      buffer.append("?");
+      buffer.append(HttpParameters.ID);
+      //TODO Magic integer
+      buffer.append("=15'>");
+      buffer.append(locale.getString("MSG_UNAPPROVED_USERS"));
+      buffer.append("</a>");
+      buffer.append("</td><tr></table><body></html>");
+      return buffer.toString();
+   }
+
+   private static String prepareApprovedMail(IUser user, LocaleString locale) throws InvalidKeyException{
+      StringBuffer buffer = new StringBuffer();
+      buffer.append("<html><head><meta http-equiv='content-type' content='text/html; charset=UTF-8'></head><body style='background-color:#EFEFEF;'><table>");
+      buffer.append("<tr><td>");
+      buffer.append(locale.getString("MSG_ACCOUNT_APPROVED"));
+      buffer.append("</td><tr></table><body></html>");
+      return buffer.toString();
+   }
+
    public static void sendMail(String to, String from, String host, String subject, String text) throws ConfigurationException, AddressException, MessagingException{
       Properties props = new Properties();
       props.put("mail.smtp.host", host);

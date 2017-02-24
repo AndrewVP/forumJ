@@ -92,7 +92,9 @@ public class User implements IUser {
    private Integer activateCode = 0;
 
    private Boolean isActive = true;
-   
+
+   private boolean approved = false;
+
    private String email = null;
 
    /**
@@ -104,7 +106,7 @@ public class User implements IUser {
    }
 
    /**
-    * @param eMail the eMail to set
+    * @param email the eMail to set
     */
    @Override
    public void setEmail(String email) {
@@ -392,7 +394,7 @@ public class User implements IUser {
     }
 
     /**
-     * @param pg the pg to set
+     * @param pp the pg to set
      */
     @Override
    public void setPp(int pp) {
@@ -867,6 +869,8 @@ public class User implements IUser {
       builder.append(activateCode);
       builder.append(", isActive=");
       builder.append(isActive);
+      builder.append(", approved=");
+      builder.append(approved);
       builder.append(", email=");
       builder.append(email);
       builder.append("]");
@@ -877,4 +881,14 @@ public class User implements IUser {
       //TODO Переделать!!!!!!!!!
       return id.equals(new Long(3));
    }
+
+    @Override
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
+
+    @Override
+    public boolean isApproved() {
+        return approved;
+    }
 }

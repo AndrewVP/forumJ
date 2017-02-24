@@ -173,6 +173,7 @@ public class FJUserDao extends FJDao {
          result.setFooter(rs.getString("footer"));
          result.setActivateCode(rs.getInt("activate_code"));
          result.setIsActive(rs.getInt("is_active")>0);
+         result.setApproved(rs.getInt("approved")>0);
          result.setEmail(rs.getString("mail"));
       }
       return result;
@@ -185,18 +186,19 @@ public class FJUserDao extends FJDao {
       try{
          conn = getConnection();
          st = conn.prepareStatement(query);
-         st.setString(1, user.getNick());
-         st.setString(2, user.getPass());
-         st.setString(3, user.getEmail());
-         st.setString(4, user.getName());
-         st.setString(5, user.getFam());
-         st.setString(6, user.getSex());
-         st.setDate(7, user.getBith());
-         st.setString(8, user.getPass2());
-         st.setInt(9, user.getShowMail() ? 1 : 0);
-         st.setInt(10, user.getShowName() ? 1 : 0);
-         st.setString(11, user.getCity());
-         st.setInt(12, user.getShowCity() ? 1 : 0);
+         int parameterIndex = 0;
+         st.setString(++parameterIndex, user.getNick());
+         st.setString(++parameterIndex, user.getPass());
+         st.setString(++parameterIndex, user.getEmail());
+         st.setString(++parameterIndex, user.getName());
+         st.setString(++parameterIndex, user.getFam());
+         st.setString(++parameterIndex, user.getSex());
+         st.setDate(++parameterIndex, user.getBith());
+         st.setString(++parameterIndex, user.getPass2());
+         st.setInt(++parameterIndex, user.getShowMail() ? 1 : 0);
+         st.setInt(++parameterIndex, user.getShowName() ? 1 : 0);
+         st.setString(++parameterIndex, user.getCity());
+         st.setInt(++parameterIndex, user.getShowCity() ? 1 : 0);
          st.setString(13, user.getCountry());
          st.setInt(14, user.getShowCountry() ? 1 : 0);
          st.setInt(15, user.getShowSex() ? 1 : 0);
@@ -217,7 +219,8 @@ public class FJUserDao extends FJDao {
          st.setInt(30, user.getBan());
          st.setInt(31, user.getActivateCode());
          st.setInt(32, user.getIsActive() ? 1 : 0);
-         st.setLong(33, user.getId());
+         st.setInt(33, user.isApproved() ? 1 : 0);
+         st.setLong(34, user.getId());
          st.executeUpdate();
       }finally{
          readFinally(null, st);
@@ -263,6 +266,7 @@ public class FJUserDao extends FJDao {
          st.setInt(30, user.getBan());
          st.setInt(31, user.getActivateCode());
          st.setInt(32, user.getIsActive() ? 1 : 0);
+         st.setInt(33, user.isApproved() ? 1 : 0);
          st.executeUpdate();
          ResultSet idRs = st.getGeneratedKeys();
          if (idRs.next()){
@@ -314,4 +318,47 @@ public class FJUserDao extends FJDao {
          readFinally(conn, st);
       }
    }
+
+   public List<IUser> getUsers() throws ConfigurationException, SQLException, IOException {
+      List<IUser> result = new LinkedList<>();
+      IUser user = null;
+      String query = getReadAllUsersQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query) ;
+         ResultSet rs = st.executeQuery();
+         user = loadUser(rs);
+         while (user != null){
+            result.add(user);
+            user = loadUser(rs);
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
+   }
+
+   public List<IUser> getUnapprovedUsers() throws ConfigurationException, SQLException, IOException {
+      List<IUser> result = new LinkedList<>();
+      IUser user = null;
+      String query = getReadUnapprovedUsersQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query) ;
+         ResultSet rs = st.executeQuery();
+         user = loadUser(rs);
+         while (user != null){
+            result.add(user);
+            user = loadUser(rs);
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
+   }
+
 }

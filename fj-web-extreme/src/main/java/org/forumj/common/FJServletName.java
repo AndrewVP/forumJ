@@ -32,6 +32,7 @@ public interface FJServletName {
    public static final String DELETE_MAIL = "DelMail";
    public static final String MOVE_THREAD_TO_RECYCLE = "DelOne";
    public static final String ACTIVATE_USER = "activate";
+   public static final String APPROVE_USER = "approve";
    public static final String PIN_THREAD = "Pin";
    public static final String CLOSE_THREAD = "CloseThread";
    public static final String DELETE_SUBSCRIBE = "DelOneSubs";

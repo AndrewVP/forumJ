@@ -30,6 +30,10 @@ public interface UserService {
    
    public IUser getUserObject();
 
+   public List<IUser> getUsers() throws ConfigurationException, SQLException, IOException;
+
+   public List<IUser> getUnapprovedUsers() throws ConfigurationException, SQLException, IOException;
+
    public IUser readUser(Long userId) throws ConfigurationException, SQLException, IOException;
 
    public void update(IUser user) throws IOException, ConfigurationException, SQLException;

@@ -63,7 +63,7 @@ public class AAALoginFilter implements Filter {
                   if (user == null){
                      ok = false;
                   }else{
-                     if (!user.getIsActive()){
+                     if (!user.getIsActive() || !user.isApproved()){
                         user = null;
                      }else{
                         request.getSession().setAttribute("user", user);               
@@ -84,7 +84,7 @@ public class AAALoginFilter implements Filter {
                if (user == null){
                   ok = false;
                }else{
-                  if (!user.getIsActive()){
+                  if (!user.getIsActive() || !user.isApproved()){
                      user = null;
                   }else{
                      request.getSession().setAttribute("user", user);               

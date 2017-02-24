@@ -27,6 +27,8 @@ import javax.servlet.http.*;
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
+import org.forumj.email.FJEMail;
+import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
 /**
@@ -43,8 +45,8 @@ public class ActivateUser extends FJServlet {
       try {
          HttpSession session = request.getSession();
          UserService userService = FJServiceHolder.getUserService();
-         String userIdParameter = request.getParameter("id");
-         String codeParameter = request.getParameter("c");
+         String userIdParameter = request.getParameter(HttpParameters.USER_ID);
+         String codeParameter = request.getParameter(HttpParameters.ACTIVATE_EMAIL_CODE);
          if (userIdParameter != null && codeParameter != null){
             int activateCode = Integer.valueOf(codeParameter);
             if (activateCode != 0){
@@ -53,10 +55,15 @@ public class ActivateUser extends FJServlet {
                   user.setIsActive(Boolean.TRUE);
                   user.setActivateCode(0);
                   userService.update(user);
+/*
                   session.setAttribute("user", user);
                   // ставим куку
                   setcookie(response, "idu", user.getId().toString(), 1209600, request.getContextPath(), request.getServerName());
                   setcookie(response, "pass2", user.getPass2(), 1209600, request.getContextPath(), request.getServerName());
+*/
+                  FJEMail.sendApproveMail(user, (LocaleString) session.getAttribute("locale"));
+                  //TODO Magic integers!
+                  response.sendRedirect(FJUrl.MESSAGE + "?id=2");
                }
             }
          }

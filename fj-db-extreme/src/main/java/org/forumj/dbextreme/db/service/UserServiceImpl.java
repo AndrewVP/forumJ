@@ -61,6 +61,16 @@ public class UserServiceImpl extends FJService implements UserService {
       return new User();
    }
 
+   @Override
+   public List<IUser> getUsers() throws ConfigurationException, SQLException, IOException  {
+      return getUserDao().getUsers();
+   }
+
+   @Override
+   public List<IUser> getUnapprovedUsers() throws ConfigurationException, SQLException, IOException  {
+      return getUserDao().getUnapprovedUsers();
+   }
+
    public List<String> check(List<String> nicks) throws ConfigurationException, SQLException, IOException {
       return getUserDao().check(nicks);
    }

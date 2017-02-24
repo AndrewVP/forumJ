@@ -144,6 +144,7 @@ public class InsNew extends FJServlet {
                   user.setActivateCode(activateCode);
                   userService.create(user);
                   FJEMail.sendActivateMail(user, (LocaleString) session.getAttribute("locale"));
+                  //TODO Magic integer
                   response.sendRedirect(FJUrl.MESSAGE + "?id=1");
                }
             }
