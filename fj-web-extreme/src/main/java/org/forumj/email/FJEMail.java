@@ -179,7 +179,6 @@ public class FJEMail {
    }
    
    public static void sendApproveMail(IUser user, LocaleString locale) throws InvalidKeyException, AddressException, ConfigurationException, MessagingException{
-      String mail = user.getEmail();
       String postString = prepareApproveMail(user, locale);
       String adminMail1 = FJConfiguration.getConfig().getString("mail.admin.address.1");
       if (adminMail1 != null && !adminMail1.isEmpty()){

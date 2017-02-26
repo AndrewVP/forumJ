@@ -57,11 +57,11 @@ public class SetAvatar extends FJServlet {
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		if (avatarsDir == null){
-			avatarsDir = session.getServletContext().getRealPath("img/" + avatarsContextDir);
-		}
 		StringBuffer buffer = new StringBuffer();
 		try {
+			if (avatarsDir == null){
+				avatarsDir = FJConfiguration.getConfig().getString("fj.home.dir") + File.separator + avatarsContextDir;
+			}
 			ValidationErrors validationErrors = (ValidationErrors) request.getAttribute(ValidationErrors.class.getName());
 			if (validationErrors.isHasErrors()){
 				List<ErrorCode> errors = validationErrors.getErrors();

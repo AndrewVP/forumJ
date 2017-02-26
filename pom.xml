@@ -78,6 +78,8 @@
 		<module>fj-db-extreme</module>
 		<module>fj-tools</module>
 		<module>fj-check-ip</module>
+        <module>fj-iptables</module>
+		<module>fj-business</module>
 		<module>fj-web-extreme</module>
 	</modules>
 </project>

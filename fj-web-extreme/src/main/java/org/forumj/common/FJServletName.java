@@ -60,5 +60,6 @@ public interface FJServletName {
    public static final String SELECT_VIEW = "SlctView";
    public static final String SEND_PIVATE_MESSAGE = "Send";
    public static final String ADD_SUBSCRIBE = "AddSubscribe";
+   public static final String IMAGES = "picts";
 
 }
