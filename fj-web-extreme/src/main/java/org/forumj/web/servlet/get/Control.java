@@ -1332,16 +1332,17 @@ public class Control extends FJServlet {
 
    private StringBuffer caseAllUsers(LocaleString locale, IUser currentUser, UserService userService) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
-      buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess15") + "</b></div>");
+      buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("MSG_USERS") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
       if (currentUser.isModerator()){
          // Выбираем почту
          List<IUser> users = userService.getUsers();
          if (users.size() > 0){
             // Заголовки таблицы
-            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess19") + "</div></th>");
-            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess59") + "</div></th>");
-            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess61") + "</div></th>");
+            buffer.append("<th class='internal'><div class=tbtext>id</div></th>");
+            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess44") + "</div></th>");
+            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("MSG_EMAIL") + "</div></th>");
+            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("MSG_BANNED") + "</div></th>");
             buffer.append("</tr>");
             // Выводим сообщения
             for (int userIndex=0; userIndex < users.size(); userIndex++){
@@ -1358,6 +1359,9 @@ public class Control extends FJServlet {
                // Когда отправлено
                buffer.append("<td class='internal'><div class=tbtext>");
                buffer.append(user.getEmail());
+               buffer.append("</div></td>");
+               buffer.append("<td class='internal'><div class=tbtext>");
+               buffer.append(user.isBanned() ? locale.getString("mess26"): locale.getString("mess27"));
                buffer.append("</div></td>");
                buffer.append("</tr>");
             }
