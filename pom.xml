@@ -11,6 +11,7 @@
 		<project-encoding>UTF-8</project-encoding>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<log4j.version>2.8</log4j.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -50,6 +51,17 @@
 			<artifactId>mail</artifactId>
 			<version>1.4.3</version>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-api</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>${log4j.version}</version>
+		</dependency>
+
 	</dependencies>
 	<build>
 		<plugins>
