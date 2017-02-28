@@ -27,6 +27,7 @@ import javax.servlet.http.*;
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
+import org.forumj.common.web.Locale;
 import org.forumj.email.FJEMail;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
@@ -61,7 +62,7 @@ public class ActivateUser extends FJServlet {
                   setcookie(response, "idu", user.getId().toString(), 1209600, request.getContextPath(), request.getServerName());
                   setcookie(response, "pass2", user.getPass2(), 1209600, request.getContextPath(), request.getServerName());
 */
-                  FJEMail.sendApproveMail(user, (LocaleString) session.getAttribute("locale"));
+                  FJEMail.sendApproveMail(user, new LocaleString(Locale.UA, "messages", Locale.UA));
                   //TODO Magic integers!
                   response.sendRedirect(FJUrl.MESSAGE + "?id=2");
                }

@@ -4,6 +4,10 @@ import static org.forumj.common.FJServletName.*;
 import static org.forumj.tool.Diletant.*;
 
 import java.io.*;
+import java.util.Arrays;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -20,10 +24,11 @@ import org.forumj.web.servlet.tool.FJServletTools;
 @WebFilter(servletNames={INDEX, VIEW_THREAD, ADD_POST, DO_LOGIN, ADD_QUESTION, ADD_THREAD, NEW_FOLDER, 
       NEW_VIEW, NEW_QUESTION, NEW_THREAD, SETTINGS, LOGIN, REGISTRATION, UPDATE_IGNORING, SET_DEFAULT_VIEW,  
       SEND_PIVATE_MESSAGE, DELETE_MAIL, MOVE_THREAD_TO_RECYCLE, DELETE_SUBSCRIBE,DELETE_VOICE, VOICE,
-      ADD_IGNOR, COUNT ,
-      DELETE_SUBSCRIBES, DELETE_ONE_SUBSCRIBE_BY_EMAIL, DELETE_FOLDER_FROM_VIEW, DELETE_VIEW, SET_DEFAULT_VIEW, 
-      SET_FOOTER, SET_LOCATION, ADD_VOTE, DO_REGISTRATION, MESSAGE, ACTIVATE_USER})
+      ADD_IGNOR, COUNT, DELETE_SUBSCRIBES, DELETE_ONE_SUBSCRIBE_BY_EMAIL, DELETE_FOLDER_FROM_VIEW, DELETE_VIEW, SET_DEFAULT_VIEW,
+      SET_FOOTER, SET_LOCATION, ADD_VOTE, DO_REGISTRATION, MESSAGE, ACTIVATE_USER, IMAGES})
 public class ActionFilter implements Filter{
+
+   private Logger logger = LogManager.getLogger("org.forumj.web.filter");
 
    /**
     * {@inheritDoc}
@@ -32,6 +37,9 @@ public class ActionFilter implements Filter{
       HttpServletRequest request = (HttpServletRequest) req;
       HttpServletResponse response = (HttpServletResponse)resp;
       try {
+         String uaString = request.getHeader("user-agent");
+         uaString += " " + Arrays.toString(uaString.getBytes());
+         logger.debug(uaString);
          if (!FJServletTools.isRobot(request)){
             IUser user = (IUser) request.getSession(true).getAttribute("user");
             ActionService service = FJServiceHolder.getActionService();

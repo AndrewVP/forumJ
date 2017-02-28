@@ -1,5 +1,5 @@
 SELECT
- COUNT(DISTINCT fd_ip) AS guests
+ COUNT(DISTINCT fd_ip, fd_refer) AS guests
 FROM
  fd_action
 WHERE

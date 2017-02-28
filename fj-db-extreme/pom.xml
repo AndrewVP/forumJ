@@ -11,7 +11,7 @@
 	<packaging>jar</packaging>
 	<dependencies>
 		<dependency>
-			<groupId>org.forumj.common</groupId>
+			<groupId>org.forumj</groupId>
 			<artifactId>fj-common</artifactId>
 			<version>${project.version}</version>
          <scope>provided</scope>
