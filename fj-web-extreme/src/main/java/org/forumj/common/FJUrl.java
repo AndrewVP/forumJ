@@ -61,4 +61,5 @@ public interface FJUrl {
    public static final String SEND_PIVATE_MESSAGE = "send";
    public static final String ADD_SUBSCRIBE = "addsubs";
    public static final String COUNT = "count2";
+   public static final String BAN = "ban";
 }

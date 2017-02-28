@@ -9,7 +9,7 @@
         </Console>
     </Appenders>
     <Loggers>
-        <Logger name="org.forumj.web.filter" level="debug">
+        <Logger name="org.forumj.web.filter" level="error">
             <AppenderRef ref="FJWFL"/>
         </Logger>
         <Root level="error">

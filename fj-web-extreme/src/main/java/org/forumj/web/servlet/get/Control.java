@@ -60,7 +60,7 @@ public class Control extends FJServlet {
          //Предотвращаем кеширование
          cache(response);
          // Функции   
-         Integer id = request.getParameter("id") == null ? 1 : Integer.valueOf(request.getParameter("id"));
+         Integer id = request.getParameter(HttpParameters.ID) == null ? 1 : Integer.valueOf(request.getParameter("id"));
          Long msg = request.getParameter("msg") == null ? null : Long.valueOf(request.getParameter("msg"));
          Long view = request.getParameter("view") == null ? null : Long.valueOf(request.getParameter("view"));
          String errorCodes = request.getParameter("errcode");
@@ -1335,33 +1335,40 @@ public class Control extends FJServlet {
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("MSG_USERS") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
       if (currentUser.isModerator()){
-         // Выбираем почту
+         // Read users
          List<IUser> users = userService.getUsers();
          if (users.size() > 0){
-            // Заголовки таблицы
+            // Table headers
             buffer.append("<th class='internal'><div class=tbtext>id</div></th>");
             buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess44") + "</div></th>");
             buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("MSG_EMAIL") + "</div></th>");
             buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("MSG_BANNED") + "</div></th>");
             buffer.append("</tr>");
-            // Выводим сообщения
+            // Rows
             for (int userIndex=0; userIndex < users.size(); userIndex++){
                IUser user = users.get(userIndex);
-               buffer.append("<tr>");
-               // Кому
+               if ((userIndex & 1) == 0) {
+                  buffer.append("<tr class=trees >");
+               }else {
+                  buffer.append("<tr class=matras>");
+               }
+               // Id
                buffer.append("<td class='internal'><div class=tbtext>");
                buffer.append(user.getId());
                buffer.append("</div></td>");
-               // Тема письма
+               // Nick
                buffer.append("<td class='internal'><div class=tbtext>");
-               buffer.append("<a href='" + FJUrl.SETTINGS + "?id=3&msg=" + user.getId() + "'>" + fd_head(user.getNick()) + "</a>");
+               buffer.append(fd_head(user.getNick()) + "</a>");
                buffer.append("</div></td>");
-               // Когда отправлено
+               // E-mail
                buffer.append("<td class='internal'><div class=tbtext>");
                buffer.append(user.getEmail());
                buffer.append("</div></td>");
+               // Ban
                buffer.append("<td class='internal'><div class=tbtext>");
+               buffer.append("<a href='" + FJUrl.BAN + "?id=" + user.getId() + "'>");
                buffer.append(user.isBanned() ? locale.getString("mess26"): locale.getString("mess27"));
+               buffer.append("</a>");
                buffer.append("</div></td>");
                buffer.append("</tr>");
             }
@@ -1381,30 +1388,34 @@ public class Control extends FJServlet {
 
    private StringBuffer caseUnapprovedUsers(LocaleString locale, IUser currentUser, UserService userService) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
-      buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess15") + "</b></div>");
+      buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("MSG_UNAPPROVED_USERS") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
       if (currentUser.isModerator()){
-         // Выбираем почту
+         // Load unapproved users
          List<IUser> users = userService.getUnapprovedUsers();
          if (users.size() > 0){
-            // Заголовки таблицы
-            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess19") + "</div></th>");
-            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess59") + "</div></th>");
-            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess61") + "</div></th>");
+            // Table headers
+            buffer.append("<th class='internal'><div class=tbtext>id</div></th>");
+            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess44") + "</div></th>");
+            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("MSG_EMAIL") + "</div></th>");
             buffer.append("</tr>");
-            // Выводим сообщения
+            // Rows
             for (int userIndex=0; userIndex < users.size(); userIndex++){
                IUser user = users.get(userIndex);
-               buffer.append("<tr>");
-               // Кому
+               if ((userIndex & 1) == 0) {
+                  buffer.append("<tr class=trees >");
+               }else {
+                  buffer.append("<tr class=matras>");
+               }
+               // Id
                buffer.append("<td class='internal'><div class=tbtext>");
                buffer.append(user.getId());
                buffer.append("</div></td>");
-               // Тема письма
+               // Nick && approve link
                buffer.append("<td class='internal'><div class=tbtext>");
                buffer.append("<a href='" + FJUrl.APPROVE_USER + "?id=" + user.getId() + "'>" + fd_head(user.getNick()) + "</a>");
                buffer.append("</div></td>");
-               // Когда отправлено
+               // E-mail
                buffer.append("<td class='internal'><div class=tbtext>");
                buffer.append(user.getEmail());
                buffer.append("</div></td>");
