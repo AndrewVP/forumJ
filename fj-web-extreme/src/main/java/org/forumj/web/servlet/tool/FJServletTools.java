@@ -1,6 +1,7 @@
 package org.forumj.web.servlet.tool;
 
 import java.io.*;
+import java.util.List;
 
 import javax.servlet.http.*;
 
@@ -10,6 +11,9 @@ import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.tool.LocaleString;
 
 public class FJServletTools {
+
+   private static ResourcesCache cache = ResourcesCache.getInstance();
+
 
    public static Cookie getCookie(Cookie[] cookies, String name){
       if(name == null || "".equals(name.trim())){
@@ -38,12 +42,23 @@ public class FJServletTools {
    }
 
    public static StringBuffer loadResource(String path) throws IOException{
-      ClassLoader classLoader = FJServletTools.class.getClassLoader();
-      InputStream stream = classLoader.getResourceAsStream(path);
-      BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+      StringBuffer result = cache.getTxt(path);
+      if (result == null){
+         result = loadTxtResource(path);
+         cache.putTxt(path, result);
+      }
+      return result;
+   }
+
+   private static StringBuffer loadTxtResource(String path) throws IOException{
       StringBuffer result = new StringBuffer();
-      while(br.ready()){
-         result.append(br.readLine() + "\n");
+      ClassLoader classLoader = FJServletTools.class.getClassLoader();
+      try(InputStream stream = classLoader.getResourceAsStream(path);){
+         BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+         while(br.ready()){
+            result.append(br.readLine());
+            result.append("\n");
+         }
       }
       return result;
    }
