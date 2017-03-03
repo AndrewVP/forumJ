@@ -98,26 +98,15 @@ public class Images extends HttpServlet {
       List<byte[]> result = new ArrayList<byte[]>();
       File file = new File(fileName);
       if (file.exists()){
-         InputStream in = null;
-         Reader reader = null;
-         try {
-            in = new FileInputStream(file);
+         try (InputStream in = new FileInputStream(file);) {
             final byte[] chars = new byte[1024];
             int read;
-            in = new FileInputStream(file);
             while ((read = in.read(chars)) > -1) {
                final byte[] realChars = new byte[read];
                for (int i = 0; i < read; i++) {
                   realChars[i] = chars[i];
                }
                result.add(realChars);
-            }
-         } finally {
-            if (reader != null) {
-               reader.close();
-            }
-            if (in != null) {
-               in.close();
             }
          }
       }
