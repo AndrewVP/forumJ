@@ -24,10 +24,6 @@ function getIndicatorInfo() {
 
 	request.onreadystatechange = updateIndicator;
 	request.send(params);
-//   var url = "count.php?idb=" + m_xb + "&idt=" + m_xt + "&ids=" + idss;
-//   request.open("GET", url, true);
-//   request.onreadystatechange = updateIndicator;
-//   request.send(null);
 }
 
 function updateIndicator() {
@@ -51,6 +47,12 @@ function updateIndicator() {
                post.removeChild(post.firstChild);
                post.appendChild(text);
             }
+         }
+         if (response[0] != 0){
+             if (typeof document.oldTitle === "undefined"){
+                 document.oldTitle = document.title;
+             }
+             document.title = response[1] + '/' + response[0] + ' ' + document.oldTitle;
          }
       }
       window.setTimeout(getIndicatorInfo, 30000);
