@@ -83,7 +83,11 @@ public class QueryBuilder {
    private static String createFolderQuery = null;
    
    private static String createActionQuery = null;
-   
+
+   private static String updateImageQuery = null;
+
+   private static String createImageQuery = null;
+
    private static String createInterfaceQuery = null;
    
    private static String receiveMailQuery = null;
@@ -571,6 +575,20 @@ public class QueryBuilder {
       return createActionQuery;
    }
    
+   public static String getCreateImageQuery() throws IOException{
+      if (createImageQuery == null){
+         createImageQuery = loadQuery("sql/create_image.sql");
+      }
+      return createImageQuery;
+   }
+
+   public static String getUpdateImageQuery() throws IOException{
+      if (updateImageQuery == null){
+         updateImageQuery = loadQuery("sql/update_image.sql");
+      }
+      return updateImageQuery;
+   }
+
    public static String getCreateInterfaceQuery() throws IOException{
       if (createInterfaceQuery == null){
          createInterfaceQuery = loadQuery("sql/create_interface.sql");

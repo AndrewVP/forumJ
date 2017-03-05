@@ -53,6 +53,7 @@ public interface FJUrl {
    public static final String OK_AVATAR = "ok_avatar";
    public static final String S_AVATAR = "s_avatar";
    public static final String SET_AVATAR = "setavatar";
+   public static final String POST_IMAGE = "postimage";
    public static final String SET_FOOTER = "setfooter";
    public static final String POST = "post";
    public static final String SET_LOCATION = "setlocation";

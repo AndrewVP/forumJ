@@ -50,6 +50,7 @@ public class Images extends HttpServlet {
       try {
          avatarsContextDir = FJConfiguration.getConfig().getString("avatarsContextDir");
          fjHomeDir = FJConfiguration.getConfig().getString("fj.home.dir");
+         realPath = getServletContext().getRealPath("/");
       }catch (Exception e){
          throw new ServletException(e);
       }
@@ -61,10 +62,6 @@ public class Images extends HttpServlet {
    @Override
    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
       try{
-
-         if (realPath == null){
-            realPath = req.getServletContext().getRealPath("/");
-         }
          String photoExt = req.getPathInfo().split("\\.")[1];
          String mimeType = "image/" + photoExt.toLowerCase();
          resp.setContentType(mimeType);
@@ -95,17 +92,15 @@ public class Images extends HttpServlet {
    }
 
    protected List<byte[]> getFileAsArray(String fileName) throws IOException {
-      List<byte[]> result = new ArrayList<byte[]>();
+      List<byte[]> result = new ArrayList<>();
       File file = new File(fileName);
       if (file.exists()){
          try (InputStream in = new FileInputStream(file);) {
             final byte[] chars = new byte[1024];
             int read;
-            while ((read = in.read(chars)) > -1) {
-               final byte[] realChars = new byte[read];
-               for (int i = 0; i < read; i++) {
-                  realChars[i] = chars[i];
-               }
+            byte[] realChars;
+            while ((read = in.read(chars)) > 0) {
+               realChars = Arrays.copyOf(chars, read);
                result.add(realChars);
             }
          }
