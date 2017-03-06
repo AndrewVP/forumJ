@@ -88,6 +88,10 @@ public class QueryBuilder {
 
    private static String createImageQuery = null;
 
+   private static String loadImageThumbsQuery = null;
+
+   private static String loadImageQuery = null;
+
    private static String createInterfaceQuery = null;
    
    private static String receiveMailQuery = null;
@@ -580,6 +584,20 @@ public class QueryBuilder {
          createImageQuery = loadQuery("sql/create_image.sql");
       }
       return createImageQuery;
+   }
+
+   public static String getLoadImageThumbsQuery() throws IOException{
+      if (loadImageThumbsQuery == null){
+         loadImageThumbsQuery = loadQuery("sql/load_images.sql");
+      }
+      return loadImageThumbsQuery;
+   }
+
+   public static String getLoadImageQuery() throws IOException{
+      if (loadImageQuery == null){
+         loadImageQuery = loadQuery("sql/load_image.sql");
+      }
+      return loadImageQuery;
    }
 
    public static String getUpdateImageQuery() throws IOException{

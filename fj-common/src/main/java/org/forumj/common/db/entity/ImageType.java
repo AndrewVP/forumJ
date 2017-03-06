@@ -11,6 +11,7 @@ import java.io.File;
  * Created by Andrew on 05/03/2017.
  */
 public enum ImageType {
+    // do not change order!
     ORIGINAL
     , AVATAR(FJConfiguration.AVATAR, 150, 150)
     , ALBUM_THUMBNAIL(FJConfiguration.ALBUM_THUMB, 300, 0)
@@ -38,5 +39,12 @@ public enum ImageType {
 
     public int getHeight(){
         return height;
+    }
+
+    public static ImageType fromOrder(int order){
+        for (ImageType type: values()) {
+            if (type.ordinal() == order) return type;
+        }
+        return null;
     }
 }

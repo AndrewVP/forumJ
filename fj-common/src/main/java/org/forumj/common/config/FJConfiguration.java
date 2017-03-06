@@ -18,6 +18,7 @@ public class FJConfiguration {
 
    public final static String HOME_DIR = "fj.home.dir";
    public final static String AVATARS_CONTEXT_DIR = "avatarsContextDir";
+   public final static String IMAGES_CONTEXT_DIR = "imagesContextDir";
    public final static String AVATAR = "avatar";
    public final static String ALBUM_THUMB = "album.thumb";
    public final static String POST_THUMB = "post.thumb";

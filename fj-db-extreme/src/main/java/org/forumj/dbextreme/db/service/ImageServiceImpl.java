@@ -30,6 +30,7 @@ import org.forumj.image.ImageTools;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.List;
 
 
 /**
@@ -87,6 +88,16 @@ public class ImageServiceImpl extends FJService implements ImageService {
     @Override
     public Image getObject() {
         return new FJImage();
+    }
+
+    @Override
+    public List<Image> getImages(long userId, long albumId, ImageType type) throws Exception {
+        return getImageDao().getImages(userId, albumId, type);
+    }
+
+    @Override
+    public Image getImage(long id) throws Exception {
+        return getImageDao().getImage(id);
     }
 
     private Image createChildImage(Image parent, ImageType type) throws Exception{

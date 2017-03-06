@@ -80,6 +80,7 @@ public class Control extends FJServlet {
          MailService mailService = FJServiceHolder.getMailService();
          SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
          InterfaceService interfaceService = FJServiceHolder.getInterfaceService();
+         ImageService imageService = FJServiceHolder.getImageService();
          buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
          buffer.append("<html>");
          buffer.append("<head>");
@@ -321,7 +322,7 @@ public class Control extends FJServlet {
             break;
          case 16:
             // PhotoAlbum
-            buffer.append(casePhotoalbum(locale, user, userService));
+            buffer.append(casePhotoalbum(locale, user, imageService));
             break;
          }
          buffer.append("</td>");
@@ -1441,21 +1442,35 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer casePhotoalbum(LocaleString locale, IUser user, UserService userService) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
+   private StringBuffer casePhotoalbum(LocaleString locale, IUser user, ImageService imageService) throws Exception{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'>");
       buffer.append("<b>");
-      buffer.append(locale.getString("mess92"));
+      buffer.append(locale.getString("MSG_PHOTOALBUM"));
       buffer.append("</b>");
       buffer.append("</div>");
       buffer.append("<br>");
-      buffer.append("<form method='post' class='content' action='" + FJUrl.POST_IMAGE + "' enctype='multipart/form-data'>");
-      buffer.append(locale.getString("mess97") + "&nbsp;");
+      buffer.append("<form method='post' class='content' action='");
+      buffer.append(FJUrl.POST_IMAGE);
+      buffer.append("' enctype='multipart/form-data'>");
+      buffer.append(locale.getString("mess97"));
+      buffer.append("&nbsp;");
       buffer.append("<input type='file' size='20' name='avatar'>");
       buffer.append("<br>");
       buffer.append("<br>");
-      buffer.append("<input type='submit' value='" + locale.getString("mess75") + "'>");
+      buffer.append("<input type='submit' value='");
+      buffer.append(locale.getString("mess75"));
+      buffer.append("'>");
       buffer.append(fd_form_add(user));
+      buffer.append("</form>");
+      List<Image> imageThumbs = imageService.getImages(user.getId(), 0, ImageType.ALBUM_THUMBNAIL);
+      for (Image thumb: imageThumbs){
+         buffer.append("<img border='0' src='photo/");
+         buffer.append(thumb.getId());
+         buffer.append("?id=");
+         buffer.append(thumb.getId());
+         buffer.append("'>");
+      }
       return buffer;
    }
 

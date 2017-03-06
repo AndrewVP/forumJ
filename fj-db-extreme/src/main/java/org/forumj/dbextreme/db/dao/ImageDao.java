@@ -10,9 +10,9 @@
 package org.forumj.dbextreme.db.dao;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.IFJAction;
-import org.forumj.common.db.entity.IUser;
-import org.forumj.common.db.entity.Image;
+import org.forumj.common.db.entity.*;
+import org.forumj.dbextreme.db.entity.FJImage;
+import org.forumj.dbextreme.db.entity.QuestNode;
 import org.forumj.dbextreme.db.entity.User;
 
 import javax.xml.transform.Result;
@@ -86,5 +86,66 @@ public class ImageDao extends FJDao {
        st.setLong(++parameterIndex, image.getDateAdd());
        return parameterIndex;
     }
+
+   public List<Image> getImages(long userId, long albumId, ImageType type) throws Exception{
+      List<Image> result = new ArrayList<>();
+      String query = getLoadImageThumbsQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query) ;
+         int parameterIndex = 0;
+         st.setLong(++parameterIndex, userId);
+         st.setLong(++parameterIndex, albumId);
+         st.setLong(++parameterIndex, type.ordinal());
+         ResultSet rs = st.executeQuery();
+         while (rs.next()){
+            result.add(getImage(rs));
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
+   }
+
+   public Image getImage(long id) throws Exception{
+      Image result = null;
+      String query = getLoadImageQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query) ;
+         int parameterIndex = 0;
+         st.setLong(++parameterIndex, id);
+         ResultSet rs = st.executeQuery();
+         if (rs.next()){
+            result = getImage(rs);
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
+   }
+
+   private Image getImage(ResultSet rs) throws Exception{
+      Image result = null;
+      result = new FJImage();
+      result.setAlbumId(rs.getLong("albumId"));
+      result.setDateAdd(rs.getLong("dateAdd"));
+      result.setExtension(rs.getString("extension"));
+      result.setHeight(rs.getInt("height"));
+      result.setWidth(rs.getInt("width"));
+      result.setId(rs.getLong("id"));
+      result.setImageName(rs.getString("imageName"));
+      result.setImageType(ImageType.fromOrder(rs.getInt("imageType")));
+      result.setInitialName(rs.getString("initialName"));
+      result.setParentId(rs.getLong("parent"));
+      result.setPath(rs.getString("path"));
+      result.setUserId(rs.getLong("userId"));
+      return result;
+   }
+
 }
 

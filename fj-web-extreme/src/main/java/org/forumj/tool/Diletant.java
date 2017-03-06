@@ -408,15 +408,23 @@ public class Diletant {
       //Команда для обработки
       result.append("<input type='hidden' name='comand' />");
       // Автор
-      result.append("<input type=hidden name='IDU' value='"+user.getId().toString()+"'>");
-      result.append("<input type=hidden name='AUT' value='"+user.getNick()+"'>");
+      result.append("<input type=hidden name='IDU' value='");
+      result.append(user.getId());
+      result.append("'>");
+      result.append("<input type=hidden name='AUT' value='");
+      result.append(user.getNick());
+      result.append("'>");
       // пароль автора
       if (user.getPass2() != null) {
          // кука
-         result.append("<input type=hidden name='PS2' value='"+user.getPass2()+"'>");
+         result.append("<input type=hidden name='PS2' value='");
+         result.append(user.getPass2());
+         result.append("'>");
       }else{
          // не кука
-         result.append("<input type=hidden name='PS1' value='"+user.getPass()+"'>");
+         result.append("<input type=hidden name='PS1' value='");
+         result.append(user.getPass());
+         result.append("'>");
       }
       return result;
    }

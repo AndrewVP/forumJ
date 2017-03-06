@@ -139,5 +139,4 @@ public class ImageTools {
         return thumbsImage;
     }
 
-
 }

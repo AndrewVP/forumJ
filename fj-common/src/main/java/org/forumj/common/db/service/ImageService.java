@@ -8,11 +8,16 @@ import org.forumj.common.db.entity.ImageType;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.util.List;
 
 public interface ImageService {
 
-   public Image create(DiskFileItem fileItem, IUser user, long albumId, ImageType type) throws ConfigurationException, SQLException, IOException, Exception;
+   public Image create(DiskFileItem fileItem, IUser user, long albumId, ImageType type) throws Exception;
    
    public Image getObject();
+
+   public List<Image> getImages(long userId, long albumId, ImageType type) throws Exception;
+
+   public Image getImage(long id) throws Exception;
 
 }
