@@ -14,7 +14,12 @@
 			<groupId>org.forumj</groupId>
 			<artifactId>fj-common</artifactId>
 			<version>${project.version}</version>
-         <scope>provided</scope>
+	        <scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.forumj</groupId>
+			<artifactId>fj-image</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 	</dependencies>
 	<build>

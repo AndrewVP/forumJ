@@ -4,13 +4,18 @@
 package org.forumj.common.db.service;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.forumj.common.config.FJConfiguration;
+import org.forumj.common.db.entity.Image;
 
 /**
  * @author andrew
  *
  */
 public class FJServiceHolder {
+
+   private static Logger logger = LogManager.getLogger("org.forumj.service");
    
    private static CountService countService = null;
 
@@ -39,7 +44,9 @@ public class FJServiceHolder {
    private static ActionService actionService = null;
    
    private static FJIpAddressService ipAddressService = null;
-   
+
+   private static ImageService imageService = null;
+
    static{
       try {
          countService = (CountService) Class.forName(FJConfiguration.getConfig().getString("service.countService.class")).newInstance();
@@ -56,18 +63,9 @@ public class FJServiceHolder {
          postService = (PostService) Class.forName(FJConfiguration.getConfig().getString("service.postService.class")).newInstance();
          actionService = (ActionService) Class.forName(FJConfiguration.getConfig().getString("service.actionService.class")).newInstance();
          ipAddressService = (FJIpAddressService) Class.forName(FJConfiguration.getConfig().getString("service.ipAddressService.class")).newInstance();
-      } catch (ConfigurationException e) {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
-      } catch (InstantiationException e) {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
-      } catch (IllegalAccessException e) {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
-      } catch (ClassNotFoundException e) {
-         // TODO Auto-generated catch block
-         e.printStackTrace();
+         imageService = (ImageService) Class.forName(FJConfiguration.getConfig().getString("service.imageService.class")).newInstance();
+      } catch (Exception e) {
+         logger.error(e.getMessage(), e);
       }
    }
    
@@ -125,5 +123,9 @@ public class FJServiceHolder {
 
    public static FJIpAddressService getIpAddressService() {
       return ipAddressService;
+   }
+
+   public static ImageService getImageService() {
+      return imageService;
    }
 }

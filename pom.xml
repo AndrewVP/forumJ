@@ -61,7 +61,11 @@
 			<artifactId>log4j-core</artifactId>
 			<version>${log4j.version}</version>
 		</dependency>
-
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>1.2.2</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
@@ -91,7 +95,8 @@
 		<module>fj-tools</module>
 		<module>fj-check-ip</module>
         <module>fj-iptables</module>
+		<module>fj-image</module>
 		<module>fj-business</module>
 		<module>fj-web-extreme</module>
-	</modules>
+    </modules>
 </project>

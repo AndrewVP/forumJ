@@ -48,6 +48,7 @@ public class Tema extends FJServlet {
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       long startTime = new Date().getTime();
+      ImageService imageService = FJServiceHolder.getImageService();
       StringBuffer buffer = new StringBuffer();
       try {
          HttpSession session = request.getSession();
@@ -312,6 +313,12 @@ public class Tema extends FJServlet {
             buffer.append(locale.getString("mess12"));
             buffer.append("</p>");
             buffer.append("</td>");
+            /*Photoalbum header*/
+            buffer.append("<td align=left>");
+            buffer.append("<p>");
+            buffer.append(locale.getString("MSG_PHOTOALBUM") + ":");
+            buffer.append("</p>");
+            buffer.append("</td>");
             buffer.append("</tr>");
             //Пост
             buffer.append("<tr>");
@@ -374,6 +381,47 @@ public class Tema extends FJServlet {
                buffer.append("<input type=hidden name='ISQUEST' size='20' value='true'>");
             }
             buffer.append(fd_form_add(user));
+            buffer.append("</td>");
+            //Photoalbum
+            buffer.append("<td align='LEFT' valign='top'>");
+
+            List<Image> imageThumbs = imageService.getImages(user.getId(), 0, ImageType.POST_THUMBNAIL);
+            buffer.append("<div style='float: left;width: 330px;overflow-y: auto;overflow-x: hidden;height:400px;'>");
+            buffer.append("<div style='float: left;width: 160px;'>");
+
+            for (int thumbIndex = 0; thumbIndex < imageThumbs.size(); thumbIndex += 2){ //just for start
+               Image thumb = imageThumbs.get(thumbIndex);
+               buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
+               buffer.append("<img border='0' src='photo/");
+               buffer.append(thumb.getId());
+               buffer.append("?id=");
+               buffer.append(thumb.getId());
+               buffer.append("' onclick=\"InsertTags('[img]photo/");
+               buffer.append(thumb.getParentId());
+               buffer.append("?id=");
+               buffer.append(thumb.getParentId());
+               buffer.append("','[/img]')\" alt='Вставить картинку'>");
+               buffer.append("</div>");
+            }
+            buffer.append("</div>");
+            buffer.append("<div style='margin-left: 160px;width: 160px;'>");
+            for (int thumbIndex = 1; thumbIndex < imageThumbs.size(); thumbIndex += 2){ //just for start
+               Image thumb = imageThumbs.get(thumbIndex);
+               buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
+               buffer.append("<img border='0' src='photo/");
+               buffer.append(thumb.getId());
+               buffer.append("?id=");
+               buffer.append(thumb.getId());
+               buffer.append("' onclick=\"InsertTags('[img]photo/");
+               buffer.append(thumb.getParentId());
+               buffer.append("?id=");
+               buffer.append(thumb.getParentId());
+               buffer.append("','[/img]')\" alt='Вставить картинку'>");
+               buffer.append("</div>");
+            }
+            buffer.append("</div>");
+            buffer.append("</div>");
+
             buffer.append("</td>");
             buffer.append("</tr>");
             buffer.append("</table>");

@@ -8,4 +8,7 @@ public interface HttpParameters {
     String USER_ID = "id";
     String ID = "id";
     String ACTIVATE_EMAIL_CODE = "c";
+    String AVATAR = "avatar";
+    String ALBUM = "album";
+    String USER = "user";
 }

@@ -3,7 +3,7 @@
  */
 package org.forumj.web.filter;
 
-import static org.forumj.common.FJServletName.SET_AVATAR;
+import static org.forumj.common.FJServletName.*;
 import static org.forumj.tool.Diletant.errorOut;
 
 import java.io.*;
@@ -28,7 +28,7 @@ import org.forumj.web.tool.*;
  * @author Andrew V. Pogrebnyak
  *
  */
-@WebFilter(servletNames={SET_AVATAR})
+@WebFilter(servletNames={SET_AVATAR, POST_IMAGE})
 public class AAAAABFileUploadFilter implements Filter{
 
     private int maxUploadMemorySize = 10000;

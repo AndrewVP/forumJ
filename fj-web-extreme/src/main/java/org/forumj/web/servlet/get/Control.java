@@ -80,6 +80,7 @@ public class Control extends FJServlet {
          MailService mailService = FJServiceHolder.getMailService();
          SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
          InterfaceService interfaceService = FJServiceHolder.getInterfaceService();
+         ImageService imageService = FJServiceHolder.getImageService();
          buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
          buffer.append("<html>");
          buffer.append("<head>");
@@ -233,12 +234,24 @@ public class Control extends FJServlet {
             buffer.append("<td class='internal'>");
             buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=14'>" + locale.getString("MSG_USERS") + "</a><br>");
             buffer.append("</td>");
+         /* unapproved Users*/
             buffer.append("</tr><tr>");
             buffer.append("<td class='internal'>");
             buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=15'>" + locale.getString("MSG_UNAPPROVED_USERS") + "</a><br>");
             buffer.append("</td>");
             buffer.append("</tr></table>");
          }
+         /*PhotoAlbum*/
+         buffer.append("<table class='control'><tr class='heads'>");
+         buffer.append("<th class='internal'>");
+         buffer.append("<div class='mnuprof'>" + locale.getString("MSG_PHOTOALBUM") + "</div>");
+         buffer.append("</th>");
+         /* all Users*/
+         buffer.append("</tr><tr>");
+         buffer.append("<td class='internal'>");
+         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=16'>" + locale.getString("MSG_PHOTOALBUM") + "</a><br>");
+         buffer.append("</td>");
+         buffer.append("</tr></table>");
 
          buffer.append("</td>");
          buffer.append("<td valign='TOP' style='padding-left:5px;'>");
@@ -249,55 +262,55 @@ public class Control extends FJServlet {
             break;
          case 1:
             // Игнор-лист
-            buffer.append(case1(user, locale, ignorService));
+            buffer.append(caseIgnor(user, locale, ignorService));
             break;
          case 2:
             // Inbox
-            buffer.append(case2(locale, user, msg, mailService));
+            buffer.append(caseInbox(locale, user, msg, mailService));
             break;
          case 3:
             // Отправлено, но не доставлено
-            buffer.append(case3(locale, user, msg, mailService));
+            buffer.append(caseSent(locale, user, msg, mailService));
             break;
          case 4:
             // Отправлено, и доставлено
-            buffer.append(case4(locale, user, msg, mailService));
+            buffer.append(caseOutbox(locale, user, msg, mailService));
             break;
          case 5:
             //  Черновики
-            buffer.append(case5(locale, user, msg, mailService));
+            buffer.append(casePostponed(locale, user, msg, mailService));
             break;
          case 6:
             // Интерфейсы
-            buffer.append(case6(locale, user, view, interfaceService, folderService));
+            buffer.append(caseViews(locale, user, view, interfaceService, folderService));
             break;
          case 7:
             // Папки
-            buffer.append(case7(locale, user, folderService));
+            buffer.append(caseFolders(locale, user, folderService));
             break;
          case 8:
             // Подписка
-            buffer.append(case8(locale, user, subscribeService));
+            buffer.append(caseSubscribe(locale, user, subscribeService));
             break;
          case 9:
             // Аватара
-            buffer.append(case9(locale, user, errors));
+            buffer.append(caseAvatar(locale, user, errors));
             break;
          case 10:
             // Местонахождение
-            buffer.append(case10(locale, user));
+            buffer.append(caseGeo(locale, user));
             break;
          case 11:
             // Подпись
-            buffer.append(case11(locale, user));
+            buffer.append(cseSign(locale, user));
             break;
          case 12:
             // Язык интерфейса
-            buffer.append(language(locale, user));
+            buffer.append(caseLanguage(locale, user));
             break;
          case 13:
             // E-mail
-            buffer.append(eMail(locale, user));
+            buffer.append(caseEMail(locale, user));
             break;
          case 14:
             // All Users
@@ -306,6 +319,10 @@ public class Control extends FJServlet {
          case 15:
             // Unapproved Users
             buffer.append(caseUnapprovedUsers(locale, user, userService));
+            break;
+         case 16:
+            // PhotoAlbum
+            buffer.append(casePhotoalbum(locale, user, imageService));
             break;
          }
          buffer.append("</td>");
@@ -463,7 +480,7 @@ public class Control extends FJServlet {
       writer.write(out);
    }
 
-   private StringBuffer case1(IUser user, LocaleString locale, IgnorService ignorService) throws InvalidKeyException, IOException, ConfigurationException, SQLException{
+   private StringBuffer caseIgnor(IUser user, LocaleString locale, IgnorService ignorService) throws InvalidKeyException, IOException, ConfigurationException, SQLException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список Игнорируемых
       List<IIgnor> ignorList = ignorService.readUserIgnor(user.getId());
@@ -596,7 +613,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case2(LocaleString locale, IUser user, Long msg, MailService mailService) throws ConfigurationException, SQLException, IOException, InvalidKeyException{
+   private StringBuffer caseInbox(LocaleString locale, IUser user, Long msg, MailService mailService) throws ConfigurationException, SQLException, IOException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       IFJMail mail = null;
       if (msg != null){
@@ -690,7 +707,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case3(LocaleString locale, IUser user, Long msg, MailService mailService) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
+   private StringBuffer caseSent(LocaleString locale, IUser user, Long msg, MailService mailService) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess15") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
@@ -745,7 +762,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case4(LocaleString locale, IUser user, Long msg, MailService mailService) throws ConfigurationException, IOException, SQLException, InvalidKeyException{
+   private StringBuffer caseOutbox(LocaleString locale, IUser user, Long msg, MailService mailService) throws ConfigurationException, IOException, SQLException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess16") + "</b></div>");
       buffer.append("<form method='post' class='content' action='" + FJUrl.DELETE_MAIL + "?id=4'>");
@@ -827,7 +844,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case5(LocaleString locale, IUser user, Long msg, MailService mailService) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
+   private StringBuffer casePostponed(LocaleString locale, IUser user, Long msg, MailService mailService) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess62") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
@@ -884,7 +901,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case6(LocaleString locale, IUser user, Long viewId, InterfaceService interfaceService, FolderService folderService) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
+   private StringBuffer caseViews(LocaleString locale, IUser user, Long viewId, InterfaceService interfaceService, FolderService folderService) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список интерфейсов
       List<IFJInterface> interfaces = interfaceService.findAllInterfaces(user);
@@ -1065,7 +1082,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case7(LocaleString locale, IUser user, FolderService folderService) throws ConfigurationException, SQLException, IOException, InvalidKeyException{
+   private StringBuffer caseFolders(LocaleString locale, IUser user, FolderService folderService) throws ConfigurationException, SQLException, IOException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список папок
       List<IFJFolder> folders = folderService.getUserFolders(user);
@@ -1120,7 +1137,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case8(LocaleString locale, IUser user, SubscribeService subscribeService) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
+   private StringBuffer caseSubscribe(LocaleString locale, IUser user, SubscribeService subscribeService) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список подписаных веток
       List<IFJSubscribe> subscribes = subscribeService.findAllSubscribes(user, new Integer(1));
@@ -1166,8 +1183,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case9(LocaleString locale, IUser user, List<ErrorCode> errors)
-         throws InvalidKeyException {
+   private StringBuffer caseAvatar(LocaleString locale, IUser user, List<ErrorCode> errors) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
       if (user.getAvatar() != null && user.getAvatarApproved()) {
          buffer.append("<div class='mnuprof' align='CENTER'>");
@@ -1179,11 +1195,7 @@ public class Control extends FJServlet {
          buffer.append("<img border='0' src='" + user.getAvatar() + "?seed=" + (new Date()).getTime() + "'>");
          buffer.append("</div>");
          buffer.append("<br>");
-//         buffer.append("<div>");
-//         buffer.append(locale.getString("mess95"));
-//         buffer.append("</div>");
          buffer.append("<br>");
-      } else {
       }
          buffer.append("<div class='mnuprof' align='CENTER'>");
          buffer.append("<b>");
@@ -1191,11 +1203,7 @@ public class Control extends FJServlet {
          buffer.append("</b>");
          buffer.append("</div>");
          buffer.append("<br>");
-//         buffer.append("<div>");
-//         buffer.append(locale.getString("mess96"));
-//         buffer.append("</div>");
-//         buffer.append("<br>");
-      buffer.append("<form method='post' class='content' action='" + FJUrl.SET_AVATAR + "?id=9' enctype='multipart/form-data'>");
+         buffer.append("<form method='post' class='content' action='" + FJUrl.SET_AVATAR + "?id=9' enctype='multipart/form-data'>");
       for (ErrorCode errorCode : errors) {
     	  if(errorCode.getFieldName().equalsIgnoreCase("avatar")){
     		  buffer.append("<span style='color:red;'>");
@@ -1240,7 +1248,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer case10(LocaleString locale, IUser user) throws InvalidKeyException {
+   private StringBuffer caseGeo(LocaleString locale, IUser user) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'>");
       buffer.append("<b>" + locale.getString("mess105") + "</b>");
@@ -1309,7 +1317,7 @@ public class Control extends FJServlet {
    }
 
    /*подпись*/
-   private StringBuffer case11(LocaleString locale, IUser user) throws InvalidKeyException {
+   private StringBuffer cseSign(LocaleString locale, IUser user) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='LEFT' style='padding: 10px 0 5px 0'>");
       buffer.append("<b>");
@@ -1434,9 +1442,97 @@ public class Control extends FJServlet {
       return buffer;
    }
 
+   private StringBuffer casePhotoalbum(LocaleString locale, IUser user, ImageService imageService) throws Exception{
+      StringBuffer buffer = new StringBuffer();
+      buffer.append("<div class='mnuprof' align='CENTER'>");
+      buffer.append("<b>");
+      buffer.append(locale.getString("MSG_PHOTOALBUM"));
+      buffer.append("</b>");
+      buffer.append("</div>");
+      buffer.append("<br>");
+      buffer.append("<form method='post' class='content' action='");
+      buffer.append(FJUrl.POST_IMAGE);
+      buffer.append("' enctype='multipart/form-data'>");
+      buffer.append(locale.getString("mess97"));
+      buffer.append("&nbsp;");
+      buffer.append("<input type='file' size='20' name='avatar'>");
+      buffer.append("<br>");
+      buffer.append("<br>");
+      buffer.append("<input type='submit' value='");
+      buffer.append(locale.getString("mess75"));
+      buffer.append("'>");
+      buffer.append(fd_form_add(user));
+      buffer.append("</form>");
+      List<Image> imageThumbs = imageService.getImages(user.getId(), 0, ImageType.ALBUM_THUMBNAIL);
+      int heightColumn1 = 0;
+      int heightColumn2 = 0;
+      int heightColumn3 = 0;
+      int thumbIndex = 0;
+      while (imageThumbs.size() > 0) { //just for start
+         Image thumb = imageThumbs.get(thumbIndex++);
+         heightColumn1 += thumb.getHeight() + 10;
+         if (thumbIndex == imageThumbs.size()) break;
+         thumb = imageThumbs.get(thumbIndex++);
+         heightColumn2 += thumb.getHeight() + 10;
+         if (thumbIndex == imageThumbs.size()) break;
+         thumb = imageThumbs.get(thumbIndex++);
+         heightColumn3 += thumb.getHeight() + 10;
+         if (thumbIndex == imageThumbs.size()) break;
+      }
+      // I wanted to write it)))
+      int height = heightColumn1 > heightColumn2 ? heightColumn1 > heightColumn3 ? heightColumn1 : heightColumn3 : heightColumn2 > heightColumn3 ? heightColumn2 : heightColumn3;
+      buffer.append("<div style='position: relative;width: 920px;");
+      buffer.append("height:").append(height);
+      buffer.append(";'>");
+      int top1 = 0;
+      int top2 = 0;
+      int top3 = 0;
+      thumbIndex = 0;
+      while (imageThumbs.size() > 0){ //just for start
+         Image thumb = imageThumbs.get(thumbIndex++);
+         buffer.append("<div style='position: absolute;width: 300px; left: 0px");
+         buffer.append(";top:").append(top1);
+         buffer.append(";'>");
+         buffer.append("<img border='0' src='photo/");
+         buffer.append(thumb.getId());
+         buffer.append("?id=");
+         buffer.append(thumb.getId());
+         buffer.append("'>");
+         buffer.append("</div>");
+         if (thumbIndex == imageThumbs.size()) break;
+         top1 += thumb.getHeight() + 10;
+         thumb = imageThumbs.get(thumbIndex++);
+         buffer.append("<div style='position: absolute;width: 300px; left: 310px");
+         buffer.append(";top:").append(top2);
+         buffer.append(";'>");
+         buffer.append("<img border='0' src='photo/");
+         buffer.append(thumb.getId());
+         buffer.append("?id=");
+         buffer.append(thumb.getId());
+         buffer.append("'>");
+         buffer.append("</div>");
+         if (thumbIndex == imageThumbs.size()) break;
+         top2 += thumb.getHeight() + 10;
+         thumb = imageThumbs.get(thumbIndex++);
+         buffer.append("<div style='position: absolute;width: 300px; left: 620px");
+         buffer.append(";top:").append(top3);
+         buffer.append(";'>");
+         buffer.append("<img border='0' src='photo/");
+         buffer.append(thumb.getId());
+         buffer.append("?id=");
+         buffer.append(thumb.getId());
+         buffer.append("'>");
+         buffer.append("</div>");
+         if (thumbIndex == imageThumbs.size()) break;
+         top3 += thumb.getHeight() + 10;
+      }
+      buffer.append("</div>");
+      return buffer;
+   }
+
 
    /*e-mail*/
-   private StringBuffer eMail(LocaleString locale, IUser user) throws InvalidKeyException {
+   private StringBuffer caseEMail(LocaleString locale, IUser user) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='LEFT' style='padding: 10px 0 5px 0'>");
       buffer.append("<b>");
@@ -1459,7 +1555,7 @@ public class Control extends FJServlet {
    }
    
    /*язык интерфейса*/
-   private StringBuffer language(LocaleString locale, IUser user) throws InvalidKeyException {
+   private StringBuffer caseLanguage(LocaleString locale, IUser user) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='LEFT' style='padding: 10px 0 5px 0'>");
       buffer.append("<b>");
