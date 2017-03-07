@@ -389,7 +389,7 @@ public class Tema extends FJServlet {
             buffer.append("<div style='float: left;width: 330px;overflow-y: auto;overflow-x: hidden;height:400px;'>");
             buffer.append("<div style='float: left;width: 160px;'>");
 
-            for (int thumbIndex = 0; thumbIndex < imageThumbs.size(); thumbIndex += 2){ //just for start
+            for (int thumbIndex = 0; thumbIndex < imageThumbs.size(); thumbIndex += 2){
                Image thumb = imageThumbs.get(thumbIndex);
                buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
                buffer.append("<img border='0' src='photo/");
@@ -405,7 +405,7 @@ public class Tema extends FJServlet {
             }
             buffer.append("</div>");
             buffer.append("<div style='margin-left: 160px;width: 160px;'>");
-            for (int thumbIndex = 1; thumbIndex < imageThumbs.size(); thumbIndex += 2){ //just for start
+            for (int thumbIndex = 1; thumbIndex < imageThumbs.size(); thumbIndex += 2){
                Image thumb = imageThumbs.get(thumbIndex);
                buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
                buffer.append("<img border='0' src='photo/");

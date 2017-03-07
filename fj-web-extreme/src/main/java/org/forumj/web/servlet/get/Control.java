@@ -1464,73 +1464,40 @@ public class Control extends FJServlet {
       buffer.append(fd_form_add(user));
       buffer.append("</form>");
       List<Image> imageThumbs = imageService.getImages(user.getId(), 0, ImageType.ALBUM_THUMBNAIL);
-      int heightColumn1 = 0;
-      int heightColumn2 = 0;
-      int heightColumn3 = 0;
-      int thumbIndex = 0;
-      while (imageThumbs.size() > 0) { //just for start
-         Image thumb = imageThumbs.get(thumbIndex++);
-         heightColumn1 += thumb.getHeight() + 10;
-         if (thumbIndex == imageThumbs.size()) break;
-         thumb = imageThumbs.get(thumbIndex++);
-         heightColumn2 += thumb.getHeight() + 10;
-         if (thumbIndex == imageThumbs.size()) break;
-         thumb = imageThumbs.get(thumbIndex++);
-         heightColumn3 += thumb.getHeight() + 10;
-         if (thumbIndex == imageThumbs.size()) break;
-      }
-      // I wanted to write it)))
-      int height = heightColumn1 > heightColumn2 ? heightColumn1 > heightColumn3 ? heightColumn1 : heightColumn3 : heightColumn2 > heightColumn3 ? heightColumn2 : heightColumn3;
-      buffer.append("<div style='position: relative;width: 920px;");
-      buffer.append("height:").append(height);
-      buffer.append(";'>");
-      int top1 = 0;
-      int top2 = 0;
-      int top3 = 0;
-      thumbIndex = 0;
-      while (imageThumbs.size() > 0){ //just for start
-         Image thumb = imageThumbs.get(thumbIndex++);
-         buffer.append("<div style='position: absolute;width: 300px; left: 0px");
-         buffer.append(";top:").append(top1);
-         buffer.append(";'>");
-         buffer.append("<img border='0' src='photo/");
-         buffer.append(thumb.getId());
-         buffer.append("?id=");
-         buffer.append(thumb.getId());
-         buffer.append("'>");
-         buffer.append("</div>");
-         if (thumbIndex == imageThumbs.size()) break;
-         top1 += thumb.getHeight() + 10;
-         thumb = imageThumbs.get(thumbIndex++);
-         buffer.append("<div style='position: absolute;width: 300px; left: 310px");
-         buffer.append(";top:").append(top2);
-         buffer.append(";'>");
-         buffer.append("<img border='0' src='photo/");
-         buffer.append(thumb.getId());
-         buffer.append("?id=");
-         buffer.append(thumb.getId());
-         buffer.append("'>");
-         buffer.append("</div>");
-         if (thumbIndex == imageThumbs.size()) break;
-         top2 += thumb.getHeight() + 10;
-         thumb = imageThumbs.get(thumbIndex++);
-         buffer.append("<div style='position: absolute;width: 300px; left: 620px");
-         buffer.append(";top:").append(top3);
-         buffer.append(";'>");
-         buffer.append("<img border='0' src='photo/");
-         buffer.append(thumb.getId());
-         buffer.append("?id=");
-         buffer.append(thumb.getId());
-         buffer.append("'>");
-         buffer.append("</div>");
-         if (thumbIndex == imageThumbs.size()) break;
-         top3 += thumb.getHeight() + 10;
-      }
+      buffer.append("<div style='float: left;width: 940px;overflow-y: auto;overflow-x: hidden;height:600px;'>");
+      buffer.append("<div style='float: left;width: 620px;'>");
+      buffer.append("<div style='float: left;width: 310px;'>");
+      buffer.append(writeImages(imageThumbs, 0));
+      buffer.append("</div>");
+      buffer.append("<div style='margin-left: 310px;width: 310px;'>");
+      buffer.append(writeImages(imageThumbs, 1));
+      buffer.append("</div>");
+      buffer.append("</div>");
+      buffer.append("<div style='margin-left: 620px;width: 310px;'>");
+      buffer.append(writeImages(imageThumbs, 2));
+      buffer.append("</div>");
       buffer.append("</div>");
       return buffer;
    }
 
-
+   private StringBuffer writeImages(List<Image> imageThumbs, int thumbIndexStart){
+      StringBuffer buffer = new StringBuffer();
+      for (int thumbIndex = thumbIndexStart; thumbIndex < imageThumbs.size(); thumbIndex += 3){
+         Image thumb = imageThumbs.get(thumbIndex);
+         buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
+         buffer.append("<img border='0' src='photo/");
+         buffer.append(thumb.getId());
+         buffer.append("?id=");
+         buffer.append(thumb.getId());
+         buffer.append("' onclick=\"InsertTags('[img]photo/");
+         buffer.append(thumb.getParentId());
+         buffer.append("?id=");
+         buffer.append(thumb.getParentId());
+         buffer.append("','[/img]')\" alt='Вставить картинку'>");
+         buffer.append("</div>");
+      }
+      return buffer;
+   }
    /*e-mail*/
    private StringBuffer caseEMail(LocaleString locale, IUser user) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
