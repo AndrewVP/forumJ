@@ -45,7 +45,6 @@ public interface FJServletName {
    public static final String VOICE = "Voice";
    public static final String ADD_VOTE = "UserVoice";
    public static final String ADD_IGNOR = "AddIgnor";
-   public static final String COUNT = "Count";
    public static final String MOVE_TITLE = "MoveTitle";
    public static final String NEW_FOLDER = "NewFolder";
    public static final String FOLDER_TOOLS = "DelFolder";
@@ -63,5 +62,6 @@ public interface FJServletName {
    public static final String ADD_SUBSCRIBE = "AddSubscribe";
    public static final String IMAGES = "picts";
    public static final String BAN = "ban";
+   public static final String PING = "ping";
 
 }
