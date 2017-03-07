@@ -491,16 +491,16 @@ public class Index extends FJServlet {
          for (int k=1; k<=Math.floor((pcount+1)/user.getPt()) + 1; k++) {
             k1=k1+1;
             if (k1==10){
-               buffer.append("<a href='" + FJUrl.VIEW_THREAD + "?page=" +k+ "&id=" +thread.getId().toString()+ "'>" +k+ "</a>");
+               buffer.append("<a href='" + FJUrl.VIEW_THREAD + "?page=" +k+ "&amp;id=" +thread.getId().toString()+ "'>" +k+ "</a>");
                if (k != Math.floor((pcount+1)/user.getPt()) + 1) buffer.append(",&nbsp;");
                k1=0;
                k2=k2+1;
             }
             if (k==1){
-               buffer.append("<a href='" + FJUrl.VIEW_THREAD + "?page=" +k+ "&id=" +thread.getId().toString()+ "'>" +k+ "</a>,&nbsp;");
+               buffer.append("<a href='" + FJUrl.VIEW_THREAD + "?page=" +k+ "&amp;id=" +thread.getId().toString()+ "'>" +k+ "</a>,&nbsp;");
             }
             if ((Math.floor((pcount+1)/user.getPt())-k2*10 + 1)< 10 && (k-k2*10) != 0 && k!=1){
-               buffer.append("<a href='" + FJUrl.VIEW_THREAD + "?page=" +k+ "&id=" +thread.getId().toString()+ "'>" +k+ "</a>");
+               buffer.append("<a href='" + FJUrl.VIEW_THREAD + "?page=" +k+ "&amp;id=" +thread.getId().toString()+ "'>" +k+ "</a>");
                if (k != Math.floor((pcount+1)/user.getPt()) + 1) buffer.append(",&nbsp;");
             }
 
@@ -510,33 +510,33 @@ public class Index extends FJServlet {
       if(user.isModerator()){
          buffer.append("<font face='Verdana' size='1pt'>");
          if (thread.getDock().getCode() > 0){
-            buffer.append("<a href='" + FJUrl.PIN_THREAD + "?id=" + thread.getId() + "&pin=" + COMMON.getCode() + "'>" +locale.getString("MSG_COMMON_PIN")+ "</a>&nbsp;");
+            buffer.append("<a href='" + FJUrl.PIN_THREAD + "?id=" + thread.getId() + "&amp;pin=" + COMMON.getCode() + "'>" +locale.getString("MSG_UNPIN")+ "</a>&nbsp;");
          }
          if (thread.getDock() != PIN){
-            buffer.append("<a href='" + FJUrl.PIN_THREAD + "?id=" + thread.getId() + "&pin=" + PIN.getCode() + "'>" +locale.getString("MSG_PIN")+ "</a>&nbsp;");
+            buffer.append("<a href='" + FJUrl.PIN_THREAD + "?id=" + thread.getId() + "&amp;pin=" + PIN.getCode() + "'>" +locale.getString("MSG_PIN")+ "</a>&nbsp;");
          }
          if (thread.getDock() != BIRTHDAY){
-            buffer.append("<a href='" + FJUrl.PIN_THREAD + "?id=" + thread.getId() + "&pin=" + BIRTHDAY.getCode() + "'>" +locale.getString("MSG_BIRTHDAY_PIN")+ "</a>&nbsp;");
+            buffer.append("<a href='" + FJUrl.PIN_THREAD + "?id=" + thread.getId() + "&amp;pin=" + BIRTHDAY.getCode() + "'>" +locale.getString("MSG_BIRTHDAY_PIN")+ "</a>&nbsp;");
          }
          if (thread.getDock() != NOTICE){
-            buffer.append("<a href='" + FJUrl.PIN_THREAD + "?id=" + thread.getId() + "&pin=" + NOTICE.getCode() + "'>" +locale.getString("MSG_NOTICE_PIN")+ "</a>&nbsp;");
+            buffer.append("<a href='" + FJUrl.PIN_THREAD + "?id=" + thread.getId() + "&amp;pin=" + NOTICE.getCode() + "'>" +locale.getString("MSG_NOTICE_PIN")+ "</a>&nbsp;");
          }
-         buffer.append("<a href='" + FJUrl.MOVE_THREAD_TO_RECYCLE + "?id=" +thread.getId().toString()+ "&usr=0&page=" + pageNumber + "'>" + locale.getString("mess70") + "</a>");
+         buffer.append("<a href='" + FJUrl.MOVE_THREAD_TO_RECYCLE + "?id=" +thread.getId().toString()+ "&amp;usr=0&amp;page=" + pageNumber + "'>" + locale.getString("mess70") + "</a>");
          buffer.append("&nbsp;</font>");
       }
       if (user.isModerator() || thread.getAuthId().equals(user.getId())){
          buffer.append("<font face='Verdana' size='1pt'>");
          if (thread.isClosed()){
-            buffer.append("<a href='close?id=" +thread.getId().toString()+ "&close=0&page=" + pageNumber + "'>" + locale.getString("MSG_OPEN_THREAD") + "</a>");
+            buffer.append("<a href='close?id=" +thread.getId().toString()+ "&amp;close=0&amp;page=" + pageNumber + "'>" + locale.getString("MSG_OPEN_THREAD") + "</a>");
          }else{
-            buffer.append("<a href='close?id=" +thread.getId().toString()+ "&close=1&page=" + pageNumber + "'>" + locale.getString("MSG_CLOSE_THREAD") + "</a>");
+            buffer.append("<a href='close?id=" +thread.getId().toString()+ "&amp;close=1&amp;page=" + pageNumber + "'>" + locale.getString("MSG_CLOSE_THREAD") + "</a>");
          }
          buffer.append("</font>");
       }
       buffer.append("</p></td>");
       // Количество постов
-      buffer.append("<td width='20' align='center' valign='middle'><span class='mnuforum' style='{color: purple}'>" +pcount);
-      buffer.append("</span><span id='posts" +thread.getId().toString()+ "' class='mnuforum' style='{color: red}'>&nbsp</span></td>");
+      buffer.append("<td width='20' align='center' valign='middle'><span class='mnuforum' style='color: purple'>" +pcount);
+      buffer.append("</span><span id='posts" +thread.getId().toString()+ "' class='mnuforum' style='color: red'>&nbsp;</span></td>");
       // кол-во просмотров
       buffer.append("<td width='80' align='center' valign='middle'>");
       // Количество просмотров участников
@@ -548,7 +548,7 @@ public class Index extends FJServlet {
       // Автор последнего поста
       buffer.append("<td width='120' align=center><div class='mnuforum'><font size='1pt'>" +HtmlChars.convertHtmlSymbols(thread.getLastPostNick())+ "</font></div>");
       // Время последнего поста
-      buffer.append("<div class='mnuforum'><a href='" + FJUrl.VIEW_THREAD + "?id=" + thread.getId().toString() + "&end=1#end' rel='nofollow'><font size='1pt'>" + Time.date("dd.MM.yy HH:mm",thread.getLastPostTime().getTime()) + "</font></a></div>");
+      buffer.append("<div class='mnuforum'><a href='" + FJUrl.VIEW_THREAD + "?id=" + thread.getId().toString() + "&amp;end=1#end' rel='nofollow'><font size='1pt'>" + Time.date("dd.MM.yy HH:mm",thread.getLastPostTime().getTime()) + "</font></a></div>");
       buffer.append("</td>");
       // Папка
       buffer.append("<td align='center' valign='middle'>");
@@ -560,7 +560,7 @@ public class Index extends FJServlet {
          buffer.append("<input type='checkbox' id='ch" +threadIndex+ "' name='" +threadIndex+ "' value='" +thread.getId().toString()+ "'>");
          buffer.append("</td>");
          buffer.append("<td style='padding:0px 5px 0px 5px' align='right'>");
-         buffer.append("<a href='" + FJUrl.MOVE_THREAD_TO_RECYCLE + "?id=" +thread.getId().toString()+ "&usr=" +String.valueOf(user.getId())+ "&page=" +thread.getPg()+ "'><img border='0' src='picts/del1.gif'></a>");
+         buffer.append("<a href='" + FJUrl.MOVE_THREAD_TO_RECYCLE + "?id=" +thread.getId().toString()+ "&amp;usr=" +String.valueOf(user.getId())+ "&amp;page=" +thread.getPg()+ "'><img border='0' src='picts/del1.gif'></a>");
          buffer.append("</td>");
       }
       return buffer;
