@@ -82,7 +82,7 @@ public class AAAAABFileUploadFilter implements Filter{
                         processFormField(item, wrappedRequest);
                     } else {
                         if(!processUploadedFile(item, wrappedRequest)){
-                        	errors.addError(ErrorCode.AVATAR_FILE_NOT_IMAGE);
+                        	errors.addError(ErrorCode.FILE_IS_NOT_IMAGE);
                         }
                     }
                 }            
@@ -91,7 +91,7 @@ public class AAAAABFileUploadFilter implements Filter{
                 response.sendRedirect(request.getContextPath() + "/");
             }
         } catch (SizeLimitExceededException e) {
-        	errors.addError(ErrorCode.AVATAR_REQUEST_TO_BIG);
+        	errors.addError(ErrorCode.REQUEST_IS_TO_BIG);
             chain.doFilter(wrappedRequest, resp);
         } catch (Throwable e) {
             e.printStackTrace();

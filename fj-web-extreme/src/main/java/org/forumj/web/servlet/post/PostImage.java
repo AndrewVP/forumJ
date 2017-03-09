@@ -55,7 +55,9 @@ public class PostImage extends FJServlet {
 				StringBuffer errCodes = new StringBuffer();
 				for (ErrorCode errorCode : errors) {
 					if (errCodes.length() == 0){
-						errCodes.append("&errcode=");
+						errCodes.append("&amp;");
+						errCodes.append(HttpParameters.ERROR_CODE);
+						errCodes.append("=");
 					}else{
 						errCodes.append(",");
 					}
