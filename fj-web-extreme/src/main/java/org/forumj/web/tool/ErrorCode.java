@@ -8,8 +8,8 @@ package org.forumj.web.tool;
  *
  */
 public enum ErrorCode {
-	AVATAR_REQUEST_TO_BIG(1, "avatar", "MSG_REQUEST_TO_BIG"),
-	AVATAR_FILE_NOT_IMAGE(2, "avatar", "MSG_FILE_NOT_IMAGE");
+	REQUEST_IS_TO_BIG(1, "avatar", "MSG_REQUEST_TO_BIG"),
+	FILE_IS_NOT_IMAGE(2, "avatar", "MSG_FILE_NOT_IMAGE");
 
 	private int errorCode;
 	private String fieldName;

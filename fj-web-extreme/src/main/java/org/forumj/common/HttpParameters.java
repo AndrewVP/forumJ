@@ -11,4 +11,5 @@ public interface HttpParameters {
     String AVATAR = "avatar";
     String ALBUM = "album";
     String USER = "user";
+    String ERROR_CODE = "errcode";
 }

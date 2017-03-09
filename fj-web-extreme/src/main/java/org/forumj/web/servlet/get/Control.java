@@ -63,7 +63,7 @@ public class Control extends FJServlet {
          Integer id = request.getParameter(HttpParameters.ID) == null ? 1 : Integer.valueOf(request.getParameter("id"));
          Long msg = request.getParameter("msg") == null ? null : Long.valueOf(request.getParameter("msg"));
          Long view = request.getParameter("view") == null ? null : Long.valueOf(request.getParameter("view"));
-         String errorCodes = request.getParameter("errcode");
+         String errorCodes = request.getParameter(HttpParameters.ERROR_CODE);
          List<ErrorCode> errors = new ArrayList<ErrorCode>();
          if (errorCodes != null && !errorCodes.trim().isEmpty()){
         	 String[] errCodes = errorCodes.split(",");
@@ -322,7 +322,7 @@ public class Control extends FJServlet {
             break;
          case 16:
             // PhotoAlbum
-            buffer.append(casePhotoalbum(locale, user, imageService));
+            buffer.append(casePhotoalbum(locale, user, imageService, errors));
             break;
          }
          buffer.append("</td>");
@@ -1442,7 +1442,7 @@ public class Control extends FJServlet {
       return buffer;
    }
 
-   private StringBuffer casePhotoalbum(LocaleString locale, IUser user, ImageService imageService) throws Exception{
+   private StringBuffer casePhotoalbum(LocaleString locale, IUser user, ImageService imageService, List<ErrorCode> errors) throws Exception{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'>");
       buffer.append("<b>");
@@ -1457,7 +1457,14 @@ public class Control extends FJServlet {
       buffer.append("&nbsp;");
       buffer.append("<input type='file' size='20' name='avatar'>");
       buffer.append("<br>");
-      buffer.append("<br>");
+      for (ErrorCode errorCode : errors) {
+         if(errorCode.getFieldName().equalsIgnoreCase("avatar")){
+            buffer.append("<span style='color:red;'>");
+            buffer.append(locale.getString(errorCode.getErrorMessageNls()));
+            buffer.append("</span>");
+            buffer.append("<br/>");
+         }
+      }
       buffer.append("<input type='submit' value='");
       buffer.append(locale.getString("mess75"));
       buffer.append("'>");
