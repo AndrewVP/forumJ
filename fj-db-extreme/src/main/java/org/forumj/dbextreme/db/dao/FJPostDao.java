@@ -68,7 +68,7 @@ public class FJPostDao extends FJDao {
       int parameterIndex = 0;
       st.setInt(++parameterIndex, post.getType());
       st.setLong(++parameterIndex, post.getThreadId());
-      st.setLong(++parameterIndex, post.getAuthor().getId());
+      st.setLong(++parameterIndex, post.getAuth());
       st.setLong(++parameterIndex, post.getCreateTime());
       st.setInt(++parameterIndex, post.getState());
       st.setLong(++parameterIndex, post.getReplyTo());
