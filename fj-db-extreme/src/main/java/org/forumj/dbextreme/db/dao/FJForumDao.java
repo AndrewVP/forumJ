@@ -22,23 +22,6 @@ import org.forumj.dbextreme.db.dao.tool.QueryBuilder;
  */
 public class FJForumDao extends FJDao {
    
-   private String curretBodyTable = null;
-   private String curretBodyHeadTable = null;
-
-   public String getCurretBodyTable() throws IOException, DBException, ConfigurationException, SQLException{
-      if (curretBodyTable == null){
-         loadConfig();
-      }
-      return curretBodyTable;
-   }
-   
-   public String getCurretBodyHeadTable() throws IOException, DBException, ConfigurationException, SQLException{
-      if (curretBodyHeadTable == null){
-         loadConfig();
-      }
-      return curretBodyHeadTable;
-   }
-   
    private void loadConfig() throws IOException, DBException, ConfigurationException, SQLException{
       String query = QueryBuilder.getLoadConfigQuery();
       Connection conn = null;
@@ -48,8 +31,6 @@ public class FJForumDao extends FJDao {
          st = conn.createStatement();
          ResultSet rs = st.executeQuery(query);
          if (rs.next()){
-            curretBodyTable = rs.getString("curret_body_table");
-            curretBodyHeadTable = rs.getString("current_body_head_table");
          }
       }finally{
          readFinally(conn, st);

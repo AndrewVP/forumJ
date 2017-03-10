@@ -41,6 +41,15 @@ public interface IFJPost {
    public abstract void setLastPost(boolean lastPost);
    public abstract boolean isLastPost();
    public abstract void setVoicesAmount(int voicesAmount);
+
+   Long getReplyTo();
+
+   void setReplyTo(Long replyTo);
+
+   Integer getType();
+
+   void setType(Integer type);
+
    public abstract int getVoicesAmount();
 
 

@@ -73,18 +73,14 @@ public class New extends FJServlet {
                }else{
                   PostService postService = FJServiceHolder.getPostService();
                   IFJPost post = postService.getPostObject();
-                  IFJPostBody postBody = postService.getPostbodyObject();
-                  IFJPostHead postHead = postService.getPostHeadObject();
                   post.setState(1);
-                  post.setBody(postBody);
-                  post.setHead(postHead);
-                  postBody.setBody(body);
-                  postHead.setAuth(user.getId());
-                  postHead.setAuthor(user);
-                  postHead.setDomen(domen);
-                  postHead.setIp(ip);
-                  postHead.setNred(0);
-                  postHead.setTitle(head);
+                  post.setBody(body);
+                  post.setAuth(user.getId());
+                  post.setAuthor(user);
+                  post.setDomen(domen);
+                  post.setIp(ip);
+                  post.setNred(0);
+                  post.setTitle(head);
                   ThreadService treadService = FJServiceHolder.getThreadService();
                   IFJThread thread = treadService.getThreadObject();
                   thread.setAuthId(user.getId());

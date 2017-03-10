@@ -1,4 +1,4 @@
 SELECT
  count(id) AS mx
-FROM body
+FROM posts
 WHERE id > ?

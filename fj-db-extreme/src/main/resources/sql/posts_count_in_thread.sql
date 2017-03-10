@@ -1,7 +1,7 @@
 SELECT
  COUNT(id) AS kolvo 
 FROM 
- body 
+ posts
 WHERE 
- head = ?
+ thread = ?
  AND id < ?

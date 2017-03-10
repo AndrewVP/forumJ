@@ -60,8 +60,6 @@ drop table fd_post010;
 drop table fd_post011;
 drop table fd_post012;
 
-
-
 CREATE TABLE posts
 (
   id BIGINT PRIMARY KEY NOT NULL AUTO_INCREMENT,
@@ -78,7 +76,10 @@ CREATE TABLE posts
   edited BIGINT,
   post TEXT NOT NULL
 );
-CREATE UNIQUE INDEX posts_id_uindex ON posts (id);
+
+CREATE INDEX thread_id ON posts(`thread`);
+
+
 
 insert into posts
   SELECT
@@ -97,3 +98,6 @@ insert into posts
     , fd_posts.body
   FROM body
     LEFT JOIN headers ON headers.id = body.id LEFT JOIN fd_posts ON fd_posts.id = body.id;
+
+
+drop table body;

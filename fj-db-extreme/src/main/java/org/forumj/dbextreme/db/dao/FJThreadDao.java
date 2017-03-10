@@ -51,14 +51,13 @@ public class FJThreadDao extends FJDao {
             Long threadId = idRs.getLong(1);
             thread.setId(threadId);
             post.setThreadId(threadId);
-            post.getHead().setThreadId(threadId);
-            post.getHead().setCreateTime(date.getTime());
+            post.setCreateTime(date.getTime());
             FJPostDao postDao = new FJPostDao();
             Long postId = postDao.create(post, conn, false);
             thread.setLastPostId(postId);
-            thread.setLastPostAuthId(post.getHead().getAuth());
-            thread.setLastPostTime(new Date(post.getHead().getCreateTime()));
-            thread.setLastPostNick(post.getHead().getAuthor().getNick());
+            thread.setLastPostAuthId(post.getAuth());
+            thread.setLastPostTime(new Date(post.getCreateTime()));
+            thread.setLastPostNick(post.getAuthor().getNick());
             update(thread, conn);
             if (thread instanceof FJQuestionThread){
                FJQuestNodeDao answersDao = new FJQuestNodeDao();
@@ -219,8 +218,7 @@ public class FJThreadDao extends FJDao {
    /**
     * Записывает состояние счетчиков просмотров ветки
     *
-    * @param $isLogin Авторизован ли посетитель
-    * @throws SQLException 
+    * @throws SQLException
     * @throws ConfigurationException 
     * @throws IOException 
     */

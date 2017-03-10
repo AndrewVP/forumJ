@@ -22,7 +22,9 @@ public class FJPost implements IFJPost {
    private Long id = null;
    
    private Long threadId = null;
-   
+
+   private Long replyTo = 0l;
+
    private Integer state = null;
 
    private Integer type = 0;
@@ -57,12 +59,31 @@ public class FJPost implements IFJPost {
 
    private Long createTime = null;
 
-   private Long editTime = null;
+   private Long editTime = 0l;
 
    private Long postId = null;
 
    private IUser author = null;
 
+   @Override
+   public Long getReplyTo() {
+      return replyTo;
+   }
+
+   @Override
+   public void setReplyTo(Long replyTo) {
+      this.replyTo = replyTo;
+   }
+
+   @Override
+   public Integer getType() {
+      return type;
+   }
+
+   @Override
+   public void setType(Integer type) {
+      this.type = type;
+   }
 
    @Override
    public int getVoicesAmount() {

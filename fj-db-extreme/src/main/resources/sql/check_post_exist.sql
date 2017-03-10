@@ -1,6 +1,6 @@
 SELECT
  id
 FROM 
- body
+ posts
 WHERE 
  id = ?

@@ -86,14 +86,6 @@ public class PostServiceImpl extends FJService implements PostService {
       return new FJPost();
    }
 
-   public IFJPostBody getPostbodyObject() {
-      return new FJPostBody();
-   }
-
-   public IFJPostHead getPostHeadObject() {
-      return new FJPostHead();
-   }
-
    /* (non-Javadoc)
     * @see org.forumj.common.db.service.PostService#checkPostExist(java.lang.Long)
     */
