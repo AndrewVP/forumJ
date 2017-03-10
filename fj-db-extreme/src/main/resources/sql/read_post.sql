@@ -1,1 +1,3 @@
-SELECT * FROM body WHERE id = ?
+SELECT *
+FROM posts
+WHERE id = ?

@@ -299,34 +299,28 @@ public class Write extends FJServlet {
    
    private void write_new(String body, IUser user, String domen, String ip, String head, Long threadId, PostService postService, LocaleString locale) throws DBException, ConfigurationException, IOException, SQLException, AddressException, InvalidKeyException, MessagingException{
       IFJPost post = postService.getPostObject();
-      IFJPostBody postBody = postService.getPostbodyObject();
-      IFJPostHead postHead = postService.getPostHeadObject();
       post.setState(1);
-      post.setBody(postBody);
-      post.setHead(postHead);
       post.setThreadId(threadId);
-      postBody.setBody(body);
-      postHead.setAuth(user.getId());
-      postHead.setAuthor(user);
-      postHead.setDomen(domen);
-      postHead.setIp(ip);
-      postHead.setNred(0);
-      postHead.setTitle(head);
-      postHead.setThreadId(threadId);
-      postHead.setCreateTime(new Date().getTime());
+      post.setBody(body);
+      post.setAuth(user.getId());
+      post.setAuthor(user);
+      post.setDomen(domen);
+      post.setIp(ip);
+      post.setNred(0);
+      post.setTitle(head);
+      post.setThreadId(threadId);
+      post.setCreateTime(new Date().getTime());
       postService.create(post);
       FJEMail.sendSuscribedPost(post, user);
    }
    private void write_edit(String body, IUser user, String domen, String ip, String head, Long threadId, Long postId, PostService postService) throws DBException, ConfigurationException, IOException, SQLException{
       IFJPost post = postService.read(postId);
-      IFJPostBody postBody = post.getBody();
-      IFJPostHead postHead = post.getHead();
-      postBody.setBody(body);
-      postHead.setDomen(domen);
-      postHead.setIp(ip);
-      postHead.setNred(postHead.getNred() + 1);
-      postHead.setEditTime(new Date().getTime());
-      postHead.setTitle(head);
+      post.setBody(body);
+      post.setDomen(domen);
+      post.setIp(ip);
+      post.setNred(post.getNred() + 1);
+      post.setEditTime(new Date().getTime());
+      post.setTitle(head);
       postService.update(post);
    }
 

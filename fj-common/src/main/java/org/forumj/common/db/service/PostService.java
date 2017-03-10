@@ -31,10 +31,6 @@ public interface PostService {
    
    public IFJPost getPostObject();
    
-   public IFJPostBody getPostbodyObject();
-   
-   public IFJPostHead getPostHeadObject();
-
    public Long create(IFJPost post) throws IOException, DBException, ConfigurationException, SQLException;
    
    public void update(IFJPost post) throws IOException, SQLException, ConfigurationException;

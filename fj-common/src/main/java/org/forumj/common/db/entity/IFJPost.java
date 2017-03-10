@@ -28,10 +28,6 @@ public interface IFJPost {
    public abstract List<IQuestNode> getAnswers();
    public abstract void setQuestion(IQuestNode question);
    public abstract IQuestNode getQuestion();
-   public abstract void setHead(IFJPostHead head);
-   public abstract IFJPostHead getHead();
-   public abstract void setBody(IFJPostBody body);
-   public abstract IFJPostBody getBody();
    public abstract void setTableHead(String tableHead);
    public abstract String getTableHead();
    public abstract void setTablePost(String tablePost);
@@ -45,6 +41,40 @@ public interface IFJPost {
    public abstract void setLastPost(boolean lastPost);
    public abstract boolean isLastPost();
    public abstract void setVoicesAmount(int voicesAmount);
+
+   Long getReplyTo();
+
+   void setReplyTo(Long replyTo);
+
+   Integer getType();
+
+   void setType(Integer type);
+
    public abstract int getVoicesAmount();
+
+
+   public abstract void setPostId(Long postId);
+   public abstract Long getPostId();
+   public abstract void setEditTime(Long editTime);
+   public abstract Long getEditTime();
+   public abstract void setCreateTime(Long createTime);
+   public abstract Long getCreateTime();
+   public abstract void setNred(Integer nred);
+   public abstract Integer getNred();
+   public abstract void setOutd(String outd);
+   public abstract String getOutd();
+   public abstract void setDomen(String domen);
+   public abstract String getDomen();
+   public abstract void setIp(String ip);
+   public abstract String getIp();
+   public abstract void setTitle(String title);
+   public abstract String getTitle();
+   public abstract void setAuth(Long auth);
+   public abstract Long getAuth();
+   public abstract void setAuthor(IUser author);
+   public abstract IUser getAuthor();
+
+   public abstract void setBody(String body);
+   public abstract String getBody();
 
 }

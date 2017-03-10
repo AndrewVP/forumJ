@@ -26,10 +26,6 @@ public class QueryBuilder {
    
    private static String updatePostQuery = null;
 
-   private static String updatePostBodyQuery = null;
-
-   private static String updatePostHeadQuery = null;
-
    private static String readThreadQuery = null;
    
    private static String checkThreadExistQuery = null;
@@ -42,20 +38,12 @@ public class QueryBuilder {
    
    private static String readPostQuery = null;
 
-   private static String readPostHeadQuery = null;
-
-   private static String readPostBodyQuery = null;
-
    private static String addedPostsAmountQuery = null;
 
    private static String addedPostsInThreadAmountQuery = null;
    
    private static String addedThreadsAmountQuery = null;
    
-   private static String createPostBodyQuery = null;
-   
-   private static String createPostHeadQuery = null;
-
    private static String loadAnswersQuery = null;
 
    private static String readVoiceQuery = null;
@@ -222,14 +210,6 @@ public class QueryBuilder {
    
    private static String postsCountInThreadQuery = null;
    
-   private static Map<String, String> readPostsHeadsQuery = new HashMap<String, String>();
-   
-   private static Object readPostsHeadsQueryMonitor = new Object();
-   
-   private static Map<String, String> readPostsBodiesQuery = new HashMap<String, String>();
-   
-   private static Object readPostsBodiesQueryMonitor = new Object();
-   
    private static String seenByUserQuery = null;
 
    private static String pinQuery = null;
@@ -378,20 +358,6 @@ public class QueryBuilder {
       return addFolderQuery;
    }
    
-   public static String getUpdatePostBodyQuery(String bodyTable) throws IOException{
-      if (updatePostBodyQuery == null){
-         updatePostBodyQuery = loadQuery("sql/update_post_body.sql");
-      }
-      return updatePostBodyQuery.replace("@@TABLE@@", bodyTable);
-   }
-   
-   public static String getUpdatePostHeadQuery(String headTable) throws IOException{
-      if (updatePostHeadQuery == null){
-         updatePostHeadQuery = loadQuery("sql/update_post_head.sql");
-      }
-      return updatePostHeadQuery.replace("@@TABLE@@", headTable);
-   }
-   
    public static String getReadThreadQuery() throws IOException{
       if (readThreadQuery == null){
          readThreadQuery = loadQuery("sql/read_thread.sql");
@@ -434,20 +400,6 @@ public class QueryBuilder {
       return readPostQuery;
    }
    
-   public static String getReadPostHeadQuery(String headTable) throws IOException{
-      if (readPostHeadQuery == null){
-         readPostHeadQuery = loadQuery("sql/read_post_head.sql");
-      }
-      return readPostHeadQuery.replace("@@TABLE@@", headTable);
-   }
-   
-   public static String getReadPostBodyQuery(String bodyTable) throws IOException{
-      if (readPostBodyQuery == null){
-         readPostBodyQuery = loadQuery("sql/read_post_body.sql");
-      }
-      return readPostBodyQuery.replace("@@TABLE@@", bodyTable);
-   }
-   
    public static String getAddedPostsAmountQuery() throws IOException{
       if (addedPostsAmountQuery == null){
          addedPostsAmountQuery = loadQuery("sql/added_posts_amount.sql");
@@ -467,20 +419,6 @@ public class QueryBuilder {
          addedThreadsAmountQuery = loadQuery("sql/added_threads_amount.sql");
       }
       return addedThreadsAmountQuery;
-   }
-   
-   public static String getCreatePostBodyQuery(String bodyTableName) throws IOException{
-      if (createPostBodyQuery == null){
-         createPostBodyQuery = loadQuery("sql/create_post_body.sql");
-      }
-      return createPostBodyQuery.replace("@@currentBodyTable@@", bodyTableName);
-   }
-   
-   public static String getCreatePostHeadQuery(String headTableName) throws IOException{
-      if (createPostHeadQuery == null){
-         createPostHeadQuery = loadQuery("sql/create_post_head.sql");
-      }
-      return createPostHeadQuery.replace("@@currentHeadTable@@", headTableName);
    }
    
    public static String getLoadAnswersQuery() throws IOException{
@@ -945,28 +883,6 @@ public class QueryBuilder {
       return readPostsQuery;
    }
    
-   public static String getReadPostsHeadsQuery(String table, String ids) throws IOException{
-      String query = readPostsHeadsQuery.get(table);
-      if (query == null){
-         query = loadQuery("sql/read_post_heads.sql").replace("@@TABLE@@", table);
-         synchronized (readPostsHeadsQueryMonitor) {
-            readPostsHeadsQuery.put(table, query); 
-         }
-      }
-      return query + " (" + ids + ")";
-   }
-   
-   public static String getReadPostsBodiesQuery(String table, String ids) throws IOException{
-      String query = readPostsBodiesQuery.get(table);
-      if (query == null){
-         query = loadQuery("sql/read_post_bodies.sql").replace("@@TABLE@@", table);
-         synchronized (readPostsBodiesQueryMonitor) {
-            readPostsBodiesQuery.put(table, query); 
-         }
-      }
-      return query + " (" + ids + ")";
-   }
-
    public static String getPostsCountInThreadQuery() throws IOException{
       if (postsCountInThreadQuery == null){
          postsCountInThreadQuery = loadQuery("sql/posts_count_in_thread.sql");
@@ -1004,16 +920,13 @@ public class QueryBuilder {
    
    private static String loadQuery(String path) throws IOException{
       ClassLoader classLoader = QueryBuilder.class.getClassLoader();
-      InputStream stream = classLoader.getResourceAsStream(path);
-      BufferedReader br = new BufferedReader(new InputStreamReader(stream));
       StringBuffer result = new StringBuffer();
-      try {
+      try(
+         InputStream stream = classLoader.getResourceAsStream(path);
+         BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+      ){
          while(br.ready()){
             result.append(br.readLine() + "\n");
-         }
-      } finally {
-         if (br != null){
-            br.close();
          }
       }
       return result.toString();

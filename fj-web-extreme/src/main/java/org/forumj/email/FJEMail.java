@@ -77,11 +77,11 @@ public class FJEMail {
    
    private static String prepareSubscribeMail(IFJPost post, IUser author, LocaleString locale) throws InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
-      Time postTime = new Time(post.getHead().getCreateTime());
+      Time postTime = new Time(post.getCreateTime());
       buffer.append("<html><head><meta http-equiv='content-type' content='text/html; charset=UTF-8'></head><body style='background-color:#EFEFEF;'><table>");
       buffer.append("<tr>");
       buffer.append("<td style='border-width:0px; padding: 5px 3px 5px 3px; background-color:#D1D7DC; width: 100%'>");
-      buffer.append("<b>&nbsp;&nbsp;" + fd_head_for_mail(HTMLEntities.htmlentities(removeSlashes(post.getHead().getTitle()))) + "</b>");
+      buffer.append("<b>&nbsp;&nbsp;" + fd_head_for_mail(HTMLEntities.htmlentities(removeSlashes(post.getTitle()))) + "</b>");
       buffer.append("</td></tr>");
       buffer.append("<tr><td>");
       buffer.append("<span style='font-family: Verdana; font-size: 10pt; color: #000000; font-weight:bold'>" + HtmlChars.convertHtmlSymbols(author.getNick()) + "</span>&nbsp;•");
@@ -120,7 +120,7 @@ public class FJEMail {
       buffer.append("<table width='100%'>");
       buffer.append("<tr><td>");
       buffer.append("<p style='font-family: Verdana; font-size: 10pt; color: #000000'>");
-      buffer.append(fd_body_for_mail(HtmlChars.convertHtmlSymbols(removeSlashes(post.getBody().getBody()))));
+      buffer.append(fd_body_for_mail(HtmlChars.convertHtmlSymbols(removeSlashes(post.getBody()))));
       buffer.append("</p>");
       buffer.append("</td></tr>");
       buffer.append("</table></td></tr>");
@@ -131,14 +131,14 @@ public class FJEMail {
       buffer.append("</p>");
       buffer.append("</td></tr>");
       buffer.append("<tr><td align='RIGHT' width='100%' colspan=2>");
-      if (post.getHead().getNred()>0){
-         Time postEditTime = new Time(post.getHead().getEditTime());
+      if (post.getNred()>0){
+         Time postEditTime = new Time(post.getEditTime());
          buffer.append("<table style='background-color:#e1e3e5' width='100%'>");
          buffer.append("<tr><td align='LEFT'>");
          buffer.append("<span style='font-family: Verdana; font-size: 8pt; color: #000000'>");
          buffer.append(locale.getString("mess50"));
          buffer.append("&nbsp;");
-         buffer.append(post.getHead().getNred());
+         buffer.append(post.getNred());
          buffer.append("&nbsp;");
          buffer.append(locale.getString("mess51"));
          buffer.append("&nbsp;");
