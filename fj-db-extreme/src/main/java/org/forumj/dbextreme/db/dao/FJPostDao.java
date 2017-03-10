@@ -52,7 +52,6 @@ public class FJPostDao extends FJDao {
             post.setId(postId);
             st.close();
             st = conn.prepareStatement(createPostBodyQuery);
-            IFJPostBody postBody = post.getBody();
             st.setLong(1, postId);
             st.setLong(2, postId);
             st.setString(3, postBody.getBody());

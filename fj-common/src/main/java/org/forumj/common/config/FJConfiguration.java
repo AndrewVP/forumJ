@@ -27,11 +27,17 @@ public class FJConfiguration {
    public final static String AVATAR_WIDTH = AVATAR + "." + WIDTH;
    public final static String AVATAR_HEIGHT = AVATAR + "." + HEIGHT;
 
+   // Example: -Dfj.properties="/home/fj/fj.properties"
+   private static String configFile = System.getProperty("fj.properties");
+
    private static Configuration config = null;
    
    public static Configuration getConfig() throws ConfigurationException{
       if (config == null){
-         config = new PropertiesConfiguration("fj.properties");
+         if (configFile == null || configFile.isEmpty()){
+            configFile = "fj.properties";
+         }
+         config = new PropertiesConfiguration(configFile);
       }
       return config;
    }
