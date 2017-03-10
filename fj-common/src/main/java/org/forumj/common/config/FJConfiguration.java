@@ -31,7 +31,7 @@ public class FJConfiguration {
    private static String configFile = System.getProperty("fj.properties");
 
    private static Configuration config = null;
-   
+
    public static Configuration getConfig() throws ConfigurationException{
       if (config == null){
          if (configFile == null || configFile.isEmpty()){

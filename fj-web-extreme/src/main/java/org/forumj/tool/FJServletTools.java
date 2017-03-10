@@ -73,11 +73,13 @@ public class FJServletTools {
          buffer.append("<a class='mnuforumSm' href='" + FJUrl.LOGIN + "' rel='nofollow'>");
          buffer.append(locale.getString("mess3"));
          buffer.append("</a>");
-         /*Поиск*/
+/*
+         //
          buffer.append("<img src='picts/new_search.gif' border='0' class='menuImg'>");
          buffer.append("<a class='mnuforumSm' href='search.php' rel='nofollow'>");
          buffer.append(locale.getString("mess30"));
          buffer.append("</a>");
+*/
          /*Вход*/
          buffer.append("<img src='picts/key_add.gif' border='0' class='menuImg'>");
          buffer.append("<a class='mnuforumSm' href='" + FJUrl.LOGIN + "?id=1' rel='nofollow'>");
@@ -125,11 +127,13 @@ public class FJServletTools {
          buffer.append("<a class='mnuforumSm' href='" + FJUrl.NEW_QUESTION + "' rel='nofollow'>");
          buffer.append(locale.getString("mess3"));
          buffer.append("</a>");
-         /*Поиск*/
+/*
+         //Поиск
          buffer.append("<img src='picts/new_search.gif' border='0' class='menuImg'>");
          buffer.append("<a class='mnuforumSm' href='search.php' rel='nofollow'>");
          buffer.append(locale.getString("mess30"));
          buffer.append("</a>");
+*/
          /* Личные настройки*/
          buffer.append("<img src='picts/profile.gif' border='0' class='menuImg'>");
          buffer.append("<a class='mnuforumSm' href='" + FJUrl.SETTINGS + "' rel='nofollow'>");
@@ -139,6 +143,11 @@ public class FJServletTools {
          buffer.append("<img src='picts/email.gif' border='0' class='menuImg'>");
          buffer.append("<a class='mnuforumSm' href='" + FJUrl.SETTINGS + "?id=2' rel='nofollow'>");
          buffer.append(locale.getString("mess23"));
+         buffer.append("</a>");
+         //Photoalbum
+         buffer.append("<img src='picts/pfotoalbum.png' border='0' class='menuImg'>");
+         buffer.append("<a class='mnuforumSm' href='" + FJUrl.SETTINGS + "?id=16' rel='nofollow'>");
+         buffer.append(locale.getString("MSG_PHOTOALBUM"));
          buffer.append("</a>");
          /*Выход*/
          String exitUrl = request.getContextPath() + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + (query == null || "".equalsIgnoreCase(query.trim()) ? "?exit=0" : query.trim() + "&exit=0");

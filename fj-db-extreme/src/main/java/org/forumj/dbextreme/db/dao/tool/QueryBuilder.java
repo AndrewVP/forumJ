@@ -178,6 +178,8 @@ public class QueryBuilder {
    
    private static String lastPostIdQuery = null;
    
+   private static String lastPostIdInThreadQuery = null;
+
    private static String isUserSubscribedQuery = null;
    
    private static String lastThreadIdQuery = null;
@@ -776,6 +778,13 @@ public class QueryBuilder {
       return lastPostIdQuery;
    }
    
+   public static String getLastPostIdInThreadQuery() throws IOException{
+      if (lastPostIdInThreadQuery == null){
+         lastPostIdInThreadQuery = loadQuery("sql/last_post_id_in_thread.sql");
+      }
+      return lastPostIdInThreadQuery;
+   }
+
    public static String getIsUserSubscribedQuery() throws IOException{
       if (isUserSubscribedQuery == null){
          isUserSubscribedQuery = loadQuery("sql/is_user_subscribed.sql");
