@@ -32,42 +32,48 @@ public class Ping extends FJServlet {
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       StringBuffer result = new StringBuffer();
       String m_xbParameter = request.getParameter("idb");
+      String idParameter = request.getParameter("id");
       String m_xtParameter = request.getParameter("idt");
       String idsParameter = request.getParameter("ids");
       CountService service = FJServiceHolder.getCountService();
-      if(m_xbParameter!= null && m_xtParameter != null && idsParameter != null){
          try {
-            long m_xb = service.getAddedPostsAmount(Long.valueOf(m_xbParameter));
-            result.append("{\n\"posts\":\"");
-            result.append(m_xb);
-            result.append("\",\n");
-            long m_xt = service.getAddedThreadsAmount(Long.valueOf(m_xtParameter));
-            result.append("\"threads\":\"");
-            result.append(m_xt);
-            result.append("\",\n");
-            result.append("\"ids\":[\n");
-            String[] threads = idsParameter.split(";");
-            for (int i = 0; i < threads.length; i++) {
-               String[] ids = threads[i].split(",");
-               if (ids.length > 1){
-                  String threadId = ids[0];
-                  String lastPostId = ids[1];
-                  result.append("{\"id\":\"");
-                  result.append(threadId);
-                  result.append("\",");
-                  result.append("\"amount\":\"");
-                  result.append(service.getAddedPostsAmount(Long.valueOf(threadId), Long.valueOf(lastPostId)));
-                  result.append("\"},\n");
-               }
+            if(m_xbParameter != null && m_xtParameter != null && idsParameter != null){
+                  long m_xb = service.getAddedPostsAmount(Long.valueOf(m_xbParameter));
+                  result.append("{\n\"posts\":\"");
+                  result.append(m_xb);
+                  result.append("\",\n");
+                  long m_xt = service.getAddedThreadsAmount(Long.valueOf(m_xtParameter));
+                  result.append("\"threads\":\"");
+                  result.append(m_xt);
+                  result.append("\",\n");
+                  result.append("\"ids\":[\n");
+                  String[] threads = idsParameter.split(";");
+                  for (int i = 0; i < threads.length; i++) {
+                     String[] ids = threads[i].split(",");
+                     if (ids.length > 1){
+                        String threadId = ids[0];
+                        String lastPostId = ids[1];
+                        result.append("{\"id\":\"");
+                        result.append(threadId);
+                        result.append("\",");
+                        result.append("\"amount\":\"");
+                        result.append(service.getAddedPostsAmount(Long.valueOf(threadId), Long.valueOf(lastPostId)));
+                        result.append("\"},\n");
+                     }
+                  }
+                  result.deleteCharAt(result.length() - 2);
+                  result.append("]\n}");
+            }else if (m_xbParameter != null && idParameter != null){ // indicator for thread
+               long m_xb = service.getAddedPostsAmount(Long.valueOf(idParameter), Long.valueOf(m_xbParameter));
+               result.append("{\n\"posts\":\"");
+               result.append(m_xb);
+               result.append("\"}\n");
             }
-            result.deleteCharAt(result.length() - 2);
-            result.append("]\n}");
             response.setContentType("text/json; charset=UTF-8");
             response.getWriter().write(result.toString());
          } catch (Throwable e) {
             e.printStackTrace();
          }
-      }
    }
 
 }

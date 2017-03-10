@@ -39,6 +39,16 @@ public interface IndexService {
          IOException;
 
    /**
+    * Возвращает id последнего поста в ветке
+    * @return
+    * @throws ConfigurationException
+    * @throws SQLException
+    * @throws IOException
+    */
+   public Long getLastPostId(long threadId) throws ConfigurationException, SQLException,
+         IOException;
+
+   /**
     * Возвращает id последней ветки в форуме
     * @return
     * @throws ConfigurationException
