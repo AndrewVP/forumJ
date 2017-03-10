@@ -472,4 +472,30 @@ public class FJPostDao extends FJDao {
       }
       return result;
    }
+   /**
+    * Возвращает id последнего поста в кокретной ветке
+    *
+    * @return unknown
+    * @throws SQLException
+    * @throws ConfigurationException
+    * @throws IOException
+    */
+   public Long getLastPostId(long threadId) throws ConfigurationException, SQLException, IOException{
+      Long result = 0l;
+      String query = getLastPostIdInThreadQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setLong(1, threadId);
+         ResultSet rs = st.executeQuery();
+         if (rs.next()){
+            result = rs.getLong("mx");
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
+   }
 }
