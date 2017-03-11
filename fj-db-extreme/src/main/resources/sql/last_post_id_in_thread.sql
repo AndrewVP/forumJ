@@ -1,6 +1,6 @@
 SELECT 
  MAX(id) as mx 
 FROM 
- body
+ posts
 WHERE
-head = ?
+thread = ?

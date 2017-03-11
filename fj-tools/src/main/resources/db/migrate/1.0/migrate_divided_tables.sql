@@ -100,4 +100,6 @@ insert into posts
     LEFT JOIN headers ON headers.id = body.id LEFT JOIN fd_posts ON fd_posts.id = body.id;
 
 
+drop table headers;
+drop table fd_posts;
 drop table body;
