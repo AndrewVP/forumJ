@@ -41,6 +41,17 @@ public class IndexServiceImpl extends FJService implements IndexService{
    }
    
    /**
+    * Возвращает id последнего поста в форуме
+    * @return
+    * @throws ConfigurationException
+    * @throws SQLException
+    * @throws IOException
+    */
+   public Long getLastPostId(long threadId) throws ConfigurationException, SQLException, IOException{
+      return getPostDao().getLastPostId(threadId);
+   }
+
+   /**
     * Возвращает id последней ветки в форуме
     * @return
     * @throws ConfigurationException
@@ -55,7 +66,6 @@ public class IndexServiceImpl extends FJService implements IndexService{
     * 
     * @param viewId
     * @param nfirstpost
-    * @param locale
     * @param user
     * @param ignorList
     * @return

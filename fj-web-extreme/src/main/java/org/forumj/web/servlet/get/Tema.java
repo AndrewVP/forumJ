@@ -111,6 +111,13 @@ public class Tema extends FJServlet {
          buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
          // Стили
          buffer.append(loadCSS("/css/style.css"));
+         IndexService indexService = FJServiceHolder.getIndexService();
+         Long m_xb = indexService.getLastPostId(threadId);
+         buffer.append("<script language='javascript' type='text/javascript'>\n");
+         buffer.append("var m_xb=" + m_xb + ";\n");
+         buffer.append("var threadId=" + threadId + ";\n");
+         buffer.append("</script>\n");
+         buffer.append(loadJavaScript("/js/indicatorForThread.js"));
          // Скрипты (смайлики)
          buffer.append(loadJavaScript("/js/smile_.js"));
          // Скрипты (игнор)
@@ -174,6 +181,10 @@ public class Tema extends FJServlet {
          buffer.append("<td align=right>");
          // Сторінка сформована :)
          buffer.append("<span class=posthead>"+ locale.getString("mess91") + "</span>");
+         buffer.append("<br/>");
+         buffer.append("<span class=posthead >" + locale.getString("mess165") + ":&nbsp;</span>");
+         buffer.append("<span class=posthead id='indicatort' style='color:red'>&nbsp;</span>");
+
          buffer.append("</td>");
          buffer.append("</tr></table>");
          buffer.append("</td>");
@@ -231,6 +242,11 @@ public class Tema extends FJServlet {
          }
          buffer.append("</tr>");
          buffer.append("</table>");
+         buffer.append("<script type='text/javascript'>");
+         buffer.append("if (request){");
+         buffer.append("getIndicatorInfo();");
+         buffer.append("}");
+         buffer.append("</script>");
          buffer.append("</td>");
          buffer.append("</tr>");
          // Главное "меню"
