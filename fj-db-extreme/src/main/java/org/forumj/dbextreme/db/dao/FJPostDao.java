@@ -151,6 +151,9 @@ public class FJPostDao extends FJDao {
          ResultSet rs = st.executeQuery();
          if (rs.next()){
             result = readPost(rs);
+            FJUserDao userDao = new FJUserDao();
+            IUser user = userDao.read(result.getAuth());
+            result.setAuthor(user);
          }
       }finally{
          readFinally(conn, st);
