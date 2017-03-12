@@ -368,7 +368,7 @@ public class FJThreadDao extends FJDao {
             if (start == 0){
                st.setInt(7, user.getPt() - pinnedAmount);
             }else{
-               st.setInt(8, user.getPt());
+               st.setInt(7, user.getPt());
             }
          }
          ResultSet rs = st.executeQuery();
@@ -410,7 +410,7 @@ public class FJThreadDao extends FJDao {
             if (start == 0){
                st.setInt(7, user.getPt() - pinnedAmount);
             }else{
-               st.setInt(8, user.getPt());
+               st.setInt(7, user.getPt());
             }
          }
 
