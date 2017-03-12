@@ -26,13 +26,13 @@ import org.apache.commons.configuration.ConfigurationException;
  */
 public interface CountService {
 
-   public long getAddedPostsAmount(long lastPostId) throws SQLException,
+   public long getAddedPostsAmount(long lastPostId, long userId) throws SQLException,
          ConfigurationException, IOException;
 
-   public long getAddedThreadsAmount(long lastThreadId) throws SQLException,
+   public long getAddedThreadsAmount(long lastThreadId, long userId) throws SQLException,
          ConfigurationException, IOException;
 
-   public long getAddedPostsAmount(long threadId, long lastPostId)
+   public long getAddedPostsAmount(long threadId, long lastPostId, long userId)
          throws SQLException, ConfigurationException, IOException;
 
 }

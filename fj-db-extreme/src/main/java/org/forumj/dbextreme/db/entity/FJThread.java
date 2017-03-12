@@ -101,11 +101,6 @@ public class FJThread implements IFJThread{
    private Long folderId;
    
    /**
-    * Дизайн
-    */
-   private int disain;
-
-   /**
     * Количество постов на странице
     */
    private int pt;
@@ -241,7 +236,6 @@ public class FJThread implements IFJThread{
    }
 
    /**
-    * @param lpauthor the lpauthor to set
     */
    @Override
    public void setLastPostNick(String lastPostNick) {
@@ -326,22 +320,6 @@ public class FJThread implements IFJThread{
    @Override
    public void setFolder(String folder) {
       this.folder = folder;
-   }
-
-   /**
-    * @return the disain
-    */
-   @Override
-   public int getDisain() {
-      return disain;
-   }
-
-   /**
-    * @param disain the disain to set
-    */
-   @Override
-   public void setDisain(int disain) {
-      this.disain = disain;
    }
 
    /**

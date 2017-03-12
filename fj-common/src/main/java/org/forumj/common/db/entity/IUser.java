@@ -40,8 +40,8 @@ public interface IUser {
    public int getPt();
    public void setPp(int pp);
    public int getPp();
-   public void setView(int view);
-   public int getView();
+   public void setView(long view);
+   public long getView();
    public void setBan(int ban);
    public int getBan();
    public void setShowAvatar(Boolean s_avatar);

@@ -161,7 +161,7 @@ public class FJPostDao extends FJDao {
       return result;
    }
    
-   public long getAddedPostsAmount(long lastPostId) throws SQLException, ConfigurationException, IOException{
+   public long getAddedPostsAmount(long lastPostId, long userId) throws SQLException, ConfigurationException, IOException{
       long result = 0;
       String query = getAddedPostsAmountQuery();
       PreparedStatement st = null;
@@ -170,6 +170,7 @@ public class FJPostDao extends FJDao {
          conn = getConnection();
          st = conn.prepareStatement(query);
          st.setLong(1, lastPostId);
+         st.setLong(2, userId);
          ResultSet rs = st.executeQuery();
          if (rs.next()){
             result = rs.getLong("mx");
@@ -180,7 +181,7 @@ public class FJPostDao extends FJDao {
       return result;
    }
 
-   public long getAddedPostsAmount(long threadId, long lastPostId) throws SQLException, ConfigurationException, IOException{
+   public long getAddedPostsAmount(long threadId, long lastPostId, long userId) throws SQLException, ConfigurationException, IOException{
       long result = 0;
       String query = getAddedPostsInThreadAmountQuery();
       PreparedStatement st = null;
@@ -190,6 +191,7 @@ public class FJPostDao extends FJDao {
          st = conn.prepareStatement(query);
          st.setLong(1, lastPostId);
          st.setLong(2, threadId);
+         st.setLong(3, userId);
          ResultSet rs = st.executeQuery();
          if (rs.next()){
             result = rs.getLong("mx");

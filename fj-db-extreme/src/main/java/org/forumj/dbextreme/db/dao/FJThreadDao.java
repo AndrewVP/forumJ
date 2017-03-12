@@ -21,6 +21,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.exception.DBException;
 import org.forumj.common.web.*;
+import org.forumj.common.web.Locale;
 import org.forumj.dbextreme.db.entity.*;
 
 /**
@@ -170,7 +171,7 @@ public class FJThreadDao extends FJDao {
       }
    }
 
-   public long getAddedThreadsAmount(long lastThreadId) throws SQLException, ConfigurationException, IOException{
+   public long getAddedThreadsAmount(long lastThreadId, long userId) throws SQLException, ConfigurationException, IOException{
       long result = 0;
       String query = getAddedThreadsAmountQuery();
       PreparedStatement st = null;
@@ -179,6 +180,7 @@ public class FJThreadDao extends FJDao {
          conn = getConnection();
          st = conn.prepareStatement(query);
          st.setLong(1, lastThreadId);
+         st.setLong(2, userId);
          ResultSet rs = st.executeQuery();
          if (rs.next()){
             result = rs.getLong("mx");
@@ -241,237 +243,304 @@ public class FJThreadDao extends FJDao {
       }
    }
 
-   public FJThreads getThreads(Long viewId, long nfirstpost, IUser user, List<IIgnor> ignorList) throws SQLException, ConfigurationException{
-      FJThreads result = new FJThreads();
-      String sql_views="SELECT folder FROM fdvtranzit WHERE (user=" + user.getId() + " OR user=0) AND view=" + viewId;
+   private class View {
+      private boolean hasForum;
+      private boolean hasOnlyForum;
+      private String folders;
+
+      public View(boolean hasForum, boolean hasOnlyForum, String folders) {
+         this.hasForum = hasForum;
+         this.hasOnlyForum = hasOnlyForum;
+         this.folders = folders;
+      }
+
+      public boolean isHasForum() {
+         return hasForum;
+      }
+
+      public boolean isHasOnlyForum() {
+         return hasOnlyForum;
+      }
+
+      public String getFolders() {
+         return folders;
+      }
+   }
+
+   //TODO Move it to the FJFolderDao
+   private View loadFolders(IUser user, long viewId) throws IOException, SQLException, ConfigurationException {
+      View result = null;
+      String sql_views = getLoadFoldersIdInViewQuery();
+      int foldersAmount = 0;
+      boolean hasForum = false;
+      StringBuilder folders = new StringBuilder("(");
+      try (
+           Connection conn = getConnection();
+           PreparedStatement st = conn.prepareStatement(sql_views);
+      ){
+         st.setLong(1, user.getId());
+         st.setLong(2, viewId);
+         ResultSet rs = st.executeQuery();
+         while (rs.next()) {
+            long folderId = rs.getLong("folder");
+            if (folderId == 1) {
+               hasForum = true;
+            } else {
+               folders.append(folderId).append(",");
+            }
+            foldersAmount++;
+         }
+         if (foldersAmount == 1 && hasForum) {
+            /*есть только форум*/
+         } else if (foldersAmount == 0) {
+            // TODO Why is this here?
+            folders = new StringBuilder("(1)");
+            hasForum = true;
+         } else {
+            /*другое*/
+            folders.deleteCharAt(folders.length() - 1);
+            folders.append(")");
+         }
+         result = new View(hasForum, hasForum && foldersAmount == 1, folders.toString());
+      }
+      return result;
+   }
+
+   private String loadLastThreadsIdsOnlyInForum(IUser user, long start, boolean pinned, int pinnedAmount) throws SQLException, ConfigurationException, IOException {
+      StringBuilder result = new StringBuilder("AND thread in (");
+      String query = null;
+      if (pinned){
+         query = getLoadPinnedThreadsIdsOnlyInForumQuery();
+      }else{
+         query = getLoadLastThreadsIdsOnlyInForumQuery();
+      }
+      try (
+              Connection conn = getConnection();
+              PreparedStatement st = conn.prepareStatement(query);
+      ) {
+         st.setLong(1, user.getId());
+         st.setLong(2, user.getId());
+         if (!pinned){
+            st.setLong(3, start);
+            if (start == 0){
+               st.setInt(4, user.getPt() - pinnedAmount);
+            }else{
+               st.setInt(4, user.getPt());
+            }
+         }
+         ResultSet rs = st.executeQuery();
+         boolean hasResult = false;
+         while (rs.next()) {
+            hasResult = true;
+            result.append(rs.getLong("thread")).append(",");
+         }
+         if (hasResult){
+            // at least one thread present
+            result.deleteCharAt(result.length() - 1);
+            result.append(")\n");
+            return result.toString();
+         }else{
+            return "";
+         }
+      }
+   }
+
+   private String loadLastThreadsIdsNotOnlyInForum(IUser user, Long viewId, long start, boolean pinned, int pinnedAmount) throws SQLException, ConfigurationException, IOException {
+      StringBuilder result = new StringBuilder("AND thread in (");
+      String query = null;
+      if (pinned){
+         query = getLoadPinnedThreadsIdsNotOnlyInForumQuery();
+      }else{
+         query = getLoadLastThreadsIdsNotOnlyInForumQuery();
+      }
+      try (
+              Connection conn = getConnection();
+              PreparedStatement st = conn.prepareStatement(query);
+      ) {
+         st.setLong(1, user.getId());
+         st.setLong(2, user.getId());
+         st.setLong(3, viewId);
+         st.setLong(4, user.getId());
+         if (!pinned){
+            st.setLong(5, start);
+            if (start == 0){
+               st.setInt(6, user.getPt() - pinnedAmount);
+            }else{
+               st.setInt(6, user.getPt());
+            }
+         }
+         ResultSet rs = st.executeQuery();
+         boolean hasResult = false;
+         while (rs.next()) {
+            hasResult = true;
+            result.append(rs.getLong("thread")).append(",");
+         }
+         if (hasResult){
+            // at least one thread present
+            result.deleteCharAt(result.length() - 1);
+            result.append(")\n");
+            return result.toString();
+         }else{
+            return "";
+         }
+      }
+   }
+
+   private String loadLastThreadsIdsNoForum(IUser user, Long viewId, long start, boolean pinned, int pinnedAmount) throws SQLException, ConfigurationException, IOException {
+      StringBuilder result = new StringBuilder("AND thread in (");
+      String query = null;
+      if (pinned){
+         query = getLoadPinnedThreadsIdsNoForumQuery();
+      }else{
+         query = getLoadLastThreadsIdsNoForumQuery();
+      }
+      try (
+              Connection conn = getConnection();
+              PreparedStatement st = conn.prepareStatement(query);
+      ) {
+         st.setLong(1, user.getId());
+         st.setLong(2, user.getId());
+         st.setLong(3, viewId);
+         st.setLong(4, user.getId());
+         if (!pinned){
+            st.setLong(5, start);
+            if (start == 0){
+               st.setInt(6, user.getPt() - pinnedAmount);
+            }else{
+               st.setInt(6, user.getPt());
+            }
+         }
+
+         ResultSet rs = st.executeQuery();
+         boolean hasResult = false;
+         while (rs.next()) {
+            hasResult = true;
+            result.append(rs.getLong("thread")).append(",");
+         }
+         if (hasResult){
+            // at least one thread present
+            result.deleteCharAt(result.length() - 1);
+            result.append(")\n");
+            return result.toString();
+         }else{
+            return "";
+         }
+      }
+   }
+
+
+   public long getThreadsAmount(Long viewId, IUser user) throws Exception{
+      long count = 0;
       Connection conn = null;
-      Statement st = null;
-      int xRow=0;
-      int isForum=0;
-      String folders="(";
+      PreparedStatement st = null;
+      ResultSet rs = null;
+      String lastThreadsIds = null;
+      String sql_count = null;
       try {
          conn = getConnection();
-         st = conn.createStatement();
-         ResultSet rs = st.executeQuery(sql_views);
-         while (rs.next()){
-            Long folder = rs.getLong("folder"); 
-            if (folder.longValue() == 1){
-               isForum = 1;
-            }else{
-               folders+=" "+folder.toString()+",";
-            }
-            xRow++;
-         }
-         if (xRow == 1 && isForum == 1){
-            /*есть только форум*/
-         }else if(xRow == 0){
-            // TODO ошибку надо отловить!
-            folders = "(1)";
-            isForum = 1;
-         }else{
-            /*другое*/
-            folders=folders.substring(0, folders.length()-1)+")";
-         }
-         String ignored = null;
-         /*выбираем минусы игнора*/
-         if (ignorList.size() > 0){
-            ignored = "(";
-            for (int ignorIndex = 0; ignorIndex < ignorList.size(); ignorIndex++) {
-               ignored += ignorList.get(ignorIndex).getUser().getId();
-               if (ignorIndex < ignorList.size() -1){
-                  ignored += ", ";
-               }
-            }
-            ignored += ")";
-         }
-         String where = "";
-         if (ignored != null){
-            where = " WHERE titles.auth NOT IN " + ignored + " ";
-         }
-         String join=null;
-         String sqlTmpJoinTable = null;
-         String sqlTmpJoinTableInsert = null;
-         String folderName = null;
-         if (isForum > 0){
+         View view = loadFolders(user, viewId);
+         if (view.isHasForum()) {
             /*Есть форум*/
-            if (xRow == 1){
+            if (view.isHasOnlyForum()) {
                /*Есть только форум*/
-               /*Определяем минусы - все перемещенное*/
-               String sqlMoved=" SELECT title FROM fdtranzit WHERE user="+user.getId() + " ";
-               rs = st.executeQuery(sqlMoved);
-               String moved = null;
-               while (rs.next()){
-                  /*перемещения есть*/
-                  if (moved == null){
-                     moved="(";
-                  }
-                  moved+=" "+rs.getLong("title")+",";
-               }
-               if (moved != null){
-                  moved=moved.substring(0, moved.length()-1)+")";
-               }
-               /*Собираем запросы*/
-               if (moved != null){
-                  if (ignored != null){
-                     where+=" AND titles.id NOT IN "+moved+" ";
-                  }else{
-                     where=" WHERE titles.id NOT IN "+moved+" ";
-                  }
-               }
-               folderName="'Форум' as _flname, ";
-               join="";
-            }else{
+               sql_count = getCountThreadsOnlyInForumQuery();
+               st = conn.prepareStatement(sql_count);
+               st.setLong(1, user.getId());
+               st.setLong(2, user.getId());
+            } else {
                /*кроме форума есть что-то еще*/
-               /*Находим минусы - перемещенные в другие папки*/
-               String sqlMoved=" SELECT title FROM fdtranzit WHERE user="+user.getId()+" AND folder NOT IN "+folders + " ";
-               rs = st.executeQuery(sqlMoved);
-               String moved = null;
-               while (rs.next()){
-                  /*перемещения есть*/
-                  if (moved == null){
-                     moved="(";
-                  }
-                  moved+=" "+rs.getLong("title")+",";
-               }
-               if (moved != null){
-                  moved=moved.substring(0, moved.length()-1)+")";
-               }
-               /*Собираем запросы*/
-               if (moved != null){
-                  if (ignored != null){
-                     where+=" AND titles.id NOT IN "+moved+" ";
-                  }else{
-                     where=" WHERE titles.id NOT IN "+moved+" ";
-                  }
-               }
-               folderName="IF (ISNULL(fdfolders.flname), 'Форум', fdfolders.flname) as _flname, ";
-               // Временная таблица
-               sqlTmpJoinTable="CREATE TEMPORARY TABLE fdutranzit LIKE fdtranzit";
-               sqlTmpJoinTableInsert="INSERT INTO fdutranzit (title, folder) SELECT fdtranzit.title, fdtranzit.folder FROM fdtranzit WHERE fdtranzit.user=" + user.getId() + ";";
-               join=" LEFT JOIN fdutranzit on titles.id=fdutranzit.title LEFT JOIN fdfolders ON fdutranzit.folder=fdfolders.id ";
+               sql_count = getCountThreadsNotOnlyForumQuery();
+               st = conn.prepareStatement(sql_count);
+               st.setLong(1, user.getId());
+               st.setLong(2, user.getId());
+               st.setLong(3, viewId);
+               st.setLong(4, user.getId());
             }
-         }else{
+         } else {
             /*форума в интерфейсе нет*/
-            /*Определяем плюсы - все перемещенное в папки*/
-            String sqlMoved="SELECT title FROM fdtranzit WHERE user=" + user.getId() + " AND folder IN " + folders + " ";
-            rs = st.executeQuery(sqlMoved);
-            String moved = null;
-            while (rs.next()){
-               /*перемещения есть*/
-               if (moved == null){
-                  moved="(";
-               }
-               moved+=" "+rs.getLong("title")+",";
-            }
-            if (moved != null){
-               moved=moved.substring(0, moved.length()-1)+")";
-            }
-            /*Собираем запросы*/
-            if (moved != null){
-               if (ignored != null){
-                  where+=" AND titles.id NOT IN "+moved+" ";
-               }else{
-                  where=" WHERE titles.id IN "+moved+" ";
-               }
-            }else{
-               //Ничего нет
-               if (ignored != null){
-                  where+=" AND 0=1";
-               }else{
-                  where=" WHERE 0=1";
-               }
-               
-            }
-            folderName="IF (ISNULL(fdfolders.flname), 'Форум', fdfolders.flname) as _flname, ";
-            // Временная таблица
-            sqlTmpJoinTable="CREATE TEMPORARY TABLE fdutranzit LIKE fdtranzit";
-            sqlTmpJoinTableInsert="INSERT INTO fdutranzit (title, folder) SELECT fdtranzit.title, fdtranzit.folder FROM fdtranzit WHERE fdtranzit.user=" + user.getId() + ";";
-            join="LEFT JOIN fdutranzit on titles.id=fdutranzit.title LEFT JOIN fdfolders ON fdutranzit.folder=fdfolders.id ";
+            sql_count = getCountThreadsNoForumQuery();
+            st = conn.prepareStatement(sql_count);
+            st.setLong(1, user.getId());
+            st.setLong(2, user.getId());
+            st.setLong(3, viewId);
          }
-         String sql_main="SELECT "+
-         "titles.id, "+
-         "titles.dock, "+
-         "DATE_ADD(DATE_ADD(titles.lposttime,INTERVAL 0 HOUR), INTERVAL 0 MINUTE) as lposttime_, "+
-         "titles.type, "+
-         "titles.npost, "+
-         "titles.seenid, "+
-         "titles.seenall, "+
-         "DATE_FORMAT(titles.reg, '%d.%m %H:%i') as reg_, "+
-         "titles.head, "+
-         "titles.lpostuser, "+
-         "titles.lpostnick, "+
-         "titles.id_last_post, "+
-         "titles.closed, "+
-         "titles.auth, "+
-         folderName + 
-         "users.nick "+
-         "FROM "+
-         "titles force index(titles0001) "+
-         "LEFT JOIN users ON titles.auth=users.id "+
-         join + 
-         where + 
-         " ORDER BY "+
-         "titles.dock desc, "+
-         "titles.lposttime desc "+
-         "LIMIT " + nfirstpost + ", " + user.getPt() + " ";
-
-         String sql_count="SELECT "+
-         "COUNT(id) as kolvo "+
-         "FROM "+
-         "titles " + where + ";";
-         // Добавляем временную таблицу
-         if (sqlTmpJoinTable != null){
-            String query = "DROP TEMPORARY TABLE IF EXISTS fdutranzit;";
-            st.executeUpdate(query);
-            st.executeUpdate(sqlTmpJoinTable);
-            st.executeUpdate(sqlTmpJoinTableInsert);
-         }
-         rs = st.executeQuery(sql_count);
-         long count = 0;
-         if (rs.next()){
+         rs = st.executeQuery();
+         if (rs.next()) {
             count = rs.getLong("kolvo");
          }
-         rs = st.executeQuery(sql_main);
-         result.setThreadCount(count);
-         int disain = -1;
-         Statement st1 = conn.createStatement();
-         ResultSet rs1;
-         StringBuffer indctrIds = new StringBuffer();
-         while (rs.next()){
-            Long id = rs.getLong("id");
-            Long idLastPost = rs.getLong("id_last_post"); 
-            if (idLastPost.longValue() == 0){
-               String query="SELECT MAX(id) as id_post FROM body WHERE head=" + id.toString();
-               rs1 = st1.executeQuery(query);
-               if (rs1.next()){
-                  idLastPost = rs1.getLong("id_post");
-               }
-               query="UPDATE titles SET id_last_post=" + idLastPost.toString() + " WHERE id=" + id.toString();
-               st1.executeUpdate(query);
-            }
-            indctrIds.append(";" + id.toString() + "," + idLastPost.toString());
-            FJThread thr = new FJThread();
-            thr.setDisain(disain);
-            thr.setId(id);
-            thr.setDock(Pin.valueOfInteger(rs.getInt("dock")));
-            thr.setLastPostTime(rs.getTimestamp("lposttime_"));
-            thr.setHead(rs.getString("head"));
-            thr.setNick(rs.getString("nick"));
-            thr.setLastPostNick(rs.getString("lpostnick"));
-            thr.setPcount(rs.getInt("npost")-1);
-            thr.setSnid(rs.getInt("seenid"));
-            thr.setSnall(rs.getInt("seenall"));
-            thr.setType(ThreadType.valueOfInteger(rs.getInt("type")));
-            thr.setClosed(rs.getBoolean("closed"));
-            thr.setAuthId(rs.getLong("auth"));
-            thr.setFolder(rs.getString("_flname"));
-            result.getThreads().add(thr);
-            disain = disain * -1;
-         }
-         result.setIndctrIds(indctrIds.toString());
       }finally{
          readFinally(conn, st);
       }
+      return count;
+   }
+
+   public List<IFJThread> getThreads(Long viewId, long startPosition, IUser user, boolean pinned, int pinnedAmount) throws SQLException, ConfigurationException, IOException{
+      List<IFJThread> result = new LinkedList<>();
+      Connection conn = null;
+      PreparedStatement st = null;
+      ResultSet rs = null;
+      String lastThreadsIds = null;
+      try {
+         conn = getConnection();
+         View view = loadFolders(user, viewId);
+         if (view.isHasForum()){
+            /*Есть форум*/
+            if (view.isHasOnlyForum()){
+               /*Есть только форум*/
+               lastThreadsIds = loadLastThreadsIdsOnlyInForum(user, startPosition, pinned, pinnedAmount);
+            }else{
+               /*кроме форума есть что-то еще*/
+               lastThreadsIds = loadLastThreadsIdsNotOnlyInForum(user, viewId, startPosition, pinned, pinnedAmount);
+            }
+         }else{
+            /*форума в интерфейсе нет*/
+            lastThreadsIds = loadLastThreadsIdsNoForum(user, viewId, startPosition, pinned, pinnedAmount);
+         }
+         if (!lastThreadsIds.isEmpty()){
+            String sql_main=getLoadForumIndexQuery(lastThreadsIds);
+            st = conn.prepareStatement(sql_main);
+            st.setLong(1, user.getId());
+            st.setLong(2, user.getId());
+            rs = st.executeQuery();
+            while (rs.next()){
+               Long id = rs.getLong("thread");
+               Long idLastPost = rs.getLong("maxd");
+               FJThread thr = new FJThread();
+               thr.setId(id);
+               thr.setLastPostId(idLastPost);
+               thr.setDock(Pin.valueOfInteger(rs.getInt("dock")));
+               thr.setLastPostTime(new Date(rs.getLong("created")));
+               thr.setHead(rs.getString("head"));
+               thr.setNick(rs.getString("nick"));
+               thr.setLastPostNick(rs.getString("lpostnick"));
+               thr.setPcount(rs.getInt("npost")-1);
+               thr.setSnid(rs.getInt("seenid"));
+               thr.setSnall(rs.getInt("seenall"));
+               thr.setType(ThreadType.valueOfInteger(rs.getInt("type")));
+               thr.setClosed(rs.getBoolean("closed"));
+               thr.setAuthId(rs.getLong("auth"));
+               String flName = rs.getString("flname");
+               // TODO Localization!
+               thr.setFolder(flName == null || flName.isEmpty() ? "Форум" : flName);
+               result.add(thr);
+            }
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
+   }
+
+
+   public List<IFJThread> getThreads(Long viewId, long startPosition, IUser user) throws SQLException, ConfigurationException, IOException{
+      List<IFJThread> result = new LinkedList<>();
+      List<IFJThread> pinnedThreads = getThreads(viewId, startPosition, user, true, 0);
+      int pinnedThreadsAmount = pinnedThreads.size();
+      if (pinnedThreadsAmount > 0){
+         result.addAll(pinnedThreads);
+      }
+      List<IFJThread> otherThreads = getThreads(viewId, startPosition, user, false, pinnedThreadsAmount);
+      result.addAll(otherThreads);
       return result;
    }
 

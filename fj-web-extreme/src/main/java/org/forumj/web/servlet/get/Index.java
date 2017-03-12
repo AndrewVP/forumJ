@@ -73,7 +73,6 @@ public class Index extends FJServlet {
          // Скрипты (флажки)
          buffer.append(loadJavaScript("/js/jsmain_chek.js"));
          IndexService indexService = FJServiceHolder.getIndexService();
-         IgnorService ignorService = FJServiceHolder.getIgnorService();
          FolderService folderService = FJServiceHolder.getFolderService();
          Long m_xb = indexService.getLastPostId();
          Long m_xt = indexService.getMaxThreadId();
@@ -105,14 +104,14 @@ public class Index extends FJServlet {
          if (nfirstpost < 0){
             nfirstpost = 0;
          }
+         Long viewId = (Long) session.getAttribute("view");
          // Интерфейс по умолчанию
-         if (session.getAttribute("view") == null){
+         if (viewId == null){
             session.setAttribute("view", user.getView());
+            viewId = user.getView();
          }
-         List<IIgnor> ignorList = ignorService.readUserIgnor(user.getId());
-         FJThreads threads = indexService.getThreads(Long.valueOf((Integer) session.getAttribute("view")), nfirstpost, user, ignorList);
-         List<IFJThread> threadsList = threads.getThreads();
-         long threadsCount = threads.getThreadCount();
+         List<IFJThread> threadsList = indexService.getThreads(viewId, nfirstpost, user);
+         long threadsCount = indexService.getThreadsAmount(viewId, user);
          // кол-во страниц с заголовками
          int couP = (int) (Math.floor(threadsCount/user.getPp())+2);
          // Проверяем наличие почты
@@ -131,9 +130,7 @@ public class Index extends FJServlet {
          buffer.append(menu(request, user, locale, true));
          // Интерфейс
          // Имя текущего
-         if (session.getAttribute("vname") == null){
-            session.setAttribute("vname", indexService.getViewName(Long.valueOf((Integer)session.getAttribute("view"))));
-         }
+         String viewName = indexService.getViewName(viewId);
          List<IFJInterface> viewsList = indexService.getViews(userId);
          buffer.append("<tr><td>");
 
@@ -150,7 +147,7 @@ public class Index extends FJServlet {
          buffer.append(locale.getString("mess81"));
          buffer.append("</span>");
          buffer.append("<span class=nik>");
-         buffer.append(session.getAttribute("vname"));
+         buffer.append(viewName);
          buffer.append("</span>");
          buffer.append("</td>");
          buffer.append("<td class=bg2 align=right>");
@@ -291,22 +288,36 @@ public class Index extends FJServlet {
             i5=user.getPp();
          }
          // Выводим строки
+         StringBuffer indctrIds = new StringBuffer();
          for (int threadIndex = 0; threadIndex < threadsList.size(); threadIndex++) {
+            if ((threadIndex & 1) == 0) {
+               buffer.append("<tr class='matras'>");
+            }else {
+               buffer.append("<tr class='trees'>");
+            }
             IFJThread thread = threadsList.get(threadIndex);
-            buffer.append(writeThread(thread, user, locale, threadIndex, pageNumber));
+            StringBuffer threadContent = writeThread(thread, user, locale, threadIndex, pageNumber);
+            buffer.append(threadContent);
+            buffer.append("</tr>");
+            indctrIds.append(";").append(thread.getId()).append(",").append(thread.getLastPostId());
+         }
+         if (threadsList.size() > 0){
+            indctrIds.deleteCharAt(0);
          }
          // Главные ссылки внизу страницы
-         buffer.append("</table>");
-         buffer.append("<script type='text/javascript'>");
-         buffer.append("if (request){");
-         if(threads.getIndctrIds() == null || threads.getIndctrIds().trim().length() == 0){
-            buffer.append("var idss = '0';");
+         buffer.append("</table>\n");
+         buffer.append("<script type='text/javascript'>\n");
+         buffer.append("if (request){\n");
+         buffer.append("var idss = '");
+         if(threadsList.size() > 0){
+            buffer.append(indctrIds);
          }else{
-            buffer.append("var idss = '" + threads.getIndctrIds().substring(1) + "';");
+            buffer.append("0");
          }
-         buffer.append("getIndicatorInfo();");
-         buffer.append("}");
-         buffer.append("</script>");
+         buffer.append("';\n");
+         buffer.append("getIndicatorInfo();\n");
+         buffer.append("}\n");
+         buffer.append("</script>\n");
          buffer.append("</td>");
          buffer.append("</tr>");
          buffer.append("<tr>");
@@ -348,7 +359,11 @@ public class Index extends FJServlet {
             buffer.append("<tr class=heads>");
             buffer.append("<td class=left></td>");
             buffer.append("<td class=bg2 align=left>");
-            buffer.append("<span class=mnuforum>" + locale.getString("mess81") + "</span><span class=nik>" + session.getAttribute("vname") + "</span>");
+            buffer.append("<span class=mnuforum>");
+            buffer.append(locale.getString("mess81"));
+            buffer.append("</span><span class=nik>");
+            buffer.append(viewName);
+            buffer.append("</span>");
             buffer.append("</td>");
             buffer.append("<td class=bg2 align=right>");
             // Выводим папки
@@ -432,11 +447,6 @@ public class Index extends FJServlet {
 
    private StringBuffer writeThread(IFJThread thread, IUser user, LocaleString locale, int threadIndex, int pageNumber) throws InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
-      if (thread.getDisain() == 1) { 
-         buffer.append("<tr class=trees >");
-      }else {
-         buffer.append("<tr class=matras>");   
-      }
       // Картинки
       // Пиктограммка опроса
       buffer.append("<td width='10' align='center' style='padding:0px 5px 0px 5px'>");

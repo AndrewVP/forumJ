@@ -50,8 +50,6 @@ public interface IFJThread {
    public int getPg();
    public void setPt(int pt);
    public int getPt();
-   public void setDisain(int disain);
-   public int getDisain();
    public void setFolder(String folder);
    public String getFolder();
    public void setType(ThreadType type);
