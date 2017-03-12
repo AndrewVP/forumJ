@@ -66,7 +66,7 @@ public class Ping extends FJServlet {
                   result.deleteCharAt(result.length() - 2);
                   result.append("]\n}");
             }else if (m_xbParameter != null && idParameter != null){ // indicator for thread
-               long m_xb = service.getAddedPostsAmount(Long.valueOf(idParameter), Long.valueOf(m_xbParameter));
+               long m_xb = service.getAddedPostsAmount(Long.valueOf(idParameter), Long.valueOf(m_xbParameter), user.getId());
                result.append("{\n\"posts\":\"");
                result.append(m_xb);
                result.append("\"}\n");
