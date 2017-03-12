@@ -320,12 +320,13 @@ public class FJThreadDao extends FJDao {
       ) {
          st.setLong(1, user.getId());
          st.setLong(2, user.getId());
+         st.setLong(3, user.getId());
          if (!pinned){
-            st.setLong(3, start);
+            st.setLong(4, start);
             if (start == 0){
-               st.setInt(4, user.getPt() - pinnedAmount);
+               st.setInt(5, user.getPt() - pinnedAmount);
             }else{
-               st.setInt(4, user.getPt());
+               st.setInt(6, user.getPt());
             }
          }
          ResultSet rs = st.executeQuery();
@@ -361,12 +362,13 @@ public class FJThreadDao extends FJDao {
          st.setLong(2, user.getId());
          st.setLong(3, viewId);
          st.setLong(4, user.getId());
+         st.setLong(5, user.getId());
          if (!pinned){
-            st.setLong(5, start);
+            st.setLong(6, start);
             if (start == 0){
-               st.setInt(6, user.getPt() - pinnedAmount);
+               st.setInt(7, user.getPt() - pinnedAmount);
             }else{
-               st.setInt(6, user.getPt());
+               st.setInt(8, user.getPt());
             }
          }
          ResultSet rs = st.executeQuery();
@@ -402,12 +404,13 @@ public class FJThreadDao extends FJDao {
          st.setLong(2, user.getId());
          st.setLong(3, viewId);
          st.setLong(4, user.getId());
+         st.setLong(5, user.getId());
          if (!pinned){
-            st.setLong(5, start);
+            st.setLong(6, start);
             if (start == 0){
-               st.setInt(6, user.getPt() - pinnedAmount);
+               st.setInt(7, user.getPt() - pinnedAmount);
             }else{
-               st.setInt(6, user.getPt());
+               st.setInt(8, user.getPt());
             }
          }
 
