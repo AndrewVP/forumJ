@@ -33,8 +33,7 @@ public class SlctView extends FJServlet {
          String viewParameter = request.getParameter("VIEW");
          HttpSession session = request.getSession();
          if (!isEmptyParameter(viewParameter)){
-            session.setAttribute("view", Integer.valueOf(viewParameter));
-            session.setAttribute("vname", null);
+            session.setAttribute("view", Long.valueOf(viewParameter));
          }
          buffer.append(successPostOut("0", FJUrl.INDEX));
       } catch (Throwable e) {

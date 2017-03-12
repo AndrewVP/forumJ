@@ -13,6 +13,7 @@ import org.forumj.common.FJServletName;
 import org.forumj.common.FJUrl;
 import org.forumj.common.db.service.CountService;
 import org.forumj.common.db.service.FJServiceHolder;
+import org.forumj.dbextreme.db.entity.User;
 import org.forumj.web.servlet.FJServlet;
 
 import javax.servlet.ServletException;
@@ -30,6 +31,7 @@ public class Ping extends FJServlet {
    
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      User user = (User) request.getSession().getAttribute("user");
       StringBuffer result = new StringBuffer();
       String m_xbParameter = request.getParameter("idb");
       String idParameter = request.getParameter("id");
@@ -38,11 +40,11 @@ public class Ping extends FJServlet {
       CountService service = FJServiceHolder.getCountService();
          try {
             if(m_xbParameter != null && m_xtParameter != null && idsParameter != null){
-                  long m_xb = service.getAddedPostsAmount(Long.valueOf(m_xbParameter));
+                  long m_xb = service.getAddedPostsAmount(Long.valueOf(m_xbParameter), user.getId());
                   result.append("{\n\"posts\":\"");
                   result.append(m_xb);
                   result.append("\",\n");
-                  long m_xt = service.getAddedThreadsAmount(Long.valueOf(m_xtParameter));
+                  long m_xt = service.getAddedThreadsAmount(Long.valueOf(m_xtParameter), user.getId());
                   result.append("\"threads\":\"");
                   result.append(m_xt);
                   result.append("\",\n");
@@ -57,7 +59,7 @@ public class Ping extends FJServlet {
                         result.append(threadId);
                         result.append("\",");
                         result.append("\"amount\":\"");
-                        result.append(service.getAddedPostsAmount(Long.valueOf(threadId), Long.valueOf(lastPostId)));
+                        result.append(service.getAddedPostsAmount(Long.valueOf(threadId), Long.valueOf(lastPostId), user.getId()));
                         result.append("\"},\n");
                      }
                   }

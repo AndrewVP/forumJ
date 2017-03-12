@@ -61,19 +61,23 @@ public class IndexServiceImpl extends FJService implements IndexService{
    public Long getMaxThreadId() throws ConfigurationException, SQLException, IOException{
       return getThreadDao().getMaxThreadId();
    }
-   
+
+   public long getThreadsAmount(Long viewId, IUser user) throws Exception{
+      return getThreadDao().getThreadsAmount(viewId, user);
+   }
+
+
    /**
     * 
     * @param viewId
     * @param nfirstpost
     * @param user
-    * @param ignorList
     * @return
     * @throws SQLException
     * @throws ConfigurationException
     */
-   public FJThreads getThreads(Long viewId, long nfirstpost, IUser user, List<IIgnor> ignorList) throws SQLException, ConfigurationException{
-      return getThreadDao().getThreads(viewId, nfirstpost, user, ignorList);
+   public List<IFJThread> getThreads(Long viewId, long nfirstpost, IUser user) throws SQLException, ConfigurationException, IOException {
+      return getThreadDao().getThreads(viewId, nfirstpost, user);
    }
    
    /**

@@ -3,3 +3,4 @@ SELECT
 FROM posts
 WHERE id > ?
  AND thread = ?
+ AND author NOT IN (SELECT ignor FROM ignor WHERE user = ? AND end > now())

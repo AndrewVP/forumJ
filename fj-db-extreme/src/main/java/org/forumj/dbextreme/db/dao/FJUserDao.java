@@ -207,7 +207,7 @@ public class FJUserDao extends FJDao {
          st.setInt(18, user.getShowBithday() ? 1 : 0);
          st.setInt(19, user.getLanguge().getCode());
          st.setInt(20, user.getHideIp() ? 1 : 0);
-         st.setInt(21, user.getView());
+         st.setLong(21, user.getView());
          st.setInt(22, user.getPp());
          st.setInt(23, user.getPt());
          st.setString(24, user.getAvatar());
@@ -254,7 +254,7 @@ public class FJUserDao extends FJDao {
          st.setInt(18, user.getShowBithday() ? 1 : 0);
          st.setInt(19, user.getLanguge().getCode());
          st.setInt(20, user.getHideIp() ? 1 : 0);
-         st.setInt(21, user.getView());
+         st.setLong(21, user.getView());
          st.setInt(22, user.getPp());
          st.setInt(23, user.getPt());
          st.setString(24, user.getAvatar());
