@@ -96,6 +96,12 @@ public class ImageServiceImpl extends FJService implements ImageService {
     }
 
     @Override
+    public void update(Image image) throws Exception{
+        getImageDao().update(image);
+    }
+
+
+    @Override
     public Image getImage(long id) throws Exception {
         return getImageDao().getImage(id);
     }

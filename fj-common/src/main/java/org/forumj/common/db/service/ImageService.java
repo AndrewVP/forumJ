@@ -13,7 +13,9 @@ import java.util.List;
 public interface ImageService {
 
    public Image create(DiskFileItem fileItem, IUser user, long albumId, ImageType type) throws Exception;
-   
+
+   public void update(Image image) throws Exception;
+
    public Image getObject();
 
    public List<Image> getImages(long userId, long albumId, ImageType type) throws Exception;

@@ -306,7 +306,7 @@ public class FJThreadDao extends FJDao {
       return result;
    }
 
-   private String loadLastThreadsIdsOnlyInForum(IUser user, long start, boolean pinned, int pinnedAmount) throws SQLException, ConfigurationException, IOException {
+   private String loadLastThreadsIdsOnlyInForum(IUser user, long start, boolean pinned) throws SQLException, ConfigurationException, IOException {
       StringBuilder result = new StringBuilder("AND thread in (");
       String query = null;
       if (pinned){
@@ -323,11 +323,7 @@ public class FJThreadDao extends FJDao {
          st.setLong(3, user.getId());
          if (!pinned){
             st.setLong(4, start);
-            if (start == 0){
-               st.setInt(5, user.getPt() - pinnedAmount);
-            }else{
-               st.setInt(6, user.getPt());
-            }
+            st.setInt(6, user.getPt());
          }
          ResultSet rs = st.executeQuery();
          boolean hasResult = false;
@@ -346,7 +342,7 @@ public class FJThreadDao extends FJDao {
       }
    }
 
-   private String loadLastThreadsIdsNotOnlyInForum(IUser user, Long viewId, long start, boolean pinned, int pinnedAmount) throws SQLException, ConfigurationException, IOException {
+   private String loadLastThreadsIdsNotOnlyInForum(IUser user, Long viewId, long start, boolean pinned) throws SQLException, ConfigurationException, IOException {
       StringBuilder result = new StringBuilder("AND thread in (");
       String query = null;
       if (pinned){
@@ -365,11 +361,7 @@ public class FJThreadDao extends FJDao {
          st.setLong(5, user.getId());
          if (!pinned){
             st.setLong(6, start);
-            if (start == 0){
-               st.setInt(7, user.getPt() - pinnedAmount);
-            }else{
-               st.setInt(7, user.getPt());
-            }
+            st.setInt(7, user.getPt());
          }
          ResultSet rs = st.executeQuery();
          boolean hasResult = false;
@@ -388,7 +380,7 @@ public class FJThreadDao extends FJDao {
       }
    }
 
-   private String loadLastThreadsIdsNoForum(IUser user, Long viewId, long start, boolean pinned, int pinnedAmount) throws SQLException, ConfigurationException, IOException {
+   private String loadLastThreadsIdsNoForum(IUser user, Long viewId, long start, boolean pinned) throws SQLException, ConfigurationException, IOException {
       StringBuilder result = new StringBuilder("AND thread in (");
       String query = null;
       if (pinned){
@@ -407,11 +399,7 @@ public class FJThreadDao extends FJDao {
          st.setLong(5, user.getId());
          if (!pinned){
             st.setLong(6, start);
-            if (start == 0){
-               st.setInt(7, user.getPt() - pinnedAmount);
-            }else{
-               st.setInt(7, user.getPt());
-            }
+            st.setInt(7, user.getPt());
          }
 
          ResultSet rs = st.executeQuery();
@@ -477,7 +465,7 @@ public class FJThreadDao extends FJDao {
       return count;
    }
 
-   public List<IFJThread> getThreads(Long viewId, long startPosition, IUser user, boolean pinned, int pinnedAmount) throws SQLException, ConfigurationException, IOException{
+   public List<IFJThread> getThreads(Long viewId, long startPosition, IUser user, boolean pinned) throws SQLException, ConfigurationException, IOException{
       List<IFJThread> result = new LinkedList<>();
       Connection conn = null;
       PreparedStatement st = null;
@@ -490,14 +478,14 @@ public class FJThreadDao extends FJDao {
             /*Есть форум*/
             if (view.isHasOnlyForum()){
                /*Есть только форум*/
-               lastThreadsIds = loadLastThreadsIdsOnlyInForum(user, startPosition, pinned, pinnedAmount);
+               lastThreadsIds = loadLastThreadsIdsOnlyInForum(user, startPosition, pinned);
             }else{
                /*кроме форума есть что-то еще*/
-               lastThreadsIds = loadLastThreadsIdsNotOnlyInForum(user, viewId, startPosition, pinned, pinnedAmount);
+               lastThreadsIds = loadLastThreadsIdsNotOnlyInForum(user, viewId, startPosition, pinned);
             }
          }else{
             /*форума в интерфейсе нет*/
-            lastThreadsIds = loadLastThreadsIdsNoForum(user, viewId, startPosition, pinned, pinnedAmount);
+            lastThreadsIds = loadLastThreadsIdsNoForum(user, viewId, startPosition, pinned);
          }
          if (!lastThreadsIds.isEmpty()){
             String sql_main=getLoadForumIndexQuery(lastThreadsIds);
@@ -537,12 +525,13 @@ public class FJThreadDao extends FJDao {
 
    public List<IFJThread> getThreads(Long viewId, long startPosition, IUser user) throws SQLException, ConfigurationException, IOException{
       List<IFJThread> result = new LinkedList<>();
-      List<IFJThread> pinnedThreads = getThreads(viewId, startPosition, user, true, 0);
-      int pinnedThreadsAmount = pinnedThreads.size();
-      if (pinnedThreadsAmount > 0){
-         result.addAll(pinnedThreads);
+      if (startPosition == 0){
+          List<IFJThread> pinnedThreads = getThreads(viewId, startPosition, user, true);
+          if (pinnedThreads.size() > 0){
+             result.addAll(pinnedThreads);
+          }
       }
-      List<IFJThread> otherThreads = getThreads(viewId, startPosition, user, false, pinnedThreadsAmount);
+      List<IFJThread> otherThreads = getThreads(viewId, startPosition, user, false);
       result.addAll(otherThreads);
       return result;
    }
