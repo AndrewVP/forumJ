@@ -27,6 +27,8 @@ import org.apache.logging.log4j.Logger;
 import org.forumj.common.config.FJConfiguration;
 import org.forumj.common.db.entity.Image;
 import org.forumj.common.db.service.FJServiceHolder;
+import org.forumj.common.db.service.ImageService;
+import org.forumj.image.ImageTools;
 import org.forumj.web.servlet.tool.ResourcesCache;
 
 import static org.forumj.common.FJServletName.IMAGES;
@@ -85,14 +87,17 @@ public class Images extends HttpServlet {
          resp.setHeader("max-age", "600000");
          resp.setHeader("Cache-Control", "private");
          String fileKey = req.getRequestURI().substring(req.getRequestURI().split("/")[1].length() + 1);
-         String filePath;
+         String filePath = null;
+         Long imageId = null;
+         Image image = null;
+         ImageService imageService = FJServiceHolder.getImageService();
          if (fileKey.startsWith("/" + avatarsContextDir)){
             filePath = fjHomeDir + File.separator + fileKey;
          }else if (fileKey.startsWith("/photo")){
             //TODO make Constant
             String idParameter = req.getParameter("id");
-            Long imageId = Long.valueOf(idParameter);
-            Image image = FJServiceHolder.getImageService().getImage(imageId);
+            imageId = Long.valueOf(idParameter);
+            image = imageService.getImage(imageId);
             filePath = image.getPath();
             photoExt = image.getExtension();
          }else{
@@ -103,7 +108,21 @@ public class Images extends HttpServlet {
          List<byte[]> resource = cache.get(fileKey);
          if (resource == null){
             resource = getFileAsArray(filePath);
-            cache.put(fileKey, resource);
+            if (resource.size() != 0){
+               cache.put(fileKey, resource);
+            }else if (fileKey.startsWith("/photo")){
+               // probably home dir was moved
+               String pathToImage = ImageTools.makePath(imageId, fjHomeDir + File.separator + imagesContextDir);
+               filePath = ImageTools.makeImageName(imageId, pathToImage, photoExt);
+               resource = getFileAsArray(filePath);
+               if (resource.size() != 0){
+                  cache.put(fileKey, resource);
+                  image.setPath(filePath);
+                  imageService.update(image);
+               }else{
+                  //TODO Make "missed image"
+               }
+            }
          }
          OutputStream out = resp.getOutputStream();
          for (int i = 0; i < resource.size(); i++) {
