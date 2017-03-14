@@ -34,9 +34,9 @@ public class User implements IUser {
 
    private String pass2 = null;
 
-   private int pp = 0;
+   private int threadsOnPage = 0;
 
-   private int pt = 0;
+   private int postsOnPage = 0;
 
    private long view = 0;
 
@@ -388,33 +388,29 @@ public class User implements IUser {
     /**
      * @return the pg
      */
-    @Override
-   public int getPp() {
-       return pp;
+    public int getThreadsOnPage() {
+       return threadsOnPage;
     }
 
     /**
-     * @param pp the pg to set
+     * @param threadsOnPage the pg to set
      */
-    @Override
-   public void setPp(int pp) {
-       this.pp = pp;
+    public void setThreadsOnPage(int threadsOnPage) {
+       this.threadsOnPage = threadsOnPage;
     }
 
     /**
-     * @return the pt
+     * @return the postsOnPage
      */
-    @Override
-   public int getPt() {
-       return pt;
+    public int getPostsOnPage() {
+       return postsOnPage;
     }
 
     /**
-     * @param pt the pt to set
+     * @param postsOnPage the postsOnPage to set
      */
-    @Override
-   public void setPt(int pt) {
-       this.pt = pt;
+    public void setPostsOnPage(int postsOnPage) {
+       this.postsOnPage = postsOnPage;
     }
 
     /**
@@ -525,10 +521,10 @@ public class User implements IUser {
       builder.append(pass);
       builder.append(", pass2=");
       builder.append(pass2);
-      builder.append(", pp=");
-      builder.append(pp);
-      builder.append(", pt=");
-      builder.append(pt);
+      builder.append(", threadsOnPage=");
+      builder.append(threadsOnPage);
+      builder.append(", postsOnPage=");
+      builder.append(postsOnPage);
       builder.append(", view=");
       builder.append(view);
       builder.append(", wantSeeAvatars=");

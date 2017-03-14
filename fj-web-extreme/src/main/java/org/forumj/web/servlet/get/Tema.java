@@ -73,16 +73,16 @@ public class Tema extends FJServlet {
          IgnorService ignorService = FJServiceHolder.getIgnorService();
          List<IIgnor> ignorList = ignorService.readUserIgnor(user.getId());
          // Сколько страниц?
-         Integer count = thread.getPcount();
-         Integer couP = (int) (Math.floor((double)count/user.getPt())+2);
+         Integer count = thread.getPostsAmount();
+         Integer couP = (int) (Math.floor((double)count/user.getPostsOnPage())+2);
          // Если цитирование или последний пост, то нам на последнюю
          boolean lastPost = false;
          if (isAnswer || end != null){
             pageNumber = couP-1;
             lastPost = true;
          }
-         int nfirstpost = (pageNumber-1)*user.getPt();
-         List<IFJPost> posts = postService.readPosts(user, threadId, nfirstpost, user.getPt(), pageNumber, lastPost);
+         int nfirstpost = (pageNumber-1)*user.getPostsOnPage();
+         List<IFJPost> posts = postService.readPosts(user, threadId, nfirstpost, user.getPostsOnPage(), pageNumber, lastPost);
          int postsAmount = posts.size();
          // Получаем массив постов
          session.setAttribute("page", pageNumber);
@@ -97,7 +97,7 @@ public class Tema extends FJServlet {
                e.printStackTrace();
                msg = null;
             }
-            pageNumber=(int) (Math.floor(countPosts/user.getPt()) + 1);
+            pageNumber=(int) (Math.floor(countPosts/user.getPostsOnPage()) + 1);
          }
          // Записываем счетчики
          // Робот?
@@ -196,9 +196,9 @@ public class Tema extends FJServlet {
          buffer.append("<table border='0' cellpadding='2' cellspacing='0' width='100%'>");
          // Определяем кол-во строк таблицы
          if (postsAmount>count) {
-            postsAmount=count-(pageNumber-1)*user.getPt();
+            postsAmount=count-(pageNumber-1)*user.getPostsOnPage();
          }else{
-            postsAmount=user.getPt();
+            postsAmount=user.getPostsOnPage();
          }
          // Тема
          // Выводим строки

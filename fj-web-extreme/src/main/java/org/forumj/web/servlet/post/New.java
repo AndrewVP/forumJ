@@ -89,7 +89,7 @@ public class New extends FJServlet {
                   thread.setSnall(0);
                   thread.setSnid(0);
                   thread.setFolderId((long) 1);
-                  thread.setPcount(1);
+                  thread.setPostsAmount(1);
                   thread.setDock(Pin.COMMON);
                   treadService.create(thread, post);
                   // Подготавливаем текст поста.          

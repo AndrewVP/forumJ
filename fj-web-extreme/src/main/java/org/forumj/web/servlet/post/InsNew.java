@@ -133,8 +133,8 @@ public class InsNew extends FJServlet {
                   user.setEmail(email1Parameter);
                   user.setPass(pass1Parameter);
                   user.setPass2(String.valueOf(generateRandom()));
-                  user.setPp(FJConfiguration.getConfig().getInt("fj.default.threadsOnPage"));
-                  user.setPt(FJConfiguration.getConfig().getInt("fj.default.postsOnPage"));
+                  user.setThreadsOnPage(FJConfiguration.getConfig().getInt("fj.default.threadsOnPage"));
+                  user.setPostsOnPage(FJConfiguration.getConfig().getInt("fj.default.postsOnPage"));
                   user.setView(FJConfiguration.getConfig().getInt("fj.default.viewId"));
                   user.setIsActive(Boolean.FALSE);
                   int activateCode = generateRandom();

@@ -58,8 +58,8 @@ public interface IFJThread {
    public Integer getSnall();
    public void setSnid(Integer snid);
    public Integer getSnid();
-   public void setPcount(int pcount);
-   public int getPcount();
+   public void setPostsAmount(int postsAmount);
+   public int getPostsAmount();
    public void setLastPostNick(String lastPostNick);
    public String getLastPostNick();
    public void setLastPostTime(Date lastPostTime);

@@ -100,7 +100,7 @@ public class Index extends FJServlet {
          // Таблица с лого и верхним баннером
          buffer.append(logo(request));
          // соединяемся и определяем кол-во страниц
-         long nfirstpost=(pageNumber-1)*user.getPp();
+         long nfirstpost=(pageNumber-1)*user.getThreadsOnPage();
          if (nfirstpost < 0){
             nfirstpost = 0;
          }
@@ -113,7 +113,7 @@ public class Index extends FJServlet {
          List<IFJThread> threadsList = indexService.getThreads(viewId, nfirstpost, user);
          long threadsCount = indexService.getThreadsAmount(viewId, user);
          // кол-во страниц с заголовками
-         int couP = (int) (Math.floor(threadsCount/user.getPp())+2);
+         int couP = (int) (Math.floor(threadsCount/user.getThreadsOnPage())+2);
          // Проверяем наличие почты
          String newMail = "";
          if (user.isLogined()) {
@@ -281,11 +281,11 @@ public class Index extends FJServlet {
          }
          buffer.append("</tr>");
          // Определяем кол-во строк таблицы
-         long i5=pageNumber*user.getPp();
+         long i5=pageNumber*user.getThreadsOnPage();
          if (i5>threadsCount) {
-            i5=threadsCount-(pageNumber-1)*user.getPp();
+            i5=threadsCount-(pageNumber-1)*user.getThreadsOnPage();
          }else{
-            i5=user.getPp();
+            i5=user.getThreadsOnPage();
          }
          // Выводим строки
          StringBuffer indctrIds = new StringBuffer();
@@ -490,28 +490,28 @@ public class Index extends FJServlet {
          break;
       }
       // Cсылки на страницы в ветке
-      int pcount = thread.getPcount();
-      if (pcount+1>user.getPt() || user.isModerator()|| thread.getAuthId().equals(user.getId())) {
+      int postsAmount = thread.getPostsAmount();
+      if (postsAmount + 1 > user.getPostsOnPage() || user.isModerator()|| thread.getAuthId().equals(user.getId())) {
          buffer.append("<br />");
       }
-      if (pcount+1>user.getPt()) {
+      if (postsAmount + 1 > user.getPostsOnPage()) {
          buffer.append("<font face='Verdana' size='1pt'>" +locale.getString("mess10")+ ":&nbsp");
          int k1=0;
          int k2=0;
-         for (int k=1; k<=Math.floor((pcount+1)/user.getPt()) + 1; k++) {
+         for (int k = 1; k<=Math.floor((postsAmount+1)/user.getPostsOnPage()) + 1; k++) {
             k1=k1+1;
             if (k1==10){
                buffer.append("<a href='" + FJUrl.VIEW_THREAD + "?page=" +k+ "&amp;id=" +thread.getId().toString()+ "'>" +k+ "</a>");
-               if (k != Math.floor((pcount+1)/user.getPt()) + 1) buffer.append(",&nbsp;");
+               if (k != Math.floor((postsAmount+1)/user.getPostsOnPage()) + 1) buffer.append(",&nbsp;");
                k1=0;
                k2=k2+1;
             }
             if (k==1){
                buffer.append("<a href='" + FJUrl.VIEW_THREAD + "?page=" +k+ "&amp;id=" +thread.getId().toString()+ "'>" +k+ "</a>,&nbsp;");
             }
-            if ((Math.floor((pcount+1)/user.getPt())-k2*10 + 1)< 10 && (k-k2*10) != 0 && k!=1){
+            if ((Math.floor((postsAmount+1)/user.getPostsOnPage())-k2*10 + 1)< 10 && (k-k2*10) != 0 && k!=1){
                buffer.append("<a href='" + FJUrl.VIEW_THREAD + "?page=" +k+ "&amp;id=" +thread.getId().toString()+ "'>" +k+ "</a>");
-               if (k != Math.floor((pcount+1)/user.getPt()) + 1) buffer.append(",&nbsp;");
+               if (k != Math.floor((postsAmount+1)/user.getPostsOnPage()) + 1) buffer.append(",&nbsp;");
             }
 
          }
@@ -545,7 +545,7 @@ public class Index extends FJServlet {
       }
       buffer.append("</p></td>");
       // Количество постов
-      buffer.append("<td width='20' align='center' valign='middle'><span class='mnuforum' style='color: purple'>" +pcount);
+      buffer.append("<td width='20' align='center' valign='middle'><span class='mnuforum' style='color: purple'>" +postsAmount);
       buffer.append("</span><span id='posts" +thread.getId().toString()+ "' class='mnuforum' style='color: red'>&nbsp;</span></td>");
       // кол-во просмотров
       buffer.append("<td width='80' align='center' valign='middle'>");
