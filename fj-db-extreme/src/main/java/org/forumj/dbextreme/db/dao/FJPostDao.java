@@ -9,21 +9,17 @@
  */
 package org.forumj.dbextreme.db.dao;
 
-import static org.forumj.common.db.entity.IFJPost.*;
 import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.*;
 
 import java.io.IOException;
 import java.sql.*;
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.Date;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.exception.DBException;
-import org.forumj.common.web.*;
 import org.forumj.dbextreme.db.entity.*;
-import org.forumj.dbextreme.db.service.FJService;
 
 /**
  *
@@ -52,7 +48,7 @@ public class FJPostDao extends FJDao {
                thread.setLastPostAuthId(post.getAuth());
                thread.setLastPostTime(new Date(post.getCreateTime()));
                thread.setLastPostNick(post.getAuthor().getNick());
-               thread.setPcount(thread.getPcount()+1);
+               thread.setPostsAmount(thread.getPostsAmount()+1);
                threadDao.update(thread, conn);
             }
          }else{

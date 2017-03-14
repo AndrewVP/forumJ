@@ -21,7 +21,6 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.exception.DBException;
 import org.forumj.common.web.*;
-import org.forumj.common.web.Locale;
 import org.forumj.dbextreme.db.entity.*;
 
 /**
@@ -141,7 +140,7 @@ public class FJThreadDao extends FJDao {
             thread.setDock(Pin.valueOfInteger(rs.getInt(DOCK_FIELD_NAME)));
             thread.setType(ThreadType.valueOfInteger(rs.getInt(TYPE_FIELD_NAME)));
             thread.setFolderId(rs.getLong(FOLDER_ID_FIELD_NAME));
-            thread.setPcount(rs.getInt(POSTS_COUNT_FIELD_NAME));
+            thread.setPostsAmount(rs.getInt(POSTS_COUNT_FIELD_NAME));
             thread.setClosed(rs.getBoolean(CLOSED_FIELD_NAME));
          }
       }finally{
@@ -162,7 +161,7 @@ public class FJThreadDao extends FJDao {
          st.setLong(5, thread.getLastPostId());
          st.setInt(6, thread.getDock().getCode());
          st.setLong(7, thread.getFolderId());
-         st.setInt(8, thread.getPcount());
+         st.setInt(8, thread.getPostsAmount());
          st.setBoolean(9, thread.isClosed());
          st.setLong(10, thread.getId());
          st.executeUpdate();
@@ -323,7 +322,8 @@ public class FJThreadDao extends FJDao {
          st.setLong(3, user.getId());
          if (!pinned){
             st.setLong(4, start);
-            st.setInt(5, user.getPt());
+            int threadsOnPage = user.getThreadsOnPage();
+            st.setInt(5, threadsOnPage);
          }
          ResultSet rs = st.executeQuery();
          boolean hasResult = false;
@@ -361,7 +361,8 @@ public class FJThreadDao extends FJDao {
          st.setLong(5, user.getId());
          if (!pinned){
             st.setLong(6, start);
-            st.setInt(7, user.getPt());
+            int threadsOnPage = user.getThreadsOnPage();
+            st.setInt(7, threadsOnPage);
          }
          ResultSet rs = st.executeQuery();
          boolean hasResult = false;
@@ -399,7 +400,8 @@ public class FJThreadDao extends FJDao {
          st.setLong(5, user.getId());
          if (!pinned){
             st.setLong(6, start);
-            st.setInt(7, user.getPt());
+            int threadsOnPage = user.getThreadsOnPage();
+            st.setInt(7, threadsOnPage);
          }
 
          ResultSet rs = st.executeQuery();
@@ -504,7 +506,7 @@ public class FJThreadDao extends FJDao {
                thr.setHead(rs.getString("head"));
                thr.setNick(rs.getString("nick"));
                thr.setLastPostNick(rs.getString("lpostnick"));
-               thr.setPcount(rs.getInt("npost")-1);
+               thr.setPostsAmount(rs.getInt("npost")-1);
                thr.setSnid(rs.getInt("seenid"));
                thr.setSnall(rs.getInt("seenall"));
                thr.setType(ThreadType.valueOfInteger(rs.getInt("type")));

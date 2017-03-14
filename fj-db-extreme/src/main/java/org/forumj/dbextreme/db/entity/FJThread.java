@@ -73,7 +73,7 @@ public class FJThread implements IFJThread{
    /**
     * Количество постов в ветке
     */
-   private int pcount;
+   private int postsAmount;
 
    /**
     * Количество просмотров участников
@@ -243,19 +243,17 @@ public class FJThread implements IFJThread{
    }
 
    /**
-    * @return the pcount
+    * @return the postsAmount
     */
-   @Override
-   public int getPcount() {
-      return pcount;
+   public int getPostsAmount() {
+      return postsAmount;
    }
 
    /**
-    * @param pcount the pcount to set
+    * @param postsAmount the postsAmount to set
     */
-   @Override
-   public void setPcount(int pcount) {
-      this.pcount = pcount;
+   public void setPostsAmount(int postsAmount) {
+      this.postsAmount = postsAmount;
    }
 
    /**
