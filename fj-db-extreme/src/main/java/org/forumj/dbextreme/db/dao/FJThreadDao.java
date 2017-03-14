@@ -323,7 +323,7 @@ public class FJThreadDao extends FJDao {
          st.setLong(3, user.getId());
          if (!pinned){
             st.setLong(4, start);
-            st.setInt(6, user.getPt());
+            st.setInt(5, user.getPt());
          }
          ResultSet rs = st.executeQuery();
          boolean hasResult = false;
