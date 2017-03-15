@@ -45,10 +45,25 @@ public class Message extends FJServlet {
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try{
+         boolean is404 = false;
          HttpSession session = request.getSession();
          String msgIdParameter = request.getParameter("id");
          IUser user = (IUser) session.getAttribute("user");
          LocaleString locale = (LocaleString) session.getAttribute("locale");
+         String message = "";
+         msgIdParameter = msgIdParameter == null || msgIdParameter.isEmpty() ? "0" : msgIdParameter;
+         switch (msgIdParameter){
+            case "1":
+               message = locale.getString("MSG_ACTIVATE_MAIL_SENT");
+               break;
+            case "2":
+               message = locale.getString("MSG_WILL_BE_APPROVED");
+               break;
+            case "0":
+            default:
+               message = "404";
+               is404 = true;
+         }
          cache(response);
          buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
          buffer.append("<html>");
@@ -66,27 +81,23 @@ public class Message extends FJServlet {
          buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          /*Таблица с лого и верхним баннером*/
          buffer.append(logo(request));
-         // Главные ссылки
-         // Главное "меню"
-         buffer.append(menu(request, user, locale, false));
+         if (!is404){
+            // Главные ссылки
+            // Главное "меню"
+            buffer.append(menu(request, user, locale, false));
+         }
          // Сообщение
          buffer.append("<tr>");
          buffer.append("<td><div class='messageDiv'>");
-         switch (msgIdParameter){
-            case "1":
-               buffer.append(locale.getString("MSG_ACTIVATE_MAIL_SENT"));
-               break;
-            case "2":
-               buffer.append(locale.getString("MSG_WILL_BE_APPROVED"));
-               break;
-         }
-
+         buffer.append(message);
          buffer.append("</div></td>");
          buffer.append("</tr>");
-         // Главное "меню"
-         buffer.append(menu(request, user, locale, false));
-         // Баннер внизу, счетчики и копирайт.
-         buffer.append(footer(request));
+         if (!is404) {
+            // Главное "меню"
+            buffer.append(menu(request, user, locale, false));
+            // Баннер внизу, счетчики и копирайт.
+            buffer.append(footer(request));
+         }
          buffer.append("</body>");
          buffer.append("</html>");
       } catch (Throwable e) {

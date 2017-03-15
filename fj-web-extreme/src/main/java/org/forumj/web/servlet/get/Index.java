@@ -42,7 +42,7 @@ import org.forumj.web.servlet.FJServlet;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/" + FJUrl.INDEX, "/"}, name = FJServletName.INDEX)
+@WebServlet(urlPatterns = {"/" + FJUrl.INDEX, ""}, name = FJServletName.INDEX)
 public class Index extends FJServlet {
 
    /**
