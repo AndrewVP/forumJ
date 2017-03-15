@@ -20,6 +20,7 @@ public interface FJServletName {
    public static final String ADD_QUESTION = "Quest";
    public static final String NEW_THREAD = "Mess";
    public static final String MESSAGE = "message";
+   public static final String PAGE_404 = "PAGE_404";
    public static final String ADD_THREAD = "New";
    public static final String SETTINGS = "Control";
    public static final String ADMIN = "admin";
