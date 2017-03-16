@@ -69,6 +69,8 @@ public class Page404 extends FJServlet {
          buffer.append("<tr>");
          buffer.append("<td><div class='messageDiv'>");
          buffer.append(404);
+         buffer.append("<br/><br/>");
+         buffer.append("<b><a href='/forum/'>Вам сюда</a></b>");
          buffer.append("</div></td>");
          buffer.append("</tr>");
          buffer.append("</body>");
