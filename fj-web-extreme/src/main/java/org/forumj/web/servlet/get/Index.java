@@ -41,15 +41,9 @@ import org.forumj.web.servlet.FJServlet;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/" + FJUrl.INDEX, ""}, name = FJServletName.INDEX)
-public class Index extends FJServlet {
+public class Index{
 
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       long startTime = new Date().getTime();
       StringBuffer buffer = new StringBuffer();
       try {

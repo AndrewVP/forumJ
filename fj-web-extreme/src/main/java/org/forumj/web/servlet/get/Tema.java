@@ -34,19 +34,9 @@ import org.forumj.web.servlet.FJServlet;
 
 import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 
-/**
- *
- * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
- */
-@SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/" + FJUrl.VIEW_THREAD, "/" + FJUrl.VIEW_THREAD_OLD}, name = FJServletName.VIEW_THREAD)
-public class Tema extends FJServlet {
+public class Tema{
 
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       long startTime = new Date().getTime();
       ImageService imageService = FJServiceHolder.getImageService();
       StringBuffer buffer = new StringBuffer();

@@ -37,15 +37,9 @@ import static org.forumj.web.servlet.tool.FJServletTools.loadCSS;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/"}, name = FJServletName.PAGE_404)
-public class Page404 extends FJServlet {
+public class Page404{
 
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try{
          cache(response);

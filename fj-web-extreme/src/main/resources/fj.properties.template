@@ -26,6 +26,7 @@ mail.admin.address.3=
 fj.default.threadsOnPage=30
 fj.default.postsOnPage=40
 fj.default.viewId=1
+webapp.name=
 service.countService.class=org.forumj.dbextreme.db.service.CountServiceImpl
 service.folderService.class=org.forumj.dbextreme.db.service.FolderServiceImpl
 service.ignorService.class=org.forumj.dbextreme.db.service.IgnorServiceImpl
