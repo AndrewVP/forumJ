@@ -16,7 +16,8 @@ public interface FJUrl {
    
    public static final String INDEX = "index";
    public static final String VIEW_THREAD = "tema";
-   
+   public static final String VIEW_THREAD_OLD = "tema.php";
+
    public static final String NEW_THREAD = "mess";
    public static final String MESSAGE = "message";
    public static final String ADD_THREAD = "new";

@@ -39,7 +39,7 @@ import com.tecnick.htmlutils.htmlentities.HTMLEntities;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/" + FJUrl.VIEW_THREAD}, name = FJServletName.VIEW_THREAD)
+@WebServlet(urlPatterns = {"/" + FJUrl.VIEW_THREAD, "/" + FJUrl.VIEW_THREAD_OLD}, name = FJServletName.VIEW_THREAD)
 public class Tema extends FJServlet {
 
    /**
