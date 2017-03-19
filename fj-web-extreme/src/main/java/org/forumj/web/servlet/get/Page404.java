@@ -39,7 +39,7 @@ import static org.forumj.web.servlet.tool.FJServletTools.loadCSS;
  */
 public class Page404{
 
-   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try{
          cache(response);
@@ -58,13 +58,16 @@ public class Page404{
          /*Главная таблица*/
          buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          /*Таблица с лого и верхним баннером*/
-         buffer.append(logo(request));
+         buffer.append(logo(webapp));
          // Сообщение
          buffer.append("<tr>");
          buffer.append("<td><div class='messageDiv'>");
          buffer.append(404);
          buffer.append("<br/><br/>");
-         buffer.append("<b><a href='/forum/'>Вам сюда</a></b>");
+         buffer.append("<b><a href='/");
+         buffer.append(webapp);
+         buffer.append(webapp.isEmpty() ? "" : "/");
+         buffer.append("forum/'>Вам сюда</a></b>");
          buffer.append("</div></td>");
          buffer.append("</tr>");
          buffer.append("</body>");

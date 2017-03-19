@@ -43,7 +43,7 @@ import org.forumj.web.servlet.FJServlet;
  */
 public class Index{
 
-   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI, String webapp) throws ServletException, IOException {
       long startTime = new Date().getTime();
       StringBuffer buffer = new StringBuffer();
       try {
@@ -92,7 +92,7 @@ public class Index{
          buffer.append("<tr><td>");
          buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          // Таблица с лого и верхним баннером
-         buffer.append(logo(request));
+         buffer.append(logo(webapp));
          // соединяемся и определяем кол-во страниц
          long nfirstpost=(pageNumber-1)*user.getThreadsOnPage();
          if (nfirstpost < 0){
@@ -109,11 +109,19 @@ public class Index{
          // кол-во страниц с заголовками
          int couP = (int) (Math.floor(threadsCount/user.getThreadsOnPage())+2);
          // Проверяем наличие почты
-         String newMail = "";
+         StringBuilder newMail = new StringBuilder();
          if (user.isLogined()) {
             int mailCount = indexService.getNewMailCount(user.getId());
             if (mailCount > 0) {
-               newMail="<a class=hdforum href='" + FJUrl.SETTINGS + "?id=2' rel='nofollow'><font color=red>" + locale.getString("mess66") + " " + mailCount +" " + locale.getString("mess67") + "</font></a>";
+               newMail.append("<a class=hdforum href='");
+               newMail.append("/").append(userURI).append("/").append(FJUrl.SETTINGS);
+               newMail.append("?id=2' rel='nofollow'><font color=red>");
+               newMail.append(locale.getString("mess66"));
+               newMail.append(" ");
+               newMail.append(mailCount);
+               newMail.append(" ");
+               newMail.append(locale.getString("mess67"));
+               newMail.append("</font></a>");
             }
          }
          // Таблица главных ссылок
@@ -121,7 +129,7 @@ public class Index{
          buffer.append("<td width='100%'>");
          buffer.append("<table id='t2' width='100%'>");
          /*Главное меню*/
-         buffer.append(menu(request, user, locale, true));
+         buffer.append(menu(request, user, locale, true, webapp, userURI));
          // Интерфейс
          // Имя текущего
          String viewName = indexService.getViewName(viewId);
@@ -145,7 +153,9 @@ public class Index{
          buffer.append("</span>");
          buffer.append("</td>");
          buffer.append("<td class=bg2 align=right>");
-         buffer.append("<form method='post' name='view_form' action='" + FJUrl.SELECT_VIEW + "' class=frmsmall>");
+         buffer.append("<form method='post' name='view_form' action='");
+         buffer.append("/").append(userURI).append("/").append(FJUrl.SELECT_VIEW);
+         buffer.append("' class=frmsmall>");
          /*Выводим интерфейсы*/
          buffer.append("<span class=mnuforum>");
          buffer.append(locale.getString("mess80"));
@@ -213,14 +223,22 @@ public class Index{
                   buffer.append("<font class='pagecurrent'><b>" + i1 + "</b></font>");
                }
                else {
-                  buffer.append("<a class='pageLink' href='" + FJUrl.INDEX + "?page=" + i1 + "'>" + i1 + "</a>");
+                  buffer.append("<a class='pageLink' href='");
+                  buffer.append("/").append(userURI).append("/").append(FJUrl.INDEX);
+                  buffer.append("?page=");
+                  buffer.append(i1);
+                  buffer.append("'>");
+                  buffer.append(i1);
+                  buffer.append("</a>");
                }
             }
          }
          buffer.append("<font class='page' style='margin-left:5px;'><b>" + locale.getString("mess136") + "&nbsp;" + (couP-1) + "</b></font>");
          buffer.append("</td>");
          buffer.append("<td align='right'>");
-         buffer.append("<form name='str' method='get' class=frmsmall action='" + FJUrl.INDEX + "'>");
+         buffer.append("<form name='str' method='get' class=frmsmall action='");
+         buffer.append("/").append(userURI).append("/").append(FJUrl.INDEX);
+         buffer.append("'>");
          buffer.append("<font class=page style='margin-right:4px;'>");
          buffer.append("<b>");
          buffer.append(locale.getString("mess137"));
@@ -248,14 +266,16 @@ public class Index{
          if (user.isLogined()){
             // Форма выводится только для зарегистрированых
             buffer.append("</table>");        
-            buffer.append("<form method='post' name='del_form' action='" + FJUrl.MOVE_TITLE + "?page=" + pageNumber + "' class=frmsmall>");
+            buffer.append("<form method='post' name='del_form' action='" + "/" + userURI + "/" + FJUrl.MOVE_TITLE + "?page=" + pageNumber + "' class=frmsmall>");
             buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          }
          buffer.append("<tr>");
          buffer.append("<td height='400' valign='top'>");
          buffer.append("<table class='content'>");
          // Заголовки таблицы
-         buffer.append("<tr><td class=internal align='left' colspan='3'><span class=hdforum2>Тема:  </span>" + newMail + " </td>");
+         buffer.append("<tr><td class=internal align='left' colspan='3'><span class=hdforum2>Тема:  </span>");
+         buffer.append(newMail);
+         buffer.append(" </td>");
          // Ответы
          buffer.append("<td class=internal align='center'><span class=hdforum2>" + locale.getString("MSG_ANSW") + "</span>");
          buffer.append("</td>");
@@ -290,7 +310,7 @@ public class Index{
                buffer.append("<tr class='trees'>");
             }
             IFJThread thread = threadsList.get(threadIndex);
-            StringBuffer threadContent = writeThread(thread, user, locale, threadIndex, pageNumber);
+            StringBuffer threadContent = writeThread(thread, user, locale, threadIndex, pageNumber, userURI, webapp);
             buffer.append(threadContent);
             buffer.append("</tr>");
             indctrIds.append(";").append(thread.getId()).append(",").append(thread.getLastPostId());
@@ -332,7 +352,7 @@ public class Index{
                   buffer.append("<font class='pagecurrent'><b>" + i1 + "</b></font>");
                }
                else {
-                  buffer.append("<a class='pageLink' href='" + FJUrl.INDEX + "?page=" + i1 + "'>" + i1 + "</a>");
+                  buffer.append("<a class='pageLink' href='" + "/" + userURI + "/" + FJUrl.INDEX + "?page=" + i1 + "'>" + i1 + "</a>");
                }
             }
          }
@@ -390,7 +410,7 @@ public class Index{
             buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          }
          /*Главное меню*/
-         buffer.append(menu(request, user, locale, true));
+         buffer.append(menu(request, user, locale, true, webapp, userURI));
          buffer.append("</table>");
          buffer.append("</td>");
          buffer.append("</tr>");
@@ -422,7 +442,7 @@ public class Index{
          buffer.append("</td>");
          buffer.append("</tr>");
          // Баннер внизу, счетчики и копирайт.
-         buffer.append(footer(request));
+         buffer.append(footer(webapp));
          buffer.append("</table></td></tr></table></td></tr></table>");
          buffer.append("</body>");
          buffer.append("</html>");
@@ -439,22 +459,61 @@ public class Index{
       writer.write(out.replace("ъъ_ъ", format.format(allTime/1000)));
    }
 
-   private StringBuffer writeThread(IFJThread thread, IUser user, LocaleString locale, int threadIndex, int pageNumber) throws InvalidKeyException{
+   private StringBuffer writeThread(IFJThread thread, IUser user, LocaleString locale, int threadIndex, int pageNumber, String userURI, String webapp) throws InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       // Картинки
       // Пиктограммка опроса
       buffer.append("<td width='10' align='center' style='padding:0px 5px 0px 5px'>");
       if (thread.isClosed()){
-         buffer.append("<img border='0' src='skin/standart/picts/closed.png'>");
+         buffer.append("<img border='0' src='");
+         buffer.append("/");
+         if(!webapp.isEmpty()){
+            buffer.append(webapp).append("/");
+         }
+         buffer.append(FJUrl.STATIC).append("/");
+         buffer.append(FJUrl.SKIN);
+         buffer.append("/standart/picts/closed.png'>");
       }else if (thread.isQuest()){
-         buffer.append("<img border='0' src='smiles/quest.gif'>");
+         buffer.append("<img border='0' src='");
+         buffer.append("/");
+         if(!webapp.isEmpty()){
+            buffer.append(webapp).append("/");
+         }
+         buffer.append(FJUrl.STATIC).append("/");
+         buffer.append(FJUrl.SMILES);
+
+         buffer.append("/quest.gif'>");
       }else{
          if (thread.getDock()== NOTICE){
-            buffer.append("<img border='0' src='smiles/icon4.gif'>");
+            buffer.append("<img border='0' src='");
+            buffer.append("/");
+            if(!webapp.isEmpty()){
+               buffer.append(webapp).append("/");
+            }
+            buffer.append(FJUrl.STATIC).append("/");
+            buffer.append(FJUrl.SMILES);
+
+            buffer.append("/icon4.gif'>");
          }else if(thread.getDock() == PIN) {
-            buffer.append("<img border='0' src='picts/f_pinned.gif'>");
+            buffer.append("<img border='0' src='");
+            buffer.append("/");
+            if(!webapp.isEmpty()){
+               buffer.append(webapp).append("/");
+            }
+            buffer.append(FJUrl.STATIC).append("/");
+            buffer.append(FJUrl.PICTS);
+
+            buffer.append("/f_pinned.gif'>");
          }else {
-            buffer.append("<img border='0' src='smiles/icon1.gif'>");
+            buffer.append("<img border='0' src='");
+            buffer.append("/");
+            if(!webapp.isEmpty()){
+               buffer.append(webapp).append("/");
+            }
+            buffer.append(FJUrl.STATIC).append("/");
+            buffer.append(FJUrl.SMILES);
+
+            buffer.append("/icon1.gif'>");
          }
       }
       buffer.append("</td>");
@@ -471,16 +530,16 @@ public class Index{
       // Подписываем прикрепленные
       switch (thread.getDock()){
       case PIN:
-         buffer.append("<font class=trforum><b>" +locale.getString("mess7")+ " </b><a href='" + FJUrl.VIEW_THREAD + "?id=" +thread.getId().toString() + "'>" +str_head+ "</a></font>");
+         buffer.append("<font class=trforum><b>" +locale.getString("mess7")+ " </b><a href='" + "/" + userURI + "/" + FJUrl.VIEW_THREAD + "?id=" +thread.getId().toString() + "'>" +str_head+ "</a></font>");
          break;
       case NOTICE:
-         buffer.append("<font class=trforum><b>" +locale.getString("mess8")+ " </b><a href='" + FJUrl.VIEW_THREAD + "?id=" +thread.getId().toString() + "'>" +str_head+ "</a></font>");
+         buffer.append("<font class=trforum><b>" +locale.getString("mess8")+ " </b><a href='" + "/" + userURI + "/" + FJUrl.VIEW_THREAD + "?id=" +thread.getId().toString() + "'>" +str_head+ "</a></font>");
          break;
       case BIRTHDAY:
-         buffer.append("<font class=trforum><b>" +locale.getString("mess163")+ " </b><a href='" + FJUrl.VIEW_THREAD + "?id=" +thread.getId().toString() + "'>" +str_head+ "</a></font>");
+         buffer.append("<font class=trforum><b>" +locale.getString("mess163")+ " </b><a href='" + "/" + userURI + "/" + FJUrl.VIEW_THREAD + "?id=" +thread.getId().toString() + "'>" +str_head+ "</a></font>");
          break;
       case COMMON:
-         buffer.append("<font class=trforum><a href='" + FJUrl.VIEW_THREAD + "?id=" +thread.getId().toString()+ "'>" +str_head+ "</a></font>");
+         buffer.append("<font class=trforum><a href='" + "/" + userURI + "/" + FJUrl.VIEW_THREAD + "?id=" +thread.getId().toString()+ "'>" +str_head+ "</a></font>");
          break;
       }
       // Cсылки на страницы в ветке
@@ -495,16 +554,16 @@ public class Index{
          for (int k = 1; k<=Math.floor((postsAmount+1)/user.getPostsOnPage()) + 1; k++) {
             k1=k1+1;
             if (k1==10){
-               buffer.append("<a href='" + FJUrl.VIEW_THREAD + "?page=" +k+ "&amp;id=" +thread.getId().toString()+ "'>" +k+ "</a>");
+               buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.VIEW_THREAD + "?page=" +k+ "&amp;id=" +thread.getId().toString()+ "'>" +k+ "</a>");
                if (k != Math.floor((postsAmount+1)/user.getPostsOnPage()) + 1) buffer.append(",&nbsp;");
                k1=0;
                k2=k2+1;
             }
             if (k==1){
-               buffer.append("<a href='" + FJUrl.VIEW_THREAD + "?page=" +k+ "&amp;id=" +thread.getId().toString()+ "'>" +k+ "</a>,&nbsp;");
+               buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.VIEW_THREAD + "?page=" +k+ "&amp;id=" +thread.getId().toString()+ "'>" +k+ "</a>,&nbsp;");
             }
             if ((Math.floor((postsAmount+1)/user.getPostsOnPage())-k2*10 + 1)< 10 && (k-k2*10) != 0 && k!=1){
-               buffer.append("<a href='" + FJUrl.VIEW_THREAD + "?page=" +k+ "&amp;id=" +thread.getId().toString()+ "'>" +k+ "</a>");
+               buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.VIEW_THREAD + "?page=" +k+ "&amp;id=" +thread.getId().toString()+ "'>" +k+ "</a>");
                if (k != Math.floor((postsAmount+1)/user.getPostsOnPage()) + 1) buffer.append(",&nbsp;");
             }
 
@@ -514,18 +573,18 @@ public class Index{
       if(user.isModerator()){
          buffer.append("<font face='Verdana' size='1pt'>");
          if (thread.getDock().getCode() > 0){
-            buffer.append("<a href='" + FJUrl.PIN_THREAD + "?id=" + thread.getId() + "&amp;pin=" + COMMON.getCode() + "'>" +locale.getString("MSG_UNPIN")+ "</a>&nbsp;");
+            buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.PIN_THREAD + "?id=" + thread.getId() + "&amp;pin=" + COMMON.getCode() + "'>" +locale.getString("MSG_UNPIN")+ "</a>&nbsp;");
          }
          if (thread.getDock() != PIN){
-            buffer.append("<a href='" + FJUrl.PIN_THREAD + "?id=" + thread.getId() + "&amp;pin=" + PIN.getCode() + "'>" +locale.getString("MSG_PIN")+ "</a>&nbsp;");
+            buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.PIN_THREAD + "?id=" + thread.getId() + "&amp;pin=" + PIN.getCode() + "'>" +locale.getString("MSG_PIN")+ "</a>&nbsp;");
          }
          if (thread.getDock() != BIRTHDAY){
-            buffer.append("<a href='" + FJUrl.PIN_THREAD + "?id=" + thread.getId() + "&amp;pin=" + BIRTHDAY.getCode() + "'>" +locale.getString("MSG_BIRTHDAY_PIN")+ "</a>&nbsp;");
+            buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.PIN_THREAD + "?id=" + thread.getId() + "&amp;pin=" + BIRTHDAY.getCode() + "'>" +locale.getString("MSG_BIRTHDAY_PIN")+ "</a>&nbsp;");
          }
          if (thread.getDock() != NOTICE){
-            buffer.append("<a href='" + FJUrl.PIN_THREAD + "?id=" + thread.getId() + "&amp;pin=" + NOTICE.getCode() + "'>" +locale.getString("MSG_NOTICE_PIN")+ "</a>&nbsp;");
+            buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.PIN_THREAD + "?id=" + thread.getId() + "&amp;pin=" + NOTICE.getCode() + "'>" +locale.getString("MSG_NOTICE_PIN")+ "</a>&nbsp;");
          }
-         buffer.append("<a href='" + FJUrl.MOVE_THREAD_TO_RECYCLE + "?id=" +thread.getId().toString()+ "&amp;usr=0&amp;page=" + pageNumber + "'>" + locale.getString("mess70") + "</a>");
+         buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.MOVE_THREAD_TO_RECYCLE + "?id=" +thread.getId().toString()+ "&amp;usr=0&amp;page=" + pageNumber + "'>" + locale.getString("mess70") + "</a>");
          buffer.append("&nbsp;</font>");
       }
       if (user.isModerator() || thread.getAuthId().equals(user.getId())){
@@ -552,7 +611,7 @@ public class Index{
       // Автор последнего поста
       buffer.append("<td width='120' align=center><div class='mnuforum'><font size='1pt'>" +HtmlChars.convertHtmlSymbols(thread.getLastPostNick())+ "</font></div>");
       // Время последнего поста
-      buffer.append("<div class='mnuforum'><a href='" + FJUrl.VIEW_THREAD + "?id=" + thread.getId().toString() + "&amp;end=1#end' rel='nofollow'><font size='1pt'>" + Time.date("dd.MM.yy HH:mm",thread.getLastPostTime().getTime()) + "</font></a></div>");
+      buffer.append("<div class='mnuforum'><a href='" + "/" + userURI + "/" + FJUrl.VIEW_THREAD + "?id=" + thread.getId().toString() + "&amp;end=1#end' rel='nofollow'><font size='1pt'>" + Time.date("dd.MM.yy HH:mm",thread.getLastPostTime().getTime()) + "</font></a></div>");
       buffer.append("</td>");
       // Папка
       buffer.append("<td align='center' valign='middle'>");
@@ -564,7 +623,14 @@ public class Index{
          buffer.append("<input type='checkbox' id='ch" +threadIndex+ "' name='" +threadIndex+ "' value='" +thread.getId().toString()+ "'>");
          buffer.append("</td>");
          buffer.append("<td style='padding:0px 5px 0px 5px' align='right'>");
-         buffer.append("<a href='" + FJUrl.MOVE_THREAD_TO_RECYCLE + "?id=" +thread.getId().toString()+ "&amp;usr=" +String.valueOf(user.getId())+ "&amp;page=" +thread.getPg()+ "'><img border='0' src='picts/del1.gif'></a>");
+         buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.MOVE_THREAD_TO_RECYCLE + "?id=" +thread.getId().toString()+ "&amp;usr=" +String.valueOf(user.getId())+ "&amp;page=" +thread.getPg()+ "'><img border='0' src='");
+         buffer.append("/");
+         if(!webapp.isEmpty()){
+            buffer.append(webapp).append("/");
+         }
+         buffer.append(FJUrl.STATIC).append("/");
+         buffer.append(FJUrl.PICTS);
+         buffer.append("picts/del1.gif'></a>");
          buffer.append("</td>");
       }
       return buffer;

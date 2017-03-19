@@ -36,7 +36,7 @@ import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 
 public class Tema{
 
-   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI, String webapp) throws ServletException, IOException {
       long startTime = new Date().getTime();
       ImageService imageService = FJServiceHolder.getImageService();
       StringBuffer buffer = new StringBuffer();
@@ -129,13 +129,13 @@ public class Tema{
          // Главная таблица
          buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          // Таблица с лого и верхним баннером
-         buffer.append(logo(request));
+         buffer.append(logo(webapp));
          // Таблица главных ссылок
          buffer.append("<tr>");
          buffer.append("<td width='100%'>");
          buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          // Главное "меню"
-         buffer.append(menu(request, user, locale, false));
+         buffer.append(menu(request, user, locale, false, webapp, userURI));
          // Ссылки на другие страницы  Тут надо убрать colspan!
          buffer.append("<tr><td width=100%>");
          buffer.append("<table width=100%>");
@@ -240,7 +240,7 @@ public class Tema{
          buffer.append("</td>");
          buffer.append("</tr>");
          // Главное "меню"
-         buffer.append(menu(request, user, locale, false));
+         buffer.append(menu(request, user, locale, false, webapp, userURI));
          buffer.append("</table></td></tr>");
          if (user.isLogined() && !user.isBanned() && !thread.isClosed()){
             //Форма подписки/отписки  на ветку
@@ -439,7 +439,7 @@ public class Tema{
             buffer.append("</tr>");
          }
          // Баннер внизу, счетчики и копирайт.
-         buffer.append(footer(request));
+         buffer.append(footer(webapp));
          buffer.append("</table>");
          buffer.append("</body>");
          buffer.append("</html>");

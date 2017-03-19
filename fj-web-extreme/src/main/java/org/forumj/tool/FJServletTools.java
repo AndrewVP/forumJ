@@ -20,7 +20,7 @@ public class FJServletTools {
       response.setHeader("Pragma", "no-cache");
    }
 
-   public static StringBuffer menu(HttpServletRequest request, IUser user, LocaleString locale, boolean index) throws InvalidKeyException{
+   public static StringBuffer menu(HttpServletRequest request, IUser user, LocaleString locale, boolean index, String webapp, String userURI) throws InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       Enumeration<String> parameters = request.getParameterNames();
       boolean first = true;
@@ -58,36 +58,84 @@ public class FJServletTools {
          buffer.append("<td class=bg align='LEFT'>");
          if(!index){
             /*Список тем*/
-            buffer.append("<img src='picts/index.gif' border='0' class='menuImg'>");
-            buffer.append("<a class='mnuforumSm' href='" + FJUrl.INDEX + "'>");
+            buffer.append("<img src='");
+            buffer.append("/");
+            if(!webapp.isEmpty()){
+               buffer.append(webapp).append("/");
+            }
+            buffer.append(FJUrl.STATIC).append("/");
+            buffer.append(FJUrl.PICTS);
+
+            buffer.append("/index.gif' border='0' class='menuImg'>");
+            buffer.append("<a class='mnuforumSm' href='" + "/" + userURI + "/" + FJUrl.INDEX + "'>");
             buffer.append(locale.getString("mess135"));
             buffer.append("</a>");
          }
          /*Новая тема*/
-         buffer.append("<img src='picts/new_top.gif' border='0' class='menuImg'>");
-         buffer.append("<a class='mnuforumSm' href='" + FJUrl.LOGIN + "' rel='nofollow'>");
+         buffer.append("<img src='");
+         buffer.append("/");
+         if(!webapp.isEmpty()){
+            buffer.append(webapp).append("/");
+         }
+         buffer.append(FJUrl.STATIC).append("/");
+         buffer.append(FJUrl.PICTS);
+
+         buffer.append("/new_top.gif' border='0' class='menuImg'>");
+         buffer.append("<a class='mnuforumSm' href='" + "/" + userURI + "/" + FJUrl.LOGIN + "' rel='nofollow'>");
          buffer.append(locale.getString("mess4"));
          buffer.append("</a>");
          /*Новый опрос*/
-         buffer.append("<img src='picts/new_quest.gif' border='0' class='menuImg'>");
-         buffer.append("<a class='mnuforumSm' href='" + FJUrl.LOGIN + "' rel='nofollow'>");
+         buffer.append("<img src='");
+         buffer.append("/");
+         if(!webapp.isEmpty()){
+            buffer.append(webapp).append("/");
+         }
+         buffer.append(FJUrl.STATIC).append("/");
+         buffer.append(FJUrl.PICTS);
+
+         buffer.append("/new_quest.gif' border='0' class='menuImg'>");
+         buffer.append("<a class='mnuforumSm' href='" + "/" + userURI + "/" + FJUrl.LOGIN + "' rel='nofollow'>");
          buffer.append(locale.getString("mess3"));
          buffer.append("</a>");
 /*
          //
-         buffer.append("<img src='picts/new_search.gif' border='0' class='menuImg'>");
+         buffer.append("<img src=");
+            buffer.append("/");
+            if(!webapp.isEmpty()){
+               buffer.append(webapp).append("/");
+            }
+            buffer.append(FJUrl.STATIC).append("/");
+            buffer.append(FJUrl.PICTS);
+
+            buffer.append("'/new_search.gif' border='0' class='menuImg'>");
          buffer.append("<a class='mnuforumSm' href='search.php' rel='nofollow'>");
          buffer.append(locale.getString("mess30"));
          buffer.append("</a>");
 */
          /*Вход*/
-         buffer.append("<img src='picts/key_add.gif' border='0' class='menuImg'>");
-         buffer.append("<a class='mnuforumSm' href='" + FJUrl.LOGIN + "?id=1' rel='nofollow'>");
+         buffer.append("<img src='");
+         buffer.append("/");
+         if(!webapp.isEmpty()){
+            buffer.append(webapp).append("/");
+         }
+         buffer.append(FJUrl.STATIC).append("/");
+         buffer.append(FJUrl.PICTS);
+
+         buffer.append("/key_add.gif' border='0' class='menuImg'>");
+         buffer.append("<a class='mnuforumSm' href='" + "/" + userURI + "/" + FJUrl.LOGIN + "?id=1' rel='nofollow'>");
          buffer.append(locale.getString("mess1"));
          buffer.append("</a>");
          /*Регистрация*/
-         buffer.append("<img src='picts/new_user.gif' border='0' class='menuImg'>");
-         buffer.append("<a class='mnuforumSm' href='" + FJUrl.REGISTRATION + "?id=1' rel='nofollow'>");
+         buffer.append("<img src='");
+         buffer.append("/");
+         if(!webapp.isEmpty()){
+            buffer.append(webapp).append("/");
+         }
+         buffer.append(FJUrl.STATIC).append("/");
+         buffer.append(FJUrl.PICTS);
+
+         buffer.append("/new_user.gif' border='0' class='menuImg'>");
+         buffer.append("<a class='mnuforumSm' href='" + "/" + userURI + "/" + FJUrl.REGISTRATION + "?id=1' rel='nofollow'>");
          buffer.append(locale.getString("mess2"));
          buffer.append("</a>");
          buffer.append("</td>");
@@ -106,52 +154,124 @@ public class FJServletTools {
          /*Если логин есть*/
          buffer.append("<td class=bg align='LEFT'>");
          /*Ник*/
-         buffer.append("<img src='picts/nick.gif' border='0' class='menuImg'>");
+         buffer.append("<img src='");
+         buffer.append("/");
+         if(!webapp.isEmpty()){
+            buffer.append(webapp).append("/");
+         }
+         buffer.append(FJUrl.STATIC).append("/");
+         buffer.append(FJUrl.PICTS);
+
+         buffer.append("/nick.gif' border='0' class='menuImg'>");
          buffer.append("<span class=nik>");
          buffer.append(HTMLEntities.htmlentities(user.getNick()).replace("\\", ""));
          buffer.append("</span>");
          if(!index){
             /*Список тем*/
-            buffer.append("<img src='picts/index.gif' border='0' class='menuImg'>");
-            buffer.append("<a class='mnuforumSm' href='" + FJUrl.INDEX + "'>");
+            buffer.append("<img src='");
+            buffer.append("/");
+            if(!webapp.isEmpty()){
+               buffer.append(webapp).append("/");
+            }
+            buffer.append(FJUrl.STATIC).append("/");
+            buffer.append(FJUrl.PICTS);
+
+            buffer.append("/index.gif' border='0' class='menuImg'>");
+            buffer.append("<a class='mnuforumSm' href='" + "/" + userURI + "/" + FJUrl.INDEX + "'>");
             buffer.append(locale.getString("mess135"));
             buffer.append("</a>");
          }
          /*Новая тема*/
-         buffer.append("<img src='picts/new_top.gif' border='0' class='menuImg'>");
-         buffer.append("<a class='mnuforumSm' href='" + FJUrl.NEW_THREAD + "' rel='nofollow'>");
+         buffer.append("<img src='");
+         buffer.append("/");
+         if(!webapp.isEmpty()){
+            buffer.append(webapp).append("/");
+         }
+         buffer.append(FJUrl.STATIC).append("/");
+         buffer.append(FJUrl.PICTS);
+
+         buffer.append("/new_top.gif' border='0' class='menuImg'>");
+         buffer.append("<a class='mnuforumSm' href='" + "/" + userURI + "/" + FJUrl.NEW_THREAD + "' rel='nofollow'>");
          buffer.append(locale.getString("mess4"));
          buffer.append("</a>");
          /*Новый опрос*/
-         buffer.append("<img src='picts/new_quest.gif' border='0' class='menuImg'>");
-         buffer.append("<a class='mnuforumSm' href='" + FJUrl.NEW_QUESTION + "' rel='nofollow'>");
+         buffer.append("<img src='");
+         buffer.append("/");
+         if(!webapp.isEmpty()){
+            buffer.append(webapp).append("/");
+         }
+         buffer.append(FJUrl.STATIC).append("/");
+         buffer.append(FJUrl.PICTS);
+
+         buffer.append("/new_quest.gif' border='0' class='menuImg'>");
+         buffer.append("<a class='mnuforumSm' href='" + "/" + userURI + "/" + FJUrl.NEW_QUESTION + "' rel='nofollow'>");
          buffer.append(locale.getString("mess3"));
          buffer.append("</a>");
 /*
          //Поиск
-         buffer.append("<img src='picts/new_search.gif' border='0' class='menuImg'>");
+         buffer.append("<img src='");
+         buffer.append("/");
+         if(!webapp.isEmpty()){
+            buffer.append(webapp).append("/");
+         }
+         buffer.append(FJUrl.STATIC).append("/");
+         buffer.append(FJUrl.PICTS);
+
+         buffer.append("/new_search.gif' border='0' class='menuImg'>");
          buffer.append("<a class='mnuforumSm' href='search.php' rel='nofollow'>");
          buffer.append(locale.getString("mess30"));
          buffer.append("</a>");
 */
          /* Личные настройки*/
-         buffer.append("<img src='picts/profile.gif' border='0' class='menuImg'>");
-         buffer.append("<a class='mnuforumSm' href='" + FJUrl.SETTINGS + "' rel='nofollow'>");
+         buffer.append("<img src='");
+         buffer.append("/");
+         if(!webapp.isEmpty()){
+            buffer.append(webapp).append("/");
+         }
+         buffer.append(FJUrl.STATIC).append("/");
+         buffer.append(FJUrl.PICTS);
+
+         buffer.append("/profile.gif' border='0' class='menuImg'>");
+         buffer.append("<a class='mnuforumSm' href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "' rel='nofollow'>");
          buffer.append(locale.getString("mess31"));
          buffer.append("</a>");
          /* Переписка*/
-         buffer.append("<img src='picts/email.gif' border='0' class='menuImg'>");
-         buffer.append("<a class='mnuforumSm' href='" + FJUrl.SETTINGS + "?id=2' rel='nofollow'>");
+         buffer.append("<img src='");
+         buffer.append("/");
+         if(!webapp.isEmpty()){
+            buffer.append(webapp).append("/");
+         }
+         buffer.append(FJUrl.STATIC).append("/");
+         buffer.append(FJUrl.PICTS);
+
+         buffer.append("/email.gif' border='0' class='menuImg'>");
+         buffer.append("<a class='mnuforumSm' href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=2' rel='nofollow'>");
          buffer.append(locale.getString("mess23"));
          buffer.append("</a>");
          //Photoalbum
-         buffer.append("<img src='picts/pfotoalbum.png' border='0' class='menuImg'>");
-         buffer.append("<a class='mnuforumSm' href='" + FJUrl.SETTINGS + "?id=16' rel='nofollow'>");
+         buffer.append("<img src='");
+         buffer.append("/");
+         if(!webapp.isEmpty()){
+            buffer.append(webapp).append("/");
+         }
+         buffer.append(FJUrl.STATIC).append("/");
+         buffer.append(FJUrl.PICTS);
+
+         buffer.append("/pfotoalbum.png' border='0' class='menuImg'>");
+         buffer.append("<a class='mnuforumSm' href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=16' rel='nofollow'>");
          buffer.append(locale.getString("MSG_PHOTOALBUM"));
          buffer.append("</a>");
          /*Выход*/
          String exitUrl = request.getContextPath() + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + (query == null || "".equalsIgnoreCase(query.trim()) ? "?exit=0" : query.trim() + "&exit=0");
-         buffer.append("<img src='picts/key_delete.gif' border='0' class='menuImg'>");
+         buffer.append("<img src='");
+         buffer.append("/");
+         if(!webapp.isEmpty()){
+            buffer.append(webapp).append("/");
+         }
+         buffer.append(FJUrl.STATIC).append("/");
+         buffer.append(FJUrl.PICTS);
+
+         buffer.append("/key_delete.gif' border='0' class='menuImg'>");
          buffer.append("<a class='mnuforumSm' href='" + exitUrl + "' rel='nofollow'>");
          buffer.append(locale.getString("mess6"));
          buffer.append("</a>");
@@ -181,33 +301,55 @@ public class FJServletTools {
       return buffer;
    }
 
-   public static StringBuffer logo(HttpServletRequest request){
+   public static StringBuffer logo(String webapp){
       StringBuffer buffer = new StringBuffer();
-      String ref = request.getContextPath();
       buffer.append("<tr>");
       buffer.append("<td width='100%'>");
       buffer.append("<table border='0' width='100%' style='border-collapse: collapse'>");
       buffer.append("<tr>");
       buffer.append("<td>");
-      buffer.append("<a href='/'><img border='0' src='" + ref + "/images/all/title.gif'></a><br>");
+      buffer.append("<a href='/'><img border='0' src='");
+      buffer.append("/");
+      if(!webapp.isEmpty()){
+         buffer.append(webapp).append("/");
+      }
+      buffer.append(FJUrl.STATIC).append("/");
+      buffer.append(FJUrl.IMAGES);
+
+      buffer.append("/all/title.gif'></a><br>");
       buffer.append("</td>");
       buffer.append("<td align=center>");
-      buffer.append("<a href='http://www.peoplesproject.com' target=\"_blank\" title='Народний проект. Всеукраїнський центр волонтерів'><img src='" + ref + "/banner/narodny.gif'></a>");
+      buffer.append("<a href='http://www.peoplesproject.com' target=\"_blank\" title='Народний проект. Всеукраїнський центр волонтерів'><img src='");
+      buffer.append("/");
+      if(!webapp.isEmpty()){
+         buffer.append(webapp).append("/");
+      }
+      buffer.append(FJUrl.STATIC).append("/");
+      buffer.append(FJUrl.BANNER);
+
+      buffer.append("/narodny.gif'></a>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table></td></tr>");
       return buffer;
    }
 
-   public static StringBuffer footer(HttpServletRequest request){
+   public static StringBuffer footer(String webapp){
       StringBuffer buffer = new StringBuffer();
-      String ref=request.getContextPath();
       buffer.append("<tr>");
       buffer.append("<td>");
       buffer.append("<table width='100%'>");
       buffer.append("<tr>");
       buffer.append("<td align=\"center\">");
-      buffer.append("<a href='http://www.peoplesproject.com' target=\"_blank\" title='Народний проект. Всеукраїнський центр волонтерів'><img src='" + ref + "/banner/narodny.gif'></a>");
+      buffer.append("<a href='http://www.peoplesproject.com' target=\"_blank\" title='Народний проект. Всеукраїнський центр волонтерів'><img src='");
+      buffer.append("/");
+      if(!webapp.isEmpty()){
+         buffer.append(webapp).append("/");
+      }
+      buffer.append(FJUrl.STATIC).append("/");
+      buffer.append(FJUrl.BANNER);
+
+      buffer.append("/narodny.gif'></a>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table>");
@@ -222,14 +364,6 @@ public class FJServletTools {
       buffer.append("<table>");
       buffer.append("<tr>");
       buffer.append("<td>");
-      buffer.append("<span class='copy'>");
-      buffer.append("За достоверность и правдивость опубликованой информации администрация сайта и форума ответственности не несет<br>");
-      buffer.append("<a href='http://www.diletant.com.ua'>");
-      buffer.append("www.diletant.com.ua");
-      buffer.append("</a>");
-      buffer.append("<br>");
-      buffer.append("Пишите нам:&nbsp;<a href='mailto:diletant@diletant.com.ua'>diletant@diletant.com.ua</a>");
-      buffer.append("</span>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table>");

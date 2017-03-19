@@ -39,15 +39,9 @@ import org.forumj.web.servlet.FJServlet;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/" + FJUrl.NEW_THREAD}, name = FJServletName.NEW_THREAD)
-public class Mess extends FJServlet {
+public class Mess{
 
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI, String webapp) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try{
          HttpSession session = request.getSession();
@@ -76,17 +70,19 @@ public class Mess extends FJServlet {
          /*Главная таблица*/
          buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          /*Таблица с лого и верхним баннером*/
-         buffer.append(logo(request));
+         buffer.append(logo(webapp));
          // Главные ссылки
          // Главное "меню"
-         buffer.append(menu(request, user, locale, false));
+         buffer.append(menu(request, user, locale, false, webapp, userURI));
          // Форма новой ветки
          buffer.append("<tr>");
          buffer.append("<td>");
          buffer.append("<table width=100%>");
          buffer.append("<tr>");
          buffer.append("<td>");
-         buffer.append("<form name='post' action='" + FJUrl.ADD_THREAD + "' method='post'>");
+         buffer.append("<form name='post' action='");
+         buffer.append("/").append(userURI).append("/").append(FJUrl.ADD_THREAD);
+         buffer.append("' method='post'>");
          buffer.append("<table width='100%'>");
          /*Тема*/
          buffer.append("<tr>");
@@ -192,9 +188,9 @@ public class Mess extends FJServlet {
          buffer.append("</td>");
          buffer.append("</tr>");
          // Главное "меню"
-         buffer.append(menu(request, user, locale, false));
+         buffer.append(menu(request, user, locale, false, webapp, userURI));
          // Баннер внизу, счетчики и копирайт.
-         buffer.append(footer(request));
+         buffer.append(footer(webapp));
          buffer.append("</body>");
          buffer.append("</html>");
       } catch (Throwable e) {

@@ -37,10 +37,7 @@ import static org.forumj.common.FJServletName.IMAGES;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebServlet(urlPatterns = {"/css/picts/*","/picts/*", "/images/*", "/skin/*", "/banner/*", "/smiles/*", "/avatars/*",  "/photo/*"}, name=IMAGES)
-public class Images extends HttpServlet {
-
-   private static final long serialVersionUID = -8810949466796099480L;
+public class Images{
 
    private Logger logger = LogManager.getLogger("org.forumj.web.servlet");
 
@@ -55,29 +52,24 @@ public class Images extends HttpServlet {
    private String imagesContextDir;
    private String fjHomeDir;
 
-   @Override
-   public void init() throws ServletException {
+   public void init(String realPath) throws ServletException {
       try {
          avatarsContextDir = FJConfiguration.getConfig().getString(FJConfiguration.AVATARS_CONTEXT_DIR);
          imagesContextDir = FJConfiguration.getConfig().getString(FJConfiguration.IMAGES_CONTEXT_DIR);
          fjHomeDir = FJConfiguration.getConfig().getString(FJConfiguration.HOME_DIR);
-         realPath = getServletContext().getRealPath("/");
+         this.realPath = realPath;
       }catch (Exception e){
          throw new ServletException(e);
       }
    }
 
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
       try{
          String photoExt = null;
          // TODO remake it
-         String pathInfo = req.getPathInfo();
-         if (pathInfo != null){
-            String[] split = pathInfo.split("\\.");
+         String uri = req.getRequestURI();
+         if (uri != null){
+            String[] split = uri.split("\\.");
             if (split.length > 1){
                photoExt = split[1];
             }

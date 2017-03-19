@@ -16,6 +16,7 @@ import org.apache.commons.configuration.*;
  */
 public class FJConfiguration {
 
+   public final static String APP_NAME = "webapp.name";
    public final static String HOME_DIR = "fj.home.dir";
    public final static String AVATARS_CONTEXT_DIR = "avatarsContextDir";
    public final static String IMAGES_CONTEXT_DIR = "imagesContextDir";
@@ -42,4 +43,7 @@ public class FJConfiguration {
       return config;
    }
 
+   public static String getAppName() throws ConfigurationException {
+      return getConfig().getString(APP_NAME, "");
+   }
 }

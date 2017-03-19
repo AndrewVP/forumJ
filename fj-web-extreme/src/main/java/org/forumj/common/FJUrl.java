@@ -9,15 +9,19 @@
  */
 package org.forumj.common;
 
+import org.apache.commons.configuration.ConfigurationException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.forumj.common.config.FJConfiguration;
+
 /**
  * @author <a href = "mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 public interface FJUrl {
-   
+
    public static final String INDEX = "index";
    public static final String VIEW_THREAD = "tema";
    public static final String VIEW_THREAD_OLD = "tema.php";
-
    public static final String NEW_THREAD = "mess";
    public static final String MESSAGE = "message";
    public static final String ADD_THREAD = "new";
@@ -64,4 +68,20 @@ public interface FJUrl {
    public static final String ADD_SUBSCRIBE = "addsubs";
    public static final String PING = "ping";
    public static final String BAN = "ban";
+   public static final String CSS = "css";
+   public static final String PICTS = "picts";
+
+   // a lot of pictures paths
+    // "/css/picts/*","/picts/*", "/images/*", "/skin/*", "/banner/*", "/smiles/*", "/avatars/*",  "/photo/*"
+   public static final String CSS_PICTURES = CSS + "/" + PICTS;
+   public static final String PICTURES = "picts";
+   public static final String IMAGES = "images";
+   public static final String SKIN = "skin";
+   public static final String BANNER = "banner";
+   public static final String SMILES = "smiles";
+   public static final String AVATARS = "avatars";
+   public static final String PHOTO = "photo";
+   // end pictures
+   public static final String STATIC = "00";
+   public static final String DYNAMIC = "01";
 }
