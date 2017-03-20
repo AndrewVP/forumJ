@@ -30,11 +30,11 @@ import org.forumj.dbextreme.db.entity.FJIpAddress;
 public class FJIpAddressServiceImpl extends FJService implements FJIpAddressService {
 
    public void createIpAddress(IFJIpAddress ipAddress) throws SQLException, ConfigurationException, IOException{
-      getIpaddressdao().create(ipAddress);
+      getIpaddressDao().create(ipAddress);
    }
 
    public Boolean isSpammer(String ip) throws IOException, SQLException, ConfigurationException{
-      return getIpaddressdao().isSpammer(ip);
+      return getIpaddressDao().isSpammer(ip);
    }
 
    public IFJIpAddress getIpAddressObject() {

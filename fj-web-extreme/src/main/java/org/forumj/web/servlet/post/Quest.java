@@ -83,18 +83,14 @@ public class Quest extends FJServlet {
                   }else{
                      PostService postService = FJServiceHolder.getPostService();
                      IFJPost post = postService.getPostObject();
-                     IFJPostBody postBody = postService.getPostbodyObject();
-                     IFJPostHead postHead = postService.getPostHeadObject();
                      post.setState(1);
-                     post.setBody(postBody);
-                     post.setHead(postHead);
-                     postBody.setBody(body);
-                     postHead.setAuth(user.getId());
-                     postHead.setDomen(domen);
-                     postHead.setIp(ip);
-                     postHead.setNred(0);
-                     postHead.setTitle(head);
-                     postHead.setAuthor(user);
+                     post.setBody(body);
+                     post.setAuth(user.getId());
+                     post.setDomen(domen);
+                     post.setIp(ip);
+                     post.setNred(0);
+                     post.setTitle(head);
+                     post.setAuthor(user);
                      ThreadService treadService = FJServiceHolder.getThreadService();
                      IFJQuestionThread thread = treadService.getQuestionThreadObject();
                      thread.setAuthId(user.getId());
@@ -103,7 +99,7 @@ public class Quest extends FJServlet {
                      thread.setSnall(0);
                      thread.setSnid(0);
                      thread.setFolderId((long) 1);
-                     thread.setPcount(1);
+                     thread.setPostsAmount(1);
                      thread.setType(ThreadType.valueOfInteger(usersCanAddAnswers ? 2 :1));
                      thread.setAnswers(answers);
                      thread.setQuestion(question);

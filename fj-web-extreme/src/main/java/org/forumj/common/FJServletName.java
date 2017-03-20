@@ -20,6 +20,7 @@ public interface FJServletName {
    public static final String ADD_QUESTION = "Quest";
    public static final String NEW_THREAD = "Mess";
    public static final String MESSAGE = "message";
+   public static final String PAGE_404 = "PAGE_404";
    public static final String ADD_THREAD = "New";
    public static final String SETTINGS = "Control";
    public static final String ADMIN = "admin";
@@ -45,7 +46,6 @@ public interface FJServletName {
    public static final String VOICE = "Voice";
    public static final String ADD_VOTE = "UserVoice";
    public static final String ADD_IGNOR = "AddIgnor";
-   public static final String COUNT = "Count";
    public static final String MOVE_TITLE = "MoveTitle";
    public static final String NEW_FOLDER = "NewFolder";
    public static final String FOLDER_TOOLS = "DelFolder";
@@ -53,6 +53,7 @@ public interface FJServletName {
    public static final String OK_AVATAR = "OkAvatar";
    public static final String S_AVATAR = "SAvatar";
    public static final String SET_AVATAR = "SetAvatar";
+   public static final String POST_IMAGE = "postimage";
    public static final String SET_FOOTER = "SetFooter";
    public static final String POST = "post";
    public static final String SET_LOCATION = "SetLocation";
@@ -62,5 +63,6 @@ public interface FJServletName {
    public static final String ADD_SUBSCRIBE = "AddSubscribe";
    public static final String IMAGES = "picts";
    public static final String BAN = "ban";
+   public static final String PING = "ping";
 
 }

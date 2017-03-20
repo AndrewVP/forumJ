@@ -39,7 +39,7 @@ import com.tecnick.htmlutils.htmlentities.HTMLEntities;
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/" + FJUrl.VIEW_THREAD}, name = FJServletName.VIEW_THREAD)
+@WebServlet(urlPatterns = {"/" + FJUrl.VIEW_THREAD, "/" + FJUrl.VIEW_THREAD_OLD}, name = FJServletName.VIEW_THREAD)
 public class Tema extends FJServlet {
 
    /**
@@ -48,6 +48,7 @@ public class Tema extends FJServlet {
    @Override
    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       long startTime = new Date().getTime();
+      ImageService imageService = FJServiceHolder.getImageService();
       StringBuffer buffer = new StringBuffer();
       try {
          HttpSession session = request.getSession();
@@ -72,16 +73,16 @@ public class Tema extends FJServlet {
          IgnorService ignorService = FJServiceHolder.getIgnorService();
          List<IIgnor> ignorList = ignorService.readUserIgnor(user.getId());
          // Сколько страниц?
-         Integer count = thread.getPcount();
-         Integer couP = (int) (Math.floor((double)count/user.getPt())+2);
+         Integer count = thread.getPostsAmount();
+         Integer couP = (int) (Math.floor((double)count/user.getPostsOnPage())+2);
          // Если цитирование или последний пост, то нам на последнюю
          boolean lastPost = false;
          if (isAnswer || end != null){
             pageNumber = couP-1;
             lastPost = true;
          }
-         int nfirstpost = (pageNumber-1)*user.getPt();
-         List<IFJPost> posts = postService.readPosts(user, threadId, nfirstpost, user.getPt(), pageNumber, lastPost);
+         int nfirstpost = (pageNumber-1)*user.getPostsOnPage();
+         List<IFJPost> posts = postService.readPosts(user, threadId, nfirstpost, user.getPostsOnPage(), pageNumber, lastPost);
          int postsAmount = posts.size();
          // Получаем массив постов
          session.setAttribute("page", pageNumber);
@@ -96,7 +97,7 @@ public class Tema extends FJServlet {
                e.printStackTrace();
                msg = null;
             }
-            pageNumber=(int) (Math.floor(countPosts/user.getPt()) + 1);
+            pageNumber=(int) (Math.floor(countPosts/user.getPostsOnPage()) + 1);
          }
          // Записываем счетчики
          // Робот?
@@ -110,6 +111,13 @@ public class Tema extends FJServlet {
          buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
          // Стили
          buffer.append(loadCSS("/css/style.css"));
+         IndexService indexService = FJServiceHolder.getIndexService();
+         Long m_xb = indexService.getLastPostId(threadId);
+         buffer.append("<script language='javascript' type='text/javascript'>\n");
+         buffer.append("var m_xb=" + m_xb + ";\n");
+         buffer.append("var threadId=" + threadId + ";\n");
+         buffer.append("</script>\n");
+         buffer.append(loadJavaScript("/js/indicatorForThread.js"));
          // Скрипты (смайлики)
          buffer.append(loadJavaScript("/js/smile_.js"));
          // Скрипты (игнор)
@@ -173,6 +181,10 @@ public class Tema extends FJServlet {
          buffer.append("<td align=right>");
          // Сторінка сформована :)
          buffer.append("<span class=posthead>"+ locale.getString("mess91") + "</span>");
+         buffer.append("<br/>");
+         buffer.append("<span class=posthead >" + locale.getString("mess165") + ":&nbsp;</span>");
+         buffer.append("<span class=posthead id='indicatort' style='color:red'>&nbsp;</span>");
+
          buffer.append("</td>");
          buffer.append("</tr></table>");
          buffer.append("</td>");
@@ -184,9 +196,9 @@ public class Tema extends FJServlet {
          buffer.append("<table border='0' cellpadding='2' cellspacing='0' width='100%'>");
          // Определяем кол-во строк таблицы
          if (postsAmount>count) {
-            postsAmount=count-(pageNumber-1)*user.getPt();
+            postsAmount=count-(pageNumber-1)*user.getPostsOnPage();
          }else{
-            postsAmount=user.getPt();
+            postsAmount=user.getPostsOnPage();
          }
          // Тема
          // Выводим строки
@@ -230,6 +242,11 @@ public class Tema extends FJServlet {
          }
          buffer.append("</tr>");
          buffer.append("</table>");
+         buffer.append("<script type='text/javascript'>");
+         buffer.append("if (request){");
+         buffer.append("getIndicatorInfo();");
+         buffer.append("}");
+         buffer.append("</script>");
          buffer.append("</td>");
          buffer.append("</tr>");
          // Главное "меню"
@@ -271,7 +288,7 @@ public class Tema extends FJServlet {
             // Если цитируем/редактируем
             if (isAnswer) {
                replyPost = postService.read(Long.valueOf(replyPostParameter));
-               head = removeSlashes(replyPost.getHead().getTitle());
+               head = removeSlashes(replyPost.getTitle());
             }
             // Новое мнение
             // Форма нового поста
@@ -312,6 +329,12 @@ public class Tema extends FJServlet {
             buffer.append(locale.getString("mess12"));
             buffer.append("</p>");
             buffer.append("</td>");
+            /*Photoalbum header*/
+            buffer.append("<td align=left>");
+            buffer.append("<p>");
+            buffer.append(locale.getString("MSG_PHOTOALBUM") + ":");
+            buffer.append("</p>");
+            buffer.append("</td>");
             buffer.append("</tr>");
             //Пост
             buffer.append("<tr>");
@@ -326,14 +349,14 @@ public class Tema extends FJServlet {
             String textarea="";
             if (isAnswer) {
                String ans = request.getParameter("ans");
-               if (replyPost.getHead().getAuth().equals(user.getId())){
-                  textarea += HtmlChars.convertHtmlSymbols(removeSlashes(replyPost.getBody().getBody()));
+               if (replyPost.getAuth().equals(user.getId())){
+                  textarea += HtmlChars.convertHtmlSymbols(removeSlashes(replyPost.getBody()));
                }else if (ans == null){
-                  textarea += "[quote][b]" + HtmlChars.convertHtmlSymbols(removeSlashes(replyPost.getHead().getAuthor().getNick())) + "[/b] ";
+                  textarea += "[quote][b]" + HtmlChars.convertHtmlSymbols(removeSlashes(replyPost.getAuthor().getNick())) + "[/b] ";
                   textarea += locale.getString("mess14")+String.valueOf((char) 13);
-                  textarea += HtmlChars.convertHtmlSymbols(removeSlashes(replyPost.getBody().getBody())) + "[/quote]";
+                  textarea += HtmlChars.convertHtmlSymbols(removeSlashes(replyPost.getBody())) + "[/quote]";
                }else{
-                  textarea += "[b]" + removeSlashes(replyPost.getHead().getAuthor().getNick()) + "[/b]";
+                  textarea += "[b]" + removeSlashes(replyPost.getAuthor().getNick()) + "[/b]";
                   textarea += ", ";
                }
             }
@@ -345,14 +368,14 @@ public class Tema extends FJServlet {
             buffer.append("<table>");
             buffer.append("<tr>");
             buffer.append("<td>");
-            if (isAnswer && (replyPost.getHead().getAuth().equals(user.getId()))){
+            if (isAnswer && (replyPost.getAuth().equals(user.getId()))){
                buffer.append(fd_button(locale.getString("mess13"),"post_submit(\"write_edit\");","B1", "1"));
             }else{
                buffer.append(fd_button(locale.getString("mess13"),"post_submit(\"write_new\");","B1", "1"));
             }
             buffer.append("</td>");
             buffer.append("<td>");
-            if (isAnswer && (replyPost.getHead().getAuth().equals(user.getId()))){
+            if (isAnswer && (replyPost.getAuth().equals(user.getId()))){
                buffer.append(fd_button(locale.getString("mess63"),"post_submit(\"view_edit\");","B1", "1"));
             }else{
                buffer.append(fd_button(locale.getString("mess63"),"post_submit(\"view_new\");","B3", "1"));
@@ -361,7 +384,7 @@ public class Tema extends FJServlet {
             buffer.append("</tr>");
             buffer.append("</table>");
             //Если редактируем
-            if (isAnswer && (replyPost.getHead().getAuth().equals(user.getId()))){
+            if (isAnswer && (replyPost.getAuth().equals(user.getId()))){
                buffer.append("<input type=hidden name='IDB' size='20' value='" + replyPostParameter + "'>");
                buffer.append("<input type=hidden name='IDTbl' size='20' value='" + replyPost.getTablePost() + "'>");
                buffer.append("<input type=hidden name='IDPst' size='20' value='" + replyPost.getId().toString() + "'>");
@@ -374,6 +397,47 @@ public class Tema extends FJServlet {
                buffer.append("<input type=hidden name='ISQUEST' size='20' value='true'>");
             }
             buffer.append(fd_form_add(user));
+            buffer.append("</td>");
+            //Photoalbum
+            buffer.append("<td align='LEFT' valign='top'>");
+
+            List<Image> imageThumbs = imageService.getImages(user.getId(), 0, ImageType.POST_THUMBNAIL);
+            buffer.append("<div style='float: left;width: 330px;overflow-y: auto;overflow-x: hidden;height:400px;'>");
+            buffer.append("<div style='float: left;width: 160px;'>");
+
+            for (int thumbIndex = 0; thumbIndex < imageThumbs.size(); thumbIndex += 2){
+               Image thumb = imageThumbs.get(thumbIndex);
+               buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
+               buffer.append("<img border='0' src='photo/");
+               buffer.append(thumb.getId());
+               buffer.append("?id=");
+               buffer.append(thumb.getId());
+               buffer.append("' onclick=\"InsertTags('[img]photo/");
+               buffer.append(thumb.getParentId());
+               buffer.append("?id=");
+               buffer.append(thumb.getParentId());
+               buffer.append("','[/img]')\" alt='Вставить картинку'>");
+               buffer.append("</div>");
+            }
+            buffer.append("</div>");
+            buffer.append("<div style='margin-left: 160px;width: 160px;'>");
+            for (int thumbIndex = 1; thumbIndex < imageThumbs.size(); thumbIndex += 2){
+               Image thumb = imageThumbs.get(thumbIndex);
+               buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
+               buffer.append("<img border='0' src='photo/");
+               buffer.append(thumb.getId());
+               buffer.append("?id=");
+               buffer.append(thumb.getId());
+               buffer.append("' onclick=\"InsertTags('[img]photo/");
+               buffer.append(thumb.getParentId());
+               buffer.append("?id=");
+               buffer.append(thumb.getParentId());
+               buffer.append("','[/img]')\" alt='Вставить картинку'>");
+               buffer.append("</div>");
+            }
+            buffer.append("</div>");
+            buffer.append("</div>");
+
             buffer.append("</td>");
             buffer.append("</tr>");
             buffer.append("</table>");
@@ -404,27 +468,27 @@ public class Tema extends FJServlet {
 
    private StringBuffer writePost(IFJPost post, List<IIgnor> ignorList, IUser user, Integer pageNumber, LocaleString locale, IFJThread thread, VoiceService voiceService) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
       StringBuffer buffer = new StringBuffer();
-      Time postTime = new Time(post.getHead().getCreateTime());
-      IUser author = post.getHead().getAuthor();
+      Time postTime = new Time(post.getCreateTime());
+      IUser author = post.getAuthor();
       buffer.append("<tr class=heads>");
       buffer.append("<td  class=internal>");
       if (post.isLastPost()) buffer.append("<a name='end'></a>");
       buffer.append("<a name='" + post.getId() + "'>&nbsp;</a>");
-      buffer.append("<a class=nik href='" + FJUrl.VIEW_THREAD + "?id=" + post.getThreadId() + "&msg=" + post.getId() + "#" + post.getId() + "'  rel='nofollow'><b>&nbsp;&nbsp;" + fd_head(HTMLEntities.htmlentities(removeSlashes(post.getHead().getTitle()))) + "</b></a>");
+      buffer.append("<a class=nik href='" + FJUrl.VIEW_THREAD + "?id=" + post.getThreadId() + "&msg=" + post.getId() + "#" + post.getId() + "'  rel='nofollow'><b>&nbsp;&nbsp;" + fd_head(HTMLEntities.htmlentities(removeSlashes(post.getTitle()))) + "</b></a>");
       buffer.append("</td></tr>");
       buffer.append("<tr><td>");
       boolean ignored = false;
       String div_ = "";
       if (ignorList.size() > 0){
-         if (isIgnored(post.getHead().getAuth(), ignorList)) ignored = true;
+         if (isIgnored(post.getAuth(), ignorList)) ignored = true;
       }
       buffer.append("<span class='tbtextnread'>" + HtmlChars.convertHtmlSymbols(author.getNick()) + "</span>&nbsp;•");
       buffer.append("&nbsp;<img border='0' src='smiles/icon_minipost.gif'>&nbsp;<span class='posthead'>" + postTime.toString("dd.MM.yyyy HH:mm") + "</span>&nbsp;");
       if (user.isModerator()){
-         buffer.append("•&nbsp;<span class='posthead'>" + post.getHead().getIp() + "</span>&nbsp;" );
+         buffer.append("•&nbsp;<span class='posthead'>" + post.getIp() + "</span>&nbsp;" );
       }
-      if (!ignored && user.isLogined() && post.getHead().getAuth() != user.getId()){
-         buffer.append("•&nbsp;<a class='posthead' href='" + FJUrl.ADD_IGNOR + "?idi=" + post.getHead().getAuth() + "&idt=" + thread.getId() + "&idp=" + post.getId() + "&pg=" + pageNumber + "' rel='nofollow'>" + locale.getString("mess68") + "</a>");
+      if (!ignored && user.isLogined() && post.getAuth() != user.getId()){
+         buffer.append("•&nbsp;<a class='posthead' href='" + FJUrl.ADD_IGNOR + "?idi=" + post.getAuth() + "&idt=" + thread.getId() + "&idp=" + post.getId() + "&pg=" + pageNumber + "' rel='nofollow'>" + locale.getString("mess68") + "</a>");
       }
       buffer.append("</td></tr>");
       buffer.append("<tr><td>");
@@ -466,7 +530,7 @@ public class Tema extends FJServlet {
             buffer.append(writeQuest(post, user, locale, thread, voiceService));
          }
          buffer.append("<tr><td>");
-         buffer.append("<p class=post>" + fd_body(HtmlChars.convertHtmlSymbols(removeSlashes(post.getBody().getBody()))) + "</p>");
+         buffer.append("<p class=post>" + fd_body(HtmlChars.convertHtmlSymbols(removeSlashes(post.getBody()))) + "</p>");
          buffer.append("</td></tr>");
          buffer.append("</table></td></tr>");
          buffer.append("<tr><td class='matras' colspan=2></td></tr>");
@@ -474,11 +538,11 @@ public class Tema extends FJServlet {
          buffer.append("<p class=post>" + fd_body(HtmlChars.convertHtmlSymbols(removeSlashes(author.getFooter()))) + "</p>");
          buffer.append("</td></tr>");
          buffer.append("<tr><td align='RIGHT' width='100%' colspan=2>");
-         if (post.getHead().getNred()>0){
-            Time postEditTime = new Time(post.getHead().getEditTime());
+         if (post.getNred()>0){
+            Time postEditTime = new Time(post.getEditTime());
             buffer.append("<table class='matras' width='100%'>");
             buffer.append("<tr><td align='LEFT'>");
-            buffer.append("<span class='posthead'>" + locale.getString("mess50") + "&nbsp;" + post.getHead().getNred() + "&nbsp;" + locale.getString("mess51") + "&nbsp;" + postEditTime.toString("dd.MM.yyyy HH:mm") + "</span>");
+            buffer.append("<span class='posthead'>" + locale.getString("mess50") + "&nbsp;" + post.getNred() + "&nbsp;" + locale.getString("mess51") + "&nbsp;" + postEditTime.toString("dd.MM.yyyy HH:mm") + "</span>");
          }
          else {
             buffer.append("<table class='matras'>");

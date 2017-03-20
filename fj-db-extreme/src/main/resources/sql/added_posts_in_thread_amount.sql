@@ -1,5 +1,6 @@
 SELECT
  count(id) AS mx
-FROM body
+FROM posts
 WHERE id > ?
- AND head = ?
+ AND thread = ?
+ AND author NOT IN (SELECT ignor FROM ignor WHERE user = ? AND end > now())

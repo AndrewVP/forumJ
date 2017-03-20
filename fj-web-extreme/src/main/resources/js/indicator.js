@@ -13,8 +13,8 @@ try {
    }
 }
 function getIndicatorInfo() {
-	url = "count2";
-	params = "idb=" + m_xb + "&idt=" + m_xt + "&ids=" + idss;
+    url = "ping";
+    params = "idb=" + m_xb + "&idt=" + m_xt + "&ids=" + idss;
 	request.open("POST", url, true);
 
 	//Send the proper header information along with the request
@@ -29,30 +29,30 @@ function getIndicatorInfo() {
 function updateIndicator() {
    if (request.readyState == 4) {
       if (request.status == 200) {
-         var response = request.responseText.split(";");
+         var response = JSON.parse(request.responseText);
          var indicatort = document.getElementById("indicatort");
-         var text = document.createTextNode(response[0]);
+         var text = document.createTextNode(response.posts);
          indicatort.removeChild(indicatort.firstChild);
          indicatort.appendChild(text);
          var indicatorb = document.getElementById("indicatorb");
-         var textb = document.createTextNode(response[1]);
+         var textb = document.createTextNode(response.threads);
          indicatorb.removeChild(indicatorb.firstChild);
          indicatorb.appendChild(textb);
-         var newposts = response[2].split("|");
+         var newposts = response.ids;
          for (x=0; x< newposts.length; x++){
-            posts = newposts[x].split(",");
-            if (posts[1] !=0){
-               var post = document.getElementById("posts" + posts[0]);
-               var text = document.createTextNode("+" + posts[1]);
+            posts = newposts[x];
+            if (posts.amount != 0){
+               var post = document.getElementById("posts" + posts.id);
+               var text = document.createTextNode("+" + posts.amount);
                post.removeChild(post.firstChild);
                post.appendChild(text);
             }
          }
-         if (response[0] != 0){
+         if (response.posts != 0){
              if (typeof document.oldTitle === "undefined"){
                  document.oldTitle = document.title;
              }
-             document.title = response[1] + '/' + response[0] + ' ' + document.oldTitle;
+             document.title = response.threads + '/' + response.posts + ' ' + document.oldTitle;
          }
       }
       window.setTimeout(getIndicatorInfo, 30000);

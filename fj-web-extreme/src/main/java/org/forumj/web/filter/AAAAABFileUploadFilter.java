@@ -3,7 +3,7 @@
  */
 package org.forumj.web.filter;
 
-import static org.forumj.common.FJServletName.SET_AVATAR;
+import static org.forumj.common.FJServletName.*;
 import static org.forumj.tool.Diletant.errorOut;
 
 import java.io.*;
@@ -28,7 +28,7 @@ import org.forumj.web.tool.*;
  * @author Andrew V. Pogrebnyak
  *
  */
-@WebFilter(servletNames={SET_AVATAR})
+@WebFilter(servletNames={SET_AVATAR, POST_IMAGE})
 public class AAAAABFileUploadFilter implements Filter{
 
     private int maxUploadMemorySize = 10000;
@@ -82,7 +82,7 @@ public class AAAAABFileUploadFilter implements Filter{
                         processFormField(item, wrappedRequest);
                     } else {
                         if(!processUploadedFile(item, wrappedRequest)){
-                        	errors.addError(ErrorCode.AVATAR_FILE_NOT_IMAGE);
+                        	errors.addError(ErrorCode.FILE_IS_NOT_IMAGE);
                         }
                     }
                 }            
@@ -91,7 +91,7 @@ public class AAAAABFileUploadFilter implements Filter{
                 response.sendRedirect(request.getContextPath() + "/");
             }
         } catch (SizeLimitExceededException e) {
-        	errors.addError(ErrorCode.AVATAR_REQUEST_TO_BIG);
+        	errors.addError(ErrorCode.REQUEST_IS_TO_BIG);
             chain.doFilter(wrappedRequest, resp);
         } catch (Throwable e) {
             e.printStackTrace();

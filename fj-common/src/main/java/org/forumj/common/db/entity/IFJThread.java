@@ -50,8 +50,6 @@ public interface IFJThread {
    public int getPg();
    public void setPt(int pt);
    public int getPt();
-   public void setDisain(int disain);
-   public int getDisain();
    public void setFolder(String folder);
    public String getFolder();
    public void setType(ThreadType type);
@@ -60,8 +58,8 @@ public interface IFJThread {
    public Integer getSnall();
    public void setSnid(Integer snid);
    public Integer getSnid();
-   public void setPcount(int pcount);
-   public int getPcount();
+   public void setPostsAmount(int postsAmount);
+   public int getPostsAmount();
    public void setLastPostNick(String lastPostNick);
    public String getLastPostNick();
    public void setLastPostTime(Date lastPostTime);

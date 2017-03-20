@@ -73,7 +73,7 @@ public class FJThread implements IFJThread{
    /**
     * Количество постов в ветке
     */
-   private int pcount;
+   private int postsAmount;
 
    /**
     * Количество просмотров участников
@@ -100,11 +100,6 @@ public class FJThread implements IFJThread{
     */
    private Long folderId;
    
-   /**
-    * Дизайн
-    */
-   private int disain;
-
    /**
     * Количество постов на странице
     */
@@ -241,7 +236,6 @@ public class FJThread implements IFJThread{
    }
 
    /**
-    * @param lpauthor the lpauthor to set
     */
    @Override
    public void setLastPostNick(String lastPostNick) {
@@ -249,19 +243,17 @@ public class FJThread implements IFJThread{
    }
 
    /**
-    * @return the pcount
+    * @return the postsAmount
     */
-   @Override
-   public int getPcount() {
-      return pcount;
+   public int getPostsAmount() {
+      return postsAmount;
    }
 
    /**
-    * @param pcount the pcount to set
+    * @param postsAmount the postsAmount to set
     */
-   @Override
-   public void setPcount(int pcount) {
-      this.pcount = pcount;
+   public void setPostsAmount(int postsAmount) {
+      this.postsAmount = postsAmount;
    }
 
    /**
@@ -326,22 +318,6 @@ public class FJThread implements IFJThread{
    @Override
    public void setFolder(String folder) {
       this.folder = folder;
-   }
-
-   /**
-    * @return the disain
-    */
-   @Override
-   public int getDisain() {
-      return disain;
-   }
-
-   /**
-    * @param disain the disain to set
-    */
-   @Override
-   public void setDisain(int disain) {
-      this.disain = disain;
    }
 
    /**

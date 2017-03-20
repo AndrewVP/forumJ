@@ -36,12 +36,12 @@ public interface IUser {
    public void setPass(String pass);
    public String getPass();
    public boolean isLogined();
-   public void setPt(int pt);
-   public int getPt();
-   public void setPp(int pp);
-   public int getPp();
-   public void setView(int view);
-   public int getView();
+   public void setPostsOnPage(int postsOnPage);
+   public int getPostsOnPage();
+   public void setThreadsOnPage(int threadsOnPage);
+   public int getThreadsOnPage();
+   public void setView(long view);
+   public long getView();
    public void setBan(int ban);
    public int getBan();
    public void setShowAvatar(Boolean s_avatar);

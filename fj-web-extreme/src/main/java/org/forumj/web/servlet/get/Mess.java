@@ -20,6 +20,7 @@ import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.*;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,6 +28,10 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.entity.Image;
+import org.forumj.common.db.entity.ImageType;
+import org.forumj.common.db.service.FJServiceHolder;
+import org.forumj.common.db.service.ImageService;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
@@ -47,6 +52,7 @@ public class Mess extends FJServlet {
       try{
          HttpSession session = request.getSession();
          IUser user = (IUser) session.getAttribute("user");
+         ImageService imageService = FJServiceHolder.getImageService();
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          cache(response);
          buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
@@ -84,7 +90,7 @@ public class Mess extends FJServlet {
          buffer.append("<table width='100%'>");
          /*Тема*/
          buffer.append("<tr>");
-         buffer.append("<td colspan='2' align='left'>");
+         buffer.append("<td colspan='3' align='left'>");
          buffer.append(locale.getString("mess4") + "&nbsp");
          buffer.append("<input class='mnuforumSm' type=text name='NHEAD' size='120' maxlength='120'>");
          buffer.append("</td>");
@@ -100,6 +106,12 @@ public class Mess extends FJServlet {
          buffer.append("<td align='CENTER'>");
          buffer.append("<p>");
          buffer.append(locale.getString("mess12"));
+         buffer.append("</p>");
+         buffer.append("</td>");
+         /*Photoalbum header*/
+         buffer.append("<td align=left>");
+         buffer.append("<p>");
+         buffer.append(locale.getString("MSG_PHOTOALBUM") + ":");
          buffer.append("</p>");
          buffer.append("</td>");
          buffer.append("</tr>");
@@ -129,6 +141,47 @@ public class Mess extends FJServlet {
          buffer.append("</table>");
          /*Прередаем нужные пераметры...*/
          buffer.append(fd_form_add(user));
+         buffer.append("</td>");
+         //Photoalbum
+         buffer.append("<td align='LEFT' valign='top'>");
+
+         List<Image> imageThumbs = imageService.getImages(user.getId(), 0, ImageType.POST_THUMBNAIL);
+         buffer.append("<div style='float: left;width: 330px;overflow-y: auto;overflow-x: hidden;height:600px;'>");
+         buffer.append("<div style='float: left;width: 160px;'>");
+
+         for (int thumbIndex = 0; thumbIndex < imageThumbs.size(); thumbIndex += 2){ //just for start
+            Image thumb = imageThumbs.get(thumbIndex);
+            buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
+            buffer.append("<img border='0' src='photo/");
+            buffer.append(thumb.getId());
+            buffer.append("?id=");
+            buffer.append(thumb.getId());
+            buffer.append("' onclick=\"InsertTags('[img]photo/");
+            buffer.append(thumb.getParentId());
+            buffer.append("?id=");
+            buffer.append(thumb.getParentId());
+            buffer.append("','[/img]')\" alt='Вставить картинку'>");
+            buffer.append("</div>");
+         }
+            buffer.append("</div>");
+         buffer.append("<div style='margin-left: 160px;width: 160px;'>");
+         for (int thumbIndex = 1; thumbIndex < imageThumbs.size(); thumbIndex += 2){ //just for start
+            Image thumb = imageThumbs.get(thumbIndex);
+            buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
+            buffer.append("<img border='0' src='photo/");
+            buffer.append(thumb.getId());
+            buffer.append("?id=");
+            buffer.append(thumb.getId());
+            buffer.append("' onclick=\"InsertTags('[img]photo/");
+            buffer.append(thumb.getParentId());
+            buffer.append("?id=");
+            buffer.append(thumb.getParentId());
+            buffer.append("','[/img]')\" alt='Вставить картинку'>");
+            buffer.append("</div>");
+         }
+            buffer.append("</div>");
+         buffer.append("</div>");
+
          buffer.append("</td>");
          buffer.append("</tr>");
          buffer.append("</table>");

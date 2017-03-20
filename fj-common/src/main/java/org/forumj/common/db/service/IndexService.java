@@ -39,6 +39,16 @@ public interface IndexService {
          IOException;
 
    /**
+    * Возвращает id последнего поста в ветке
+    * @return
+    * @throws ConfigurationException
+    * @throws SQLException
+    * @throws IOException
+    */
+   public Long getLastPostId(long threadId) throws ConfigurationException, SQLException,
+         IOException;
+
+   /**
     * Возвращает id последней ветки в форуме
     * @return
     * @throws ConfigurationException
@@ -48,19 +58,19 @@ public interface IndexService {
    public Long getMaxThreadId() throws ConfigurationException, SQLException,
          IOException;
 
+   public long getThreadsAmount(Long viewId, IUser user) throws Exception;
+
    /**
     * 
     * @param viewId
     * @param nfirstpost
-    * @param locale
     * @param user
-    * @param ignorList
     * @return
     * @throws SQLException
     * @throws ConfigurationException
     */
-   public FJThreads getThreads(Long viewId, long nfirstpost, IUser user, List<IIgnor> ignorList)
-         throws SQLException, ConfigurationException;
+   public List<IFJThread> getThreads(Long viewId, long nfirstpost, IUser user)
+           throws SQLException, ConfigurationException, IOException;
 
    /**
     * 

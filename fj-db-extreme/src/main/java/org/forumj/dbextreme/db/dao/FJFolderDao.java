@@ -136,6 +136,8 @@ public class FJFolderDao extends FJDao {
    }
    
    public void moveToFolder(long threadId, long folderId, IUser user) throws IOException, ConfigurationException, SQLException{
+      //TODO Magic integer!
+      boolean moveToForum = folderId == 1;
       String deleteTranzitQuery = getDeleteThreadTranzitQuery();
       String appendQuery = getAppendThreadInFolderQuery();
       Connection conn = null;
@@ -148,11 +150,13 @@ public class FJFolderDao extends FJDao {
          st.setLong(1, threadId);
          st.setLong(2, user.getId());
          st.executeUpdate();
-         st = conn.prepareStatement(appendQuery);
-         st.setLong(1, threadId);
-         st.setLong(2, user.getId());
-         st.setLong(3, folderId);
-         st.executeUpdate();
+         if (!moveToForum){ // moving to forum mea that thread don't moved anywhere
+            st = conn.prepareStatement(appendQuery);
+            st.setLong(1, threadId);
+            st.setLong(2, user.getId());
+            st.setLong(3, folderId);
+            st.executeUpdate();
+         }
          error = false;
       }finally{
          writeFinally(conn, st, error);

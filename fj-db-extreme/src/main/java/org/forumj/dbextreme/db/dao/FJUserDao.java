@@ -141,8 +141,8 @@ public class FJUserDao extends FJDao {
          result.setNick(rs.getString("nick"));
          result.setPass(rs.getString("pass"));
          result.setPass2(rs.getString("pass2"));
-         result.setPp(rs.getInt("pp_def"));
-         result.setPt(rs.getInt("pt_def"));
+         result.setThreadsOnPage(rs.getInt("pp_def"));
+         result.setPostsOnPage(rs.getInt("pt_def"));
          result.setView(rs.getInt("view_def"));
          result.setTimeZone(rs.getInt("fd_timezone"));
          result.setWantSeeAvatars(rs.getInt("v_avatars") > 0);
@@ -207,9 +207,9 @@ public class FJUserDao extends FJDao {
          st.setInt(18, user.getShowBithday() ? 1 : 0);
          st.setInt(19, user.getLanguge().getCode());
          st.setInt(20, user.getHideIp() ? 1 : 0);
-         st.setInt(21, user.getView());
-         st.setInt(22, user.getPp());
-         st.setInt(23, user.getPt());
+         st.setLong(21, user.getView());
+         st.setInt(22, user.getThreadsOnPage());
+         st.setInt(23, user.getPostsOnPage());
          st.setString(24, user.getAvatar());
          st.setInt(25, user.getShowAvatar() ? 1 : 0);
          st.setInt(26, user.getAvatarApproved() ? 1 : 0);
@@ -254,9 +254,9 @@ public class FJUserDao extends FJDao {
          st.setInt(18, user.getShowBithday() ? 1 : 0);
          st.setInt(19, user.getLanguge().getCode());
          st.setInt(20, user.getHideIp() ? 1 : 0);
-         st.setInt(21, user.getView());
-         st.setInt(22, user.getPp());
-         st.setInt(23, user.getPt());
+         st.setLong(21, user.getView());
+         st.setInt(22, user.getThreadsOnPage());
+         st.setInt(23, user.getPostsOnPage());
          st.setString(24, user.getAvatar());
          st.setInt(25, user.getShowAvatar() ? 1 : 0);
          st.setInt(26, user.getAvatarApproved() ? 1 : 0);

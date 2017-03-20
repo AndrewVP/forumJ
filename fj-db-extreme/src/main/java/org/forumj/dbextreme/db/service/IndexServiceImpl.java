@@ -41,6 +41,17 @@ public class IndexServiceImpl extends FJService implements IndexService{
    }
    
    /**
+    * Возвращает id последнего поста в форуме
+    * @return
+    * @throws ConfigurationException
+    * @throws SQLException
+    * @throws IOException
+    */
+   public Long getLastPostId(long threadId) throws ConfigurationException, SQLException, IOException{
+      return getPostDao().getLastPostId(threadId);
+   }
+
+   /**
     * Возвращает id последней ветки в форуме
     * @return
     * @throws ConfigurationException
@@ -50,20 +61,23 @@ public class IndexServiceImpl extends FJService implements IndexService{
    public Long getMaxThreadId() throws ConfigurationException, SQLException, IOException{
       return getThreadDao().getMaxThreadId();
    }
-   
+
+   public long getThreadsAmount(Long viewId, IUser user) throws Exception{
+      return getThreadDao().getThreadsAmount(viewId, user);
+   }
+
+
    /**
     * 
     * @param viewId
     * @param nfirstpost
-    * @param locale
     * @param user
-    * @param ignorList
     * @return
     * @throws SQLException
     * @throws ConfigurationException
     */
-   public FJThreads getThreads(Long viewId, long nfirstpost, IUser user, List<IIgnor> ignorList) throws SQLException, ConfigurationException{
-      return getThreadDao().getThreads(viewId, nfirstpost, user, ignorList);
+   public List<IFJThread> getThreads(Long viewId, long nfirstpost, IUser user) throws SQLException, ConfigurationException, IOException {
+      return getThreadDao().getThreads(viewId, nfirstpost, user);
    }
    
    /**

@@ -10,7 +10,6 @@
 package org.forumj.dbextreme.db.dao.tool;
 
 import java.io.*;
-import java.util.*;
 
 /**
  *
@@ -26,10 +25,6 @@ public class QueryBuilder {
    
    private static String updatePostQuery = null;
 
-   private static String updatePostBodyQuery = null;
-
-   private static String updatePostHeadQuery = null;
-
    private static String readThreadQuery = null;
    
    private static String checkThreadExistQuery = null;
@@ -42,20 +37,12 @@ public class QueryBuilder {
    
    private static String readPostQuery = null;
 
-   private static String readPostHeadQuery = null;
-
-   private static String readPostBodyQuery = null;
-
    private static String addedPostsAmountQuery = null;
 
    private static String addedPostsInThreadAmountQuery = null;
    
    private static String addedThreadsAmountQuery = null;
    
-   private static String createPostBodyQuery = null;
-   
-   private static String createPostHeadQuery = null;
-
    private static String loadAnswersQuery = null;
 
    private static String readVoiceQuery = null;
@@ -83,7 +70,15 @@ public class QueryBuilder {
    private static String createFolderQuery = null;
    
    private static String createActionQuery = null;
-   
+
+   private static String updateImageQuery = null;
+
+   private static String createImageQuery = null;
+
+   private static String loadImageThumbsQuery = null;
+
+   private static String loadImageQuery = null;
+
    private static String createInterfaceQuery = null;
    
    private static String receiveMailQuery = null;
@@ -113,7 +108,9 @@ public class QueryBuilder {
    private static String loadInterfaceQuery = null;
 
    private static String loadFoldersInQuery = null;
-   
+
+   private static String loadFoldersIdInViewQuery = null;
+
    private static String loadFoldersNotInQuery = null;
    
    private static String loadFoldersQuery = null;
@@ -182,6 +179,8 @@ public class QueryBuilder {
    
    private static String lastPostIdQuery = null;
    
+   private static String lastPostIdInThreadQuery = null;
+
    private static String isUserSubscribedQuery = null;
    
    private static String lastThreadIdQuery = null;
@@ -212,14 +211,6 @@ public class QueryBuilder {
    
    private static String postsCountInThreadQuery = null;
    
-   private static Map<String, String> readPostsHeadsQuery = new HashMap<String, String>();
-   
-   private static Object readPostsHeadsQueryMonitor = new Object();
-   
-   private static Map<String, String> readPostsBodiesQuery = new HashMap<String, String>();
-   
-   private static Object readPostsBodiesQueryMonitor = new Object();
-   
    private static String seenByUserQuery = null;
 
    private static String pinQuery = null;
@@ -227,7 +218,33 @@ public class QueryBuilder {
    private static String closeThreadQuery = null;
    
    private static String seenByGuestQuery = null;
-   
+
+   private static String loadAllMovedThreadsIds = null;
+
+   private static String loadAllIgnoredUsersIds = null;
+
+   private static String loadLastThreadsIdsOnlyInForumQuery = null;
+
+   private static String loadLastThreadsIdsNotOnlyInForumQuery = null;
+
+   private static String loadLastThreadsIdsNoForumQuery = null;
+
+   private static String loadPinnedThreadsIdsOnlyInForumQuery = null;
+
+   private static String loadPinnedThreadsIdsNotOnlyInForumQuery = null;
+
+   private static String loadPinnedThreadsIdsNoForumQuery = null;
+
+   private static String loadForumIndexQuery_part1 = null;
+
+   private static String loadForumIndexQuery_part2 = null;
+
+   private static String countThreadsOnlyInForumQuery = null;
+
+   private static String countThreadsNotOnlyForumQuery = null;
+
+   private static String countThreadsNoForumQuery = null;
+
    public static String getLoadConfigQuery() throws IOException{
       if (loadConfigQuery == null){
          loadConfigQuery = loadQuery("sql/load_config.sql");
@@ -368,20 +385,6 @@ public class QueryBuilder {
       return addFolderQuery;
    }
    
-   public static String getUpdatePostBodyQuery(String bodyTable) throws IOException{
-      if (updatePostBodyQuery == null){
-         updatePostBodyQuery = loadQuery("sql/update_post_body.sql");
-      }
-      return updatePostBodyQuery.replace("@@TABLE@@", bodyTable);
-   }
-   
-   public static String getUpdatePostHeadQuery(String headTable) throws IOException{
-      if (updatePostHeadQuery == null){
-         updatePostHeadQuery = loadQuery("sql/update_post_head.sql");
-      }
-      return updatePostHeadQuery.replace("@@TABLE@@", headTable);
-   }
-   
    public static String getReadThreadQuery() throws IOException{
       if (readThreadQuery == null){
          readThreadQuery = loadQuery("sql/read_thread.sql");
@@ -424,20 +427,6 @@ public class QueryBuilder {
       return readPostQuery;
    }
    
-   public static String getReadPostHeadQuery(String headTable) throws IOException{
-      if (readPostHeadQuery == null){
-         readPostHeadQuery = loadQuery("sql/read_post_head.sql");
-      }
-      return readPostHeadQuery.replace("@@TABLE@@", headTable);
-   }
-   
-   public static String getReadPostBodyQuery(String bodyTable) throws IOException{
-      if (readPostBodyQuery == null){
-         readPostBodyQuery = loadQuery("sql/read_post_body.sql");
-      }
-      return readPostBodyQuery.replace("@@TABLE@@", bodyTable);
-   }
-   
    public static String getAddedPostsAmountQuery() throws IOException{
       if (addedPostsAmountQuery == null){
          addedPostsAmountQuery = loadQuery("sql/added_posts_amount.sql");
@@ -457,20 +446,6 @@ public class QueryBuilder {
          addedThreadsAmountQuery = loadQuery("sql/added_threads_amount.sql");
       }
       return addedThreadsAmountQuery;
-   }
-   
-   public static String getCreatePostBodyQuery(String bodyTableName) throws IOException{
-      if (createPostBodyQuery == null){
-         createPostBodyQuery = loadQuery("sql/create_post_body.sql");
-      }
-      return createPostBodyQuery.replace("@@currentBodyTable@@", bodyTableName);
-   }
-   
-   public static String getCreatePostHeadQuery(String headTableName) throws IOException{
-      if (createPostHeadQuery == null){
-         createPostHeadQuery = loadQuery("sql/create_post_head.sql");
-      }
-      return createPostHeadQuery.replace("@@currentHeadTable@@", headTableName);
    }
    
    public static String getLoadAnswersQuery() throws IOException{
@@ -571,6 +546,34 @@ public class QueryBuilder {
       return createActionQuery;
    }
    
+   public static String getCreateImageQuery() throws IOException{
+      if (createImageQuery == null){
+         createImageQuery = loadQuery("sql/create_image.sql");
+      }
+      return createImageQuery;
+   }
+
+   public static String getLoadImageThumbsQuery() throws IOException{
+      if (loadImageThumbsQuery == null){
+         loadImageThumbsQuery = loadQuery("sql/load_images.sql");
+      }
+      return loadImageThumbsQuery;
+   }
+
+   public static String getLoadImageQuery() throws IOException{
+      if (loadImageQuery == null){
+         loadImageQuery = loadQuery("sql/load_image.sql");
+      }
+      return loadImageQuery;
+   }
+
+   public static String getUpdateImageQuery() throws IOException{
+      if (updateImageQuery == null){
+         updateImageQuery = loadQuery("sql/update_image.sql");
+      }
+      return updateImageQuery;
+   }
+
    public static String getCreateInterfaceQuery() throws IOException{
       if (createInterfaceQuery == null){
          createInterfaceQuery = loadQuery("sql/create_interface.sql");
@@ -676,6 +679,13 @@ public class QueryBuilder {
       return loadFoldersInQuery;
    }
    
+   public static String getLoadFoldersIdInViewQuery() throws IOException{
+      if (loadFoldersIdInViewQuery == null){
+         loadFoldersIdInViewQuery = loadQuery("sql/load_folders_id_in_view.sql");
+      }
+      return loadFoldersIdInViewQuery;
+   }
+
    public static String getLoadFoldersNotInQuery() throws IOException{
       if (loadFoldersNotInQuery == null){
          loadFoldersNotInQuery = loadQuery("sql/load_folders_not_in.sql");
@@ -802,6 +812,13 @@ public class QueryBuilder {
       return lastPostIdQuery;
    }
    
+   public static String getLastPostIdInThreadQuery() throws IOException{
+      if (lastPostIdInThreadQuery == null){
+         lastPostIdInThreadQuery = loadQuery("sql/last_post_id_in_thread.sql");
+      }
+      return lastPostIdInThreadQuery;
+   }
+
    public static String getIsUserSubscribedQuery() throws IOException{
       if (isUserSubscribedQuery == null){
          isUserSubscribedQuery = loadQuery("sql/is_user_subscribed.sql");
@@ -900,28 +917,6 @@ public class QueryBuilder {
       return readPostsQuery;
    }
    
-   public static String getReadPostsHeadsQuery(String table, String ids) throws IOException{
-      String query = readPostsHeadsQuery.get(table);
-      if (query == null){
-         query = loadQuery("sql/read_post_heads.sql").replace("@@TABLE@@", table);
-         synchronized (readPostsHeadsQueryMonitor) {
-            readPostsHeadsQuery.put(table, query); 
-         }
-      }
-      return query + " (" + ids + ")";
-   }
-   
-   public static String getReadPostsBodiesQuery(String table, String ids) throws IOException{
-      String query = readPostsBodiesQuery.get(table);
-      if (query == null){
-         query = loadQuery("sql/read_post_bodies.sql").replace("@@TABLE@@", table);
-         synchronized (readPostsBodiesQueryMonitor) {
-            readPostsBodiesQuery.put(table, query); 
-         }
-      }
-      return query + " (" + ids + ")";
-   }
-
    public static String getPostsCountInThreadQuery() throws IOException{
       if (postsCountInThreadQuery == null){
          postsCountInThreadQuery = loadQuery("sql/posts_count_in_thread.sql");
@@ -957,18 +952,88 @@ public class QueryBuilder {
       return seenByGuestQuery;
    }
    
+   public static String getLoadLastThreadsIdsOnlyInForumQuery() throws IOException{
+      if (loadLastThreadsIdsOnlyInForumQuery == null){
+         loadLastThreadsIdsOnlyInForumQuery = loadQuery("sql/loadLastThreadsIdsOnlyInForum.sql");
+      }
+      return loadLastThreadsIdsOnlyInForumQuery;
+   }
+
+   public static String getLoadLastThreadsIdsNotOnlyInForumQuery() throws IOException{
+      if (loadLastThreadsIdsNotOnlyInForumQuery == null){
+         loadLastThreadsIdsNotOnlyInForumQuery = loadQuery("sql/loadLastThreadsIdsNotOnlyInForum.sql");
+      }
+      return loadLastThreadsIdsNotOnlyInForumQuery;
+   }
+
+   public static String getLoadLastThreadsIdsNoForumQuery() throws IOException{
+      if (loadLastThreadsIdsNoForumQuery == null){
+         loadLastThreadsIdsNoForumQuery = loadQuery("sql/loadLastThreadsIdsNoForum.sql");
+      }
+      return loadLastThreadsIdsNoForumQuery;
+   }
+
+   public static String getLoadPinnedThreadsIdsOnlyInForumQuery() throws IOException{
+      if (loadPinnedThreadsIdsOnlyInForumQuery == null){
+         loadPinnedThreadsIdsOnlyInForumQuery = loadQuery("sql/loadPinnedThreadsIdsOnlyInForum.sql");
+      }
+      return loadPinnedThreadsIdsOnlyInForumQuery;
+   }
+
+   public static String getLoadPinnedThreadsIdsNotOnlyInForumQuery() throws IOException{
+      if (loadPinnedThreadsIdsNotOnlyInForumQuery == null){
+         loadPinnedThreadsIdsNotOnlyInForumQuery = loadQuery("sql/loadPinnedThreadsIdsNotOnlyInForum.sql");
+      }
+      return loadPinnedThreadsIdsNotOnlyInForumQuery;
+   }
+
+   public static String getLoadPinnedThreadsIdsNoForumQuery() throws IOException{
+      if (loadPinnedThreadsIdsNoForumQuery == null){
+         loadPinnedThreadsIdsNoForumQuery = loadQuery("sql/loadPinnedThreadsIdsNoForum.sql");
+      }
+      return loadPinnedThreadsIdsNoForumQuery;
+   }
+
+   public static String getLoadForumIndexQuery(String part) throws IOException{
+      if (loadForumIndexQuery_part1 == null){
+         loadForumIndexQuery_part1 = loadQuery("sql/loadForumIndex_part1.sql");
+      }
+      if (loadForumIndexQuery_part2 == null){
+         loadForumIndexQuery_part2 = loadQuery("sql/loadForumIndex_part2.sql");
+      }
+      return new StringBuilder(loadForumIndexQuery_part1).append(part).append(loadForumIndexQuery_part2).toString();
+   }
+
+   public static String getCountThreadsOnlyInForumQuery() throws IOException{
+      if (countThreadsOnlyInForumQuery == null){
+         countThreadsOnlyInForumQuery = loadQuery("sql/countThreadsOnlyInForum.sql");
+      }
+      return countThreadsOnlyInForumQuery;
+   }
+
+   public static String getCountThreadsNotOnlyForumQuery() throws IOException{
+      if (countThreadsNotOnlyForumQuery == null){
+         countThreadsNotOnlyForumQuery = loadQuery("sql/countThreadsNotOnlyForum.sql");
+      }
+      return countThreadsNotOnlyForumQuery;
+   }
+
+   public static String getCountThreadsNoForumQuery() throws IOException{
+      if (countThreadsNoForumQuery == null){
+         countThreadsNoForumQuery = loadQuery("sql/countThreadsNoForum.sql");
+      }
+      return countThreadsNoForumQuery;
+   }
+
    private static String loadQuery(String path) throws IOException{
       ClassLoader classLoader = QueryBuilder.class.getClassLoader();
-      InputStream stream = classLoader.getResourceAsStream(path);
-      BufferedReader br = new BufferedReader(new InputStreamReader(stream));
       StringBuffer result = new StringBuffer();
-      try {
+      try(
+         InputStream stream = classLoader.getResourceAsStream(path);
+         BufferedReader br = new BufferedReader(new InputStreamReader(stream));
+      ){
          while(br.ready()){
             result.append(br.readLine() + "\n");
-         }
-      } finally {
-         if (br != null){
-            br.close();
          }
       }
       return result.toString();

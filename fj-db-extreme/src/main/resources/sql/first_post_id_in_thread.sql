@@ -1,1 +1,1 @@
-SELECT id FROM body WHERE head = ? ORDER BY id LIMIT 1
+SELECT id FROM posts WHERE thread = ? ORDER BY id LIMIT 1

@@ -84,8 +84,8 @@ public class UpdateUserTest {
       testUser1.setLanguge(Locale.UA);
       testUser1.setHideIp(true);
       testUser1.setView(5);
-      testUser1.setPp(66);
-      testUser1.setPt(77);
+      testUser1.setThreadsOnPage(66);
+      testUser1.setPostsOnPage(77);
       testUser1.setAvatar("avatar");
       testUser1.setShowAvatar(true);
       testUser1.setAvatarApproved(true);
@@ -120,8 +120,8 @@ public class UpdateUserTest {
       testUser2.setLanguge(Locale.RU);
       testUser2.setHideIp(false);
       testUser2.setView(6);
-      testUser2.setPp(66);
-      testUser2.setPt(77);
+      testUser2.setThreadsOnPage(66);
+      testUser2.setPostsOnPage(77);
       testUser2.setAvatar("avatar");
       testUser2.setShowAvatar(false);
       testUser2.setAvatarApproved(false);
@@ -156,8 +156,8 @@ public class UpdateUserTest {
       testUser3.setLanguge(Locale.UA);
       testUser3.setHideIp(true);
       testUser3.setView(7);
-      testUser3.setPp(66);
-      testUser3.setPt(77);
+      testUser3.setThreadsOnPage(66);
+      testUser3.setPostsOnPage(77);
       testUser3.setAvatar("avatar");
       testUser3.setShowAvatar(true);
       testUser3.setAvatarApproved(true);
@@ -184,8 +184,8 @@ public class UpdateUserTest {
             result.setNick(rs.getString("nick"));
             result.setPass(rs.getString("pass"));
             result.setPass2(rs.getString("pass2"));
-            result.setPp(rs.getInt("pp_def"));
-            result.setPt(rs.getInt("pt_def"));
+            result.setThreadsOnPage(rs.getInt("pp_def"));
+            result.setPostsOnPage(rs.getInt("pt_def"));
             result.setView(rs.getInt("view_def"));
             result.setTimeZone(rs.getInt("fd_timezone"));
             result.setWantSeeAvatars(rs.getInt("v_avatars") > 0);

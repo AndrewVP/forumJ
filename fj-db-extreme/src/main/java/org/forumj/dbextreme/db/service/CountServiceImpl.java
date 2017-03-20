@@ -27,15 +27,15 @@ import org.forumj.common.db.service.CountService;
  */
 public class CountServiceImpl extends FJService implements CountService {
 
-   public long getAddedPostsAmount(long lastPostId) throws SQLException, ConfigurationException, IOException{
-      return getPostDao().getAddedPostsAmount(lastPostId);
+   public long getAddedPostsAmount(long lastPostId, long userId) throws SQLException, ConfigurationException, IOException{
+      return getPostDao().getAddedPostsAmount(lastPostId, userId);
    }
    
-   public long getAddedThreadsAmount(long lastThreadId) throws SQLException, ConfigurationException, IOException{
-      return getThreadDao().getAddedThreadsAmount(lastThreadId);
+   public long getAddedThreadsAmount(long lastThreadId, long userId) throws SQLException, ConfigurationException, IOException{
+      return getThreadDao().getAddedThreadsAmount(lastThreadId, userId);
    }
    
-   public long getAddedPostsAmount(long threadId, long lastPostId) throws SQLException, ConfigurationException, IOException{
-      return getPostDao().getAddedPostsAmount(threadId, lastPostId);
+   public long getAddedPostsAmount(long threadId, long lastPostId, long userId) throws SQLException, ConfigurationException, IOException{
+      return getPostDao().getAddedPostsAmount(threadId, lastPostId, userId);
    }
 }

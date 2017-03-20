@@ -16,7 +16,8 @@ public interface FJUrl {
    
    public static final String INDEX = "index";
    public static final String VIEW_THREAD = "tema";
-   
+   public static final String VIEW_THREAD_OLD = "tema.php";
+
    public static final String NEW_THREAD = "mess";
    public static final String MESSAGE = "message";
    public static final String ADD_THREAD = "new";
@@ -53,6 +54,7 @@ public interface FJUrl {
    public static final String OK_AVATAR = "ok_avatar";
    public static final String S_AVATAR = "s_avatar";
    public static final String SET_AVATAR = "setavatar";
+   public static final String POST_IMAGE = "postimage";
    public static final String SET_FOOTER = "setfooter";
    public static final String POST = "post";
    public static final String SET_LOCATION = "setlocation";
@@ -60,6 +62,6 @@ public interface FJUrl {
    public static final String SELECT_VIEW = "slctview";
    public static final String SEND_PIVATE_MESSAGE = "send";
    public static final String ADD_SUBSCRIBE = "addsubs";
-   public static final String COUNT = "count2";
+   public static final String PING = "ping";
    public static final String BAN = "ban";
 }

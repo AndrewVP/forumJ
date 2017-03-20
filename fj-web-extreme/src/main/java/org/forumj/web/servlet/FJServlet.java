@@ -44,9 +44,7 @@ public class FJServlet extends HttpServlet {
 	   List<byte[]> result = new ArrayList<byte[]>();
 	   File file = new File(fileName);
 	   if (file.exists()){
-		   InputStream in = null;
-		   try {
-			   in = new FileInputStream(file);
+		   try(InputStream in = new FileInputStream(file);) {
 			   final byte[] chars = new byte[1024];
 			   int read;
 			   do  {
@@ -61,10 +59,6 @@ public class FJServlet extends HttpServlet {
 					   result.add(realChars);
 				   }
 			   }while(read > -1);
-		   } finally {
-			   if (in != null) {
-				   in.close();
-			   }
 		   }
 	   }
 	   return result;
