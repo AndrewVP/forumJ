@@ -19,6 +19,7 @@ import static org.forumj.tool.Diletant.*;
 
 import java.io.*;
 import java.sql.SQLException;
+import java.text.MessageFormat;
 import java.util.*;
 
 import javax.activation.*;
@@ -204,7 +205,7 @@ public class FJEMail {
       StringBuffer buffer = new StringBuffer();
       buffer.append("<html><head><meta http-equiv='content-type' content='text/html; charset=UTF-8'></head><body style='background-color:#EFEFEF;'><table>");
       buffer.append("<tr><td>");
-      buffer.append(locale.getString("MSG_REGISTERED"));
+      buffer.append(MessageFormat.format(locale.getString("MSG_REGISTERED"), user.getNick()));
       buffer.append("<br/>");
       buffer.append(locale.getString("MSG_CLICK"));
       buffer.append(":&nbsp;<a href='http://www.diletant.com.ua/forum/");
@@ -219,8 +220,6 @@ public class FJEMail {
       buffer.append(user.getActivateCode());
       buffer.append("'>");
       buffer.append(locale.getString("MSG_ACTIVATE"));
-      buffer.append(":&nbsp;");
-      buffer.append(user.getNick());
       buffer.append("</a>");
       buffer.append("</td><tr></table><body></html>");
       return buffer.toString();
