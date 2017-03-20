@@ -1403,9 +1403,10 @@ public class Control extends FJServlet {
          List<IUser> users = userService.getUnapprovedUsers();
          if (users.size() > 0){
             // Table headers
-            buffer.append("<th class='internal'><div class=tbtext>id</div></th>");
-            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("mess44") + "</div></th>");
-            buffer.append("<th class='internal'><div class=tbtext>" + locale.getString("MSG_EMAIL") + "</div></th>");
+            buffer.append("<th class='internal'><div align='LEFT' class=tbtext>id</div></th>");
+            buffer.append("<th class='internal'><div align='LEFT' class=tbtext>" + locale.getString("mess44") + "</div></th>");
+            buffer.append("<th class='internal'><div align='LEFT' class=tbtext>" + locale.getString("MSG_EMAIL") + "</div></th>");
+            buffer.append("<th class='internal'><div align='LEFT' class=tbtext>" + locale.getString("MSG_CONFIRMED") + "</div></th>");
             buffer.append("</tr>");
             // Rows
             for (int userIndex=0; userIndex < users.size(); userIndex++){
@@ -1426,6 +1427,10 @@ public class Control extends FJServlet {
                // E-mail
                buffer.append("<td class='internal'><div class=tbtext>");
                buffer.append(user.getEmail());
+               buffer.append("</div></td>");
+               // E-mail confirmed
+               buffer.append("<td class='internal'><div class=tbtext>");
+               buffer.append(user.getIsActive() ? locale.getString("mess26"): locale.getString("mess27"));
                buffer.append("</div></td>");
                buffer.append("</tr>");
             }
