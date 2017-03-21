@@ -43,6 +43,9 @@ import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 @WebServlet(urlPatterns = {"/" + FJUrl.ADD_POST}, name = FJServletName.ADD_POST)
 public class Write extends FJServlet {
 
+   private String webapp;
+   private String userURI;
+
    /**
     * {@inheritDoc}
     */
@@ -207,7 +210,7 @@ public class Write extends FJServlet {
       buffer.append("</div>");
       buffer.append("</td>");
       buffer.append("</tr>");
-      buffer.append(menu(request, user, locale, false));
+      buffer.append(menu(request, user, locale, false, webapp, userURI));
       buffer.append("<tr>");
       buffer.append("<td>");
       buffer.append("<table>");

@@ -39,6 +39,8 @@ import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 @WebServlet(urlPatterns = {"/" + FJUrl.ADD_QUESTION}, name = FJServletName.ADD_QUESTION)
 public class Quest extends FJServlet {
 
+   private String webapp;
+   private String userURI;
    /**
     * {@inheritDoc}
     */
@@ -267,7 +269,7 @@ public class Quest extends FJServlet {
       buffer.append("</div>");
       buffer.append("</td>");
       buffer.append("</tr>");
-      menu(request, user, locale, false);
+      menu(request, user, locale, false, webapp, userURI);
       buffer.append("<tr>");
       buffer.append("<td>");
       buffer.append("<table>");

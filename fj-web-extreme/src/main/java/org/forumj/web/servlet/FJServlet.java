@@ -20,7 +20,7 @@ import javax.servlet.http.*;
  */
 @SuppressWarnings("serial")
 public class FJServlet extends HttpServlet {
-   
+
    private String ukr;
    private String rus;
    private String exitUrl;

@@ -28,15 +28,9 @@ import org.forumj.web.servlet.FJServlet;
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/" + FJUrl.NEW_QUESTION}, name = FJServletName.NEW_QUESTION)
-public class Opr extends FJServlet {
+public class Opr{
 
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI, String webapp) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try {
          HttpSession session = request.getSession();
@@ -68,13 +62,13 @@ public class Opr extends FJServlet {
          // Главная таблица
          buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          // Таблица с лого и верхним баннером
-         buffer.append(logo(request));
+         buffer.append(logo(webapp));
          // Таблица главных ссылок
          buffer.append("<tr>");
          buffer.append("<td width='100%'>");
          buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          // Главное "меню"
-         buffer.append(menu(request, user, locale, false));
+         buffer.append(menu(request, user, locale, false, webapp, userURI));
          buffer.append("<tr>");
          buffer.append("<td>");
          buffer.append("<table>");
@@ -192,9 +186,9 @@ public class Opr extends FJServlet {
          buffer.append("</table>");
          buffer.append("</td>");
          buffer.append("</tr>");
-         buffer.append(menu(request, user, locale, false));
+         buffer.append(menu(request, user, locale, false, webapp ,userURI));
          // Баннер внизу, счетчики и копирайт.
-         buffer.append(footer(request));
+         buffer.append(footer(webapp));
          buffer.append("</table></td></tr></table></td></tr></table>");
          buffer.append("</body>");
          buffer.append("</html>");

@@ -32,7 +32,11 @@ public class Dispatcher extends HttpServlet {
     private Tema pageGroupThread = new Tema();
     private Images imagesController = new Images();
     private Mess newThreadController = new Mess();
-    private Quest questController = new Quest();
+    private Control settingsController = new Control();
+    private Message messageController = new Message();
+    private Auth loginController = new Auth();
+    private Opr newQuestionController = new Opr();
+    private Registration registrationController = new Registration();
 
     @Override
     public void init() throws ServletException {
@@ -59,23 +63,43 @@ public class Dispatcher extends HttpServlet {
                 }
                 switch (controllerName){
                     case FJUrl.INDEX :
-
                         pageGroupIndex.doGet(request, response, userURI, webappName);
                         break;
                     case FJUrl.VIEW_THREAD:
                     case FJUrl.VIEW_THREAD_OLD:
                         pageGroupThread.doGet(request, response, webappName, userURI);
+                        break;
                     case FJUrl.STATIC:
                         imagesController.doGet(request, response);
+                        break;
                     case FJUrl.NEW_THREAD:
                         newThreadController.doGet(request, response, webappName, userURI);
-                    case FJUrl.ADD_QUESTION:
-                        newThreadController.doGet(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.SETTINGS:
+                        settingsController.doGet(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.MESSAGE:
+                        messageController.doGet(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.LOGIN:
+                        loginController.doGet(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.NEW_QUESTION:
+                        newQuestionController.doGet(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.REGISTRATION:
+                        registrationController.doGet(request, response, webappName, userURI);
+                        break;
+                    default:
+                        page404.doGet(request, response, webappName);
+                        break;
                 }
+            }else{
+                page404.doGet(request, response, webappName);
             }
+        }else{
+            page404.doGet(request, response, webappName);
         }
-        page404.doGet(request, response, webappName);
-
     }
 
     private String getUserURI(String[] pathParts){
@@ -88,20 +112,30 @@ public class Dispatcher extends HttpServlet {
 
     private String getControllerName(String[] pathParts){
         String controllerName = null;
-        int controllerPosition = 2;
-        if (!webappName.isEmpty()){
-            controllerPosition = 3;
-        }
-        if (pathParts.length == controllerPosition){
-            controllerName = FJUrl.INDEX;
-        }else {
-            controllerName = pathParts[controllerPosition];
+        int controllerPosition = webappName.isEmpty() ? 2 : 3;
+        if (!isStaticResource(pathParts)){
+            if (pathParts.length == controllerPosition){
+                controllerName = FJUrl.INDEX;
+            }else {
+                controllerName = pathParts[controllerPosition];
+            }
+        }else{
+            controllerName = pathParts[controllerPosition - 1];
         }
         return controllerName;
     }
 
+    private boolean isStaticResource(String[] pathParts){
+        boolean result = false;
+        int minimalSize = webappName.isEmpty() ? 2 : 3;
+        if (pathParts.length > minimalSize){
+            result = pathParts[minimalSize - 1].equals(FJUrl.STATIC);
+        }
+        return result;
+    }
+
     private boolean isCorrectUserURI(String partPath){
         //TODO it is temporary stub!!
-        return partPath.equals("forum");
+        return partPath.equals("forum") || partPath.equals(FJUrl.STATIC);
     }
 }

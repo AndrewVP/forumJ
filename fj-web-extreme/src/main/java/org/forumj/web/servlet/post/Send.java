@@ -35,6 +35,9 @@ import org.forumj.web.servlet.FJServlet;
 @WebServlet(urlPatterns = {"/" + FJUrl.SEND_PIVATE_MESSAGE}, name=FJServletName.SEND_PIVATE_MESSAGE)
 public class Send extends FJServlet {
 
+   private String webapp;
+   private String userURI;
+
    @Override
    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
@@ -139,7 +142,7 @@ public class Send extends FJServlet {
       buffer.append("</table>");
       buffer.append("</td>");
       buffer.append("</tr>");
-      buffer.append(menu(request, mail.getSender(), locale, false));
+      buffer.append(menu(request, mail.getSender(), locale, false, webapp, userURI));
       buffer.append("<tr>");
       buffer.append("<td>");
       buffer.append("<table>");

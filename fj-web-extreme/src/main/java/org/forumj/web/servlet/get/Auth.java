@@ -24,19 +24,9 @@ import org.forumj.common.db.entity.IUser;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
-/**
- *
- * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
- */
-@SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/" + FJUrl.LOGIN}, name = FJServletName.LOGIN)
-public class Auth extends FJServlet {
+public class Auth{
 
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI, String webapp) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try {
          cache(response);
@@ -60,9 +50,9 @@ public class Auth extends FJServlet {
          // Главная таблица
          buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          // Таблица с лого и верхним баннером
-         buffer.append(logo(request));
+         buffer.append(logo(webapp));
          // Главные ссылки
-         buffer.append(menu(request, user, locale, false));
+         buffer.append(menu(request, user, locale, false, webapp, userURI));
          // Форма авторизации
          buffer.append("<tr><td width='100%' align='center'><table width='100%'><tr><td>");
          buffer.append("<form  action='" + FJUrl.DO_LOGIN + "' method='post'>");
@@ -124,8 +114,8 @@ public class Auth extends FJServlet {
          buffer.append("</td></tr></table></td></tr></table></form></td></tr></table></td></tr>");
          // Форма закончилась
          // Главные ссылки
-         buffer.append(menu(request, user, locale, false));
-         buffer.append(footer(request));
+         buffer.append(menu(request, user, locale, false, webapp, userURI));
+         buffer.append(footer(webapp));
          buffer.append("</body>");
          buffer.append("</html>");
       } catch (Throwable e) {

@@ -630,7 +630,7 @@ public class Index{
          }
          buffer.append(FJUrl.STATIC).append("/");
          buffer.append(FJUrl.PICTS);
-         buffer.append("picts/del1.gif'></a>");
+         buffer.append("/del1.gif'></a>");
          buffer.append("</td>");
       }
       return buffer;

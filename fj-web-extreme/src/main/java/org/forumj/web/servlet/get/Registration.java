@@ -28,19 +28,9 @@ import org.forumj.web.servlet.FJServlet;
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/" + FJUrl.REGISTRATION}, name = FJServletName.REGISTRATION)
 public class Registration extends FJServlet {
 
-   /**
-    * {@inheritDoc}
-    */
-//   @Override
-//   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//      response.sendRedirect(FJUrl.INDEX);
-//   }
-      @Override
-      protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI, String webapp) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try {
          cache(response);
@@ -68,9 +58,9 @@ public class Registration extends FJServlet {
             // Главная таблица
             buffer.append("<table border='0' style='{border-collapse: collapse;}' width='100%'>");
             // Таблица с лого и верхним баннером
-            buffer.append(logo(request));
+            buffer.append(logo(webapp));
             // Главные ссылки
-            buffer.append(menu(request, user, locale, false));
+            buffer.append(menu(request, user, locale, false, webapp, userURI));
             // Форма регистрации
             buffer.append("<tr>");
             buffer.append("<td width='100%'>");
@@ -189,8 +179,8 @@ public class Registration extends FJServlet {
             buffer.append("</tr>");
             // Форма закончилась
             // Главные ссылки
-            buffer.append(menu(request, user, locale, false));
-            buffer.append(footer(request));
+            buffer.append(menu(request, user, locale, false, webapp, userURI));
+            buffer.append(footer(webapp));
             buffer.append("</body>");
             buffer.append("</html>");
          }
