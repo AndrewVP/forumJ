@@ -43,7 +43,7 @@ import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 
 public class Control{
 
-   public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI, String webapp) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try {
          HttpSession session = request.getSession();

@@ -63,7 +63,7 @@ public class Dispatcher extends HttpServlet {
                 }
                 switch (controllerName){
                     case FJUrl.INDEX :
-                        pageGroupIndex.doGet(request, response, userURI, webappName);
+                        pageGroupIndex.doGet(request, response, webappName, userURI);
                         break;
                     case FJUrl.VIEW_THREAD:
                     case FJUrl.VIEW_THREAD_OLD:

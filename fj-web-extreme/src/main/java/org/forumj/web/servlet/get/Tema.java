@@ -36,7 +36,7 @@ import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 
 public class Tema{
 
-   public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI, String webapp) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       long startTime = new Date().getTime();
       ImageService imageService = FJServiceHolder.getImageService();
       StringBuffer buffer = new StringBuffer();
@@ -77,7 +77,7 @@ public class Tema{
          // Получаем массив постов
          session.setAttribute("page", pageNumber);
          session.setAttribute("id", threadId);
-         session.setAttribute("where", request.getContextPath() + "?id=" + threadId + "&page=" + pageNumber);
+         session.setAttribute("where", request.getContextPath() + "?id=" + threadId + "&amp;page=" + pageNumber);
          int countPosts = 0;
          if (msg != null && !"".equals(msg.trim())){
             try {
@@ -153,12 +153,21 @@ public class Tema{
                if (i2==10) i2=0;
                if (i1==pageNumber){
                   buffer.append("<td class='pagecurrent'>");
-                  buffer.append("<span class=mnuforum><b>"+i1 + "</b></span>");
+                  buffer.append("<span class=mnuforum><b>");
+                  buffer.append(i1);
+                  buffer.append("</b></span>");
                   buffer.append("</td>");
-               }
-               else {
+               }else {
                   buffer.append("<td class='page'>");
-                  buffer.append("<a class=mnuforum href='" + FJUrl.VIEW_THREAD + "?page="+i1 + "&id="+threadId + "'>"+i1 + "</a>");
+                  buffer.append("<a class='mnuforum' href='");
+                  buffer.append("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD);
+                  buffer.append("?id=");
+                  buffer.append(threadId);
+                  buffer.append("&amp;page=");
+                  buffer.append(i1);
+                  buffer.append("'>");
+                  buffer.append(i1);
+                  buffer.append("</a>");
                   buffer.append("</td>");
                }
             }
@@ -194,7 +203,7 @@ public class Tema{
          // Выводим строки
          for (int postIndex = 0; postIndex < posts.size(); postIndex++) {
             IFJPost post = posts.get(postIndex);
-            buffer.append(writePost(post, ignorList, user, pageNumber, locale, thread, voiceService));
+            buffer.append(writePost(post, ignorList, user, pageNumber, locale, thread, voiceService, userURI));
          }
          // /Таблица форума
          buffer.append("</table>");
@@ -220,12 +229,21 @@ public class Tema{
                if (i2==10) i2=0;
                if (i1==pageNumber){
                   buffer.append("<td class='pagecurrent'>");
-                  buffer.append("<span class=mnuforum><b>"+i1 + "</b></span>");
+                  buffer.append("<span class=mnuforum><b>");
+                  buffer.append(i1);
+                  buffer.append("</b></span>");
                   buffer.append("</td>");
-               }
-               else {
+               }else {
                   buffer.append("<td class='page'>");
-                  buffer.append("<a class=mnuforum href='" + FJUrl.VIEW_THREAD + "?page="+i1 + "&id="+threadId + "'>"+i1 + "</a>");
+                  buffer.append("<a class='mnuforum' href='");
+                  buffer.append("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD);
+                  buffer.append("?id=");
+                  buffer.append(threadId);
+                  buffer.append("&amp;page=");
+                  buffer.append(i1);
+                  buffer.append("'>");
+                  buffer.append(i1);
+                  buffer.append("</a>");
                   buffer.append("</td>");
                }
             }
@@ -245,15 +263,15 @@ public class Tema{
          if (user.isLogined() && !user.isBanned() && !thread.isClosed()){
             //Форма подписки/отписки  на ветку
             //Мы уже подписаны?
-            String action = "";
+            String action = "/" + userURI + "/";
             String mess = "";
             if (subscribeService.isUserSubscribed(threadId, user.getId())){
                //Подписка есть, предлагаем отказаться
-               action = FJUrl.DELETE_SUBSCRIBE + "?pg=" + pageNumber;
+               action += FJUrl.DELETE_SUBSCRIBE + "?pg=" + pageNumber;
                mess = locale.getString("mess90");
             }else{
                //Подписки нет - тогда предлагаем подписаться
-               action= FJUrl.ADD_SUBSCRIBE + "?pg="+pageNumber;
+               action += FJUrl.ADD_SUBSCRIBE + "?pg="+pageNumber;
                mess=locale.getString("mess89");   
             }
             buffer.append("<tr>");
@@ -289,7 +307,7 @@ public class Tema{
             buffer.append("<table>");
             buffer.append("<tr>");
             buffer.append("<td>");
-            buffer.append("<form name='post' action='" + FJUrl.ADD_POST + "' method='post'>");
+            buffer.append("<form name='post' action='" + "/" + userURI + "/" + FJUrl.ADD_POST + "' method='post'>");
             buffer.append("<table width='100%'>");
             //Тема
             buffer.append("<tr>");
@@ -398,11 +416,11 @@ public class Tema{
             for (int thumbIndex = 0; thumbIndex < imageThumbs.size(); thumbIndex += 2){
                Image thumb = imageThumbs.get(thumbIndex);
                buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
-               buffer.append("<img border='0' src='photo/");
+               buffer.append("<img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(FJUrl.PHOTO).append("/");
                buffer.append(thumb.getId());
                buffer.append("?id=");
                buffer.append(thumb.getId());
-               buffer.append("' onclick=\"InsertTags('[img]photo/");
+               buffer.append("' onclick=\"InsertTags('[img]").append("/").append(FJUrl.STATIC).append("/").append(FJUrl.PHOTO).append("/");
                buffer.append(thumb.getParentId());
                buffer.append("?id=");
                buffer.append(thumb.getParentId());
@@ -414,11 +432,11 @@ public class Tema{
             for (int thumbIndex = 1; thumbIndex < imageThumbs.size(); thumbIndex += 2){
                Image thumb = imageThumbs.get(thumbIndex);
                buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
-               buffer.append("<img border='0' src='photo/");
+               buffer.append("<img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(FJUrl.PHOTO).append("/");
                buffer.append(thumb.getId());
                buffer.append("?id=");
                buffer.append(thumb.getId());
-               buffer.append("' onclick=\"InsertTags('[img]photo/");
+               buffer.append("' onclick=\"InsertTags('[img]").append("/").append(FJUrl.STATIC).append("/").append(FJUrl.PHOTO).append("/");
                buffer.append(thumb.getParentId());
                buffer.append("?id=");
                buffer.append(thumb.getParentId());
@@ -456,7 +474,7 @@ public class Tema{
       writer.write(out.replace("ъъ_ъ", format.format(allTime/1000)));
    }
 
-   private StringBuffer writePost(IFJPost post, List<IIgnor> ignorList, IUser user, Integer pageNumber, LocaleString locale, IFJThread thread, VoiceService voiceService) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
+   private StringBuffer writePost(IFJPost post, List<IIgnor> ignorList, IUser user, Integer pageNumber, LocaleString locale, IFJThread thread, VoiceService voiceService, String userURI) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
       StringBuffer buffer = new StringBuffer();
       Time postTime = new Time(post.getCreateTime());
       IUser author = post.getAuthor();
@@ -464,7 +482,7 @@ public class Tema{
       buffer.append("<td  class=internal>");
       if (post.isLastPost()) buffer.append("<a name='end'></a>");
       buffer.append("<a name='" + post.getId() + "'>&nbsp;</a>");
-      buffer.append("<a class=nik href='" + FJUrl.VIEW_THREAD + "?id=" + post.getThreadId() + "&msg=" + post.getId() + "#" + post.getId() + "'  rel='nofollow'><b>&nbsp;&nbsp;" + fd_head(HTMLEntities.htmlentities(removeSlashes(post.getTitle()))) + "</b></a>");
+      buffer.append("<a class=nik href='" + "/" + userURI + "/" + FJUrl.VIEW_THREAD + "?id=" + post.getThreadId() + "&amp;msg=" + post.getId() + "#" + post.getId() + "'  rel='nofollow'><b>&nbsp;&nbsp;" + fd_head(HTMLEntities.htmlentities(removeSlashes(post.getTitle()))) + "</b></a>");
       buffer.append("</td></tr>");
       buffer.append("<tr><td>");
       boolean ignored = false;
@@ -473,12 +491,12 @@ public class Tema{
          if (isIgnored(post.getAuth(), ignorList)) ignored = true;
       }
       buffer.append("<span class='tbtextnread'>" + HtmlChars.convertHtmlSymbols(author.getNick()) + "</span>&nbsp;•");
-      buffer.append("&nbsp;<img border='0' src='smiles/icon_minipost.gif'>&nbsp;<span class='posthead'>" + postTime.toString("dd.MM.yyyy HH:mm") + "</span>&nbsp;");
+      buffer.append("&nbsp;<img border='0' src='" + "/" + FJUrl.STATIC  + "/smiles/icon_minipost.gif'>&nbsp;<span class='posthead'>" + postTime.toString("dd.MM.yyyy HH:mm") + "</span>&nbsp;");
       if (user.isModerator()){
          buffer.append("•&nbsp;<span class='posthead'>" + post.getIp() + "</span>&nbsp;" );
       }
       if (!ignored && user.isLogined() && post.getAuth() != user.getId()){
-         buffer.append("•&nbsp;<a class='posthead' href='" + FJUrl.ADD_IGNOR + "?idi=" + post.getAuth() + "&idt=" + thread.getId() + "&idp=" + post.getId() + "&pg=" + pageNumber + "' rel='nofollow'>" + locale.getString("mess68") + "</a>");
+         buffer.append("•&nbsp;<a class='posthead' href='" + "/" + userURI + "/" + FJUrl.ADD_IGNOR + "?idi=" + post.getAuth() + "&amp;idt=" + thread.getId() + "&amp;idp=" + post.getId() + "&amp;pg=" + pageNumber + "' rel='nofollow'>" + locale.getString("mess68") + "</a>");
       }
       buffer.append("</td></tr>");
       buffer.append("<tr><td>");
@@ -495,9 +513,9 @@ public class Tema{
          buffer.append("<div style='padding:10px;'>");
          //avatar
          if (user.getWantSeeAvatars() && author.getAvatarApproved() && author.getAvatar() != null && !author.getAvatar().trim().isEmpty() && author.getShowAvatar()){
-            buffer.append("<a href='" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='" + author.getAvatar() + "?seed=" + (new Date()).getTime() + "'></a>");
+            buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(author.getAvatar() + "?seed=" + (new Date()).getTime() + "'></a>");
          }else{
-            buffer.append("<a href='" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='smiles/no_avatar.gif'></a>");
+            buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append("smiles/no_avatar.gif'></a>");
          }
          buffer.append("</div>");
          buffer.append("<span class='posthead'><u>" + locale.getString("mess111") + "</u></span><br>");
@@ -517,7 +535,7 @@ public class Tema{
          buffer.append("</td><td valign='top' width='100%'>");
          buffer.append("<table width='100%'>");
          if (thread.isQuest() && post.getAnswers() != null){
-            buffer.append(writeQuest(post, user, locale, thread, voiceService));
+            buffer.append(writeQuest(post, user, locale, thread, voiceService, userURI));
          }
          buffer.append("<tr><td>");
          buffer.append("<p class=post>" + fd_body(HtmlChars.convertHtmlSymbols(removeSlashes(post.getBody()))) + "</p>");
@@ -548,14 +566,14 @@ public class Tema{
             //               }
             if (user.getId().equals(author.getId())) {
                buffer.append("<td align='CENTER' width='70'>");
-               buffer.append("<span class='posthead'><a href='" + FJUrl.VIEW_THREAD + "?id=" + thread.getId() + "&reply=" + post.getId() + "#edit' rel=\"nofollow\">" + locale.getString("mess141") + "</a></span>");
+               buffer.append("<span class='posthead'><a href='" + "/" + userURI + "/" + FJUrl.VIEW_THREAD + "?id=" + thread.getId() + "&amp;reply=" + post.getId() + "#edit' rel=\"nofollow\">" + locale.getString("mess141") + "</a></span>");
                buffer.append("</td>");
             }else{
                buffer.append("<td align='CENTER' width='70'>");
-               buffer.append("<span class='posthead'><a href='" + FJUrl.VIEW_THREAD + "?id=" + thread.getId() + "&reply=" + post.getId() + "#edit' rel=\"nofollow\">" + locale.getString("mess139") + "</a></span>");
+               buffer.append("<span class='posthead'><a href='" + "/" + userURI + "/" + FJUrl.VIEW_THREAD + "?id=" + thread.getId() + "&amp;reply=" + post.getId() + "#edit' rel=\"nofollow\">" + locale.getString("mess139") + "</a></span>");
                buffer.append("</td>");
                buffer.append("<td align='CENTER' width='70'>");
-               buffer.append("<span class='posthead'><a href='" + FJUrl.VIEW_THREAD + "?id=" + thread.getId() + "&reply=" + post.getId() + "&ans=1#edit' rel=\"nofollow\">" + locale.getString("mess140") + "</a></span>");
+               buffer.append("<span class='posthead'><a href='" + "/" + userURI + "/" + FJUrl.VIEW_THREAD + "?id=" + thread.getId() + "&amp;reply=" + post.getId() + "&amp;ans=1#edit' rel=\"nofollow\">" + locale.getString("mess140") + "</a></span>");
                buffer.append("</td>");
             }
          }
@@ -570,7 +588,7 @@ public class Tema{
       return buffer;
    }
 
-   private StringBuffer writeQuest(IFJPost post, IUser user, LocaleString locale, IFJThread thread, VoiceService voiceService) throws ConfigurationException, SQLException, InvalidKeyException, IOException{
+   private StringBuffer writeQuest(IFJPost post, IUser user, LocaleString locale, IFJThread thread, VoiceService voiceService, String userURI) throws ConfigurationException, SQLException, InvalidKeyException, IOException{
       StringBuffer buffer = new StringBuffer(); 
       int nvcs = post.getVoicesAmount();
       buffer.append("<tr><td>");
@@ -580,7 +598,7 @@ public class Tema{
       List<IQuestNode> nodes = post.getAnswers();
       boolean userVoted = voiceService.isUserVoted(thread.getId(), user.getId());
       if (user.isLogined() && !userVoted && !thread.isClosed()){
-         buffer.append("<form  action='" + FJUrl.VOICE + "' method='post'><table class=content>");
+         buffer.append("<form  action='" + "/" + userURI + "/" + FJUrl.VOICE + "' method='post'><table class=content>");
          for (int nodeIndex = 1; nodeIndex < nodes.size(); nodeIndex++) {
             IQuestNode questNode = nodes.get(nodeIndex);
             buffer.append("<tr><td class=voice_left align='right'>");
@@ -626,7 +644,7 @@ public class Tema{
             }
             if (!userVotes){
                buffer.append("<tr><td>");
-               buffer.append("<form  action='" + FJUrl.ADD_VOTE + "' method='post'><table align='center'>");
+               buffer.append("<form  action='" + "/" + userURI + "/" + FJUrl.ADD_VOTE + "' method='post'><table align='center'>");
                buffer.append("<tr><td>");
                buffer.append(locale.getString("mess153") + ":<br>");
                buffer.append("<input type='text' name='P' size='100'>");
@@ -687,7 +705,7 @@ public class Tema{
       }
       buffer.append("</table>");
       if (user.isLogined() && userVoted && !thread.isClosed()){
-         buffer.append("<form method='post' action='" + FJUrl.DELETE_VOICE + "' align='center'>");
+         buffer.append("<form method='post' action='" + "/" + userURI + "/" + FJUrl.DELETE_VOICE + "' align='center'>");
          buffer.append("<input type=hidden name='IDT' size='20' value='" + thread.getId() + "'>");
          buffer.append(fd_form_add(user));
          buffer.append("<input type='submit' value='" + locale.getString("mess161") + "'>");

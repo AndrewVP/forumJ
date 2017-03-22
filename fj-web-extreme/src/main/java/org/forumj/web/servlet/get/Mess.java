@@ -41,7 +41,7 @@ import org.forumj.web.servlet.FJServlet;
  */
 public class Mess{
 
-   public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI, String webapp) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try{
          HttpSession session = request.getSession();
