@@ -6,8 +6,8 @@ import org.apache.logging.log4j.Logger;
 import org.forumj.common.FJServletName;
 import org.forumj.common.FJUrl;
 import org.forumj.common.config.FJConfiguration;
-import org.forumj.web.servlet.get.*;
-import org.forumj.web.servlet.get.images.Images;
+import org.forumj.network.web.controller.*;
+import org.forumj.network.web.controller.Images;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -53,6 +53,8 @@ public class Dispatcher extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getRequestURI();
+        // removing doubled slashes
+        path = path.replace("//", "/");
         if (path != null && !path.isEmpty()) {
             String[] pathParts = path.split("/");
             String userURI = getUserURI(pathParts);
@@ -70,6 +72,7 @@ public class Dispatcher extends HttpServlet {
                         pageGroupThread.doGet(request, response, webappName, userURI);
                         break;
                     case FJUrl.STATIC:
+                    case FJUrl.PHOTO: // backward compatibility
                         imagesController.doGet(request, response);
                         break;
                     case FJUrl.NEW_THREAD:
@@ -99,6 +102,23 @@ public class Dispatcher extends HttpServlet {
             }
         }else{
             page404.doGet(request, response, webappName);
+        }
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String path = request.getRequestURI();
+        // removing doubled slashes
+        path = path.replace("//", "/");
+        if (path != null && !path.isEmpty()) {
+            String[] pathParts = path.split("/");
+            String userURI = getUserURI(pathParts);
+            if (isCorrectUserURI(userURI)) {
+                String controllerName = getControllerName(pathParts);
+                if (!webappName.isEmpty()) {
+                    userURI = webappName + "/" + userURI;
+                }
+            }
         }
     }
 

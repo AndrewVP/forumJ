@@ -21,6 +21,7 @@ import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
 import org.forumj.common.web.*;
+import org.forumj.network.web.Command;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
 
