@@ -7,7 +7,6 @@ import org.forumj.common.FJServletName;
 import org.forumj.common.FJUrl;
 import org.forumj.common.config.FJConfiguration;
 import org.forumj.network.web.controller.*;
-import org.forumj.network.web.controller.Images;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -37,6 +36,13 @@ public class Dispatcher extends HttpServlet {
     private Auth loginController = new Auth();
     private Opr newQuestionController = new Opr();
     private Registration registrationController = new Registration();
+    private ActivateUser confirmEmailController = new ActivateUser();
+    private AddIgnor addIgnorController = new AddIgnor();
+    private ApproveUser approveUserController = new ApproveUser();
+    private Ban banController = new Ban();
+    private CloseThread closeThreadController = new CloseThread();
+    private DelOne moveToRecycleController = new DelOne();
+    private Pin pinThreadController = new Pin();
 
     @Override
     public void init() throws ServletException {
@@ -92,6 +98,27 @@ public class Dispatcher extends HttpServlet {
                         break;
                     case FJUrl.REGISTRATION:
                         registrationController.doGet(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.ACTIVATE_USER:
+                        confirmEmailController.doGet(request, response, userURI);
+                        break;
+                    case FJUrl.ADD_IGNOR:
+                        addIgnorController.doGet(request, response, userURI);
+                        break;
+                    case FJUrl.APPROVE_USER:
+                        approveUserController.doGet(request, response, userURI);
+                        break;
+                    case FJUrl.BAN:
+                        banController.doGet(request, response, userURI);
+                        break;
+                    case FJUrl.CLOSE_THREAD:
+                        closeThreadController.doGet(request, response, userURI);
+                        break;
+                    case FJUrl.MOVE_THREAD_TO_RECYCLE:
+                        moveToRecycleController.doGet(request, response, userURI);
+                        break;
+                    case FJUrl.PIN_THREAD:
+                        pinThreadController.doGet(request, response, userURI);
                         break;
                     default:
                         page404.doGet(request, response, webappName);

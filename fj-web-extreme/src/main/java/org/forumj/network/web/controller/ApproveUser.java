@@ -13,15 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.forumj.web.servlet.get;
+package org.forumj.network.web.controller;
 
+import org.apache.commons.codec.EncoderException;
+import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.FJServletName;
 import org.forumj.common.FJUrl;
 import org.forumj.common.HttpParameters;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.FJServiceHolder;
 import org.forumj.common.db.service.UserService;
-import org.forumj.common.web.Locale;
 import org.forumj.email.FJEMail;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
@@ -32,41 +33,35 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.sql.SQLException;
 
 import static org.forumj.tool.Diletant.errorOut;
+import static org.forumj.web.servlet.tool.FJServletTools.setcookie;
 
-/**
- * перенос темы в корзину 
- * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
- */
-@SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/" + FJUrl.BAN}, name=FJServletName.BAN)
-public class Ban extends FJServlet {
+public class ApproveUser{
 
-   @Override
-   protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try {
          HttpSession session = request.getSession();
          IUser currentUser = (IUser) session.getAttribute("user");
          if (currentUser != null && currentUser.isModerator()){
-         UserService userService = FJServiceHolder.getUserService();
+            UserService userService = FJServiceHolder.getUserService();
             String userIdParameter = request.getParameter(HttpParameters.USER_ID);
             if (userIdParameter != null){
                IUser user = userService.readUser(Long.valueOf(userIdParameter));
                if (user != null){
-                  if (user.isBanned()){
-                     user.setBan(0);
-                  }else {
-                     user.setBan(1);
-                  }
+                  user.setApproved(true);
                   userService.update(user);
-                  //TODO Magic integers!
-                  response.sendRedirect(FJUrl.SETTINGS + "?" + HttpParameters.ID + "=14");
+                  FJEMail.sendApprovedMail(user, (LocaleString) session.getAttribute("locale"));
                }
             }
-         }else {
-            response.sendRedirect(FJUrl.INDEX);
+            StringBuffer buffer1 = new StringBuffer("/").append(userURI).append("/").append(FJUrl.SETTINGS);
+            //TODO Magic integer!!
+            buffer1.append("?").append(HttpParameters.ID).append("=").append(15);
+            response.sendRedirect(buffer1.toString());
+         }else{
+            response.sendRedirect(new StringBuffer("/").append(userURI).append("/").append(FJUrl.INDEX).toString());
          }
       } catch (Throwable e) {
          buffer = new StringBuffer();

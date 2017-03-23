@@ -29,7 +29,7 @@ import org.forumj.web.servlet.FJServlet;
 @WebServlet(urlPatterns = {"/" + FJUrl.SET_LOCATION}, name=FJServletName.SET_LOCATION)
 public class SetLocation extends FJServlet {
 
-   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   protected void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try {
          boolean scity = request.getParameter("scity") == null;

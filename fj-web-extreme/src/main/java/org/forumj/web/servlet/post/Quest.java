@@ -45,7 +45,7 @@ public class Quest extends FJServlet {
     * {@inheritDoc}
     */
    @Override
-   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   protected void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try {
          HttpSession session = request.getSession();

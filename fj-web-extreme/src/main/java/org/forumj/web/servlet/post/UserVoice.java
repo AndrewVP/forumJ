@@ -32,7 +32,7 @@ public class UserVoice extends FJServlet {
    //TODO Нет валидации параметра answerParameter - в случае пустого ничего не происходит
 
    @Override
-   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   protected void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try {
          HttpSession session = request.getSession();

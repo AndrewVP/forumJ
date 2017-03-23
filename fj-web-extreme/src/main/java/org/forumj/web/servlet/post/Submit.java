@@ -35,7 +35,7 @@ public class Submit extends FJServlet {
     * {@inheritDoc}
     */
    @Override
-   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   protected void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       try {
          HttpSession session = request.getSession();
          // принимаем ник, пароль

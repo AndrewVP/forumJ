@@ -27,7 +27,7 @@ import org.forumj.web.servlet.FJServlet;
 @WebServlet(urlPatterns = {"/" + FJUrl.SELECT_VIEW}, name=FJServletName.SELECT_VIEW)
 public class SlctView extends FJServlet {
 
-   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   protected void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try {
          String viewParameter = request.getParameter("VIEW");
