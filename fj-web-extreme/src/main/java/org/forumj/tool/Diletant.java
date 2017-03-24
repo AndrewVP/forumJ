@@ -676,16 +676,6 @@ public class Diletant {
       return result;
    }
 
-   @Deprecated
-   public static boolean fd_ban(IUser user){
-      return user.getBan() == 1;
-   }
-
-   @Deprecated
-   public static String fd_nick(IUser user){
-      return user.getNick();
-   }
-   
    public static StringBuffer unRegisteredPostOut(){
       StringBuffer buffer = new StringBuffer();
       buffer.append("<html>");
