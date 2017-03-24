@@ -87,7 +87,7 @@ public class InsNew extends FJServlet {
 //      response.sendRedirect(FJUrl.INDEX);
 //   }
       @Override
-      protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      protected void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
 
       try {
          String ip = request.getRemoteAddr();

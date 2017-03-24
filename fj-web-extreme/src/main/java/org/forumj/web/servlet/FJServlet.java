@@ -13,17 +13,14 @@ import java.io.*;
 import java.net.UnknownHostException;
 import java.util.*;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
 @SuppressWarnings("serial")
-public class FJServlet extends HttpServlet {
-
-   private String ukr;
-   private String rus;
-   private String exitUrl;
+public class FJServlet{
 
    protected boolean isEmptyParameter(String parameter){
       return (parameter == null || "".equals(parameter));
@@ -64,37 +61,9 @@ public class FJServlet extends HttpServlet {
 	   return result;
    }
 
-   protected void generateLangLinks(HttpServletRequest request){
-      Enumeration<String> parameters = request.getParameterNames();
-      boolean first = true;
-      String query = "";
-      while (parameters.hasMoreElements()){
-         String parameterName = parameters.nextElement();
-         if (!parameterName.equalsIgnoreCase("lang") && !parameterName.equalsIgnoreCase("exit")){
-            if(first){
-               query = "?";
-               first = false;
-            }else{
-               query += "&";
-            }
-            query += parameterName + "=" + request.getParameter(parameterName);  
-         }
-      }
-      exitUrl = request.getContextPath() + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + (query == null || "".equalsIgnoreCase(query.trim()) ? "?exit=0" : query.trim() + "&exit=0");
-      ukr = request.getContextPath() + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + ("".equalsIgnoreCase(query.trim()) ? "?lang=ua" : query.trim() + "&lang=ua");
-      rus = request.getContextPath() + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + ("".equalsIgnoreCase(query.trim()) ? "?lang=ru" : query.trim() + "&lang=ru");
-   }
+    protected void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
 
-   protected String getUkr() {
-      return ukr;
-   }
+    }
 
-   protected String getRus() {
-      return rus;
-   }
 
-   protected String getExitUrl() {
-      return exitUrl;
-   }
-   
 }

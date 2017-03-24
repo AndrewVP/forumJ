@@ -24,7 +24,7 @@ public class AddSubscribe extends FJServlet {
        return Math.abs(random.nextInt());
    }
 
-   protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+   protected void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try {
          HttpSession session = request.getSession();

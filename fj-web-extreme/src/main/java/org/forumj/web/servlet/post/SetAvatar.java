@@ -16,7 +16,6 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.List;
 
-import javax.imageio.ImageIO;
 import javax.servlet.*;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
@@ -62,7 +61,7 @@ public class SetAvatar extends FJServlet {
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		StringBuffer buffer = new StringBuffer();
 		try {

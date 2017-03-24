@@ -681,7 +681,7 @@ public class Diletant {
       buffer.append("<html>");
       buffer.append("<head>");
       buffer.append("<meta http-equiv='content-type' content='text/html; charset=windows-1251'>");
-      buffer.append("<meta http-equiv='Refresh' content='0; url=" + FJUrl.INDEX + "'>");
+//      buffer.append("<meta http-equiv='Refresh' content='0; url=").append("/").append(userURI).append("/").append(FJUrl.INDEX ).append("'>");
       buffer.append("<title>");
       buffer.append("</title>");
       buffer.append("</head>");

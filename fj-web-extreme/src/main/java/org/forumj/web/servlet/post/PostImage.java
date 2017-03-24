@@ -9,25 +9,19 @@
  */
 package org.forumj.web.servlet.post;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
 import org.forumj.common.FJServletName;
 import org.forumj.common.FJUrl;
 import org.forumj.common.HttpParameters;
-import org.forumj.common.config.FJConfiguration;
 import org.forumj.common.db.entity.IUser;
-import org.forumj.common.db.entity.Image;
 import org.forumj.common.db.entity.ImageType;
 import org.forumj.common.db.service.FJServiceHolder;
 import org.forumj.common.db.service.ImageService;
-import org.forumj.image.ImageTools;
 import org.forumj.web.servlet.FJServlet;
-import org.forumj.web.servlet.tool.ResourcesCache;
 import org.forumj.web.tool.ErrorCode;
 import org.forumj.web.tool.ValidationErrors;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -45,7 +39,7 @@ import static org.forumj.tool.Diletant.*;
 @WebServlet(urlPatterns = {"/" + FJUrl.POST_IMAGE}, name=FJServletName.POST_IMAGE)
 public class PostImage extends FJServlet {
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	protected void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		StringBuffer buffer = new StringBuffer();
 		try {

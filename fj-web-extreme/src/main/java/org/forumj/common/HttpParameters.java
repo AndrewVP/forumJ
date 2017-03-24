@@ -12,4 +12,6 @@ public interface HttpParameters {
     String ALBUM = "album";
     String USER = "user";
     String ERROR_CODE = "errcode";
+    String PAGE = "page";
+    String PIN = "pin";
 }
