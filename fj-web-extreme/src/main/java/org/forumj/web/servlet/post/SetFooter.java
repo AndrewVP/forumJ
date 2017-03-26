@@ -29,7 +29,7 @@ import org.forumj.web.servlet.FJServlet;
 @WebServlet(urlPatterns = {"/" + FJUrl.SET_FOOTER}, name=FJServletName.SET_FOOTER)
 public class SetFooter extends FJServlet {
 
-   protected void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try {
          String footerParameter = request.getParameter("foot");

@@ -32,7 +32,7 @@ import org.forumj.web.servlet.FJServlet;
 @WebServlet(urlPatterns = {"/" + FJUrl.POST}, name=FJServletName.POST)
 public class Post extends FJServlet {
 
-   protected void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try {
          String commandParameter = request.getParameter("command");

@@ -51,7 +51,7 @@ public class New extends FJServlet {
     * {@inheritDoc}
     */
    @Override
-   protected void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try {
          HttpSession session = request.getSession();
@@ -133,7 +133,9 @@ public class New extends FJServlet {
                }
             }else{
                // Пустая
-               buffer.append(blankPostOut());
+               // TODO validation - empty body or head
+               StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.NEW_THREAD);
+               response.sendRedirect(exit.toString());
             }
          }else{
             // Вошли незарегистрировавшись

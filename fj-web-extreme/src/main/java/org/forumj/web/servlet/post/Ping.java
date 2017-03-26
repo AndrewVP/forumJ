@@ -30,7 +30,7 @@ import java.io.IOException;
 public class Ping extends FJServlet {
    
    @Override
-   protected void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       User user = (User) request.getSession().getAttribute("user");
       StringBuffer result = new StringBuffer();
       String m_xbParameter = request.getParameter("idb");

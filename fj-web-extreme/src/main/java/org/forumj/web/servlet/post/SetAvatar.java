@@ -48,9 +48,7 @@ public class SetAvatar extends FJServlet {
 
 	private ResourcesCache cache = ResourcesCache.getInstance(); 
 
-	@Override
 	public void init(ServletConfig config) throws ServletException {
-		super.init(config);
 		try{
 			avatarsContextDir = FJConfiguration.getConfig().getString(FJConfiguration.AVATARS_CONTEXT_DIR, avatarsContextDir);
 			avatarsDir = FJConfiguration.getConfig().getString(FJConfiguration.HOME_DIR ) + File.separator + avatarsContextDir;
@@ -61,7 +59,7 @@ public class SetAvatar extends FJServlet {
 		}
 	}
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		StringBuffer buffer = new StringBuffer();
 		try {

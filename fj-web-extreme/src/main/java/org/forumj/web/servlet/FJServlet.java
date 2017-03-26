@@ -61,7 +61,7 @@ public class FJServlet{
 	   return result;
    }
 
-    protected void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
+    public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
 
     }
 

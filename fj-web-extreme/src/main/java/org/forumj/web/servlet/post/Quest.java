@@ -45,7 +45,7 @@ public class Quest extends FJServlet {
     * {@inheritDoc}
     */
    @Override
-   protected void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try {
          HttpSession session = request.getSession();
@@ -113,8 +113,9 @@ public class Quest extends FJServlet {
                   buffer.append(twoAnswersReminedOut());
                }
             }else{
-               // Пустая
-               buffer.append(blankPostOut());
+               // TODO validation - empty body or head
+               StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.NEW_QUESTION);
+               response.sendRedirect(exit.toString());
             }
          }else{
             // Вошли незарегистрировавшись

@@ -30,7 +30,7 @@ import org.forumj.web.servlet.FJServlet;
 @WebServlet(urlPatterns = {"/" + FJUrl.S_AVATAR}, name=FJServletName.S_AVATAR)
 public class SAvatar extends FJServlet {
 
-   protected void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try {
          String passParameter = request.getParameter("pass");

@@ -7,6 +7,7 @@ import org.forumj.common.FJServletName;
 import org.forumj.common.FJUrl;
 import org.forumj.common.config.FJConfiguration;
 import org.forumj.network.web.controller.*;
+import org.forumj.network.web.controller.post.Write;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -26,6 +27,7 @@ public class Dispatcher extends HttpServlet {
     private String webappName;
     private String realPath = null;
 
+    // GET controllers
     private Page404 page404 = new Page404();
     private Index pageGroupIndex = new Index();
     private Tema pageGroupThread = new Tema();
@@ -43,6 +45,9 @@ public class Dispatcher extends HttpServlet {
     private CloseThread closeThreadController = new CloseThread();
     private DelOne moveToRecycleController = new DelOne();
     private Pin pinThreadController = new Pin();
+
+    //POST controllers
+    private Write addPostController = new Write();
 
     @Override
     public void init() throws ServletException {
@@ -144,6 +149,14 @@ public class Dispatcher extends HttpServlet {
                 String controllerName = getControllerName(pathParts);
                 if (!webappName.isEmpty()) {
                     userURI = webappName + "/" + userURI;
+                }
+                switch (controllerName) {
+                    case FJUrl.ADD_POST:
+                        addPostController.doPost(request, response, webappName, userURI);
+                        break;
+                    default:
+                        page404.doGet(request, response, webappName);
+                        break;
                 }
             }
         }

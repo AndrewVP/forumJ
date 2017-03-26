@@ -39,7 +39,7 @@ import static org.forumj.tool.Diletant.*;
 @WebServlet(urlPatterns = {"/" + FJUrl.POST_IMAGE}, name=FJServletName.POST_IMAGE)
 public class PostImage extends FJServlet {
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		StringBuffer buffer = new StringBuffer();
 		try {

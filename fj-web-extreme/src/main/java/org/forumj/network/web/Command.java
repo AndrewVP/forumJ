@@ -23,6 +23,10 @@ public enum Command {
    
    SET_LOCALE("setLocale"),
    SET_EMAIL("setEmail"),
+   PREVIEW_NEW_POST("view_new"),
+   PREVIEW_EDITED_POST("view_edit"),
+   CREATE_POST("write_new"),
+   UPDATE_POST("write_edit"),
    ;
    
    private String command;
