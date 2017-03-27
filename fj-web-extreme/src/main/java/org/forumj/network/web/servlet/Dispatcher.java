@@ -8,6 +8,9 @@ import org.forumj.common.FJUrl;
 import org.forumj.common.config.FJConfiguration;
 import org.forumj.network.web.controller.*;
 import org.forumj.network.web.controller.post.Write;
+import org.forumj.network.web.controller.post.New;
+import org.forumj.network.web.controller.post.Submit;
+import org.forumj.network.web.controller.post.Quest;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -48,6 +51,9 @@ public class Dispatcher extends HttpServlet {
 
     //POST controllers
     private Write addPostController = new Write();
+    private New addThreadController = new New();
+    private Submit doLoginController = new Submit();
+    private Quest addQuestionController = new Quest();
 
     @Override
     public void init() throws ServletException {
@@ -153,6 +159,15 @@ public class Dispatcher extends HttpServlet {
                 switch (controllerName) {
                     case FJUrl.ADD_POST:
                         addPostController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.ADD_THREAD:
+                        addThreadController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.DO_LOGIN:
+                        doLoginController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.ADD_QUESTION:
+                        addQuestionController.doPost(request, response, webappName, userURI);
                         break;
                     default:
                         page404.doGet(request, response, webappName);

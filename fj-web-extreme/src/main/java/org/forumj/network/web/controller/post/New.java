@@ -1,35 +1,37 @@
 /*
- * Copyright (c) 2011
- * Andrew V. Pogrebnyak
- * All rights reserved.
- *
- * This software is distributed under GNU General Public License Version 2.0
- * You shall use it and distribute only in accordance with the terms of the 
- * License Agreement.
+ * Copyright Andrew V. Pogrebnyak
+ * 
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ * 
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 package org.forumj.network.web.controller.post;
 
 import static org.forumj.tool.Diletant.*;
-import static org.forumj.tool.FJServletTools.*;
+import static org.forumj.tool.FJServletTools.menu;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.*;
-import java.sql.SQLException;
 import java.util.Date;
 
-import javax.mail.MessagingException;
-import javax.mail.internet.AddressException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.*;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
-import org.forumj.common.exception.*;
+import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.common.tool.*;
-import org.forumj.email.FJEMail;
+import org.forumj.common.web.Pin;
 import org.forumj.network.web.Command;
 import org.forumj.tool.LocaleString;
 import org.forumj.web.servlet.FJServlet;
@@ -37,129 +39,109 @@ import org.forumj.web.servlet.FJServlet;
 import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 
 /**
- *
+ * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/" + FJUrl.ADD_POST}, name = FJServletName.ADD_POST)
-public class Write extends FJServlet {
+public class New{
 
-   /**
-    * {@inheritDoc}
-    */
-   @Override
    public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
+      PrintWriter writer = response.getWriter();
+      response.setContentType("text/html; charset=UTF-8");
       try {
          HttpSession session = request.getSession();
          LocaleString locale = (LocaleString) session.getAttribute("locale");
          IUser user = (IUser) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
+            // Все нормально
             String head = request.getParameter("NHEAD");
             String body = request.getParameter("A2");
             String strCommand = request.getParameter("comand");
-            /* Все нормально*/
-            /* Может пустое??*/
-            String threadId = request.getParameter("IDT");
-            if (head != null && body!= null && head.trim().length() > 0 && body.trim().length() > 0) {
-               /* Не пустое*/
-               /* Автор кто?*/
+            Command command = Command.valueOfString(strCommand);
+            // Может пустая??
+            if (!("".equals(head.trim()) || "".equals(body.trim()))) {
+               // Не пустая
+               /*Просмотр?*/
                Time threadTime = new Time(new Date().getTime());
                String rgTime = threadTime.toString("dd.MM.yyyy HH:mm");
                String ip = request.getRemoteAddr();
-               String domen = gethostbyaddr(ip);
-               /*Просмотр или запись?*/
-               Command command = Command.valueOfString(strCommand);
-               PostService postService = FJServiceHolder.getPostService();
-               switch (command){
-                  case PREVIEW_NEW_POST:
-                  case PREVIEW_EDITED_POST:
-                     buffer.append(view(locale, request, user, head, ip, domen, threadId, rgTime, body, command, webapp, userURI));
-                     break;
-                  case CREATE_POST:
-                     createNewPost(body, user, domen, ip, head, Long.valueOf(threadId), postService, locale);
-                     break;
-                  case UPDATE_POST:
-                     String postId = request.getParameter("IDB");
-                     write_edit(body, user, domen, ip, head, Long.valueOf(threadId), Long.valueOf(postId), postService);
-                     break;
-               }
-               if(command ==  Command.CREATE_POST || command ==  Command.UPDATE_POST){
-                  StringBuilder exit = new StringBuilder("/").append(userURI).append("/");
-                  if (request.getParameter("no_exit") != null){
-                     exit.append(FJUrl.VIEW_THREAD).append("?id=").append(threadId).append("&end=1#end");
-                  }else{
-                     exit.append(FJUrl.INDEX);
-                  }
-                  response.sendRedirect(exit.toString());
-               }else if (command ==  Command.PREVIEW_NEW_POST || command ==  Command.PREVIEW_EDITED_POST){
-                  response.setContentType("text/html; charset=UTF-8");
-                  PrintWriter writer = response.getWriter();
-                  String out = buffer.toString();
-                  writer.write(out);
+               //TODO need to be implemented
+               String domen = ip;
+               if (command == Command.PREVIEW_NEW_THREAD){
+                  buffer.append(new_view(locale, head, user, rgTime, ip, domen, body, request, webapp, userURI));
+                  writer.write(buffer.toString());
                }else{
-                  // command had not sent
-                  StringBuilder exit = new StringBuilder("/").append(userURI).append("/");
-                  if (request.getParameter("no_exit") != null){
-                     exit.append(FJUrl.VIEW_THREAD).append("?id=").append(threadId).append("&end=1#end");
-                  }else{
-                     exit.append(FJUrl.INDEX);
-                  }
+                  PostService postService = FJServiceHolder.getPostService();
+                  IFJPost post = postService.getPostObject();
+                  post.setState(1);
+                  post.setBody(body);
+                  post.setAuth(user.getId());
+                  post.setAuthor(user);
+                  post.setDomen(domen);
+                  post.setIp(ip);
+                  post.setNred(0);
+                  post.setTitle(head);
+                  ThreadService treadService = FJServiceHolder.getThreadService();
+                  IFJThread thread = treadService.getThreadObject();
+                  thread.setAuthId(user.getId());
+                  thread.setHead(head);
+                  thread.setNick(user.getNick());
+                  thread.setSnall(0);
+                  thread.setSnid(0);
+                  thread.setFolderId((long) 1);
+                  thread.setPostsAmount(1);
+                  thread.setDock(Pin.COMMON);
+                  treadService.create(thread, post);
+                  // Отправляем в форум
+                  StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
                   response.sendRedirect(exit.toString());
                }
             }else{
-               // TODO validation - empty body or head or threadId
-               StringBuilder exit = new StringBuilder("/").append(userURI).append("/");
-               if (request.getParameter("no_exit") != null){
-                  exit.append(FJUrl.VIEW_THREAD).append("?id=").append(threadId).append("&end=1#end");
-               }else{
-                  exit.append(FJUrl.INDEX);
-               }
+               // Пустая
+               // TODO validation - empty body or head
+               StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.NEW_THREAD);
                response.sendRedirect(exit.toString());
             }
          }else{
-            // Session expired
+            // session expired
             StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
             response.sendRedirect(exit.toString());
-         }
+         }   
       } catch (Throwable e) {
-         e.printStackTrace();
          buffer = new StringBuffer();
          buffer.append(errorOut(e));
+         e.printStackTrace();
          response.setContentType("text/html; charset=UTF-8");
-         PrintWriter writer = response.getWriter();
-         String out = buffer.toString();
-         writer.write(out);
+         writer.write(buffer.toString());
       }
    }
 
-   private StringBuffer view(LocaleString locale, HttpServletRequest request, IUser user, String head, String str_ip, String str_dom, String idt, String lptime, String body, Command command, String webapp, String userURI) throws IOException, InvalidKeyException{
+   public StringBuffer new_view(LocaleString locale, String head, IUser user, String rgtime, String str_ip, String str_dom, String body, HttpServletRequest request, String webapp, String userURI) throws IOException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
       buffer.append("<html>");
       buffer.append("<head>");
       buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
-      // Стили
+      /* Стили*/
       buffer.append(loadCSS("/css/style.css"));
       // Скрипты (смайлики)
       buffer.append(loadJavaScript("/js/smile_.js"));
       // Скрипты (автовставка тегов)
       buffer.append(loadJavaScript("/js/jstags.js"));
-      // Скрипты (submit поста)
-      buffer.append(post_submit(locale.getString("mess128")));
+      /*Скрипты (submit поста)*/
+      buffer.append(new_submit(locale.getString("mess128")));
       buffer.append("<link rel='icon' href='/favicon.ico' type='image/x-icon'>");
       buffer.append("<link rel='shortcut icon' href='/favicon.ico' type='image/x-icon'>");
-      buffer.append("<title>");
-      buffer.append("</title>");
+      buffer.append("<title>" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)), false) + "</title>");
       buffer.append("</head>");
       buffer.append("<body bgcolor=#EFEFEF>");
       buffer.append("<table class='content'>");
-      buffer.append("<tr class=heads>");
-      buffer.append("<td  class=internal>");
+      buffer.append("<tr class='heads'>");
+      buffer.append("<td  class='internal'>");
       /*"Закладка" последнего поста*/
       /*"Закладка" номера поста для ссылки из поиска, возврата после обработки игнора*/
       /*Тема*/
-      buffer.append("<div class=nik>");
+      buffer.append("<div class='nik'>");
       buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)), false)+ "</b>");
       buffer.append("</div>");
       buffer.append("</td>");
@@ -171,8 +153,9 @@ public class Write extends FJServlet {
       buffer.append(HtmlChars.convertHtmlSymbols(removeSlashes(user.getNick())));
       buffer.append("</span>&nbsp;•&nbsp;");
       /*Дата*/
+
       buffer.append("<img border='0' src='").append("/").append(FJUrl.STATIC).append("/smiles/icon_minipost.gif'>&nbsp;");
-      buffer.append("<span class='posthead'>" + lptime+ "</span>");
+      buffer.append("<span class='posthead'>" + rgtime + "</span>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("<tr>");
@@ -228,12 +211,12 @@ public class Write extends FJServlet {
       buffer.append("<table>");
       buffer.append("<tr>");
       buffer.append("<td>");
-      buffer.append("<form name='post' action='" + FJUrl.ADD_POST + "' method='post'>");
+      buffer.append("<form name='post' action='" + FJUrl.ADD_THREAD + "' method='post'>");
       buffer.append("<table width='100%'>");
-      /*Тема*/
       buffer.append("<tr>");
       buffer.append("<td colspan='2' align='CENTER'>");
-      buffer.append(locale.getString("mess59") + ":&nbsp;");
+      /*Тема*/
+      buffer.append(locale.getString("mess4") + "&nbsp");
       buffer.append(fd_input("NHEAD", HtmlChars.convertHtmlSymbols(removeSlashes(head)), "70", "1"));
       buffer.append("</td>");
       buffer.append("</tr>");
@@ -246,51 +229,37 @@ public class Write extends FJServlet {
       buffer.append("</td>");
       /*Приглашение*/
       buffer.append("<td align='CENTER'>");
-      buffer.append("<p>" + locale.getString("mess12") + "</p>");
+      buffer.append("<p>");
+      buffer.append(locale.getString("mess12"));
+      buffer.append("</p>");
       buffer.append("</td>");
       buffer.append("</tr>");
       /*Пост*/
       buffer.append("<tr>");
+      /*Смайлики*/
       buffer.append("<td valign='TOP' width='100%' height='100%'>");
       /*Смайлики*/
       buffer.append(smiles_add(locale.getString("mess11")));
       buffer.append("</td>");
-      buffer.append("<td width='500' align='CENTER' valign='top'>");
-      /*Автотеги*/
+      buffer.append("<td align='CENTER' valign='top'>");
       buffer.append(autotags_add());
       /* текстарий*/
       buffer.append("<p>");
       buffer.append("<textarea class='mnuforumSm' rows='20' id='ed1' name='A2' cols='55'>" + HTMLEntities.htmlentities(removeSlashes(body)) + "</textarea>");
       buffer.append("</p>");
-      String checked="";
-      if (request.getParameter("no_exit") != null){
-         checked="CHECKED";
-      }
-      buffer.append("<input type='checkbox'"+  checked+" name='no_exit' value='1'>");
-      buffer.append(locale.getString("mess123"));
       /*Кнопки*/
       buffer.append("<table>");
       buffer.append("<tr>");
       buffer.append("<td>");
-      if (command == Command.PREVIEW_NEW_POST){
-         buffer.append(fd_button(locale.getString("mess13"),"post_submit(\"" + Command.CREATE_POST.getCommand() + "\");","B1", "1"));
-      }else if (command == Command.PREVIEW_EDITED_POST){
-         buffer.append(fd_button(locale.getString("mess13"),"post_submit(\"" + Command.UPDATE_POST.getCommand() + "\");","B1", "1"));
-      }
+      buffer.append(fd_button(locale.getString("mess13"),"new_submit(\"write\");","B1", "1"));
       buffer.append("</td>");
       buffer.append("<td>");
-      buffer.append(fd_button(locale.getString("mess63"),"post_submit(\"" + command.getCommand() + "\");","B3", "1"));
+      buffer.append(fd_button(locale.getString("mess63"),"new_submit(\"view\");","B3", "1"));
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table>");
       /*Прередаем нужные пераметры...*/
       buffer.append(fd_form_add(user));
-      /* Если редактируем*/
-      if (idt != null) {
-         buffer.append("<input type=hidden name='IDB' value='"+ request.getParameter("IDB")+"'>");
-      }
-      /*id темы*/
-      buffer.append("<input type=hidden name='IDT' value='"+ request.getParameter("IDT")+"'>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("<tr>");
@@ -311,32 +280,4 @@ public class Write extends FJServlet {
       buffer.append("</html>");
       return buffer;
    }
-   
-   private void createNewPost(String body, IUser user, String domen, String ip, String head, Long threadId, PostService postService, LocaleString locale) throws DBException, ConfigurationException, IOException, SQLException, AddressException, InvalidKeyException, MessagingException{
-      IFJPost post = postService.getPostObject();
-      post.setState(1);
-      post.setThreadId(threadId);
-      post.setBody(body);
-      post.setAuth(user.getId());
-      post.setAuthor(user);
-      post.setDomen(domen);
-      post.setIp(ip);
-      post.setNred(0);
-      post.setTitle(head);
-      post.setThreadId(threadId);
-      post.setCreateTime(new Date().getTime());
-      postService.create(post);
-      FJEMail.sendSuscribedPost(post, user);
-   }
-   private void write_edit(String body, IUser user, String domen, String ip, String head, Long threadId, Long postId, PostService postService) throws DBException, ConfigurationException, IOException, SQLException{
-      IFJPost post = postService.read(postId);
-      post.setBody(body);
-      post.setDomen(domen);
-      post.setIp(ip);
-      post.setNred(post.getNred() + 1);
-      post.setEditTime(new Date().getTime());
-      post.setTitle(head);
-      postService.update(post);
-   }
-
 }

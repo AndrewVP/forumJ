@@ -21,9 +21,11 @@ package org.forumj.network.web;
  */
 public enum Command {
    
+   NONE(""),
    SET_LOCALE("setLocale"),
    SET_EMAIL("setEmail"),
    PREVIEW_NEW_POST("view_new"),
+   PREVIEW_NEW_THREAD("view"),
    PREVIEW_EDITED_POST("view_edit"),
    CREATE_POST("write_new"),
    UPDATE_POST("write_edit"),
@@ -48,7 +50,7 @@ public enum Command {
             if (result.getCommand().equalsIgnoreCase(command)) return result;
          }
       }else{
-         throw new NullPointerException("Command parameter can't be null!");
+         return NONE;
       }
       throw new IllegalArgumentException("Illegal command parameter: " + command);
    }
