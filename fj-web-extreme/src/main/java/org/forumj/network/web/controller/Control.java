@@ -250,7 +250,7 @@ public class Control{
             break;
          case 1:
             // Игнор-лист
-            buffer.append(caseIgnor(user, locale, ignorService));
+            buffer.append(caseIgnor(user, locale, ignorService, userURI));
             break;
          case 2:
             // Inbox
@@ -468,7 +468,7 @@ public class Control{
       writer.write(out);
    }
 
-   private StringBuffer caseIgnor(IUser user, LocaleString locale, IgnorService ignorService) throws InvalidKeyException, IOException, ConfigurationException, SQLException{
+   private StringBuffer caseIgnor(IUser user, LocaleString locale, IgnorService ignorService, String userURI) throws InvalidKeyException, IOException, ConfigurationException, SQLException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список Игнорируемых
       List<IIgnor> ignorList = ignorService.readUserIgnor(user.getId());
@@ -539,7 +539,7 @@ public class Control{
             buffer.append("</td>");
             // Изменение
             buffer.append("<td class='internal'>");
-            buffer.append("<form method='post' action='" + FJUrl.UPDATE_IGNORING + "' class=frmsmall>");
+            buffer.append("<form method='post' action='/").append(userURI).append("/").append(FJUrl.UPDATE_IGNORING).append("' class=frmsmall>");
             buffer.append("<select size='1' name='D'>");
             buffer.append("<option selected value='01'><span class='mnuprof'>1</span></option>");
             for (int xo1=2; xo1<32; xo1++){

@@ -41,7 +41,6 @@ public class PostImage extends FJServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		StringBuffer buffer = new StringBuffer();
 		try {
 			ValidationErrors validationErrors = (ValidationErrors) request.getAttribute(ValidationErrors.class.getName());
 			if (validationErrors.isHasErrors()){
@@ -58,7 +57,8 @@ public class PostImage extends FJServlet {
 					errCodes.append(errorCode.getErrorCode());
 				}
 				//TODO Magic integer!
-				buffer.append(successPostOut("0", FJUrl.SETTINGS + "?id=16" + errCodes.toString()));
+				StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD).append("?id=16").append(errCodes);
+				response.sendRedirect(url.toString());
 			}else{
 				IUser user = (IUser) session.getAttribute(HttpParameters.USER);
 				if (user != null && !user.isBanned() && user.isLogined()){
@@ -68,19 +68,21 @@ public class PostImage extends FJServlet {
 					Long albumId = album == null ? 0 : Long.valueOf(album);
 					imageService.create((DiskFileItem) imageFile, user, albumId, ImageType.ORIGINAL);
 					//TODO Magic integer!
-					buffer.append(successPostOut("0", FJUrl.SETTINGS + "?id=16"));
+					StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD).append("?id=16");
+					response.sendRedirect(url.toString());
 				}else{
-					// Вошли незарегистрировавшись
-					buffer.append(unRegisteredPostOut());
+					// Session expired
+					StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+					response.sendRedirect(exit.toString());
 				}
 			}
 		} catch (Throwable e) {
-			buffer = new StringBuffer();
-			buffer.append(errorOut(e));
 			e.printStackTrace();
+			StringBuffer buffer = new StringBuffer();
+			buffer.append(errorOut(e));
+			response.setContentType("text/html; charset=UTF-8");
+			response.getWriter().write(buffer.toString());
 		}
-		response.setContentType("text/html; charset=UTF-8");
-		response.getWriter().write(buffer.toString());
 	}
 
 }

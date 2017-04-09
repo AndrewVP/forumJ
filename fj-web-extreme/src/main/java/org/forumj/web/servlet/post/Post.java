@@ -33,13 +33,13 @@ import org.forumj.web.servlet.FJServlet;
 public class Post extends FJServlet {
 
    public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
-      StringBuffer buffer = new StringBuffer();
       try {
          String commandParameter = request.getParameter("command");
          HttpSession session = request.getSession();
          IUser user = (IUser) session.getAttribute("user");
          if (user != null && !user.isBanned() && user.isLogined()){
             if (commandParameter != null && commandParameter.trim().length() > 0){
+               StringBuilder url = new StringBuilder("/").append(userURI).append("/");
                switch (Command.valueOfString(commandParameter)) {
                case SET_LOCALE:
                   String localeParameter = request.getParameter("locale");
@@ -49,7 +49,9 @@ public class Post extends FJServlet {
                      FJServiceHolder.getUserService().update(user);
                      session.setAttribute("locale", new LocaleString(localeName, "messages", localeName));
                   }
-                  buffer.append(successPostOut("0", FJUrl.SETTINGS + "?id=12"));
+                  //TODO Magic integer!
+                  url.append(FJUrl.SETTINGS).append("?id=12");
+                  response.sendRedirect(url.toString());
                   break;
                case SET_EMAIL:
                   String emailParameter = request.getParameter("mail");
@@ -57,23 +59,26 @@ public class Post extends FJServlet {
                      user.setEmail(emailParameter);
                      FJServiceHolder.getUserService().update(user);
                   }
-                  buffer.append(successPostOut("0", FJUrl.SETTINGS + "?id=13"));
+                  //TODO Magic integer!
+                  url.append(FJUrl.SETTINGS).append("?id=13");
+                  response.sendRedirect(url.toString());
                   break;
                default:
                   break;
                }
             }
          }else{
-            // Вошли незарегистрировавшись
-            buffer.append(unRegisteredPostOut());
+            // Session expired
+            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+            response.sendRedirect(exit.toString());
          }
       } catch (Throwable e) {
-         buffer = new StringBuffer();
-         buffer.append(errorOut(e));
          e.printStackTrace();
+         StringBuffer buffer = new StringBuffer();
+         buffer.append(errorOut(e));
+         response.setContentType("text/html; charset=UTF-8");
+         response.getWriter().write(buffer.toString());
       }
-      response.setContentType("text/html; charset=UTF-8");
-      response.getWriter().write(buffer.toString());
    }
 
 }

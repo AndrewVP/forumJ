@@ -30,21 +30,21 @@ public class DelOneSubsByMail extends FJServlet {
 
    @Override
    public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
-      StringBuffer buffer = new StringBuffer();
       try {
          String keyParameter = request.getParameter("id");
          if (keyParameter != null && !"".equals(keyParameter)){
             SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
             Long key = Long.valueOf(keyParameter);
             subscribeService.deleteSubscribeByKey(key);
-            buffer.append(successPostOut("0", FJUrl.INDEX));
+            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+            response.sendRedirect(exit.toString());
          }
       } catch (Throwable e) {
-         buffer = new StringBuffer();
-         buffer.append(errorOut(e));
          e.printStackTrace();
+         StringBuffer buffer = new StringBuffer();
+         buffer.append(errorOut(e));
+         response.setContentType("text/html; charset=UTF-8");
+         response.getWriter().write(buffer.toString());
       }
-      response.setContentType("text/html; charset=UTF-8");
-      response.getWriter().write(buffer.toString());
    }
 }

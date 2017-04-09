@@ -34,7 +34,6 @@ public class Amn extends FJServlet {
 
    @Override
    public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
-      StringBuffer buffer = new StringBuffer();
       try {
          HttpSession session = request.getSession();
          IUser user = (IUser) session.getAttribute("user");
@@ -56,18 +55,20 @@ public class Amn extends FJServlet {
             ignor.setType(ignorTypeParameter == null ? 0 : 1);
             ignor.setEnd(newEndDate);
             service.updateIgnor(ignor);
-            buffer.append(successPostOut("0", FJUrl.SETTINGS + "?id=1"));
+            StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=1");
+            response.sendRedirect(url.toString());
          }else{
-            // Вошли незарегистрировавшись
-            buffer.append(unRegisteredPostOut());
+            // Session expired
+            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+            response.sendRedirect(exit.toString());
          }
       } catch (Throwable e) {
-         buffer = new StringBuffer();
-         buffer.append(errorOut(e));
          e.printStackTrace();
+         StringBuffer buffer = new StringBuffer();
+         buffer.append(errorOut(e));
+         response.setContentType("text/html; charset=UTF-8");
+         response.getWriter().write(buffer.toString());
       }
-      response.setContentType("text/html; charset=UTF-8");
-      response.getWriter().write(buffer.toString());
    }
 
 }

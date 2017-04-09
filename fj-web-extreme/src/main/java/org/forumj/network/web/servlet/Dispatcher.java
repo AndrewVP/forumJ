@@ -11,6 +11,7 @@ import org.forumj.network.web.controller.post.Write;
 import org.forumj.network.web.controller.post.New;
 import org.forumj.network.web.controller.post.Submit;
 import org.forumj.network.web.controller.post.Quest;
+import org.forumj.network.web.controller.post.AddSubscribe;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -54,6 +55,7 @@ public class Dispatcher extends HttpServlet {
     private New addThreadController = new New();
     private Submit doLoginController = new Submit();
     private Quest addQuestionController = new Quest();
+    private AddSubscribe addSubscribeController = new AddSubscribe();
 
     @Override
     public void init() throws ServletException {
@@ -168,6 +170,9 @@ public class Dispatcher extends HttpServlet {
                         break;
                     case FJUrl.ADD_QUESTION:
                         addQuestionController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.ADD_SUBSCRIBE:
+                        addSubscribeController.doPost(request, response, webappName, userURI);
                         break;
                     default:
                         page404.doGet(request, response, webappName);

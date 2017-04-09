@@ -38,7 +38,6 @@ public class DelVFolder extends FJServlet {
 
    @Override
    public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
-      StringBuffer buffer = new StringBuffer();
       try {
          HttpSession session = request.getSession();
          String viewIdParameter = request.getParameter("IDVW");
@@ -61,17 +60,19 @@ public class DelVFolder extends FJServlet {
                }
             }
             //TODO Magic integer!
-            buffer.append(successPostOut("0", FJUrl.SETTINGS + "?id=6&view=" + viewIdParameter));
+            StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=6&view=").append(viewIdParameter);
+            response.sendRedirect(url.toString());
          }else{
-            // Вошли незарегистрировавшись
-            buffer.append(unRegisteredPostOut());
+            // Session expired
+            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+            response.sendRedirect(exit.toString());
          }
       } catch (Throwable e) {
-         buffer = new StringBuffer();
-         buffer.append(errorOut(e));
          e.printStackTrace();
+         StringBuffer buffer = new StringBuffer();
+         buffer.append(errorOut(e));
+         response.setContentType("text/html; charset=UTF-8");
+         response.getWriter().write(buffer.toString());
       }
-      response.setContentType("text/html; charset=UTF-8");
-      response.getWriter().write(buffer.toString());
    }
 }
