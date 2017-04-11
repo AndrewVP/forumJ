@@ -117,7 +117,7 @@ public class Control{
          buffer.append("</th>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=1'>" + locale.getString("mess24") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=1'>").append(locale.getString("mess24")).append("</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
          /*e-mail*/
@@ -127,7 +127,7 @@ public class Control{
          buffer.append("</th>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=13'>" + locale.getString("MSG_EMAIL") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=13'>" + locale.getString("MSG_EMAIL") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
          // Личная переписка
@@ -137,19 +137,19 @@ public class Control{
          buffer.append("</th>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=2'>" + locale.getString("mess54") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=2'>" + locale.getString("mess54") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=3'>" + locale.getString("mess57") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=3'>" + locale.getString("mess57") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=4'>" + locale.getString("mess55") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=4'>" + locale.getString("mess55") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=5'>" + locale.getString("mess56") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=5'>" + locale.getString("mess56") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
          // Интерфейсы
@@ -159,11 +159,11 @@ public class Control{
          buffer.append("</th>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=6'>" + locale.getString("mess71") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=6'>" + locale.getString("mess71") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=7'>" + locale.getString("mess72") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=7'>" + locale.getString("mess72") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
          // Подписка
@@ -173,7 +173,7 @@ public class Control{
          buffer.append("</th>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=8'>" + locale.getString("mess86") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=8'>" + locale.getString("mess86") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
          // Аватара
@@ -183,7 +183,7 @@ public class Control{
          buffer.append("</th>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=9'>" + locale.getString("mess93") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=9'>" + locale.getString("mess93") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
          // Местонахождение
@@ -193,12 +193,12 @@ public class Control{
          buffer.append("</th>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=10'>" + locale.getString("mess104") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=10'>" + locale.getString("mess104") + "</a><br>");
          buffer.append("</td>");
          /*Locale*/
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=12'>" + locale.getString("MSG_INTERF_LOCALE") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=12'>" + locale.getString("MSG_INTERF_LOCALE") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
          /*Подпись*/
@@ -208,7 +208,7 @@ public class Control{
          buffer.append("</th>");
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=11'>" + locale.getString("mess138") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=11'>" + locale.getString("mess138") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
          if (user.isModerator()){
@@ -220,12 +220,12 @@ public class Control{
          /* all Users*/
             buffer.append("</tr><tr>");
             buffer.append("<td class='internal'>");
-            buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=14'>" + locale.getString("MSG_USERS") + "</a><br>");
+            buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=14'>" + locale.getString("MSG_USERS") + "</a><br>");
             buffer.append("</td>");
          /* unapproved Users*/
             buffer.append("</tr><tr>");
             buffer.append("<td class='internal'>");
-            buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=15'>" + locale.getString("MSG_UNAPPROVED_USERS") + "</a><br>");
+            buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=15'>" + locale.getString("MSG_UNAPPROVED_USERS") + "</a><br>");
             buffer.append("</td>");
             buffer.append("</tr></table>");
          }
@@ -237,7 +237,7 @@ public class Control{
          /* all Users*/
          buffer.append("</tr><tr>");
          buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='" + FJUrl.SETTINGS + "?id=16'>" + locale.getString("MSG_PHOTOALBUM") + "</a><br>");
+         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=16'>" + locale.getString("MSG_PHOTOALBUM") + "</a><br>");
          buffer.append("</td>");
          buffer.append("</tr></table>");
 
@@ -254,63 +254,63 @@ public class Control{
             break;
          case 2:
             // Inbox
-            buffer.append(caseInbox(locale, user, msg, mailService));
+            buffer.append(caseInbox(locale, user, msg, mailService, userURI));
             break;
          case 3:
             // Отправлено, но не доставлено
-            buffer.append(caseSent(locale, user, msg, mailService));
+            buffer.append(caseSent(locale, user, msg, mailService, userURI));
             break;
          case 4:
             // Отправлено, и доставлено
-            buffer.append(caseOutbox(locale, user, msg, mailService));
+            buffer.append(caseOutbox(locale, user, msg, mailService, userURI));
             break;
          case 5:
             //  Черновики
-            buffer.append(casePostponed(locale, user, msg, mailService));
+            buffer.append(casePostponed(locale, user, msg, mailService, userURI));
             break;
          case 6:
             // Интерфейсы
-            buffer.append(caseViews(locale, user, view, interfaceService, folderService));
+            buffer.append(caseViews(locale, user, view, interfaceService, folderService, userURI));
             break;
          case 7:
             // Папки
-            buffer.append(caseFolders(locale, user, folderService));
+            buffer.append(caseFolders(locale, user, folderService, userURI));
             break;
          case 8:
             // Подписка
-            buffer.append(caseSubscribe(locale, user, subscribeService));
+            buffer.append(caseSubscribe(locale, user, subscribeService, userURI));
             break;
          case 9:
             // Аватара
-            buffer.append(caseAvatar(locale, user, errors));
+            buffer.append(caseAvatar(locale, user, errors, userURI));
             break;
          case 10:
             // Местонахождение
-            buffer.append(caseGeo(locale, user));
+            buffer.append(caseGeo(locale, user, userURI));
             break;
          case 11:
             // Подпись
-            buffer.append(cseSign(locale, user));
+            buffer.append(cseSign(locale, user, userURI));
             break;
          case 12:
             // Язык интерфейса
-            buffer.append(caseLanguage(locale, user));
+            buffer.append(caseLanguage(locale, user, userURI));
             break;
          case 13:
             // E-mail
-            buffer.append(caseEMail(locale, user));
+            buffer.append(caseEMail(locale, user, userURI));
             break;
          case 14:
             // All Users
-            buffer.append(caseAllUsers(locale, user, userService));
+            buffer.append(caseAllUsers(locale, user, userService, userURI));
             break;
          case 15:
             // Unapproved Users
-            buffer.append(caseUnapprovedUsers(locale, user, userService));
+            buffer.append(caseUnapprovedUsers(locale, user, userService, userURI));
             break;
          case 16:
             // PhotoAlbum
-            buffer.append(casePhotoalbum(locale, user, imageService, errors));
+            buffer.append(casePhotoalbum(locale, user, imageService, errors, userURI));
             break;
          }
          buffer.append("</td>");
@@ -335,7 +335,7 @@ public class Control{
             buffer.append("<table>");
             buffer.append("<tr>");
             buffer.append("<td>");
-            buffer.append("<form name='post' action='" + FJUrl.SEND_PIVATE_MESSAGE + "?id=" + id + "' method='post'>");
+            buffer.append("<form name='post' action='").append("/").append(userURI).append("/").append(FJUrl.SEND_PIVATE_MESSAGE + "?id=" + id + "' method='post'>");
             buffer.append("<table width='100%'>");
             buffer.append("<tr>");
             buffer.append("<td width='100%'>");
@@ -601,7 +601,7 @@ public class Control{
       return buffer;
    }
 
-   private StringBuffer caseInbox(LocaleString locale, IUser user, Long msg, MailService mailService) throws ConfigurationException, SQLException, IOException, InvalidKeyException{
+   private StringBuffer caseInbox(LocaleString locale, IUser user, Long msg, MailService mailService, String userURI) throws ConfigurationException, SQLException, IOException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       IFJMail mail = null;
       if (msg != null){
@@ -613,7 +613,7 @@ public class Control{
          }
       }
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess17") + "</b></div>");
-      buffer.append("<form method='post' class='content' action='" + FJUrl.DELETE_MAIL + "?id=2'>");
+      buffer.append("<form method='post' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.DELETE_MAIL + "?id=2'>");
       buffer.append("<table class='control'><tr class='heads'>");
       mailService.receiveMail(user.getId());
       // Выбираем почту
@@ -637,12 +637,12 @@ public class Control{
             // Тема письма
             if (gridMail.getReadDate() == null){
                buffer.append("<td class='internal'><div class='tbtextnread'>");
-               buffer.append("<a href='" + FJUrl.SETTINGS + "?id=2&msg=" + gridMail.getId() + "'>" + fd_head(gridMail.getSubject()) + "</a>");
+               buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=2&msg=" + gridMail.getId() + "'>" + fd_head(gridMail.getSubject()) + "</a>");
                buffer.append("</div></td>");
             }
             else {
                buffer.append("<td class='internal'><div class='tbtext'>");
-               buffer.append("<a href='" + FJUrl.SETTINGS + "?id=2&msg=" + gridMail.getId() + "'>" + fd_head(gridMail.getSubject()) + "</a>");
+               buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=2&msg=" + gridMail.getId() + "'>" + fd_head(gridMail.getSubject()) + "</a>");
                buffer.append("</div></td>");
             }
             // Когда пришло.
@@ -695,7 +695,7 @@ public class Control{
       return buffer;
    }
 
-   private StringBuffer caseSent(LocaleString locale, IUser user, Long msg, MailService mailService) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
+   private StringBuffer caseSent(LocaleString locale, IUser user, Long msg, MailService mailService, String userURI) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess15") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
@@ -717,7 +717,7 @@ public class Control{
             buffer.append("</div></td>");
             // Тема письма
             buffer.append("<td class='internal'><div class=tbtext>");
-            buffer.append("<a href='" + FJUrl.SETTINGS + "?id=3&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
+            buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=3&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
             buffer.append("</div></td>");
             // Когда отправлено
             buffer.append("<td class='internal' width='120'><div class=tbtext>");
@@ -750,10 +750,10 @@ public class Control{
       return buffer;
    }
 
-   private StringBuffer caseOutbox(LocaleString locale, IUser user, Long msg, MailService mailService) throws ConfigurationException, IOException, SQLException, InvalidKeyException{
+   private StringBuffer caseOutbox(LocaleString locale, IUser user, Long msg, MailService mailService, String userURI) throws ConfigurationException, IOException, SQLException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess16") + "</b></div>");
-      buffer.append("<form method='post' class='content' action='" + FJUrl.DELETE_MAIL + "?id=4'>");
+      buffer.append("<form method='post' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.DELETE_MAIL + "?id=4'>");
       buffer.append("<table class='control'><tr class=heads>");
       // Выбираем почту
       List<IFJMail> mails = mailService.loadOutReceivedBox(user);
@@ -779,7 +779,7 @@ public class Control{
             buffer.append("</div></td>");
             // Тема письма
             buffer.append("<td class='internal'><div class=tbtext>");
-            buffer.append("<a href='" + FJUrl.SETTINGS + "?id=4&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
+            buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=4&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
             buffer.append("</div></td>");
             // Когда отправлено.
             buffer.append("<td class='internal' width='120'><div class=tbtext>");
@@ -832,7 +832,7 @@ public class Control{
       return buffer;
    }
 
-   private StringBuffer casePostponed(LocaleString locale, IUser user, Long msg, MailService mailService) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
+   private StringBuffer casePostponed(LocaleString locale, IUser user, Long msg, MailService mailService, String userURI) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess62") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
@@ -857,7 +857,7 @@ public class Control{
             buffer.append("</div></td>");
             // Тема письма
             buffer.append("<td class='internal'><div class=tbtext>");
-            buffer.append("<a href='" + FJUrl.SETTINGS + "?id=5&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
+            buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=5&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
             buffer.append("</div></td>");
             // Когда создано.
             buffer.append("<td class='internal' width='120'><div class=tbtext>");
@@ -889,7 +889,7 @@ public class Control{
       return buffer;
    }
 
-   private StringBuffer caseViews(LocaleString locale, IUser user, Long viewId, InterfaceService interfaceService, FolderService folderService) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
+   private StringBuffer caseViews(LocaleString locale, IUser user, Long viewId, InterfaceService interfaceService, FolderService folderService, String userURI) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список интерфейсов
       List<IFJInterface> interfaces = interfaceService.findAllInterfaces(user);
@@ -897,7 +897,7 @@ public class Control{
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess76") + "</b></div>");
       // Интерфейс по умолчанию
       // 
-      buffer.append("<form method='post' class='content' action='" + FJUrl.SET_DEFAULT_VIEW + "'>");
+      buffer.append("<form method='post' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.SET_DEFAULT_VIEW + "'>");
       buffer.append("<span class=tbtext><b>" + locale.getString("mess84") + "</b></span>");
       buffer.append("<select size='1' name='DVIEW'>");
       for (int interfIndex=0; interfIndex < interfaces.size(); interfIndex++){
@@ -915,7 +915,7 @@ public class Control{
       buffer.append(fd_form_add(user));
       buffer.append("</form>");
 
-      buffer.append("<form method='post' class='content' action='" + FJUrl.DELETE_VIEW + "?'>");
+      buffer.append("<form method='post' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.DELETE_VIEW + "?'>");
       buffer.append("<table class='control'><tr class=heads>");
       // Заголовки таблицы
       // Имя интерфейса
@@ -935,7 +935,7 @@ public class Control{
          buffer.append("<tr>");
          // Интерфейс
          buffer.append("<td class='internal'><div class=tbtext>");
-         buffer.append("<a href=" + FJUrl.SETTINGS + "?id=6&view=" + interf.getId() + ">" + name + "</a>");
+         buffer.append("<a href=").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=6&view=" + interf.getId() + ">" + name + "</a>");
          buffer.append("</div></td>");
          // Флажок.
          buffer.append("<td class='internal'>");
@@ -962,7 +962,7 @@ public class Control{
       buffer.append("</tr>");
       buffer.append("</table>");
       buffer.append("</form>");  
-      buffer.append("<form method='post' class='content' action='" + FJUrl.NEW_VIEW + "'>");
+      buffer.append("<form method='post' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.NEW_VIEW + "'>");
       buffer.append("<span class=tbtext>" + locale.getString("mess77") + ":&nbsp;</span>"); 
       buffer.append("<input type='text' size=50 name='FOLD'>");
       buffer.append("&nbsp;<input type='submit' value='" + locale.getString("mess75") + "' >");
@@ -975,7 +975,7 @@ public class Control{
          // Выбираем список папок в интерфейсе
          List<IFJFolder> folders = folderService.findAllFolders(user, interf);
          buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess78") + "&nbsp;<u>" + interf.getName() + "</u></b></div>");
-         buffer.append("<form method='post' class='content' action='" + FJUrl.DELETE_FOLDER_FROM_VIEW + "'>");
+         buffer.append("<form method='post' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.DELETE_FOLDER_FROM_VIEW + "'>");
          buffer.append("<table class='control'><tr class=heads>");
          // Заголовки таблицы
          // Имя папки
@@ -1020,7 +1020,7 @@ public class Control{
          List<IFJFolder> foldersNotIn = folderService.findAllFoldersNotIn(user, interf);
          int foldersAmount = foldersNotIn.size();
          buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess73") + "</b></div>");
-         buffer.append("<form method='post' class='content' action='" + FJUrl.FOLDER_TOOLS + "?id=6&view=" + viewId + "'>");
+         buffer.append("<form method='post' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.FOLDER_TOOLS + "?id=6&view=" + viewId + "'>");
          buffer.append("<table class='control'><tr class=heads>");
          // Заголовки таблицы
          // Имя папки
@@ -1059,7 +1059,7 @@ public class Control{
          buffer.append("</table>");
          buffer.append("</form>");  
          // Добавление новой папки
-         buffer.append("<form method='post' class='content' action='" + FJUrl.NEW_FOLDER + "?id=6&view=" + viewId + "'>");
+         buffer.append("<form method='post' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.NEW_FOLDER + "?id=6&view=" + viewId + "'>");
          buffer.append("<span class=tbtext>" + locale.getString("mess74") + ":&nbsp;</span>"); 
          buffer.append("<input type='text' size=50 name='FOLD'>");
          buffer.append("&nbsp;<input type='submit' value='" + locale.getString("mess75") + "' >");
@@ -1070,13 +1070,13 @@ public class Control{
       return buffer;
    }
 
-   private StringBuffer caseFolders(LocaleString locale, IUser user, FolderService folderService) throws ConfigurationException, SQLException, IOException, InvalidKeyException{
+   private StringBuffer caseFolders(LocaleString locale, IUser user, FolderService folderService, String userURI) throws ConfigurationException, SQLException, IOException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список папок
       List<IFJFolder> folders = folderService.getUserFolders(user);
       int foldersAmount = folders.size();
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess73") + "</b></div>");
-      buffer.append("<form method='post' class='content' action='" + FJUrl.FOLDER_TOOLS + "?id=7'>");
+      buffer.append("<form method='post' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.FOLDER_TOOLS + "?id=7'>");
       buffer.append("<table class='control'><tr class=heads>");
       // Заголовки таблицы
       // Имя папки
@@ -1116,7 +1116,7 @@ public class Control{
       buffer.append("</table>");
       buffer.append("</form>");  
       // Добавление новой папки
-      buffer.append("<form method='post' class='content' action='" + FJUrl.NEW_FOLDER + "?id=7'>");
+      buffer.append("<form method='post' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.NEW_FOLDER + "?id=7'>");
       buffer.append("<span class=tbtext>" + locale.getString("mess74") + ":&nbsp;</span>"); 
       buffer.append("<input type='text' size=50 name='FOLD'>");
       buffer.append("&nbsp;<input type='submit' value='" + locale.getString("mess75") + "' >");
@@ -1125,12 +1125,12 @@ public class Control{
       return buffer;
    }
 
-   private StringBuffer caseSubscribe(LocaleString locale, IUser user, SubscribeService subscribeService) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
+   private StringBuffer caseSubscribe(LocaleString locale, IUser user, SubscribeService subscribeService, String userURI) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список подписаных веток
       List<IFJSubscribe> subscribes = subscribeService.findAllSubscribes(user, new Integer(1));
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess87") + "</b></div>");
-      buffer.append("<form method='post' class='content' action='" + FJUrl.DELETE_SUBSCRIBES + "?id=8'>");
+      buffer.append("<form method='post' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.DELETE_SUBSCRIBES + "?id=8'>");
       buffer.append("<table class='control'><tr class=heads>");
       // Заголовки таблицы
       // Тема ветки
@@ -1144,7 +1144,7 @@ public class Control{
          // Ветка
          buffer.append("<tr>");
          buffer.append("<td class='internal'><div class=tbtext>");
-         buffer.append("<a href='" + FJUrl.VIEW_THREAD + "?id=" + subscribe.getTitleId() + "&end=1#end'>" + Diletant.fd_head(HtmlChars.convertHtmlSymbols(removeSlashes(subscribe.getHead()))) + "</a>");
+         buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD + "?id=" + subscribe.getTitleId() + "&end=1#end'>" + Diletant.fd_head(HtmlChars.convertHtmlSymbols(removeSlashes(subscribe.getHead()))) + "</a>");
          buffer.append("</div></td>");
          // Флажок.
          buffer.append("<td class='internal'>");
@@ -1171,7 +1171,7 @@ public class Control{
       return buffer;
    }
 
-   private StringBuffer caseAvatar(LocaleString locale, IUser user, List<ErrorCode> errors) throws InvalidKeyException {
+   private StringBuffer caseAvatar(LocaleString locale, IUser user, List<ErrorCode> errors, String userURI) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
       if (user.getAvatar() != null && user.getAvatarApproved()) {
          buffer.append("<div class='mnuprof' align='CENTER'>");
@@ -1180,7 +1180,7 @@ public class Control{
          buffer.append("</b>");
          buffer.append("</div>");
          buffer.append("<div>");
-         buffer.append("<img border='0' src='" + user.getAvatar() + "?seed=" + (new Date()).getTime() + "'>");
+         buffer.append("<img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(user.getAvatar() + "?seed=" + (new Date()).getTime() + "'>");
          buffer.append("</div>");
          buffer.append("<br>");
          buffer.append("<br>");
@@ -1191,7 +1191,7 @@ public class Control{
          buffer.append("</b>");
          buffer.append("</div>");
          buffer.append("<br>");
-         buffer.append("<form method='post' class='content' action='" + FJUrl.SET_AVATAR + "?id=9' enctype='multipart/form-data'>");
+         buffer.append("<form method='post' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.SET_AVATAR + "?id=9' enctype='multipart/form-data'>");
       for (ErrorCode errorCode : errors) {
     	  if(errorCode.getFieldName().equalsIgnoreCase("avatar")){
     		  buffer.append("<span style='color:red;'>");
@@ -1218,7 +1218,7 @@ public class Control{
       buffer.append("<input type='submit' value='" + locale.getString("mess75") + "'>");
       buffer.append(fd_form_add(user));
       buffer.append("</form>");
-      buffer.append("<form method='post' class='content' action='" + FJUrl.V_AVATAR + "?id=9'>");
+      buffer.append("<form method='post' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.V_AVATAR + "?id=9'>");
       if (user.getAvatar() != null) {
          buffer.append("<input type=checkbox checked  name='v_avatar'>");
          buffer.append("&nbsp;" + locale.getString("mess98"));
@@ -1236,14 +1236,14 @@ public class Control{
       return buffer;
    }
 
-   private StringBuffer caseGeo(LocaleString locale, IUser user) throws InvalidKeyException {
+   private StringBuffer caseGeo(LocaleString locale, IUser user, String userURI) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'>");
       buffer.append("<b>" + locale.getString("mess105") + "</b>");
       buffer.append("</div>");
       buffer.append("<br>");
       buffer.append("<div>");
-      buffer.append("<form method='post' class='content' action='" + FJUrl.SET_LOCATION + "?id=10'>");
+      buffer.append("<form method='post' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.SET_LOCATION + "?id=10'>");
       buffer.append(fd_form_add(user));
       buffer.append("<table>");
       buffer.append("<tr>");
@@ -1305,7 +1305,7 @@ public class Control{
    }
 
    /*подпись*/
-   private StringBuffer cseSign(LocaleString locale, IUser user) throws InvalidKeyException {
+   private StringBuffer cseSign(LocaleString locale, IUser user, String userURI) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='LEFT' style='padding: 10px 0 5px 0'>");
       buffer.append("<b>");
@@ -1316,7 +1316,7 @@ public class Control{
       if (user.getFooter() != null && !"".equals(user.getFooter())){
          $textArea=HTMLEntities.htmlentities(user.getFooter());
       }
-      buffer.append("<form method='post' name='footer' class='content' action='" + FJUrl.SET_FOOTER + "?id=11'>");
+      buffer.append("<form method='post' name='footer' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.SET_FOOTER + "?id=11'>");
       buffer.append("<textarea name='foot' cols=50 rows=15 onkeyup='checkLength(this, 255);' onkeypress='this.onkeyup();' onChange='this.onkeyup();' onFocus='this.onkeyup();' onBlur='this.onkeyup();' onSelect='this.onkeyup();' onMouseOut='this.onkeyup();' onMouseMove='this.onkeyup();'>" + $textArea + "</textarea>");
       buffer.append("<div style='padding: 5px 0 0 0'>");
       buffer.append(fd_button(locale.getString("mess85"),"document.footer.submit();","foot_ok", "1"));
@@ -1326,7 +1326,7 @@ public class Control{
       return buffer;
    }
 
-   private StringBuffer caseAllUsers(LocaleString locale, IUser currentUser, UserService userService) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
+   private StringBuffer caseAllUsers(LocaleString locale, IUser currentUser, UserService userService, String userURI) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("MSG_USERS") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
@@ -1362,7 +1362,7 @@ public class Control{
                buffer.append("</div></td>");
                // Ban
                buffer.append("<td class='internal'><div class=tbtext>");
-               buffer.append("<a href='" + FJUrl.BAN + "?id=" + user.getId() + "'>");
+               buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.BAN + "?id=" + user.getId() + "'>");
                buffer.append(user.isBanned() ? locale.getString("mess26"): locale.getString("mess27"));
                buffer.append("</a>");
                buffer.append("</div></td>");
@@ -1382,7 +1382,7 @@ public class Control{
    }
 
 
-   private StringBuffer caseUnapprovedUsers(LocaleString locale, IUser currentUser, UserService userService) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
+   private StringBuffer caseUnapprovedUsers(LocaleString locale, IUser currentUser, UserService userService, String userURI) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("MSG_UNAPPROVED_USERS") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
@@ -1410,7 +1410,7 @@ public class Control{
                buffer.append("</div></td>");
                // Nick && approve link
                buffer.append("<td class='internal'><div class=tbtext>");
-               buffer.append("<a href='" + FJUrl.APPROVE_USER + "?id=" + user.getId() + "'>" + fd_head(user.getNick()) + "</a>");
+               buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.APPROVE_USER + "?id=" + user.getId() + "'>" + fd_head(user.getNick()) + "</a>");
                buffer.append("</div></td>");
                // E-mail
                buffer.append("<td class='internal'><div class=tbtext>");
@@ -1435,7 +1435,7 @@ public class Control{
       return buffer;
    }
 
-   private StringBuffer casePhotoalbum(LocaleString locale, IUser user, ImageService imageService, List<ErrorCode> errors) throws Exception{
+   private StringBuffer casePhotoalbum(LocaleString locale, IUser user, ImageService imageService, List<ErrorCode> errors, String userURI) throws Exception{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'>");
       buffer.append("<b>");
@@ -1444,7 +1444,7 @@ public class Control{
       buffer.append("</div>");
       buffer.append("<br>");
       buffer.append("<form method='post' class='content' action='");
-      buffer.append(FJUrl.POST_IMAGE);
+      buffer.append("/").append(userURI).append("/").append(FJUrl.POST_IMAGE);
       buffer.append("' enctype='multipart/form-data'>");
       buffer.append(locale.getString("mess97"));
       buffer.append("&nbsp;");
@@ -1485,7 +1485,7 @@ public class Control{
       for (int thumbIndex = thumbIndexStart; thumbIndex < imageThumbs.size(); thumbIndex += 3){
          Image thumb = imageThumbs.get(thumbIndex);
          buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
-         buffer.append("<img border='0' src='photo/");
+         buffer.append("<img border='0' src='").append("/").append(FJUrl.STATIC).append("/");
          buffer.append(thumb.getId());
          buffer.append("?id=");
          buffer.append(thumb.getId());
@@ -1499,7 +1499,7 @@ public class Control{
       return buffer;
    }
    /*e-mail*/
-   private StringBuffer caseEMail(LocaleString locale, IUser user) throws InvalidKeyException {
+   private StringBuffer caseEMail(LocaleString locale, IUser user, String userURI) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='LEFT' style='padding: 10px 0 5px 0'>");
       buffer.append("<b>");
@@ -1510,7 +1510,7 @@ public class Control{
       if (user.getEmail() != null && !"".equals(user.getEmail().trim())){
          eMail=HTMLEntities.htmlentities(user.getEmail());
       }
-      buffer.append("<form method='post' name='email_form' class='content' action='" + FJUrl.POST + "'>");
+      buffer.append("<form method='post' name='email_form' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.POST + "'>");
       buffer.append(fd_input("mail", eMail, "50", "1"));
       buffer.append("<div style='padding: 5px 0 0 0'>");
       buffer.append("<input type='hidden' name='command' value='" + Command.SET_EMAIL.getCommand() + "' />");
@@ -1522,14 +1522,14 @@ public class Control{
    }
    
    /*язык интерфейса*/
-   private StringBuffer caseLanguage(LocaleString locale, IUser user) throws InvalidKeyException {
+   private StringBuffer caseLanguage(LocaleString locale, IUser user, String userURI) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='LEFT' style='padding: 10px 0 5px 0'>");
       buffer.append("<b>");
       buffer.append(locale.getString("MSG_DEFAULT_LOCALE"));
       buffer.append("</b>");
       buffer.append("</div>");
-      buffer.append("<form method='post' name='locale' class='content' action='" + FJUrl.POST + "'>");
+      buffer.append("<form method='post' name='locale' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.POST + "'>");
       buffer.append("<select name='locale'>");
       for (Locale localeParameter: Locale.values()){
          buffer.append("<option value='" + localeParameter.getCode() + "'");
