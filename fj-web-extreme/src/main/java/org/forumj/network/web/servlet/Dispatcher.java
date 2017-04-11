@@ -7,11 +7,7 @@ import org.forumj.common.FJServletName;
 import org.forumj.common.FJUrl;
 import org.forumj.common.config.FJConfiguration;
 import org.forumj.network.web.controller.*;
-import org.forumj.network.web.controller.post.Write;
-import org.forumj.network.web.controller.post.New;
-import org.forumj.network.web.controller.post.Submit;
-import org.forumj.network.web.controller.post.Quest;
-import org.forumj.network.web.controller.post.AddSubscribe;
+import org.forumj.network.web.controller.post.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -56,6 +52,31 @@ public class Dispatcher extends HttpServlet {
     private Submit doLoginController = new Submit();
     private Quest addQuestionController = new Quest();
     private AddSubscribe addSubscribeController = new AddSubscribe();
+    private Amn updateIgnorController = new Amn();
+    private Defview setDefaultViewController = new Defview();
+    private DelFolder folderToolsController = new DelFolder();
+    private DelMail deleteMailController = new DelMail();
+    private DelOneSubs deleteOneSubscribeController = new DelOneSubs();
+    private DelOneSubsByMail deleteOneSubscribeFromMailController = new DelOneSubsByMail();
+    private DelSubs deleteSubscribesController = new DelSubs();
+    private DelVFolder removeFolderFromViewController = new DelVFolder();
+    private DelView deleteViewController = new DelView();
+    private DelVoice deleteVoiceController = new DelVoice();
+    private InsNew doRegistrationController = new InsNew();
+    private MoveTitle moveThreadController = new MoveTitle();
+    private NewFolder createFolderController = new NewFolder();
+    private NewView createViewController = new NewView();
+    private Ping pingController = new Ping();
+    private Post commandHandler = new Post();
+    private PostImage addImageController = new PostImage();
+    private Send sendPrivateMessagController = new Send();
+    private SetAvatar setAvatarController = new SetAvatar();
+    private SetFooter setFooterController = new SetFooter();
+    private SetLocation setLocationController = new SetLocation();
+    private SlctView changeViewController = new SlctView();
+    private UserVoice addCustomAnswerController = new UserVoice();
+    private VAvatar setViewAvatarController = new VAvatar();
+    private Voice addVoteController = new Voice();
 
     @Override
     public void init() throws ServletException {
@@ -173,6 +194,81 @@ public class Dispatcher extends HttpServlet {
                         break;
                     case FJUrl.ADD_SUBSCRIBE:
                         addSubscribeController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.UPDATE_IGNORING:
+                        updateIgnorController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.SET_DEFAULT_VIEW:
+                        setDefaultViewController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.FOLDER_TOOLS:
+                        folderToolsController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.DELETE_MAIL:
+                        deleteMailController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.DELETE_SUBSCRIBE:
+                        deleteOneSubscribeController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.DELETE_ONE_SUBSCRIBE_BY_EMAIL:
+                        deleteOneSubscribeFromMailController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.DELETE_SUBSCRIBES:
+                        deleteSubscribesController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.DELETE_FOLDER_FROM_VIEW:
+                        removeFolderFromViewController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.DELETE_VIEW:
+                        deleteViewController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.DELETE_VOICE:
+                        deleteVoiceController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.DO_REGISTRATION:
+                        doRegistrationController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.MOVE_TITLE:
+                        moveThreadController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.NEW_FOLDER:
+                        createFolderController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.NEW_VIEW:
+                        createViewController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.PING:
+                        pingController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.POST:
+                        commandHandler.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.POST_IMAGE:
+                        addImageController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.SEND_PIVATE_MESSAGE:
+                        sendPrivateMessagController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.SET_AVATAR:
+                        setAvatarController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.SET_FOOTER:
+                        setFooterController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.SET_LOCATION:
+                        setLocationController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.SELECT_VIEW:
+                        changeViewController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.ADD_VOTE:
+                        addCustomAnswerController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.V_AVATAR:
+                        setViewAvatarController.doPost(request, response, webappName, userURI);
+                        break;
+                    case FJUrl.VOICE:
+                        addVoteController.doPost(request, response, webappName, userURI);
                         break;
                     default:
                         page404.doGet(request, response, webappName);

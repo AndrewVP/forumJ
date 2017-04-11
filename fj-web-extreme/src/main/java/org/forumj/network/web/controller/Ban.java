@@ -15,19 +15,13 @@
  */
 package org.forumj.network.web.controller;
 
-import org.forumj.common.FJServletName;
 import org.forumj.common.FJUrl;
 import org.forumj.common.HttpParameters;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.FJServiceHolder;
 import org.forumj.common.db.service.UserService;
-import org.forumj.common.web.Locale;
-import org.forumj.email.FJEMail;
-import org.forumj.tool.LocaleString;
-import org.forumj.web.servlet.FJServlet;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;

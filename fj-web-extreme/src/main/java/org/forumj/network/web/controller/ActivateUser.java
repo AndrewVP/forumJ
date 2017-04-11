@@ -16,12 +16,10 @@
 package org.forumj.network.web.controller;
 
 import static org.forumj.tool.Diletant.*;
-import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
@@ -30,7 +28,6 @@ import org.forumj.common.db.service.*;
 import org.forumj.common.web.Locale;
 import org.forumj.email.FJEMail;
 import org.forumj.tool.LocaleString;
-import org.forumj.web.servlet.FJServlet;
 
 public class ActivateUser{
 

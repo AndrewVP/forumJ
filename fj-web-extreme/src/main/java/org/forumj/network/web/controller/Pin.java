@@ -20,15 +20,13 @@ import static org.forumj.tool.Diletant.*;
 import java.io.IOException;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
-import org.forumj.web.servlet.FJServlet;
 
-public class Pin extends FJServlet {
+public class Pin{
 
    public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();

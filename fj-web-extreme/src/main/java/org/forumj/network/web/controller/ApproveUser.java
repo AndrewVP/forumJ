@@ -15,9 +15,6 @@
  */
 package org.forumj.network.web.controller;
 
-import org.apache.commons.codec.EncoderException;
-import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.FJServletName;
 import org.forumj.common.FJUrl;
 import org.forumj.common.HttpParameters;
 import org.forumj.common.db.entity.IUser;
@@ -25,18 +22,14 @@ import org.forumj.common.db.service.FJServiceHolder;
 import org.forumj.common.db.service.UserService;
 import org.forumj.email.FJEMail;
 import org.forumj.tool.LocaleString;
-import org.forumj.web.servlet.FJServlet;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.SQLException;
 
 import static org.forumj.tool.Diletant.errorOut;
-import static org.forumj.web.servlet.tool.FJServletTools.setcookie;
 
 public class ApproveUser{
 

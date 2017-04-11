@@ -7,23 +7,20 @@
  * You shall use it and distribute only in accordance with the terms of the 
  * License Agreement.
  */
-package org.forumj.web.servlet.post;
+package org.forumj.network.web.controller.post;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
-import org.forumj.common.FJServletName;
 import org.forumj.common.FJUrl;
 import org.forumj.common.HttpParameters;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.entity.ImageType;
 import org.forumj.common.db.service.FJServiceHolder;
 import org.forumj.common.db.service.ImageService;
-import org.forumj.web.servlet.FJServlet;
 import org.forumj.web.tool.ErrorCode;
 import org.forumj.web.tool.ValidationErrors;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -35,9 +32,7 @@ import static org.forumj.tool.Diletant.*;
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/" + FJUrl.POST_IMAGE}, name=FJServletName.POST_IMAGE)
-public class PostImage extends FJServlet {
+public class PostImage{
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
 		HttpSession session = request.getSession();

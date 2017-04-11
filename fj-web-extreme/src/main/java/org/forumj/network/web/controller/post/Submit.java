@@ -15,13 +15,11 @@ import static org.forumj.web.servlet.tool.FJServletTools.setcookie;
 import java.io.*;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
-import org.forumj.web.servlet.FJServlet;
 
 /**
  *

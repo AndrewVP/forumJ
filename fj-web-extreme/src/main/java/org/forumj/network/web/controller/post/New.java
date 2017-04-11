@@ -23,7 +23,6 @@ import java.io.*;
 import java.util.Date;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.forumj.common.*;
@@ -34,7 +33,6 @@ import org.forumj.common.tool.*;
 import org.forumj.common.web.Pin;
 import org.forumj.network.web.Command;
 import org.forumj.tool.LocaleString;
-import org.forumj.web.servlet.FJServlet;
 
 import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 

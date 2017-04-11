@@ -7,17 +7,13 @@
  * You shall use it and distribute only in accordance with the terms of the 
  * License Agreement.
  */
-package org.forumj.web.servlet.post;
+package org.forumj.network.web.controller.post;
 
-import org.forumj.common.FJServletName;
-import org.forumj.common.FJUrl;
 import org.forumj.common.db.service.CountService;
 import org.forumj.common.db.service.FJServiceHolder;
 import org.forumj.dbextreme.db.entity.User;
-import org.forumj.web.servlet.FJServlet;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -25,11 +21,8 @@ import java.io.IOException;
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/" + FJUrl.PING}, name = FJServletName.PING)
-public class Ping extends FJServlet {
+public class Ping{
    
-   @Override
    public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       User user = (User) request.getSession().getAttribute("user");
       StringBuffer result = new StringBuffer();

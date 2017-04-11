@@ -19,7 +19,6 @@ import java.text.DecimalFormat;
 import java.util.*;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
@@ -30,7 +29,6 @@ import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.common.tool.*;
 import org.forumj.common.web.ThreadType;
 import org.forumj.tool.LocaleString;
-import org.forumj.web.servlet.FJServlet;
 
 import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 

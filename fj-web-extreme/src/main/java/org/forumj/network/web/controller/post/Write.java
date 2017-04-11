@@ -20,7 +20,6 @@ import java.util.Date;
 import javax.mail.MessagingException;
 import javax.mail.internet.AddressException;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
@@ -32,7 +31,6 @@ import org.forumj.common.tool.*;
 import org.forumj.email.FJEMail;
 import org.forumj.network.web.Command;
 import org.forumj.tool.LocaleString;
-import org.forumj.web.servlet.FJServlet;
 
 import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 
@@ -40,14 +38,8 @@ import com.tecnick.htmlutils.htmlentities.HTMLEntities;
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@SuppressWarnings("serial")
-@WebServlet(urlPatterns = {"/" + FJUrl.ADD_POST}, name = FJServletName.ADD_POST)
-public class Write extends FJServlet {
+public class Write{
 
-   /**
-    * {@inheritDoc}
-    */
-   @Override
    public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try {
@@ -67,7 +59,7 @@ public class Write extends FJServlet {
                Time threadTime = new Time(new Date().getTime());
                String rgTime = threadTime.toString("dd.MM.yyyy HH:mm");
                String ip = request.getRemoteAddr();
-               String domen = gethostbyaddr(ip);
+               String domen = ip;
                /*Просмотр или запись?*/
                Command command = Command.valueOfString(strCommand);
                PostService postService = FJServiceHolder.getPostService();
