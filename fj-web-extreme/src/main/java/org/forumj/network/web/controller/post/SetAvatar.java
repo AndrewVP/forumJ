@@ -44,7 +44,7 @@ public class SetAvatar{
 
 	private ResourcesCache cache = ResourcesCache.getInstance(); 
 
-	public void init(ServletConfig config) throws ServletException {
+	public void init() throws ServletException {
 		try{
 			avatarsContextDir = FJConfiguration.getConfig().getString(FJConfiguration.AVATARS_CONTEXT_DIR, avatarsContextDir);
 			avatarsDir = FJConfiguration.getConfig().getString(FJConfiguration.HOME_DIR ) + File.separator + avatarsContextDir;

@@ -1485,7 +1485,7 @@ public class Control{
       for (int thumbIndex = thumbIndexStart; thumbIndex < imageThumbs.size(); thumbIndex += 3){
          Image thumb = imageThumbs.get(thumbIndex);
          buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
-         buffer.append("<img border='0' src='").append("/").append(FJUrl.STATIC).append("/");
+         buffer.append("<img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(FJUrl.PHOTO).append("/");
          buffer.append(thumb.getId());
          buffer.append("?id=");
          buffer.append(thumb.getId());

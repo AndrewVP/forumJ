@@ -24,6 +24,7 @@ import javax.servlet.http.*;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.forumj.common.FJUrl;
 import org.forumj.common.config.FJConfiguration;
 import org.forumj.common.db.entity.Image;
 import org.forumj.common.db.service.FJServiceHolder;
@@ -85,7 +86,7 @@ public class Images{
          ImageService imageService = FJServiceHolder.getImageService();
          if (fileKey.startsWith("/" + avatarsContextDir)){
             filePath = fjHomeDir + File.separator + fileKey;
-         }else if (fileKey.startsWith("/photo")){
+         }else if (fileKey.startsWith("/" + FJUrl.PHOTO)){
             //TODO make Constant
             String idParameter = req.getParameter("id");
             imageId = Long.valueOf(idParameter);

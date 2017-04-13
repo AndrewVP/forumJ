@@ -28,7 +28,7 @@ public class RequestWrapper extends HttpServletRequestWrapper{
 
    public final static String FAKE_NULL = "null";
    
-   Map<String, String> parameters = new HashMap<String, String>();
+   Map<String, String> parameters = new HashMap<>();
 
    /**
     * @param request

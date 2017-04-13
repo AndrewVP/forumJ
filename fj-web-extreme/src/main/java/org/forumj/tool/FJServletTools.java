@@ -262,7 +262,7 @@ public class FJServletTools {
          buffer.append(locale.getString("MSG_PHOTOALBUM"));
          buffer.append("</a>");
          /*Выход*/
-         String exitUrl = request.getContextPath() + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + (query == null || "".equalsIgnoreCase(query.trim()) ? "?exit=0" : query.trim() + "&exit=0");
+         String exitUrl = "/" + userURI + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + (query == null || "".equalsIgnoreCase(query.trim()) ? "?exit=0" : query.trim() + "&exit=0");
          buffer.append("<img src='");
          buffer.append("/");
          if(!webapp.isEmpty()){
