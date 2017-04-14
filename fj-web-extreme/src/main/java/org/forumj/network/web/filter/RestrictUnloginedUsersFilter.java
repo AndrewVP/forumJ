@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.forumj.web.filter;
+package org.forumj.network.web.filter;
 
 import static org.forumj.common.FJServletName.*;
 import static org.forumj.tool.Diletant.errorOut;
@@ -25,7 +25,6 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
 
 import org.forumj.common.db.entity.IUser;
-import org.forumj.common.db.service.*;
 
 /**
  * 
@@ -34,37 +33,18 @@ import org.forumj.common.db.service.*;
 @WebFilter(servletNames={NEW_THREAD, ADD_THREAD, ADD_POST, NEW_QUESTION, ADD_QUESTION, SETTINGS, ADD_SUBSCRIBE, UPDATE_IGNORING, SET_DEFAULT_VIEW, FOLDER_TOOLS, 
       DELETE_MAIL, MOVE_THREAD_TO_RECYCLE, DELETE_SUBSCRIBE, DELETE_FOLDER_FROM_VIEW, DELETE_VIEW, DELETE_VOICE, VOICE, ADD_VOTE,
       MOVE_TITLE, NEW_FOLDER, NEW_VIEW, SET_AVATAR, SET_FOOTER, SET_LOCATION, V_AVATAR, SEND_PIVATE_MESSAGE, ADD_IGNOR})
-      public class RestrictUnloginedUsersFilter implements Filter {
+      public class RestrictUnloginedUsersFilter{
 
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
+   public void doFilter(ServletRequest req, ServletResponse resp, String webapp, String userURI, String exitControllerName, FilterChain chain) throws Exception{
       HttpServletRequest request = (HttpServletRequest) req;
       HttpServletResponse response = (HttpServletResponse) resp;
       try {
          HttpSession session = request.getSession(true);
          IUser user = (IUser) session.getAttribute("user");
          if (user == null || !user.isLogined()){
-            String idu = request.getParameter("IDU");
-            String password1 = request.getParameter("PS1");
-            String password2 = request.getParameter("PS2");
-            if (idu != null && (password1 != null || password2 != null)){
-               Long userId = Long.valueOf(idu);
-               UserService userService = FJServiceHolder.getUserService();
-               boolean firstPassword = password1 != null;
-               String password = password1 == null ? password1 : password2;
-               user = userService.read(userId, password, firstPassword);
-               if (user != null){
-                  session.setAttribute("user", user);
-               }
-            }
-         }
-         if (user == null || !user.isLogined()){
-            response.sendRedirect(request.getContextPath() + "/");
+            response.sendRedirect("/" + userURI + "/" + exitControllerName);
          }else{
-            chain.doFilter(req, resp);
+            chain.doFilter(request, response, webapp, userURI);
          }
       } catch (Throwable e) {
          e.printStackTrace();
@@ -76,17 +56,4 @@ import org.forumj.common.db.service.*;
          writer.write(out);
       }
    }
-
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   public void init(FilterConfig filterConfig) throws ServletException {}
-
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   public void destroy() {}
-
 }

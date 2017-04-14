@@ -13,16 +13,14 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.forumj.web.filter;
+package org.forumj.network.web.filter;
 
-import static org.forumj.common.FJServletName.*;
 import static org.forumj.tool.Diletant.errorOut;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
 
 import java.io.*;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
 
 import org.apache.commons.codec.EncoderException;
@@ -35,14 +33,9 @@ import org.forumj.common.db.service.*;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebFilter("/*")
-public class AAALoginFilter implements Filter {
+public class LoginFilter{
 
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
+   public void doFilter(ServletRequest req, ServletResponse resp, String webapp, String userURI, String exitControllerName, FilterChain chain) throws Exception{
       boolean ok = true;
       HttpServletRequest request = (HttpServletRequest) req;
       HttpServletResponse response = (HttpServletResponse) resp;
@@ -99,15 +92,15 @@ public class AAALoginFilter implements Filter {
             if (user != null && user.isLogined()){
                String ip = request.getRemoteAddr();
                if (ip != null && CheckIp.isSpammerIp(ip)){
-                  setcookie(response, "idu", "", 0, request.getContextPath(), request.getServerName());
-                  setcookie(response, "pass2", "", 0, request.getContextPath(), request.getServerName());
+                  setcookie(response, "idu", "", 0, "/", request.getServerName());
+                  setcookie(response, "pass2", "", 0, "/", request.getServerName());
                   user = userService.readUser(0l);
                   request.getSession().setAttribute("user", user);
                }
             }
-            chain.doFilter(request, response);
+            chain.doFilter(request, response, webapp, userURI);
          }else{
-            goAwayStupidHackers(response, request.getContextPath() + "/", request);
+            goAwayStupidHackers(response, "/" + userURI + "/" + exitControllerName, request);
          }
       } catch (Throwable e) {
          e.printStackTrace();
@@ -121,21 +114,8 @@ public class AAALoginFilter implements Filter {
    }
 
    private void goAwayStupidHackers(HttpServletResponse response, String redirectLocation, HttpServletRequest request) throws IOException, EncoderException{
-      setcookie(response, "idu", "", 0, request.getContextPath(), request.getServerName());
-      setcookie(response, "pass2", "", 0, request.getContextPath(), request.getServerName());
+      setcookie(response, "idu", "", 0, "/", request.getServerName());
+      setcookie(response, "pass2", "", 0, "/", request.getServerName());
       response.sendRedirect(redirectLocation);
    }
-
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   public void init(FilterConfig filterConfig) throws ServletException {}
-
-   /**
-    * {@inheritDoc}
-    */
-   @Override
-   public void destroy() {}
-
 }
