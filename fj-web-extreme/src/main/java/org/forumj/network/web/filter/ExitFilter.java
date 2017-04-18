@@ -54,18 +54,6 @@ public class ExitFilter{
             url.append("?").append(query);
          }
          response.sendRedirect(url.toString());
-/*
-         String query = request.getQueryString();
-         String[] queries = query.split("&");
-         query = "";
-         for (int i = 0; i < queries.length; i++) {
-            String parameter = queries[i];
-            if (!parameter.split("=")[0].equalsIgnoreCase("exit")){
-               query += ("".equals(query) ? "?" + parameter : "&" + parameter);
-            }
-
-         }
-*/
       }else{
          chain.doFilter(request, response, webapp, userURI);
       }

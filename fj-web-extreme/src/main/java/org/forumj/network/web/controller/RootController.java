@@ -32,6 +32,8 @@ import static org.forumj.web.servlet.tool.FJServletTools.loadCSS;
  */
 public class RootController {
 
+    public static String[] rootResources = {"robots.txt", "favicon.ico"};
+
    public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp) throws ServletException, IOException {
       try{
           String resource = request.getRequestURI();

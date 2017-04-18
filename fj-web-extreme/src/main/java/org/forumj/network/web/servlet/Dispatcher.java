@@ -6,10 +6,12 @@ import org.apache.logging.log4j.Logger;
 import org.forumj.common.FJServletName;
 import org.forumj.common.FJUrl;
 import org.forumj.common.config.FJConfiguration;
+import org.forumj.network.web.URL;
 import org.forumj.network.web.controller.*;
 import org.forumj.network.web.controller.post.*;
 import org.forumj.network.web.filter.*;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -108,24 +110,17 @@ public class Dispatcher extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            request.setCharacterEncoding("UTF-8");
             String path = request.getRequestURI();
-            // removing doubled slashes
-            path = path.replace("//", "/");
+            URL url = new URL(path, webappName);
             if (path != null && !path.isEmpty()) {
-                String[] pathParts = path.split("/");
-                String userURI = getUserURI(pathParts);
-                if (isCorrectUserURI(userURI)) {
-                    String controllerName = getControllerName(pathParts);
-                    if (!webappName.isEmpty()){
-                        userURI = webappName + "/" + userURI;
-                    }
+                if (isCorrectUserURI(url)) {
+                    String controllerName = url.getController();
                     switch (controllerName){
                         case FJUrl.ROOT :
                             rootController.doGet(request, response, webappName);
                             break;
                         case FJUrl.INDEX :
-                            exitFilter.doFilter(request, response, webappName, userURI, controllerName, false, (req, resp, webapp, uri) -> {
+                            exitFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, false, (req, resp, webapp, uri) -> {
                                 loginFilter.doFilter(req, resp, webapp, uri, controllerName, (req1, resp1, webapp1, uri1) -> {
                                     localeResolver.doFilter(req1, resp1, webapp1, uri1, (req2, resp2, webapp2, uri2) -> {
                                         pageGroupIndex.doGet(req2, resp2, webapp2, uri2);
@@ -134,7 +129,7 @@ public class Dispatcher extends HttpServlet {
                             });
                             break;
                         case FJUrl.VIEW_THREAD:
-                            exitFilter.doFilter(request, response, webappName, userURI, controllerName, false, (req, resp, webapp, uri) -> {
+                            exitFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, false, (req, resp, webapp, uri) -> {
                                 loginFilter.doFilter(req, resp, webapp, uri, controllerName, (req1, resp1, webapp1, uri1) -> {
                                     localeResolver.doFilter(req1, resp1, webapp1, uri1, (req2, resp2, webapp2, uri2) -> {
                                         pageGroupThread.doGet(req2, resp2, webapp2, uri2);
@@ -142,7 +137,7 @@ public class Dispatcher extends HttpServlet {
                                 });
                             });
                         case FJUrl.VIEW_THREAD_OLD:
-                            exitFilter.doFilter(request, response, webappName, userURI, FJUrl.VIEW_THREAD, false, (req, resp, webapp, uri) -> {
+                            exitFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.VIEW_THREAD, false, (req, resp, webapp, uri) -> {
                                 loginFilter.doFilter(req, resp, webapp, uri, FJUrl.VIEW_THREAD, (req1, resp1, webapp1, uri1) -> {
                                     localeResolver.doFilter(req1, resp1, webapp1, uri1, (req2, resp2, webapp2, uri2) -> {
                                         pageGroupThread.doGet(req2, resp2, webapp2, uri2);
@@ -152,12 +147,12 @@ public class Dispatcher extends HttpServlet {
                             break;
                         case FJUrl.STATIC:
                         case FJUrl.PHOTO: // backward compatibility
-                            loginFilter.doFilter(request, response, webappName, userURI, controllerName, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, (req, resp, webapp, uri) -> {
                                 imagesController.doGet(req, resp);
                             });
                             break;
                         case FJUrl.NEW_THREAD:
-                            exitFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, true, (req, resp, webapp, uri) -> {
+                            exitFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, true, (req, resp, webapp, uri) -> {
                                 loginFilter.doFilter(req, resp, webapp, uri, FJUrl.VIEW_THREAD, (req1, resp1, webapp1, uri1) -> {
                                     localeResolver.doFilter(req1, resp1, webapp1, uri1, (req2, resp2, webapp2, uri2) -> {
                                         restrictUnloginedUsersFilter.doFilter(req2, resp2, webapp2, uri2, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
@@ -168,7 +163,7 @@ public class Dispatcher extends HttpServlet {
                             });
                             break;
                         case FJUrl.SETTINGS:
-                            exitFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, true, (req, resp, webapp, uri) -> {
+                            exitFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, true, (req, resp, webapp, uri) -> {
                                 loginFilter.doFilter(req, resp, webapp, uri, FJUrl.VIEW_THREAD, (req1, resp1, webapp1, uri1) -> {
                                     localeResolver.doFilter(req1, resp1, webapp1, uri1, (req2, resp2, webapp2, uri2) -> {
                                         restrictUnloginedUsersFilter.doFilter(req2, resp2, webapp2, uri2, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
@@ -179,7 +174,7 @@ public class Dispatcher extends HttpServlet {
                             });
                             break;
                         case FJUrl.MESSAGE:
-                            exitFilter.doFilter(request, response, webappName, userURI, controllerName, false, (req, resp, webapp, uri) -> {
+                            exitFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, false, (req, resp, webapp, uri) -> {
                                 loginFilter.doFilter(req, resp, webapp, uri, FJUrl.VIEW_THREAD, (req1, resp1, webapp1, uri1) -> {
                                     localeResolver.doFilter(req1, resp1, webapp1, uri1, (req2, resp2, webapp2, uri2) -> {
                                         messageController.doGet(req2, resp2, webapp2, uri2);
@@ -188,12 +183,12 @@ public class Dispatcher extends HttpServlet {
                             });
                             break;
                         case FJUrl.LOGIN:
-                            localeResolver.doFilter(request, response, webappName, userURI, (req2, resp2, webapp2, uri2) -> {
+                            localeResolver.doFilter(request, response, webappName, url.getUserURI(), (req2, resp2, webapp2, uri2) -> {
                                 loginController.doGet(req2, resp2, webapp2, uri2);
                             });
                             break;
                         case FJUrl.NEW_QUESTION:
-                            exitFilter.doFilter(request, response, webappName, userURI, controllerName, true, (req, resp, webapp, uri) -> {
+                            exitFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, true, (req, resp, webapp, uri) -> {
                                 loginFilter.doFilter(req, resp, webapp, uri, FJUrl.VIEW_THREAD, (req1, resp1, webapp1, uri1) -> {
                                     localeResolver.doFilter(req1, resp1, webapp1, uri1, (req2, resp2, webapp2, uri2) -> {
                                         restrictUnloginedUsersFilter.doFilter(req2, resp2, webapp2, uri2, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
@@ -204,50 +199,50 @@ public class Dispatcher extends HttpServlet {
                             });
                             break;
                         case FJUrl.REGISTRATION:
-                            localeResolver.doFilter(request, response, webappName, userURI, (req2, resp2, webapp2, uri2) -> {
+                            localeResolver.doFilter(request, response, webappName, url.getUserURI(), (req2, resp2, webapp2, uri2) -> {
                                 registrationController.doGet(req2, resp2, webapp2, uri2);
                             });
                             break;
                         case FJUrl.ACTIVATE_USER:
-                            confirmEmailController.doGet(request, response, userURI);
+                            confirmEmailController.doGet(request, response, url.getUserURI());
                             break;
                         case FJUrl.ADD_IGNOR:
-                            loginFilter.doFilter(request, response, webappName, userURI, controllerName, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     addIgnorController.doGet(req3, resp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.APPROVE_USER:
-                            loginFilter.doFilter(request, response, webappName, userURI, controllerName, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     approveUserController.doGet(req3, resp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.BAN:
-                            loginFilter.doFilter(request, response, webappName, userURI, controllerName, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     banController.doGet(req3, resp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.CLOSE_THREAD:
-                            loginFilter.doFilter(request, response, webappName, userURI, controllerName, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     closeThreadController.doGet(req3, resp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.MOVE_THREAD_TO_RECYCLE:
-                            loginFilter.doFilter(request, response, webappName, userURI, controllerName, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     moveToRecycleController.doGet(req3, resp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.PIN_THREAD:
-                            loginFilter.doFilter(request, response, webappName, userURI, controllerName, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     pinThreadController.doGet(req3, resp3, uri3);
                                 });
@@ -278,21 +273,14 @@ public class Dispatcher extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
-            request.setCharacterEncoding("UTF-8");
             String path = request.getRequestURI();
-            // removing doubled slashes
-            path = path.replace("//", "/");
+            URL url = new URL(path, webappName);
             if (path != null && !path.isEmpty()) {
-                String[] pathParts = path.split("/");
-                String userURI = getUserURI(pathParts);
-                if (isCorrectUserURI(userURI)) {
-                    String controllerName = getControllerName(pathParts);
-                    if (!webappName.isEmpty()) {
-                        userURI = webappName + "/" + userURI;
-                    }
+                if (isCorrectUserURI(url)) {
+                    String controllerName = url.getController();
                     switch (controllerName) {
                         case FJUrl.ADD_POST:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 localeResolver.doFilter(req, resp, webapp, uri, (req2, resp2, webapp2, uri2) -> {
                                     restrictUnloginedUsersFilter.doFilter(req2, resp2, webapp2, uri2, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                         addPostController.doPost(req3, resp3, webapp3, uri3);
@@ -301,7 +289,7 @@ public class Dispatcher extends HttpServlet {
                             });
                             break;
                         case FJUrl.ADD_THREAD:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 localeResolver.doFilter(req, resp, webapp, uri, (req2, resp2, webapp2, uri2) -> {
                                     restrictUnloginedUsersFilter.doFilter(req2, resp2, webapp2, uri2, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                         addThreadController.doPost(req3, resp3, webapp3, uri3);
@@ -310,10 +298,10 @@ public class Dispatcher extends HttpServlet {
                             });
                             break;
                         case FJUrl.DO_LOGIN:
-                            doLoginController.doPost(request, response, webappName, userURI);
+                            doLoginController.doPost(request, response, webappName, url.getUserURI());
                             break;
                         case FJUrl.ADD_QUESTION:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 localeResolver.doFilter(req, resp, webapp, uri, (req2, resp2, webapp2, uri2) -> {
                                     restrictUnloginedUsersFilter.doFilter(req2, resp2, webapp2, uri2, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                         addQuestionController.doPost(req3, resp3, webapp3, uri3);
@@ -322,120 +310,120 @@ public class Dispatcher extends HttpServlet {
                             });
                             break;
                         case FJUrl.ADD_SUBSCRIBE:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     addSubscribeController.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.UPDATE_IGNORING:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     updateIgnorController.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.SET_DEFAULT_VIEW:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     setDefaultViewController.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.FOLDER_TOOLS:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     folderToolsController.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.DELETE_MAIL:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     deleteMailController.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.DELETE_SUBSCRIBE:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     deleteOneSubscribeController.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.DELETE_ONE_SUBSCRIBE_BY_EMAIL:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     deleteOneSubscribeFromMailController.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.DELETE_SUBSCRIBES:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     deleteSubscribesController.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.DELETE_FOLDER_FROM_VIEW:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     removeFolderFromViewController.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.DELETE_VIEW:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     deleteViewController.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.DELETE_VOICE:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     deleteVoiceController.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.DO_REGISTRATION:
-                            doRegistrationController.doPost(request, response, webappName, userURI);
+                            doRegistrationController.doPost(request, response, webappName, url.getUserURI());
                             break;
                         case FJUrl.MOVE_TITLE:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     moveThreadController.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.NEW_FOLDER:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     createFolderController.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.NEW_VIEW:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     createViewController.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.PING:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 pingController.doPost(req, resp, webapp, uri);
                             });
                             break;
                         case FJUrl.POST:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     commandHandler.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.POST_IMAGE:
-                            fileUploadFilter.doFilter(request, response, webappName, userURI, (req, resp, webapp, uri) -> {
+                            fileUploadFilter.doFilter(request, response, webappName, url.getUserURI(), (req, resp, webapp, uri) -> {
                                 loginFilter.doFilter(req, resp, webapp, uri, FJUrl.INDEX, (req1, resp1, webapp1, uri1) -> {
                                     restrictUnloginedUsersFilter.doFilter(req1, resp1, webapp1, uri1, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                         addImageController.doPost(req3, resp3, webapp3, uri3);
@@ -444,7 +432,7 @@ public class Dispatcher extends HttpServlet {
                             });
                             break;
                         case FJUrl.SEND_PIVATE_MESSAGE:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 localeResolver.doFilter(req, resp, webapp, uri, (req2, resp2, webapp2, uri2) -> {
                                     restrictUnloginedUsersFilter.doFilter(req2, resp2, webapp2, uri2, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                         sendPrivateMessagController.doPost(req3, resp3, webapp3, uri3);
@@ -453,7 +441,7 @@ public class Dispatcher extends HttpServlet {
                             });
                             break;
                         case FJUrl.SET_AVATAR:
-                            fileUploadFilter.doFilter(request, response, webappName, userURI, (req, resp, webapp, uri) -> {
+                            fileUploadFilter.doFilter(request, response, webappName, url.getUserURI(), (req, resp, webapp, uri) -> {
                                 loginFilter.doFilter(req, resp, webapp, uri, FJUrl.INDEX, (req1, resp1, webapp1, uri1) -> {
                                     restrictUnloginedUsersFilter.doFilter(req1, resp1, webapp1, uri1, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                         setAvatarController.doPost(req3, resp3, webapp3, uri3);
@@ -462,42 +450,42 @@ public class Dispatcher extends HttpServlet {
                             });
                             break;
                         case FJUrl.SET_FOOTER:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     setFooterController.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.SET_LOCATION:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     setLocationController.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.SELECT_VIEW:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     changeViewController.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.ADD_VOTE:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     addCustomAnswerController.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.V_AVATAR:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     setViewAvatarController.doPost(req3, resp3, webapp3, uri3);
                                 });
                             });
                             break;
                         case FJUrl.VOICE:
-                            loginFilter.doFilter(request, response, webappName, userURI, FJUrl.INDEX, (req, resp, webapp, uri) -> {
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
                                 restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                     addVoteController.doPost(req3, resp3, webapp3, uri3);
                                 });
@@ -521,46 +509,8 @@ public class Dispatcher extends HttpServlet {
         }
     }
 
-    private String getUserURI(String[] pathParts){
-        int userPosition = 1;
-        if (!webappName.isEmpty()){
-            userPosition = 2;
-        }
-        if (pathParts.length == 0){ // refer to root
-            return FJUrl.ROOT;
-        }else{
-            return pathParts[userPosition]; // pathParts[0] is empty
-        }
-    }
-
-    private String getControllerName(String[] pathParts){
-        String controllerName = null;
-        int controllerPosition = webappName.isEmpty() ? 2 : 3;
-        if (pathParts.length == 0){
-            controllerName = FJUrl.ROOT;
-        }else if (!isStaticResource(pathParts)){
-            if (pathParts.length == controllerPosition){
-                controllerName = FJUrl.INDEX;
-            }else {
-                controllerName = pathParts[controllerPosition];
-            }
-        }else{
-            controllerName = pathParts[controllerPosition - 1];
-        }
-        return controllerName;
-    }
-
-    private boolean isStaticResource(String[] pathParts){
-        boolean result = false;
-        int minimalSize = webappName.isEmpty() ? 2 : 3;
-        if (pathParts.length > minimalSize){
-            result = pathParts[minimalSize - 1].equals(FJUrl.STATIC);
-        }
-        return result;
-    }
-
-    private boolean isCorrectUserURI(String partPath){
+    private boolean isCorrectUserURI(URL url){
         //TODO it is temporary stub!!
-        return partPath.equals("forum") || partPath.equals(FJUrl.STATIC) || partPath.equals(FJUrl.ROOT);
+        return url.isStaticResource() || url.isRootResource() || url.getUserName().equals("forum");
     }
 }

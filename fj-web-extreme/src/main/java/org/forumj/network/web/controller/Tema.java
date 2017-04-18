@@ -489,7 +489,7 @@ public class Tema{
          if (isIgnored(post.getAuth(), ignorList)) ignored = true;
       }
       buffer.append("<span class='tbtextnread'>" + HtmlChars.convertHtmlSymbols(author.getNick()) + "</span>&nbsp;•");
-      buffer.append("&nbsp;<img border='0' src='" + "/" + FJUrl.STATIC  + "/smiles/icon_minipost.gif'>&nbsp;<span class='posthead'>" + postTime.toString("dd.MM.yyyy HH:mm") + "</span>&nbsp;");
+      buffer.append("&nbsp;<img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/icon_minipost.gif'>&nbsp;<span class='posthead'>").append(postTime.toString("dd.MM.yyyy HH:mm")).append("</span>&nbsp;");
       if (user.isModerator()){
          buffer.append("•&nbsp;<span class='posthead'>" + post.getIp() + "</span>&nbsp;" );
       }
@@ -513,7 +513,7 @@ public class Tema{
          if (user.getWantSeeAvatars() && author.getAvatarApproved() && author.getAvatar() != null && !author.getAvatar().trim().isEmpty() && author.getShowAvatar()){
             buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(author.getAvatar() + "?seed=" + (new Date()).getTime() + "'></a>");
          }else{
-            buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append("smiles/no_avatar.gif'></a>");
+            buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/no_avatar.gif'></a>");
          }
          buffer.append("</div>");
          buffer.append("<span class='posthead'><u>" + locale.getString("mess111") + "</u></span><br>");

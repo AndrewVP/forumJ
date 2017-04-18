@@ -163,7 +163,7 @@ public class Write{
       buffer.append(HtmlChars.convertHtmlSymbols(removeSlashes(user.getNick())));
       buffer.append("</span>&nbsp;•&nbsp;");
       /*Дата*/
-      buffer.append("<img border='0' src='").append("/").append(FJUrl.STATIC).append("/smiles/icon_minipost.gif'>&nbsp;");
+      buffer.append("<img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/icon_minipost.gif'>&nbsp;");
       buffer.append("<span class='posthead'>" + lptime+ "</span>");
       buffer.append("</td>");
       buffer.append("</tr>");
@@ -179,7 +179,7 @@ public class Write{
       if (user.getWantSeeAvatars() && user.getAvatarApproved() && user.getAvatar() != null && !user.getAvatar().trim().isEmpty() && user.getShowAvatar()){
          buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(user.getAvatar() + "?seed=" + (new Date()).getTime() + "'></a>");
       }else{
-         buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append("smiles/no_avatar.gif'></a>");
+         buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/no_avatar.gif'></a>");
       }
       buffer.append("</div>");
       buffer.append("<span class='posthead'><u>" + locale.getString("mess111") + "</u></span><br>");

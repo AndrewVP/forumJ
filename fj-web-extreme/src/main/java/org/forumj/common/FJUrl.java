@@ -71,9 +71,7 @@ public interface FJUrl {
    public static final String PICTS = "picts";
 
    // a lot of pictures paths
-    // "/css/picts/*","/picts/*", "/images/*", "/skin/*", "/banner/*", "/smiles/*", "/avatars/*",  "/photo/*"
-   public static final String CSS_PICTURES = CSS + "/" + PICTS;
-   public static final String PICTURES = "picts";
+    // "/images/*", "/skin/*", "/banner/*", "/smiles/*", "/avatars/*",  "/photo/*"
    public static final String IMAGES = "images";
    public static final String SKIN = "skin";
    public static final String BANNER = "banner";
