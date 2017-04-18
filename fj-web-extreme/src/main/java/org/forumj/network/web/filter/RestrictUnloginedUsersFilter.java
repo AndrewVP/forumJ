@@ -30,10 +30,7 @@ import org.forumj.common.db.entity.IUser;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-@WebFilter(servletNames={NEW_THREAD, ADD_THREAD, ADD_POST, NEW_QUESTION, ADD_QUESTION, SETTINGS, ADD_SUBSCRIBE, UPDATE_IGNORING, SET_DEFAULT_VIEW, FOLDER_TOOLS, 
-      DELETE_MAIL, MOVE_THREAD_TO_RECYCLE, DELETE_SUBSCRIBE, DELETE_FOLDER_FROM_VIEW, DELETE_VIEW, DELETE_VOICE, VOICE, ADD_VOTE,
-      MOVE_TITLE, NEW_FOLDER, NEW_VIEW, SET_AVATAR, SET_FOOTER, SET_LOCATION, V_AVATAR, SEND_PIVATE_MESSAGE, ADD_IGNOR})
-      public class RestrictUnloginedUsersFilter{
+public class RestrictUnloginedUsersFilter{
 
    public void doFilter(ServletRequest req, ServletResponse resp, String webapp, String userURI, String exitControllerName, FilterChain chain) throws Exception{
       HttpServletRequest request = (HttpServletRequest) req;

@@ -32,6 +32,7 @@ public class Dispatcher extends HttpServlet {
     private String realPath = null;
 
     // GET controllers
+    private RootController rootController = new RootController();
     private Page404 page404 = new Page404();
     private Index pageGroupIndex = new Index();
     private Tema pageGroupThread = new Tema();
@@ -120,6 +121,9 @@ public class Dispatcher extends HttpServlet {
                         userURI = webappName + "/" + userURI;
                     }
                     switch (controllerName){
+                        case FJUrl.ROOT :
+                            rootController.doGet(request, response, webappName);
+                            break;
                         case FJUrl.INDEX :
                             exitFilter.doFilter(request, response, webappName, userURI, controllerName, false, (req, resp, webapp, uri) -> {
                                 loginFilter.doFilter(req, resp, webapp, uri, controllerName, (req1, resp1, webapp1, uri1) -> {
@@ -522,13 +526,19 @@ public class Dispatcher extends HttpServlet {
         if (!webappName.isEmpty()){
             userPosition = 2;
         }
-        return pathParts[userPosition]; // pathParts[0] is empty
+        if (pathParts.length == 0){ // refer to root
+            return FJUrl.ROOT;
+        }else{
+            return pathParts[userPosition]; // pathParts[0] is empty
+        }
     }
 
     private String getControllerName(String[] pathParts){
         String controllerName = null;
         int controllerPosition = webappName.isEmpty() ? 2 : 3;
-        if (!isStaticResource(pathParts)){
+        if (pathParts.length == 0){
+            controllerName = FJUrl.ROOT;
+        }else if (!isStaticResource(pathParts)){
             if (pathParts.length == controllerPosition){
                 controllerName = FJUrl.INDEX;
             }else {
@@ -551,6 +561,6 @@ public class Dispatcher extends HttpServlet {
 
     private boolean isCorrectUserURI(String partPath){
         //TODO it is temporary stub!!
-        return partPath.equals("forum") || partPath.equals(FJUrl.STATIC);
+        return partPath.equals("forum") || partPath.equals(FJUrl.STATIC) || partPath.equals(FJUrl.ROOT);
     }
 }

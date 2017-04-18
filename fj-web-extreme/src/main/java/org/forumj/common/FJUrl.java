@@ -19,6 +19,7 @@ import org.forumj.common.config.FJConfiguration;
  */
 public interface FJUrl {
 
+   public static final String ROOT = "/";
    public static final String INDEX = "index";
    public static final String VIEW_THREAD = "tema";
    public static final String VIEW_THREAD_OLD = "tema.php";
