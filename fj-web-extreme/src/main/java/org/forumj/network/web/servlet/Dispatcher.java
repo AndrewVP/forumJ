@@ -153,7 +153,7 @@ public class Dispatcher extends HttpServlet {
                             break;
                         case FJUrl.NEW_THREAD:
                             exitFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, true, (req, resp, webapp, uri) -> {
-                                loginFilter.doFilter(req, resp, webapp, uri, FJUrl.VIEW_THREAD, (req1, resp1, webapp1, uri1) -> {
+                                loginFilter.doFilter(req, resp, webapp, uri, controllerName, (req1, resp1, webapp1, uri1) -> {
                                     localeResolver.doFilter(req1, resp1, webapp1, uri1, (req2, resp2, webapp2, uri2) -> {
                                         restrictUnloginedUsersFilter.doFilter(req2, resp2, webapp2, uri2, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                             newThreadController.doGet(req3, resp3, webapp3, uri3);
@@ -164,7 +164,7 @@ public class Dispatcher extends HttpServlet {
                             break;
                         case FJUrl.SETTINGS:
                             exitFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, true, (req, resp, webapp, uri) -> {
-                                loginFilter.doFilter(req, resp, webapp, uri, FJUrl.VIEW_THREAD, (req1, resp1, webapp1, uri1) -> {
+                                loginFilter.doFilter(req, resp, webapp, uri, controllerName, (req1, resp1, webapp1, uri1) -> {
                                     localeResolver.doFilter(req1, resp1, webapp1, uri1, (req2, resp2, webapp2, uri2) -> {
                                         restrictUnloginedUsersFilter.doFilter(req2, resp2, webapp2, uri2, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                             settingsController.doGet(req3, resp3, webapp3, uri3);
@@ -175,7 +175,7 @@ public class Dispatcher extends HttpServlet {
                             break;
                         case FJUrl.MESSAGE:
                             exitFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, false, (req, resp, webapp, uri) -> {
-                                loginFilter.doFilter(req, resp, webapp, uri, FJUrl.VIEW_THREAD, (req1, resp1, webapp1, uri1) -> {
+                                loginFilter.doFilter(req, resp, webapp, uri, controllerName, (req1, resp1, webapp1, uri1) -> {
                                     localeResolver.doFilter(req1, resp1, webapp1, uri1, (req2, resp2, webapp2, uri2) -> {
                                         messageController.doGet(req2, resp2, webapp2, uri2);
                                     });
@@ -189,7 +189,7 @@ public class Dispatcher extends HttpServlet {
                             break;
                         case FJUrl.NEW_QUESTION:
                             exitFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, true, (req, resp, webapp, uri) -> {
-                                loginFilter.doFilter(req, resp, webapp, uri, FJUrl.VIEW_THREAD, (req1, resp1, webapp1, uri1) -> {
+                                loginFilter.doFilter(req, resp, webapp, uri, controllerName, (req1, resp1, webapp1, uri1) -> {
                                     localeResolver.doFilter(req1, resp1, webapp1, uri1, (req2, resp2, webapp2, uri2) -> {
                                         restrictUnloginedUsersFilter.doFilter(req2, resp2, webapp2, uri2, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
                                             newQuestionController.doGet(req3, resp3, webapp3, uri3);
