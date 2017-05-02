@@ -1,6 +1,7 @@
 package org.forumj.tool;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.*;
 
@@ -22,23 +23,15 @@ public class FJServletTools {
 
    public static StringBuffer menu(HttpServletRequest request, IUser user, LocaleString locale, boolean index, String webapp, String userURI) throws InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
-      Enumeration<String> parameters = request.getParameterNames();
-      boolean first = true;
-      String query = "";
-      while (parameters.hasMoreElements()){
-         String parameterName = parameters.nextElement();
-         if (!parameterName.equalsIgnoreCase("lang") && !parameterName.equalsIgnoreCase("exit")){
-            if(first){
-               query = "?";
-               first = false;
-            }else{
-               query += "&";
-            }
-            query += parameterName + "=" + request.getParameter(parameterName);  
-         }
-      }
-      String ukr = request.getContextPath() + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + ("".equalsIgnoreCase(query.trim()) ? "?lang=ua" : query.trim() + "&lang=ua");
-      String rus = request.getContextPath() + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + ("".equalsIgnoreCase(query.trim()) ? "?lang=ru" : query.trim() + "&lang=ru");
+      Map<String, String[]> parametersMap = request.getParameterMap();
+      String queryString = parametersMap.entrySet().stream()
+              .filter(entry -> !entry.getKey().equals("lang"))
+              .map(entry -> new StringBuilder(entry.getKey()).append("=").append(entry.getValue()[0]).toString())
+              .collect(Collectors.joining("&"));
+
+
+      StringBuilder ukr = new StringBuilder(webapp).append(webapp.isEmpty() ? "" : "/").append(request.getRequestURI()).append("?").append(queryString).append(!queryString.isEmpty() ? "&lang=ua" : "lang=ua");
+      StringBuilder rus = new StringBuilder(webapp).append(webapp.isEmpty() ? "" : "/").append(request.getRequestURI()).append("?").append(queryString).append(!queryString.isEmpty() ? "&lang=ru" : "lang=ru");
       buffer.append("<tr>");
       buffer.append("<td>");
       buffer.append("<table class='control'>");
@@ -141,12 +134,12 @@ public class FJServletTools {
          buffer.append("</td>");
          buffer.append("<td class=bg align='right'>");
          /*Укр. интерфейс*/
-         buffer.append("<a class='mnuforumSm' href='" + ukr + "' rel='nofollow'>");
+         buffer.append("<a class='mnuforumSm' href='").append(ukr).append("' rel='nofollow'>");
          buffer.append("Українська");
          buffer.append("</a>");
          buffer.append("•");
          /*Рус. интерфейс*/
-         buffer.append("<a class='mnuforumSm' href='"+ rus + "' rel='nofollow'>");
+         buffer.append("<a class='mnuforumSm' href='").append(rus).append("' rel='nofollow'>");
          buffer.append("Русский");
          buffer.append("</a>");
          buffer.append("</td>");
@@ -262,7 +255,8 @@ public class FJServletTools {
          buffer.append(locale.getString("MSG_PHOTOALBUM"));
          buffer.append("</a>");
          /*Выход*/
-         String exitUrl = "/" + userURI + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + (query == null || "".equalsIgnoreCase(query.trim()) ? "?exit=0" : query.trim() + "&exit=0");
+         StringBuilder exitUrl = new StringBuilder(webapp).append(webapp.isEmpty() ? "" : "/").append(request.getRequestURI()).append("/?").append(queryString).append(!queryString.isEmpty() ? "&exit=0" : "exit=0");
+//         String exitUrl = "/" + userURI + "/" + request.getRequestURI().split("/")[request.getRequestURI().split("/").length-1] + (queryString.isEmpty() ? "?exit=0" : queryString + "&exit=0");
          buffer.append("<img src='");
          buffer.append("/");
          if(!webapp.isEmpty()){
@@ -278,12 +272,12 @@ public class FJServletTools {
          buffer.append("</td>");
          /* Укр. интерфейс*/
          buffer.append("<td class=bg align='right'>");
-         buffer.append("<a class='mnuforumSm' href='" + ukr + "' rel='nofollow'>");
+         buffer.append("<a class='mnuforumSm' href='").append(ukr).append("' rel='nofollow'>");
          buffer.append("Українська");
          buffer.append("</a>");
          buffer.append("•");
          /* Рус. интерфейс*/
-         buffer.append("<a class='mnuforumSm' href='" + rus + "' rel='nofollow'>");
+         buffer.append("<a class='mnuforumSm' href='").append(rus).append("' rel='nofollow'>");
          buffer.append("Русский");
          buffer.append("</a>");
          buffer.append("</td>");

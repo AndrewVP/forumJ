@@ -13,7 +13,7 @@ try {
    }
 }
 function getIndicatorInfo() {
-    url = "ping?id="+ threadId;
+    url = pingURL;
     params = "idb=" + m_xb;
 	request.open("POST", url, true);
 

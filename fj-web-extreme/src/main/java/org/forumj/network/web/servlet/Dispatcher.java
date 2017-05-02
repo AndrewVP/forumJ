@@ -111,7 +111,7 @@ public class Dispatcher extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String path = request.getRequestURI();
-            URL url = new URL(path, webappName);
+            URL url = URL.create(path, webappName);
             if (path != null && !path.isEmpty()) {
                 if (isCorrectUserURI(url)) {
                     String controllerName = url.getController();
@@ -136,6 +136,7 @@ public class Dispatcher extends HttpServlet {
                                     });
                                 });
                             });
+                            break;
                         case FJUrl.VIEW_THREAD_OLD:
                             exitFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.VIEW_THREAD, false, (req, resp, webapp, uri) -> {
                                 loginFilter.doFilter(req, resp, webapp, uri, FJUrl.VIEW_THREAD, (req1, resp1, webapp1, uri1) -> {
@@ -146,6 +147,12 @@ public class Dispatcher extends HttpServlet {
                             });
                             break;
                         case FJUrl.STATIC:
+                        case FJUrl.PICTS:
+                        case FJUrl.IMAGES:
+                        case FJUrl.SMILES:
+                        case FJUrl.BANNER:
+                        case FJUrl.SKIN:
+                        case FJUrl.AVATARS:
                         case FJUrl.PHOTO: // backward compatibility
                             loginFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, (req, resp, webapp, uri) -> {
                                 imagesController.doGet(req, resp);
@@ -183,8 +190,10 @@ public class Dispatcher extends HttpServlet {
                             });
                             break;
                         case FJUrl.LOGIN:
-                            localeResolver.doFilter(request, response, webappName, url.getUserURI(), (req2, resp2, webapp2, uri2) -> {
-                                loginController.doGet(req2, resp2, webapp2, uri2);
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, (req1, resp1, webapp1, uri1) -> {
+                                localeResolver.doFilter(req1, resp1, webapp1, uri1, (req2, resp2, webapp2, uri2) -> {
+                                    loginController.doGet(req2, resp2, webapp2, uri2);
+                                });
                             });
                             break;
                         case FJUrl.NEW_QUESTION:
@@ -199,8 +208,10 @@ public class Dispatcher extends HttpServlet {
                             });
                             break;
                         case FJUrl.REGISTRATION:
-                            localeResolver.doFilter(request, response, webappName, url.getUserURI(), (req2, resp2, webapp2, uri2) -> {
-                                registrationController.doGet(req2, resp2, webapp2, uri2);
+                            loginFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, (req1, resp1, webapp1, uri1) -> {
+                                localeResolver.doFilter(req1, resp1, webapp1, uri1, (req2, resp2, webapp2, uri2) -> {
+                                    registrationController.doGet(req2, resp2, webapp2, uri2);
+                                });
                             });
                             break;
                         case FJUrl.ACTIVATE_USER:
@@ -249,6 +260,7 @@ public class Dispatcher extends HttpServlet {
                             });
                             break;
                         default:
+                            System.out.println("wrong url: " + url);
                             page404.doGet(request, response, webappName);
                             break;
                     }
@@ -274,7 +286,7 @@ public class Dispatcher extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         try {
             String path = request.getRequestURI();
-            URL url = new URL(path, webappName);
+            URL url = URL.create(path, webappName);
             if (path != null && !path.isEmpty()) {
                 if (isCorrectUserURI(url)) {
                     String controllerName = url.getController();
@@ -387,7 +399,9 @@ public class Dispatcher extends HttpServlet {
                             });
                             break;
                         case FJUrl.DO_REGISTRATION:
-                            doRegistrationController.doPost(request, response, webappName, url.getUserURI());
+                            localeResolver.doFilter(request, response, webappName, url.getUserURI(), (req2, resp2, webapp2, uri2) -> {
+                                doRegistrationController.doPost(req2, resp2, webapp2, uri2);
+                            });
                             break;
                         case FJUrl.MOVE_TITLE:
                             loginFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.INDEX, (req, resp, webapp, uri) -> {
@@ -492,6 +506,7 @@ public class Dispatcher extends HttpServlet {
                             });
                             break;
                         default:
+                            System.out.println("wrong url: " + url);
                             page404.doGet(request, response, webappName);
                             break;
                     }

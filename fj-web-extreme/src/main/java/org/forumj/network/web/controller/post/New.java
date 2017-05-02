@@ -15,6 +15,8 @@
  */
 package org.forumj.network.web.controller.post;
 
+import static org.forumj.network.web.Command.CREATE_THREAD;
+import static org.forumj.network.web.Command.PREVIEW_NEW_THREAD;
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.menu;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
@@ -65,10 +67,10 @@ public class New{
                String ip = request.getRemoteAddr();
                //TODO need to be implemented
                String domen = ip;
-               if (command == Command.PREVIEW_NEW_THREAD){
+               if (command == PREVIEW_NEW_THREAD){
                   buffer.append(new_view(locale, head, user, rgTime, ip, domen, body, request, webapp, userURI));
                   writer.write(buffer.toString());
-               }else{
+               }else if (command == CREATE_THREAD){
                   PostService postService = FJServiceHolder.getPostService();
                   IFJPost post = postService.getPostObject();
                   post.setState(1);
@@ -166,7 +168,13 @@ public class New{
       buffer.append("<td valign=top class='matras' style='padding:10px;'>");
       buffer.append("<div>");
       if (user.getWantSeeAvatars() && user.getAvatarApproved() && user.getAvatar() != null && !user.getAvatar().trim().isEmpty() && user.getShowAvatar()){
-         buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(user.getAvatar() + "?seed=" + (new Date()).getTime() + "'></a>");
+         StringBuilder avatarURL = new StringBuilder();
+         if (user.getAvatar().startsWith("http://")){
+            avatarURL.append(user.getAvatar());
+         }else{
+            avatarURL.append("/").append(FJUrl.STATIC).append("/").append(user.getAvatar()).append("?seed=").append(System.currentTimeMillis());
+         }
+         buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='").append(avatarURL).append("'></a>");
       }else{
          buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/no_avatar.gif'></a>");
       }

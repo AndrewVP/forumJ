@@ -1180,7 +1180,13 @@ public class Control{
          buffer.append("</b>");
          buffer.append("</div>");
          buffer.append("<div>");
-         buffer.append("<img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(user.getAvatar() + "?seed=" + (new Date()).getTime() + "'>");
+         StringBuilder avatarURL = new StringBuilder();
+         if (user.getAvatar().startsWith("http://")){
+            avatarURL.append(user.getAvatar());
+         }else{
+            avatarURL.append("/").append(FJUrl.STATIC).append("/").append(user.getAvatar()).append("?seed=").append(System.currentTimeMillis());
+         }
+         buffer.append("<img border='0' src='").append(avatarURL).append("'>");
          buffer.append("</div>");
          buffer.append("<br>");
          buffer.append("<br>");

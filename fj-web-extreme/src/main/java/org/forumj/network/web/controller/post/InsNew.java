@@ -147,7 +147,7 @@ public class InsNew{
                   userService.create(user);
                   FJEMail.sendActivateMail(user, (LocaleString) session.getAttribute("locale"));
                   //TODO Magic integer
-                  StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.REGISTRATION).append("?id=1");
+                  StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.MESSAGE).append("?id=1");
                   response.sendRedirect(url.toString());
                }
             }

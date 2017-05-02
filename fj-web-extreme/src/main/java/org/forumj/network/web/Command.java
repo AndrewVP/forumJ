@@ -28,6 +28,7 @@ public enum Command {
    PREVIEW_NEW_THREAD("view"),
    PREVIEW_EDITED_POST("view_edit"),
    CREATE_POST("write_new"),
+   CREATE_THREAD("write"),
    UPDATE_POST("write_edit"),
    ;
    

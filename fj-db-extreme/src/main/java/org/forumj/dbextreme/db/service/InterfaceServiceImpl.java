@@ -50,8 +50,12 @@ public class InterfaceServiceImpl extends FJService implements InterfaceService 
       return getInterfaceDao().find(user, id);
    }
 
-   public boolean isExist(String name, IUser user) throws ConfigurationException, SQLException, IOException {
-      return getInterfaceDao().isExist(name, user);
+   public boolean isExists(String name, IUser user) throws ConfigurationException, SQLException, IOException {
+      return getInterfaceDao().isExists(name, user);
+   }
+
+   public boolean isExists(Long id, IUser user) throws ConfigurationException, SQLException, IOException {
+      return getInterfaceDao().isExists(id, user);
    }
 
    public void create(String name, IUser user) throws ConfigurationException, SQLException, IOException {

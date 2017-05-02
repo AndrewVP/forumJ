@@ -92,15 +92,19 @@ public class LoginFilter{
             if (user != null && user.isLogined()){
                String ip = request.getRemoteAddr();
                if (ip != null && CheckIp.isSpammerIp(ip)){
-                  setcookie(response, "idu", "", 0, "/", request.getServerName());
-                  setcookie(response, "pass2", "", 0, "/", request.getServerName());
+                  String path = webapp.isEmpty() ? "/" : new StringBuilder("/").append(webapp).append("/").toString();
+                  setcookie(response, "idu", "", 0, path, request.getServerName());
+                  setcookie(response, "pass2", "", 0, path, request.getServerName());
                   user = userService.readUser(0l);
                   request.getSession().setAttribute("user", user);
                }
             }
             chain.doFilter(request, response, webapp, userURI);
          }else{
-            goAwayStupidHackers(response, "/" + userURI + "/" + exitControllerName, request);
+            String path = webapp.isEmpty() ? "/" : new StringBuilder("/").append(webapp).append("/").toString();
+            setcookie(response, "idu", "", 0, path, request.getServerName());
+            setcookie(response, "pass2", "", 0, path, request.getServerName());
+            response.sendRedirect(new StringBuilder("/").append(userURI).append("/").append( exitControllerName).toString());
          }
       } catch (Throwable e) {
          e.printStackTrace();
@@ -113,9 +117,4 @@ public class LoginFilter{
       }
    }
 
-   private void goAwayStupidHackers(HttpServletResponse response, String redirectLocation, HttpServletRequest request) throws IOException, EncoderException{
-      setcookie(response, "idu", "", 0, "/", request.getServerName());
-      setcookie(response, "pass2", "", 0, "/", request.getServerName());
-      response.sendRedirect(redirectLocation);
-   }
 }

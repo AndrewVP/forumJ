@@ -40,7 +40,7 @@ public class NewView{
          if (user != null && !user.isBanned() && user.isLogined()){
             if (!isEmptyParameter(vewNameParameter)){
                InterfaceService interfaceService = FJServiceHolder.getInterfaceService();
-               if (!interfaceService.isExist(vewNameParameter, user)){
+               if (!interfaceService.isExists(vewNameParameter, user)){
                   interfaceService.create(vewNameParameter, user);
                }
             }

@@ -676,22 +676,6 @@ public class Diletant {
       return result;
    }
 
-   public static StringBuffer unRegisteredPostOut(){
-      StringBuffer buffer = new StringBuffer();
-      buffer.append("<html>");
-      buffer.append("<head>");
-      buffer.append("<meta http-equiv='content-type' content='text/html; charset=windows-1251'>");
-//      buffer.append("<meta http-equiv='Refresh' content='0; url=").append("/").append(userURI).append("/").append(FJUrl.INDEX ).append("'>");
-      buffer.append("<title>");
-      buffer.append("</title>");
-      buffer.append("</head>");
-      // Цвет фона страницы
-      buffer.append("<body bgcolor=#EFEFEF>");
-      buffer.append("</body>");
-      buffer.append("</html>");
-      return buffer;
-   }
-
    public static StringBuffer errorOut(Throwable e){
       StringBuffer buffer = new StringBuffer();
       buffer.append("<html>");

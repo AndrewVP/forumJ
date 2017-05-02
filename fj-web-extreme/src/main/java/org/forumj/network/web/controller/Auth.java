@@ -53,7 +53,7 @@ public class Auth{
          buffer.append(menu(request, user, locale, false, webapp, userURI));
          // Форма авторизации
          buffer.append("<tr><td width='100%' align='center'><table width='100%'><tr><td>");
-         buffer.append("<form  action='" + FJUrl.DO_LOGIN + "' method='post'>");
+         buffer.append("<form  action='").append("/").append(userURI).append("/").append(FJUrl.DO_LOGIN).append("' method='post'>");
          buffer.append("<table><tr><td><p>");
          // Определяем, откуда мы сюда попали?
          switch (Integer.valueOf(gid)){

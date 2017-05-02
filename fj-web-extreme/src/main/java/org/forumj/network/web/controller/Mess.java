@@ -15,6 +15,7 @@
  */
 package org.forumj.network.web.controller;
 
+import static org.forumj.network.web.Command.*;
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.*;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
@@ -126,10 +127,10 @@ public class Mess{
          buffer.append("<table>");
          buffer.append("<tr>");
          buffer.append("<td>");
-         buffer.append(fd_button(locale.getString("mess13"),"new_submit(\"write\");","B1", "1"));
+         buffer.append(fd_button(locale.getString("mess13"),"new_submit(\"" + CREATE_THREAD.getCommand() + "\");","B1", "1"));
          buffer.append("</td>");
          buffer.append("<td>");
-         buffer.append(fd_button(locale.getString("mess63"),"new_submit(\"view\");","B3", "1"));
+         buffer.append(fd_button(locale.getString("mess63"),"new_submit(\"" + PREVIEW_NEW_THREAD.getCommand()+ "\");","B3", "1"));
          buffer.append("</td>");
          buffer.append("</tr>");
          buffer.append("</table>");

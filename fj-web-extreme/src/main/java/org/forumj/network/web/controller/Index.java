@@ -45,6 +45,9 @@ public class Index{
       long startTime = new Date().getTime();
       StringBuffer buffer = new StringBuffer();
       try {
+         InterfaceService interfaceService = FJServiceHolder.getInterfaceService();
+         IndexService indexService = FJServiceHolder.getIndexService();
+         FolderService folderService = FJServiceHolder.getFolderService();
          HttpSession session = request.getSession();
          //Предотвращаем кеширование
          cache(response);
@@ -64,16 +67,15 @@ public class Index{
          buffer.append(loadCSS("/css/style.css"));
          // Скрипты (флажки)
          buffer.append(loadJavaScript("/js/jsmain_chek.js"));
-         IndexService indexService = FJServiceHolder.getIndexService();
-         FolderService folderService = FJServiceHolder.getFolderService();
          Long m_xb = indexService.getLastPostId();
          Long m_xt = indexService.getMaxThreadId();
          buffer.append("<script language='javascript' type='text/javascript'>");
          buffer.append("// <!-- \n");
-         buffer.append("var m_xb=" + m_xb + ";");
-         buffer.append("var m_xt=" + m_xt + ";");
-         buffer.append("\n// -->");
-         buffer.append("</script>");
+         buffer.append("var m_xb=").append(m_xb).append(";\n");
+         buffer.append("var m_xt=").append(m_xt).append(";\n");
+         buffer.append("var pingURL='").append("/").append(userURI).append("/").append(FJUrl.PING).append("';\n");
+         buffer.append("// -->\n");
+         buffer.append("</script>\n");
          buffer.append(loadJavaScript("/js/indicator.js"));
          // Скрипты (submit формы интерфейсов)
          buffer.append(loadJavaScript("/js/jsview_ok.js"));
@@ -91,21 +93,22 @@ public class Index{
          buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          // Таблица с лого и верхним баннером
          buffer.append(logo(webapp));
-         // соединяемся и определяем кол-во страниц
-         long nfirstpost=(pageNumber-1)*user.getThreadsOnPage();
+         // определяем кол-во страниц
+         long nfirstpost = (pageNumber - 1) * user.getThreadsOnPage();
          if (nfirstpost < 0){
             nfirstpost = 0;
          }
          Long viewId = (Long) session.getAttribute("view");
          // Интерфейс по умолчанию
-         if (viewId == null){
+         if (viewId == null || !interfaceService.isExists(viewId, user)){
             session.setAttribute("view", user.getView());
             viewId = user.getView();
          }
          List<IFJThread> threadsList = indexService.getThreads(viewId, nfirstpost, user);
+         int threadsAmountAtPage = threadsList.size();
          long threadsCount = indexService.getThreadsAmount(viewId, user);
          // кол-во страниц с заголовками
-         int couP = (int) (Math.floor(threadsCount/user.getThreadsOnPage())+2);
+         int couP = (int) (Math.floor(threadsCount / user.getThreadsOnPage()) + 2);
          // Проверяем наличие почты
          StringBuilder newMail = new StringBuilder();
          if (user.isLogined()) {
@@ -292,13 +295,6 @@ public class Index{
             buffer.append("<td class=internal></td>");
          }
          buffer.append("</tr>");
-         // Определяем кол-во строк таблицы
-         long i5=pageNumber*user.getThreadsOnPage();
-         if (i5>threadsCount) {
-            i5=threadsCount-(pageNumber-1)*user.getThreadsOnPage();
-         }else{
-            i5=user.getThreadsOnPage();
-         }
          // Выводим строки
          StringBuffer indctrIds = new StringBuffer();
          for (int threadIndex = 0; threadIndex < threadsList.size(); threadIndex++) {
@@ -388,7 +384,7 @@ public class Index{
             buffer.append("</select>");
             // Прередаем нужные пераметры...
             buffer.append(fd_form_add(user));
-            buffer.append("<input type=hidden name=\"NRW\" id='nrw' value=\"" + i5 + "\">");
+            buffer.append("<input type=hidden name='NRW' id='nrw' value='").append(threadsAmountAtPage).append("'>");
             // Кнопка
             buffer.append("</td>");        
             buffer.append("<td class=bg2 align=right>");
@@ -618,7 +614,7 @@ public class Index{
       // Флажок (только для зарегистрированых)
       if (user.isLogined()){
          buffer.append("<td align='center' valign='middle'>");
-         buffer.append("<input type='checkbox' id='ch" +threadIndex+ "' name='" +threadIndex+ "' value='" +thread.getId().toString()+ "'>");
+         buffer.append("<input type='checkbox' id='ch").append(threadIndex).append("' name='").append(threadIndex).append("' value='").append(thread.getId()).append("'>");
          buffer.append("</td>");
          buffer.append("<td style='padding:0px 5px 0px 5px' align='right'>");
          buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.MOVE_THREAD_TO_RECYCLE + "?id=" +thread.getId().toString()+ "&amp;usr=" +String.valueOf(user.getId())+ "&amp;page=" +thread.getPg()+ "'><img border='0' src='");

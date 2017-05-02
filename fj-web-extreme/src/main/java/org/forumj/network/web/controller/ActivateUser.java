@@ -52,9 +52,10 @@ public class ActivateUser{
                   response.sendRedirect(url);
                }
             }
+         }else{
+            String url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX).toString();
+            response.sendRedirect(url);
          }
-         String url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX).toString();
-         response.sendRedirect(url);
       } catch (Throwable e) {
          buffer = new StringBuffer();
          buffer.append(errorOut(e));

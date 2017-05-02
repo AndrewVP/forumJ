@@ -62,14 +62,16 @@ public interface InterfaceService {
          throws ConfigurationException, SQLException, IOException;
 
    /**
-    * @param vewNameParameter
+    * @param name
     * @param user
     * @return
     */
-   public boolean isExist(String name, IUser user) throws ConfigurationException, SQLException, IOException ;
+   public boolean isExists(String name, IUser user) throws ConfigurationException, SQLException, IOException ;
+
+   public boolean isExists(Long id, IUser user) throws ConfigurationException, SQLException, IOException ;
 
    /**
-    * @param vewNameParameter
+    * @param name
     * @param user
     */
    public void create(String name, IUser user) throws ConfigurationException, SQLException, IOException ;

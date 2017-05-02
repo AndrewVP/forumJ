@@ -103,7 +103,11 @@ public class Tema{
          Long m_xb = indexService.getLastPostId(threadId);
          buffer.append("<script language='javascript' type='text/javascript'>\n");
          buffer.append("var m_xb=" + m_xb + ";\n");
-         buffer.append("var threadId=" + threadId + ";\n");
+         buffer.append("var pingURL='").append("/").append(userURI).append("/").append(FJUrl.PING).append("/?id=").append(threadId).append("';\n");
+         buffer.append("</script>\n");
+         buffer.append("<script language='javascript' type='text/javascript'>\n");
+         buffer.append("var HEADER_IS_EMPTY='").append(locale.getString("mess128")).append("';\n");
+         buffer.append("var POST_IS_EMPTY='").append(locale.getString("mess129")).append("';\n");
          buffer.append("</script>\n");
          buffer.append(loadJavaScript("/js/indicatorForThread.js"));
          // Скрипты (смайлики)
@@ -113,7 +117,7 @@ public class Tema{
          // Скрипты (подписка)
          buffer.append(loadJavaScript("/js/jssubscribe.js"));
          // Скрипты (submit поста)
-         buffer.append(post_submit(locale.getString("mess128")));
+         buffer.append(loadJavaScript("/js/postSubmit.js"));
          // Скрипты (автовставка тегов)
          buffer.append(loadJavaScript("/js/jstags.js"));
          buffer.append("<link rel='icon' href='/favicon.ico' type='image/x-icon'>");
@@ -305,7 +309,7 @@ public class Tema{
             buffer.append("<table>");
             buffer.append("<tr>");
             buffer.append("<td>");
-            buffer.append("<form name='post' action='" + "/" + userURI + "/" + FJUrl.ADD_POST + "' method='post'>");
+            buffer.append("<form name='post' id='postForm' action='" + "/" + userURI + "/" + FJUrl.ADD_POST + "' method='post'>");
             buffer.append("<table width='100%'>");
             //Тема
             buffer.append("<tr>");
@@ -511,7 +515,13 @@ public class Tema{
          buffer.append("<div style='padding:10px;'>");
          //avatar
          if (user.getWantSeeAvatars() && author.getAvatarApproved() && author.getAvatar() != null && !author.getAvatar().trim().isEmpty() && author.getShowAvatar()){
-            buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(author.getAvatar() + "?seed=" + (new Date()).getTime() + "'></a>");
+            StringBuilder avatarURL = new StringBuilder();
+            if (author.getAvatar().startsWith("http://")){
+               avatarURL.append(author.getAvatar());
+            }else{
+               avatarURL.append("/").append(FJUrl.STATIC).append("/").append(author.getAvatar()).append("?seed=").append(System.currentTimeMillis());
+            }
+            buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='").append(avatarURL).append("'></a>");
          }else{
             buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/no_avatar.gif'></a>");
          }

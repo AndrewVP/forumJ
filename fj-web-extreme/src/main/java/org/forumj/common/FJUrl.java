@@ -68,11 +68,11 @@ public interface FJUrl {
    public static final String PING = "ping";
    public static final String BAN = "ban";
    public static final String CSS = "css";
-   public static final String PICTS = "picts";
 
    // a lot of pictures paths
-    // "/images/*", "/skin/*", "/banner/*", "/smiles/*", "/avatars/*",  "/photo/*"
+    // "/images/*", "/skin/*", "/banner/*", "/smiles/*", "/avatars/*",  "/photo/*, /picts/*"
    public static final String IMAGES = "images";
+   public static final String PICTS = "picts";
    public static final String SKIN = "skin";
    public static final String BANNER = "banner";
    public static final String SMILES = "smiles";

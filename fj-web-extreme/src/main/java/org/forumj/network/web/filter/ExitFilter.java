@@ -35,15 +35,16 @@ public class ExitFilter{
    public void doFilter(ServletRequest req, ServletResponse resp, String webapp, String userURI, String exitControllerName, boolean omitQuery, FilterChain chain) throws Exception{
       HttpServletRequest request = (HttpServletRequest) req;
       HttpServletResponse response = (HttpServletResponse)resp;
-      String exitParam = request.getParameter("exit");
       Map<String, String[]> parameters = request.getParameterMap();
       IUser user = (IUser) request.getSession().getAttribute("user");
       if (parameters.containsKey("exit")){
          if (user != null && user.isLogined()){
             UserService userService = FJServiceHolder.getUserService();
-            request.getSession().setAttribute("user", userService.readUser(0l));
-            setcookie(response, "idu", "", 0, request.getContextPath(), request.getServerName());
-            setcookie(response, "pass2", "", 0, request.getContextPath(), request.getServerName());
+            IUser guest = userService.readUser(0l);
+            request.getSession().setAttribute("user", guest);
+            String path = webapp.isEmpty() ? "/" : new StringBuilder("/").append(webapp).append("/").toString();
+            setcookie(response, "idu", "", 0, path, request.getServerName());
+            setcookie(response, "pass2", "", 0, path, request.getServerName());
          }
          StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(exitControllerName).append("/");
          if (!omitQuery){
@@ -51,7 +52,9 @@ public class ExitFilter{
                     .filter(entry -> !entry.getKey().equals("exit"))
                     .map(entry -> new StringBuilder(entry.getKey()).append("=").append(entry.getValue()[0]).toString())
                     .collect(Collectors.joining("&"));
-            url.append("?").append(query);
+            if (!query.isEmpty()){
+               url.append("?").append(query);
+            }
          }
          response.sendRedirect(url.toString());
       }else{

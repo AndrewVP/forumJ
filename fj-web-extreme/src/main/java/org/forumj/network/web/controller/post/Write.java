@@ -137,8 +137,12 @@ public class Write{
       buffer.append(loadJavaScript("/js/smile_.js"));
       // Скрипты (автовставка тегов)
       buffer.append(loadJavaScript("/js/jstags.js"));
+      buffer.append("<script language='javascript' type='text/javascript'>\n");
+      buffer.append("var HEADER_IS_EMPTY='").append(locale.getString("mess128")).append("';\n");
+      buffer.append("var POST_IS_EMPTY='").append(locale.getString("mess129")).append("';\n");
+      buffer.append("</script>\n");
       // Скрипты (submit поста)
-      buffer.append(post_submit(locale.getString("mess128")));
+      buffer.append(loadJavaScript("/js/postSubmit.js"));
       buffer.append("<link rel='icon' href='/favicon.ico' type='image/x-icon'>");
       buffer.append("<link rel='shortcut icon' href='/favicon.ico' type='image/x-icon'>");
       buffer.append("<title>");
@@ -177,7 +181,13 @@ public class Write{
       buffer.append("<td valign=top class='matras' style='padding:10px;'>");
       buffer.append("<div>");
       if (user.getWantSeeAvatars() && user.getAvatarApproved() && user.getAvatar() != null && !user.getAvatar().trim().isEmpty() && user.getShowAvatar()){
-         buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(user.getAvatar() + "?seed=" + (new Date()).getTime() + "'></a>");
+         StringBuilder avatarURL = new StringBuilder();
+         if (user.getAvatar().startsWith("http://")){
+            avatarURL.append(user.getAvatar());
+         }else{
+            avatarURL.append("/").append(FJUrl.STATIC).append("/").append(user.getAvatar()).append("?seed=").append(System.currentTimeMillis());
+         }
+         buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='").append(avatarURL).append("'></a>");
       }else{
          buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/no_avatar.gif'></a>");
       }

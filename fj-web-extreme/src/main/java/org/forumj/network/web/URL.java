@@ -40,9 +40,15 @@ public class URL{
     private String name;
     private String query;
 
-    public URL (String url, String webapp){
+    private URL (String url, String webapp){
         this.url = url;
         this.webapp = webapp;
+    }
+
+    public static URL create(String url, String webapp){
+        URL result = new URL(url, webapp);
+        result.parse();
+        return result;
     }
 
     public String getUrl() {
@@ -82,7 +88,7 @@ public class URL{
     }
 
     public String getUserURI(){
-        return webapp == null ? userName : webapp + "/" + userName;
+        return webapp == null || webapp.isEmpty() ? userName : webapp + "/" + userName;
     }
 
     /**
@@ -99,7 +105,6 @@ public class URL{
      *  7. Extract user name
      *  8. Extract controller name
      */
-    @PostConstruct
     private void parse(){
         String tmpUrl = extractQuery(this.url);
         tmpUrl = cutStartSlashes(tmpUrl);
@@ -135,9 +140,6 @@ public class URL{
         return url;
     }
     private String cutEndSlashes(String url){
-        while (url.startsWith("/")){
-            url = url.substring(1);
-        }
         while (url.endsWith("/")){
             url = url.substring(0, url.length() - 1);
         }
@@ -241,5 +243,10 @@ public class URL{
             result[1] = cutStartSlashes(result[1]);
         }
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return this.url;
     }
 }

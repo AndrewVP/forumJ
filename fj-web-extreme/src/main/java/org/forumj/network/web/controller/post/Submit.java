@@ -39,9 +39,11 @@ public class Submit{
             session.setAttribute("user", user);
             Long userId = user.getId();
             String password2 = user.getPass2();
+            session.setAttribute("view", null);
             // ставим куку
-            setcookie(response, "idu", userId.toString(), 1209600, request.getContextPath(), request.getServerName());
-            setcookie(response, "pass2", password2, 1209600, request.getContextPath(), request.getServerName());
+            String path = webapp.isEmpty() ? "/" : new StringBuilder("/").append(webapp).append("/").toString();
+            setcookie(response, "idu", userId.toString(), 1209600, path, request.getServerName());
+            setcookie(response, "pass2", password2, 1209600, path, request.getServerName());
             // Возвращаем на форум
             StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
             response.sendRedirect(exit.toString());

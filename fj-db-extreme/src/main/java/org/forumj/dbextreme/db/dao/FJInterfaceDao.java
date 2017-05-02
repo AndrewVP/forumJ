@@ -145,7 +145,7 @@ public class FJInterfaceDao extends FJDao {
       }
    }
    
-   public boolean isExist(String name, IUser user) throws SQLException, ConfigurationException, IOException{
+   public boolean isExists(String name, IUser user) throws SQLException, ConfigurationException, IOException{
       boolean result = false;
       String query = getIsInterfaceExistQuery();
       Connection conn = null;
@@ -165,6 +165,26 @@ public class FJInterfaceDao extends FJDao {
       return result;
    }
    
+   public boolean isExists(Long id, IUser user) throws SQLException, ConfigurationException, IOException{
+      boolean result = false;
+      String query = getLoadInterfaceQuery();
+      Connection conn = null;
+      PreparedStatement st = null;
+      try {
+         conn = getConnection();
+         st = conn.prepareStatement(query);
+         st.setLong(1, user.getId());
+         st.setLong(2, id);
+         ResultSet rs = st.executeQuery();
+         if (rs.next()){
+            result = true;
+         }
+      }finally{
+         readFinally(conn, st);
+      }
+      return result;
+   }
+
    public void create(String name, IUser user) throws SQLException, ConfigurationException, IOException{
       String query = getCreateInterfaceQuery();
       PreparedStatement st = null;
