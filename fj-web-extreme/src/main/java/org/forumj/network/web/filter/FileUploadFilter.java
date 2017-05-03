@@ -80,7 +80,7 @@ public class FileUploadFilter{
                 }            
                 chain.doFilter(wrappedRequest, response, webapp, userURI);
             }else{
-                response.sendRedirect(request.getContextPath() + "/");
+                response.sendRedirect(new StringBuilder("/").append(userURI).append("/").toString());
             }
         } catch (SizeLimitExceededException e) {
         	errors.addError(ErrorCode.REQUEST_IS_TO_BIG);

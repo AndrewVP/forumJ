@@ -52,7 +52,7 @@ public class PostImage{
 					errCodes.append(errorCode.getErrorCode());
 				}
 				//TODO Magic integer!
-				StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD).append("?id=16").append(errCodes);
+				StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=16").append(errCodes);
 				response.sendRedirect(url.toString());
 			}else{
 				IUser user = (IUser) session.getAttribute(HttpParameters.USER);
@@ -63,7 +63,7 @@ public class PostImage{
 					Long albumId = album == null ? 0 : Long.valueOf(album);
 					imageService.create((DiskFileItem) imageFile, user, albumId, ImageType.ORIGINAL);
 					//TODO Magic integer!
-					StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD).append("?id=16");
+					StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=16");
 					response.sendRedirect(url.toString());
 				}else{
 					// Session expired

@@ -1206,37 +1206,37 @@ public class Control{
     		  buffer.append("<br/>");
     	  }
       }
-      buffer.append(locale.getString("mess97") + "&nbsp;");
+      buffer.append(locale.getString("mess97")).append("&nbsp;");
       buffer.append("<input type='file' size='20' name='avatar'>");
       buffer.append("<br>");
       buffer.append("<br>");
-      if (user.getShowAvatar()) {
+      buffer.append("<input type='submit' value='").append(locale.getString("mess75")).append("'>");
+      buffer.append(fd_form_add(user));
+      buffer.append("</form>");
+      buffer.append("<form method='post' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.V_AVATAR ).append("?id=9'>");
+      if (user.getShowAvatar()!= null && user.getShowAvatar()) {
          buffer.append("<input type=checkbox checked  name='s_avatar'>");
-         buffer.append("&nbsp;" + locale.getString("mess94"));
+         buffer.append("&nbsp;").append(locale.getString("mess94"));
          buffer.append("<br/>");
          buffer.append("<br/>");
       } else {
          buffer.append("<input type=checkbox  name='s_avatar'>");
-         buffer.append("&nbsp;" + locale.getString("mess94"));
+         buffer.append("&nbsp;").append(locale.getString("mess94"));
          buffer.append("<br>");
          buffer.append("<br>");
       }
-      buffer.append("<input type='submit' value='" + locale.getString("mess75") + "'>");
-      buffer.append(fd_form_add(user));
-      buffer.append("</form>");
-      buffer.append("<form method='post' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.V_AVATAR + "?id=9'>");
-      if (user.getAvatar() != null) {
+      if (user.getWantSeeAvatars() != null && user.getWantSeeAvatars()) {
          buffer.append("<input type=checkbox checked  name='v_avatar'>");
-         buffer.append("&nbsp;" + locale.getString("mess98"));
+         buffer.append("&nbsp;").append(locale.getString("mess98"));
          buffer.append("<br>");
          buffer.append("<br>");
       } else {
          buffer.append("<input type=checkbox  name='v_avatar'>");
-         buffer.append("&nbsp;" + locale.getString("mess98"));
+         buffer.append("&nbsp;").append(locale.getString("mess98"));
          buffer.append("<br>");
          buffer.append("<br>");
       }
-      buffer.append("<input type='submit' value='" + locale.getString("mess85") + "'>");
+      buffer.append("<input type='submit' value='").append(locale.getString("mess85")).append("'>");
       buffer.append(fd_form_add(user));
       buffer.append("</form>");
       return buffer;
@@ -1258,13 +1258,13 @@ public class Control{
       buffer.append("</td>");
       buffer.append("<td>");
       buffer.append("<select name='timezone'>");
-      for (int localeInex = 1; localeInex < 31; localeInex++){
-         buffer.append("<option value='" + localeInex + "'");
-         if (user.getTimeZone().equals(localeInex)){
+      for (int localeIndex = 1; localeIndex < 31; localeIndex++){
+         buffer.append("<option value='").append(localeIndex).append("'");
+         if (user.getTimeZone().equals(localeIndex)){
             buffer.append(" SELECTED ");
          }
          buffer.append(">");
-         buffer.append(locale.getString("mess110[" + localeInex + "]"));
+         buffer.append(locale.getString("mess110[" + localeIndex + "]"));
          buffer.append("</option>"); 
       } 
       buffer.append("</select>");     

@@ -64,7 +64,7 @@ public class SetAvatar{
 				StringBuffer errCodes = new StringBuffer();
 				for (ErrorCode errorCode : errors) {
 					if (errCodes.length() == 0){
-						errCodes.append("&amp;");
+						errCodes.append("&");
 						errCodes.append(HttpParameters.ERROR_CODE);
 						errCodes.append("=");
 					}else{
@@ -77,14 +77,11 @@ public class SetAvatar{
 				response.sendRedirect(url.toString());
 			}else{
 				FileItem avatar = (FileItem) request.getAttribute("avatar");
-				String sAvatarParameter = request.getParameter("s_avatar");
-				boolean sAvatar = sAvatarParameter != null; 
 				IUser user = (IUser) session.getAttribute("user");
 				if (user != null && !user.isBanned() && user.isLogined()){
 					String avatarUrl = createAvatar(user.getId(), avatar);
 					user.setAvatar(avatarUrl);
 					user.setAvatarApproved(true);
-					user.setShowAvatar(sAvatar);
 					UserService userService = FJServiceHolder.getUserService();
 					userService.update(user);
 					cache.remove("/" + avatarUrl);
