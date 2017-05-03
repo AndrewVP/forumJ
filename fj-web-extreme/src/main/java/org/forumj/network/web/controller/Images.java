@@ -64,11 +64,20 @@ public class Images{
       }
    }
 
-   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+   public void doGet(HttpServletRequest req, HttpServletResponse resp, String webappName) throws ServletException, IOException {
       try{
+         String uri = req.getRequestURI();
+         while (uri.startsWith("/")){
+            uri = uri.substring(1);
+         }
+         if (webappName != null && !webappName.isEmpty()){
+            if (uri.startsWith(webappName)){
+               uri = uri.substring(webappName.length());
+            }
+         }
+
          String photoExt = null;
          // TODO remake it
-         String uri = req.getRequestURI();
          if (uri != null){
             String[] split = uri.split("\\.");
             if (split.length > 1){
@@ -79,7 +88,7 @@ public class Images{
          resp.setDateHeader("Expires", dateHeader.getTime() + 600000000);
          resp.setHeader("max-age", "600000");
          resp.setHeader("Cache-Control", "private");
-         String fileKey = req.getRequestURI().substring(req.getRequestURI().split("/")[1].length() + 1);
+         String fileKey = uri.substring(uri.split("/")[1].length() + 1);
          String filePath = null;
          Long imageId = null;
          Image image = null;

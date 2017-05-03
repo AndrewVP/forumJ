@@ -41,6 +41,9 @@ public class Opr{
          buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
          // Стили
          buffer.append(loadCSS("/css/style.css"));
+         buffer.append("<script language='javascript' type='text/javascript'>\n");
+         buffer.append("var webapp='").append(webapp.isEmpty() ? "" : "/" + webapp).append("';\n");
+         buffer.append("</script>\n");
          // Скрипты (смайлики)
          buffer.append(loadJavaScript("/js/smile_.js"));
          // Скрипты (автовставка тегов)
@@ -150,11 +153,11 @@ public class Opr{
          buffer.append("<tr>");
          buffer.append("<td valign='TOP'>");
          /*Смайлики*/
-         buffer.append(smiles_add(locale.getString("mess11")));
+         buffer.append(smiles_add(locale.getString("mess11"), webapp));
          buffer.append("</td>");
          buffer.append("<td align='CENTER' valign='top'>");
          /*Автотеги*/
-         buffer.append(autotags_add());
+         buffer.append(autotags_add(webapp));
          /*текстарий*/
          buffer.append("<p>");
          buffer.append("<textarea class='mnuforumSm' rows='30' id='ed1' name='A2' cols='55'></textarea>");

@@ -34,7 +34,7 @@ public class URL{
     private String webapp;
     private boolean staticResource;
     private boolean rootResource;
-    private String userName;
+    private String userName = "";
     private String controller;
     private String path;
     private String name;

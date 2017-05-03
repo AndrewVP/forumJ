@@ -27,16 +27,16 @@ import org.forumj.common.db.entity.IUser;
  */
 public class Diletant {
 
-   public static String fd_head(String result){
+   public static String fd_head(String result, String webapp){
       result = result.replace("[span class='found']", "<span class='found'>"); 
       result = result.replace("[/span]", "</span>"); 
-      result = fd_smiles(result, false);
+      result = fd_smiles(result, false, webapp);
       result = fd_cenz(result);
       return result;
    }
 
-   public static String fd_head_for_mail(String result){
-      result = fd_smiles(result, true);
+   public static String fd_head_for_mail(String result, String webapp){
+      result = fd_smiles(result, true, webapp);
       result = fd_cenz(result);
       return result;
    }
@@ -48,104 +48,106 @@ public class Diletant {
       return text;
    }
 
-   public static String fd_smiles(String tmptxt, boolean forMail) {
-      String add = forMail ? "http://www.diletant.com.ua" : "";
-      tmptxt = tmptxt.replace(":)",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/smile_.gif'>"));
-      tmptxt = tmptxt.replace(":(",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/sad.gif'>"));
-      tmptxt=tmptxt.replace(":D",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/biggrin.gif'>"));
-      tmptxt=tmptxt.replace(":[russian]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/russian.gif'>"));
-      tmptxt=tmptxt.replace(":[pioners]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/take_example.gif'>"));
-      tmptxt=tmptxt.replace(":[beer]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/drinks.gif'>"));
-      tmptxt=tmptxt.replace(":[no-no]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/acute.gif'>"));
-      tmptxt=tmptxt.replace(":[nea]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/nea.gif'>"));
-      tmptxt=tmptxt.replace(":[babruysk]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/to_babruysk.gif'>"));
-      tmptxt=tmptxt.replace(":[ohi]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_sigh.gif'>"));
-      tmptxt=tmptxt.replace(":[klizma]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_hospital.gif'>"));
-      tmptxt=tmptxt.replace(":[king]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/king2.gif'>"));
-      tmptxt=tmptxt.replace(":g)",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_smile.gif'>"));
-      tmptxt=tmptxt.replace(":g(",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_sad.gif'>"));
-      tmptxt=tmptxt.replace(":[blum]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_blum.gif'>"));
-      tmptxt=tmptxt.replace(":[ghaha]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_haha.gif'>"));
-      tmptxt=tmptxt.replace(":[gwacko]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_wacko.gif'>"));
-      tmptxt=tmptxt.replace(":[gmad]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_mad.gif'>"));
-      tmptxt=tmptxt.replace(":[ghide]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_hide.gif'>"));
-      tmptxt=tmptxt.replace(":[glove]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_in_love.gif'>"));
-      tmptxt=tmptxt.replace(":[gfish]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_prepare_fish.gif'>"));
-      tmptxt=tmptxt.replace(":[gcrazy]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_crazy.gif'>"));
-      tmptxt=tmptxt.replace(":[mblum]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/blum3.gif'>"));
-      tmptxt=tmptxt.replace(":[toclue]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/to_clue.gif'>"));
-      tmptxt=tmptxt.replace(":[snooks]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/snooks.gif'>"));
-      tmptxt=tmptxt.replace(":[scare]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/scare.gif'>"));
-      tmptxt=tmptxt.replace(":[scare2]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/scare2.gif'>"));
-      tmptxt=tmptxt.replace(":[gwerewolf]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_werewolf.gif'>"));
-      tmptxt=tmptxt.replace(":[gdevil]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_devil.gif'>"));
-      tmptxt=tmptxt.replace(":[friends]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/friends.gif'>"));
-      tmptxt=tmptxt.replace(":[taunt]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/taunt.gif'>"));
-      tmptxt=tmptxt.replace(":[offtopic]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/offtopic.gif'>"));
-      tmptxt=tmptxt.replace(":[queen]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/queen.gif'>"));
-      tmptxt=tmptxt.replace(":[butcher]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/butcher.gif'>"));
-      tmptxt=tmptxt.replace(":[rtfm]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/rtfm.gif'>"));
-      tmptxt=tmptxt.replace(":[shok]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/shok.gif'>"));
-      tmptxt=tmptxt.replace(":[kr2]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/KidRock_02.gif'>"));
-      tmptxt=tmptxt.replace(":[kr5]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/KidRock_05.gif'>"));
-      tmptxt=tmptxt.replace(":[kr7]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/KidRock_07.gif'>"));
-      tmptxt=tmptxt.replace(":[kr4]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/KidRock_04.gif'>"));
-      tmptxt=tmptxt.replace(":[whistle]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/whistle.gif'>"));
-      tmptxt=tmptxt.replace(":[whatever]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/whatever_01.gif'>"));
-      tmptxt=tmptxt.replace(":[vinsent]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/vinsent.gif'>"));
-      tmptxt=tmptxt.replace(":[victory]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/victory.gif'>"));
-      tmptxt=tmptxt.replace(":[triniti]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/triniti.gif'>"));
-      tmptxt=tmptxt.replace(":[tommy]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/tommy.gif'>"));
-      tmptxt=tmptxt.replace(":[to_keep_order]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/to_keep_order.gif'>"));
-      tmptxt=tmptxt.replace(":[tease]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/tease.gif'>"));
-      tmptxt=tmptxt.replace(":[suicide]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/suicide.gif'>"));
-      tmptxt=tmptxt.replace(":[spruce_up]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/spruce_up.gif'>"));
-      tmptxt=tmptxt.replace(":[slow]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/slow.gif'>"));
-      tmptxt=tmptxt.replace(":[skull]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/skull.gif'>"));
-      tmptxt=tmptxt.replace(":[rofl]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/rofl.gif'>"));
-      tmptxt=tmptxt.replace(":[read]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/read.gif'>"));
-      tmptxt=tmptxt.replace(":[rabbi]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/rabbi.gif'>"));
-      tmptxt=tmptxt.replace(":[punish]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/punish.gif'>"));
-      tmptxt=tmptxt.replace(":[pooh_door]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/pooh_door.gif'>"));
-      tmptxt=tmptxt.replace(":[pioneer]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/pioneer.gif'>"));
-      tmptxt=tmptxt.replace(":[ok]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/ok.gif'>"));
-      tmptxt=tmptxt.replace(":[new_russian]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/new_russian.gif'>"));
-      tmptxt=tmptxt.replace(":[moil]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/moil.gif'>"));
-      tmptxt=tmptxt.replace(":[lazy2]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/lazy2.gif'>"));
-      tmptxt=tmptxt.replace(":[jc]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/Just_Cuz_11.gif'>"));
-      tmptxt=tmptxt.replace(":[hi]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/hi.gif'>"));
-      tmptxt=tmptxt.replace(":[help]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/help.gif'>"));
-      tmptxt=tmptxt.replace(":[heat]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/heat.gif'>"));
-      tmptxt=tmptxt.replace(":[good]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/good.gif'>"));
-      tmptxt=tmptxt.replace(":[fuck]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/fuck.gif'>"));
-      tmptxt=tmptxt.replace(":[fool]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/fool.gif'>"));
-      tmptxt=tmptxt.replace(":[flirt]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/flirt.gif'>"));
-      tmptxt=tmptxt.replace(":[dntknw]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/dntknw.gif'>"));
-      tmptxt=tmptxt.replace(":[dance2]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/dance2.gif'>"));
-      tmptxt=tmptxt.replace(":[brunette]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/brunette.gif'>"));
-      tmptxt=tmptxt.replace(":[angel]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/angel.gif'>"));
-      tmptxt=tmptxt.replace(":[aleksey_01]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/aleksey_01.gif'>"));
-      tmptxt=tmptxt.replace(":[girl_cray2]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_cray2.gif'>"));
-      tmptxt=tmptxt.replace(":[girl_cray3]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_cray3.gif'>"));
-      tmptxt=tmptxt.replace(":[girl_impossible]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_impossible.gif'>"));
-      tmptxt=tmptxt.replace(":[girl_wink]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_wink.gif'>"));
-      tmptxt=tmptxt.replace(":[girl_dance]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_dance.gif'>"));
-      tmptxt=tmptxt.replace(":[snoozer_18]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/snoozer_18.gif'>"));
-      tmptxt=tmptxt.replace(":[drag_10]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/drag_10.gif'>"));
-      tmptxt=tmptxt.replace(":[Koshechka_09]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/Koshechka_09.gif'>"));
-      tmptxt=tmptxt.replace(":[Koshechka_11]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/Koshechka_11.gif'>"));
-      tmptxt=tmptxt.replace(":[libelle_1]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/libelle_1.gif'>"));
-      tmptxt=tmptxt.replace(":[connie_6]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/connie_6.gif'>"));
-      tmptxt=tmptxt.replace(":[connie_1]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/connie_1.gif'>"));
-      tmptxt=tmptxt.replace(":[aftar]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/aftar.gif'>"));
-      tmptxt=tmptxt.replace(":[party]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/party.gif'>"));
-      tmptxt=tmptxt.replace(":[smoke]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/smoke.gif'>"));
-      tmptxt=tmptxt.replace(":[feminist]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/feminist.gif'>"));
-      tmptxt=tmptxt.replace(":[spam_light]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/spam_light.gif'>"));
-      tmptxt=tmptxt.replace(":[laie_32]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/laie_32.gif'>"));
-      tmptxt=tmptxt.replace(":[laie_44]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/laie_44.gif'>"));
-      tmptxt=tmptxt.replace(":[laie_48]",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/laie_48.gif'>"));
-//      tmptxt=tmptxt.replace(";)",new StringBuilder("<img border='0' src='").append(add).append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/wink3.gif'>"));
+   public static String fd_smiles(String tmptxt, boolean forMail, String webapp) {
+      String add = forMail ? "http://www.diletant.com.ua/" : "/";
+      webapp = webapp.isEmpty() ? "" : webapp + "/";
+      add += webapp;
+      tmptxt = tmptxt.replace(":)",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/smile_.gif'>"));
+      tmptxt = tmptxt.replace(":(",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/sad.gif'>"));
+      tmptxt=tmptxt.replace(":D",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/biggrin.gif'>"));
+      tmptxt=tmptxt.replace(":[russian]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/russian.gif'>"));
+      tmptxt=tmptxt.replace(":[pioners]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/take_example.gif'>"));
+      tmptxt=tmptxt.replace(":[beer]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/drinks.gif'>"));
+      tmptxt=tmptxt.replace(":[no-no]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/acute.gif'>"));
+      tmptxt=tmptxt.replace(":[nea]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/nea.gif'>"));
+      tmptxt=tmptxt.replace(":[babruysk]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/to_babruysk.gif'>"));
+      tmptxt=tmptxt.replace(":[ohi]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_sigh.gif'>"));
+      tmptxt=tmptxt.replace(":[klizma]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_hospital.gif'>"));
+      tmptxt=tmptxt.replace(":[king]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/king2.gif'>"));
+      tmptxt=tmptxt.replace(":g)",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_smile.gif'>"));
+      tmptxt=tmptxt.replace(":g(",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_sad.gif'>"));
+      tmptxt=tmptxt.replace(":[blum]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_blum.gif'>"));
+      tmptxt=tmptxt.replace(":[ghaha]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_haha.gif'>"));
+      tmptxt=tmptxt.replace(":[gwacko]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_wacko.gif'>"));
+      tmptxt=tmptxt.replace(":[gmad]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_mad.gif'>"));
+      tmptxt=tmptxt.replace(":[ghide]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_hide.gif'>"));
+      tmptxt=tmptxt.replace(":[glove]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_in_love.gif'>"));
+      tmptxt=tmptxt.replace(":[gfish]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_prepare_fish.gif'>"));
+      tmptxt=tmptxt.replace(":[gcrazy]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_crazy.gif'>"));
+      tmptxt=tmptxt.replace(":[mblum]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/blum3.gif'>"));
+      tmptxt=tmptxt.replace(":[toclue]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/to_clue.gif'>"));
+      tmptxt=tmptxt.replace(":[snooks]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/snooks.gif'>"));
+      tmptxt=tmptxt.replace(":[scare]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/scare.gif'>"));
+      tmptxt=tmptxt.replace(":[scare2]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/scare2.gif'>"));
+      tmptxt=tmptxt.replace(":[gwerewolf]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_werewolf.gif'>"));
+      tmptxt=tmptxt.replace(":[gdevil]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_devil.gif'>"));
+      tmptxt=tmptxt.replace(":[friends]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/friends.gif'>"));
+      tmptxt=tmptxt.replace(":[taunt]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/taunt.gif'>"));
+      tmptxt=tmptxt.replace(":[offtopic]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/offtopic.gif'>"));
+      tmptxt=tmptxt.replace(":[queen]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/queen.gif'>"));
+      tmptxt=tmptxt.replace(":[butcher]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/butcher.gif'>"));
+      tmptxt=tmptxt.replace(":[rtfm]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/rtfm.gif'>"));
+      tmptxt=tmptxt.replace(":[shok]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/shok.gif'>"));
+      tmptxt=tmptxt.replace(":[kr2]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/KidRock_02.gif'>"));
+      tmptxt=tmptxt.replace(":[kr5]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/KidRock_05.gif'>"));
+      tmptxt=tmptxt.replace(":[kr7]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/KidRock_07.gif'>"));
+      tmptxt=tmptxt.replace(":[kr4]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/KidRock_04.gif'>"));
+      tmptxt=tmptxt.replace(":[whistle]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/whistle.gif'>"));
+      tmptxt=tmptxt.replace(":[whatever]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/whatever_01.gif'>"));
+      tmptxt=tmptxt.replace(":[vinsent]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/vinsent.gif'>"));
+      tmptxt=tmptxt.replace(":[victory]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/victory.gif'>"));
+      tmptxt=tmptxt.replace(":[triniti]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/triniti.gif'>"));
+      tmptxt=tmptxt.replace(":[tommy]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/tommy.gif'>"));
+      tmptxt=tmptxt.replace(":[to_keep_order]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/to_keep_order.gif'>"));
+      tmptxt=tmptxt.replace(":[tease]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/tease.gif'>"));
+      tmptxt=tmptxt.replace(":[suicide]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/suicide.gif'>"));
+      tmptxt=tmptxt.replace(":[spruce_up]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/spruce_up.gif'>"));
+      tmptxt=tmptxt.replace(":[slow]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/slow.gif'>"));
+      tmptxt=tmptxt.replace(":[skull]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/skull.gif'>"));
+      tmptxt=tmptxt.replace(":[rofl]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/rofl.gif'>"));
+      tmptxt=tmptxt.replace(":[read]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/read.gif'>"));
+      tmptxt=tmptxt.replace(":[rabbi]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/rabbi.gif'>"));
+      tmptxt=tmptxt.replace(":[punish]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/punish.gif'>"));
+      tmptxt=tmptxt.replace(":[pooh_door]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/pooh_door.gif'>"));
+      tmptxt=tmptxt.replace(":[pioneer]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/pioneer.gif'>"));
+      tmptxt=tmptxt.replace(":[ok]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/ok.gif'>"));
+      tmptxt=tmptxt.replace(":[new_russian]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/new_russian.gif'>"));
+      tmptxt=tmptxt.replace(":[moil]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/moil.gif'>"));
+      tmptxt=tmptxt.replace(":[lazy2]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/lazy2.gif'>"));
+      tmptxt=tmptxt.replace(":[jc]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/Just_Cuz_11.gif'>"));
+      tmptxt=tmptxt.replace(":[hi]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/hi.gif'>"));
+      tmptxt=tmptxt.replace(":[help]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/help.gif'>"));
+      tmptxt=tmptxt.replace(":[heat]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/heat.gif'>"));
+      tmptxt=tmptxt.replace(":[good]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/good.gif'>"));
+      tmptxt=tmptxt.replace(":[fuck]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/fuck.gif'>"));
+      tmptxt=tmptxt.replace(":[fool]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/fool.gif'>"));
+      tmptxt=tmptxt.replace(":[flirt]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/flirt.gif'>"));
+      tmptxt=tmptxt.replace(":[dntknw]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/dntknw.gif'>"));
+      tmptxt=tmptxt.replace(":[dance2]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/dance2.gif'>"));
+      tmptxt=tmptxt.replace(":[brunette]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/brunette.gif'>"));
+      tmptxt=tmptxt.replace(":[angel]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/angel.gif'>"));
+      tmptxt=tmptxt.replace(":[aleksey_01]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/aleksey_01.gif'>"));
+      tmptxt=tmptxt.replace(":[girl_cray2]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_cray2.gif'>"));
+      tmptxt=tmptxt.replace(":[girl_cray3]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_cray3.gif'>"));
+      tmptxt=tmptxt.replace(":[girl_impossible]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_impossible.gif'>"));
+      tmptxt=tmptxt.replace(":[girl_wink]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_wink.gif'>"));
+      tmptxt=tmptxt.replace(":[girl_dance]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_dance.gif'>"));
+      tmptxt=tmptxt.replace(":[snoozer_18]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/snoozer_18.gif'>"));
+      tmptxt=tmptxt.replace(":[drag_10]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/drag_10.gif'>"));
+      tmptxt=tmptxt.replace(":[Koshechka_09]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/Koshechka_09.gif'>"));
+      tmptxt=tmptxt.replace(":[Koshechka_11]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/Koshechka_11.gif'>"));
+      tmptxt=tmptxt.replace(":[libelle_1]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/libelle_1.gif'>"));
+      tmptxt=tmptxt.replace(":[connie_6]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/connie_6.gif'>"));
+      tmptxt=tmptxt.replace(":[connie_1]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/connie_1.gif'>"));
+      tmptxt=tmptxt.replace(":[aftar]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/aftar.gif'>"));
+      tmptxt=tmptxt.replace(":[party]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/party.gif'>"));
+      tmptxt=tmptxt.replace(":[smoke]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/smoke.gif'>"));
+      tmptxt=tmptxt.replace(":[feminist]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/feminist.gif'>"));
+      tmptxt=tmptxt.replace(":[spam_light]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/spam_light.gif'>"));
+      tmptxt=tmptxt.replace(":[laie_32]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/laie_32.gif'>"));
+      tmptxt=tmptxt.replace(":[laie_44]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/laie_44.gif'>"));
+      tmptxt=tmptxt.replace(":[laie_48]",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/laie_48.gif'>"));
+//      tmptxt=tmptxt.replace(";)",new StringBuilder("<img border='0' src='").append(add).append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/wink3.gif'>"));
 
       return tmptxt;
    }   
@@ -221,16 +223,16 @@ public class Diletant {
       return result;
    }
 
-   public static String fd_body(String result) {
+   public static String fd_body(String result, String webapp) {
       result=fd_bbcode(result);
-      result=fd_smiles(result, false);
+      result=fd_smiles(result, false, webapp);
       result=fd_cenz(result);
       return result;
    }
 
-   public static String fd_body_for_mail(String result) {
+   public static String fd_body_for_mail(String result, String webapp) {
       result=fd_bbcode_for_mail(result);
-      result=fd_smiles(result, true);
+      result=fd_smiles(result, true, webapp);
       result=fd_cenz(result);
       return result;
    }
@@ -605,28 +607,48 @@ public class Diletant {
       return result;
    }
 
-   public static StringBuffer smiles_add(String mess11){
+   public static StringBuffer smiles_add(String mess11, String webapp){
       StringBuffer result = new StringBuffer();
       result.append("<table>");
       result.append("<tr>");
       result.append("<td id='td1'>");
       /*Первая строчка Мальчики*/
       result.append("<a href='#' onclick=\"smile(':)'); return false;\" rel='nofollow'>");
-      result.append("<img border='0' src='/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/smile_.gif'>");
+      result.append("<img border='0' src='/");
+      if(!webapp.isEmpty()){
+         result.append(webapp).append("/");
+      }
+      result.append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/smile_.gif'>");
       result.append("</a>");
       result.append("<a href='#' onclick=\"smile(':('); return false;\" rel='nofollow'>");
-      result.append("<img border='0' src='/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/sad.gif'>");
+      result.append("<img border='0' src='/");
+      if(!webapp.isEmpty()){
+         result.append(webapp).append("/");
+      }
+      result.append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/sad.gif'>");
       result.append("</a>");
       result.append("<a href='#' onclick=\"smile(';)'); return false;\" rel='nofollow'>");
-      result.append("<img border='0' src='/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/wink3.gif'>");
+      result.append("<img border='0' src='/");
+      if(!webapp.isEmpty()){
+         result.append(webapp).append("/");
+      }
+      result.append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/wink3.gif'>");
       result.append("</a>");
       result.append("</td>");
       result.append("</tr>");
       /*Вторая строчка Девочки*/
       result.append("<tr>");
       result.append("<td id='td2'>");
-      result.append("<a href='#' onclick=\"smile(':g)'); return false;\" rel='nofollow'><img border='0' src='/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_smile.gif'></a>");
-      result.append("<a href='#' onclick=\"smile(':g('); return false;\" rel='nofollow'><img border='0' src='/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_sad.gif'></a>");
+      result.append("<a href='#' onclick=\"smile(':g)'); return false;\" rel='nofollow'><img border='0' src='/");
+      if(!webapp.isEmpty()){
+         result.append(webapp).append("/");
+      }
+      result.append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_smile.gif'></a>");
+      result.append("<a href='#' onclick=\"smile(':g('); return false;\" rel='nofollow'><img border='0' src='/");
+      if(!webapp.isEmpty()){
+         result.append(webapp).append("/");
+      }
+      result.append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/girl_sad.gif'></a>");
       result.append("</td>");
       result.append("</tr>");
       /*Третья строчка Остальное*/
@@ -644,22 +666,27 @@ public class Diletant {
       return result;
    }
 
-   public static StringBuffer autotags_add(){
+   public static StringBuffer autotags_add(String webapp){
       StringBuffer result = new StringBuffer();
-      result.append("<img src='").append("/").append(FJUrl.STATIC).append("/").append("skin/standart/picts/b.gif' onclick=\"InsertTags('[b]','[/b]')\" alt='Полужирный текст'>");
-      result.append("<img src='").append("/").append(FJUrl.STATIC).append("/").append("skin/standart/picts/i.gif' onclick=\"InsertTags('[i]','[/i]')\" alt='Курсивный текст'>");
-      result.append("<img src='").append("/").append(FJUrl.STATIC).append("/").append("skin/standart/picts/u.gif' onclick=\"InsertTags('[u]','[/u]')\" alt='Подчеркнутый текст'>");
-      result.append("<img src='").append("/").append(FJUrl.STATIC).append("/").append("skin/standart/picts/s.gif' onclick=\"InsertTags('[s]','[/s]')\" alt='Зачеркнутый текст'>");
+      StringBuilder buffer = new StringBuilder("/");
+      if(!webapp.isEmpty()){
+         buffer.append(webapp).append("/");
+      }
+      buffer.append(FJUrl.STATIC).append("/");
+      result.append("<img src='").append(buffer).append("skin/standart/picts/b.gif' onclick=\"InsertTags('[b]','[/b]')\" alt='Полужирный текст'>");
+      result.append("<img src='").append(buffer).append("skin/standart/picts/i.gif' onclick=\"InsertTags('[i]','[/i]')\" alt='Курсивный текст'>");
+      result.append("<img src='").append(buffer).append("skin/standart/picts/u.gif' onclick=\"InsertTags('[u]','[/u]')\" alt='Подчеркнутый текст'>");
+      result.append("<img src='").append(buffer).append("skin/standart/picts/s.gif' onclick=\"InsertTags('[s]','[/s]')\" alt='Зачеркнутый текст'>");
       result.append("&nbsp;");
-      result.append("<img src='").append("/").append(FJUrl.STATIC).append("/").append("skin/standart/picts/1.gif' onclick=\"InsertTags('[size=1]','[/size]')\" alt='Размер шрифта 1'>");
-      result.append("<img src='").append("/").append(FJUrl.STATIC).append("/").append("skin/standart/picts/2.gif' onclick=\"InsertTags('[size=2]','[/size]')\" alt='Размер шрифта 2'>");
-      result.append("<img src='").append("/").append(FJUrl.STATIC).append("/").append("skin/standart/picts/3.gif' onclick=\"InsertTags('[size=3]','[/size]')\" alt='Размер шрифта 3'>");
-      result.append("<img src='").append("/").append(FJUrl.STATIC).append("/").append("skin/standart/picts/4.gif' onclick=\"InsertTags('[size=4]','[/size]')\" alt='Размер шрифта 4'>");
-      result.append("<img src='").append("/").append(FJUrl.STATIC).append("/").append("skin/standart/picts/5.gif' onclick=\"InsertTags('[size=5]','[/size]')\" alt='Размер шрифта 5'>");
+      result.append("<img src='").append(buffer).append("skin/standart/picts/1.gif' onclick=\"InsertTags('[size=1]','[/size]')\" alt='Размер шрифта 1'>");
+      result.append("<img src='").append(buffer).append("skin/standart/picts/2.gif' onclick=\"InsertTags('[size=2]','[/size]')\" alt='Размер шрифта 2'>");
+      result.append("<img src='").append(buffer).append("skin/standart/picts/3.gif' onclick=\"InsertTags('[size=3]','[/size]')\" alt='Размер шрифта 3'>");
+      result.append("<img src='").append(buffer).append("skin/standart/picts/4.gif' onclick=\"InsertTags('[size=4]','[/size]')\" alt='Размер шрифта 4'>");
+      result.append("<img src='").append(buffer).append("skin/standart/picts/5.gif' onclick=\"InsertTags('[size=5]','[/size]')\" alt='Размер шрифта 5'>");
       result.append("&nbsp;");
-      result.append("<img src='").append("/").append(FJUrl.STATIC).append("/").append("skin/standart/picts/img.gif' onclick=\"InsertTags('[img]','[/img]')\" alt='Вставить картинку'>");
-      result.append("<img src='").append("/").append(FJUrl.STATIC).append("/").append("skin/standart/picts/youtube.gif' onclick=\"InsertTags('[youtube]','[/youtube]')\" alt='Вставить видео youtube'>");
-      result.append("<img src='").append("/").append(FJUrl.STATIC).append("/").append("skin/standart/picts/quote.gif' onclick=\"InsertTags('[quote]','[/quote]')\" alt='Добавить рамку'>");
+      result.append("<img src='").append(buffer).append("skin/standart/picts/img.gif' onclick=\"InsertTags('[img]','[/img]')\" alt='Вставить картинку'>");
+      result.append("<img src='").append(buffer).append("skin/standart/picts/youtube.gif' onclick=\"InsertTags('[youtube]','[/youtube]')\" alt='Вставить видео youtube'>");
+      result.append("<img src='").append(buffer).append("skin/standart/picts/quote.gif' onclick=\"InsertTags('[quote]','[/quote]')\" alt='Добавить рамку'>");
       result.append("<br>");
       result.append("<SELECT style='margin-top:1px; font:11px verdana; border: solid 1px black;' name=fcolor  onchange=\"javascript: InsertTags('[color=' + document.post.fcolor.options[document.post.fcolor.selectedIndex].value + ']', '[/color]'); document.post.fcolor.selectedIndex=0;\">");
       result.append("<OPTION style='color:black' value='black'>Black</OPTION>");

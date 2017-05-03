@@ -131,9 +131,9 @@ public class Send{
       buffer.append("<tr>");
       buffer.append("<td colspan='5' class='internal'>");
       /*Заголовок.*/
-      buffer.append("<div class=nik>" + fd_head(mail.getSubject()) + "</div>");
+      buffer.append("<div class=nik>" + fd_head(mail.getSubject(), webapp) + "</div>");
       /*Тело.*/
-      buffer.append("<div class=post>" + fd_body(mail.getBody()) + "</div>");
+      buffer.append("<div class=post>" + fd_body(mail.getBody(), webapp) + "</div>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table>");
@@ -207,11 +207,11 @@ public class Send{
       buffer.append("<tr>");
       buffer.append("<td valign='TOP' width='100%' height='100%'>");
       /*Смайлики*/
-      buffer.append(smiles_add(locale.getString("mess11")));
+      buffer.append(smiles_add(locale.getString("mess11"), webapp));
       buffer.append("</td>");
       buffer.append("<td width='500' align='CENTER' valign='top'>");
       /*Автотеги*/
-      buffer.append(autotags_add());
+      buffer.append(autotags_add(webapp));
       /* текстарий*/
       buffer.append("<p>");
       buffer.append("<textarea rows='20' class='mnuforumSm' id='ed1' name='A2' cols='55'>" + mail.getBody() + "</textarea>");

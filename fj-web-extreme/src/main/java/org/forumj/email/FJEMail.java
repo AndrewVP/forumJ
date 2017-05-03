@@ -45,7 +45,7 @@ import com.tecnick.htmlutils.htmlentities.HTMLEntities;
  */
 public class FJEMail {
 
-   public static void sendSuscribedPost(IFJPost post, IUser author) throws InvalidKeyException, AddressException, ConfigurationException, MessagingException, SQLException, IOException{
+   public static void sendSuscribedPost(IFJPost post, IUser author, String webapp) throws InvalidKeyException, AddressException, ConfigurationException, MessagingException, SQLException, IOException{
       SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
       List<IUser> subscribers = subscribeService.getSubscribedUsers(post.getThreadId(), author.getId());
       Map<Locale, String> posts = new HashMap<Locale, String>();
@@ -59,13 +59,13 @@ public class FJEMail {
             if (localeName == null){
                localeName = userLocale;
                locale = new LocaleString(localeName, "messages", localeName);
-               postString = prepareSubscribeMail(post, author, locale);
+               postString = prepareSubscribeMail(post, author, locale, webapp);
             }else if (userLocale != localeName){
                postString = posts.get(userLocale);
                if (postString == null){
                   localeName = userLocale;
                   locale = new LocaleString(localeName, "messages", localeName);
-                  postString = prepareSubscribeMail(post, author, locale);
+                  postString = prepareSubscribeMail(post, author, locale, webapp);
                   posts.put(localeName, postString);
                }
             }
@@ -76,13 +76,13 @@ public class FJEMail {
       
    }
    
-   private static String prepareSubscribeMail(IFJPost post, IUser author, LocaleString locale) throws InvalidKeyException{
+   private static String prepareSubscribeMail(IFJPost post, IUser author, LocaleString locale, String webapp) throws InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       Time postTime = new Time(post.getCreateTime());
       buffer.append("<html><head><meta http-equiv='content-type' content='text/html; charset=UTF-8'></head><body style='background-color:#EFEFEF;'><table>");
       buffer.append("<tr>");
       buffer.append("<td style='border-width:0px; padding: 5px 3px 5px 3px; background-color:#D1D7DC; width: 100%'>");
-      buffer.append("<b>&nbsp;&nbsp;" + fd_head_for_mail(HTMLEntities.htmlentities(removeSlashes(post.getTitle()))) + "</b>");
+      buffer.append("<b>&nbsp;&nbsp;" + fd_head_for_mail(HTMLEntities.htmlentities(removeSlashes(post.getTitle())), webapp) + "</b>");
       buffer.append("</td></tr>");
       buffer.append("<tr><td>");
       buffer.append("<span style='font-family: Verdana; font-size: 10pt; color: #000000; font-weight:bold'>" + HtmlChars.convertHtmlSymbols(author.getNick()) + "</span>&nbsp;•");
@@ -121,14 +121,14 @@ public class FJEMail {
       buffer.append("<table width='100%'>");
       buffer.append("<tr><td>");
       buffer.append("<p style='font-family: Verdana; font-size: 10pt; color: #000000'>");
-      buffer.append(fd_body_for_mail(HtmlChars.convertHtmlSymbols(removeSlashes(post.getBody()))));
+      buffer.append(fd_body_for_mail(HtmlChars.convertHtmlSymbols(removeSlashes(post.getBody())), webapp));
       buffer.append("</p>");
       buffer.append("</td></tr>");
       buffer.append("</table></td></tr>");
       buffer.append("<tr><td style='background-color:#e1e3e5' colspan=2></td></tr>");
       buffer.append("<tr><td style='background-color:#e1e3e5'></td><td>");
       buffer.append("<p style='font-family: Verdana; font-size: 10pt; color: #000000'>");
-      buffer.append(fd_body_for_mail(HtmlChars.convertHtmlSymbols(removeSlashes(author.getFooter()))));
+      buffer.append(fd_body_for_mail(HtmlChars.convertHtmlSymbols(removeSlashes(author.getFooter())), webapp));
       buffer.append("</p>");
       buffer.append("</td></tr>");
       buffer.append("<tr><td align='RIGHT' width='100%' colspan=2>");

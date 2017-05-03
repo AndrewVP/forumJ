@@ -516,7 +516,7 @@ public class Index{
       buffer.append("<td><p>");
       String str_head = HtmlChars.convertHtmlSymbols(removeSlashes(thread.getHead()));
       // Добавляем смайлики
-      str_head = Diletant.fd_head(str_head);
+      str_head = Diletant.fd_head(str_head, webapp);
       // Опрос? Добавляем "метку"
       if (thread.isQuest()){
          str_head="<b>" +locale.getString("mess9")+ "</b> " +str_head;

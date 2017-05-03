@@ -69,7 +69,7 @@ public class Write{
                      buffer.append(view(locale, request, user, head, ip, domen, threadId, rgTime, body, command, webapp, userURI));
                      break;
                   case CREATE_POST:
-                     createNewPost(body, user, domen, ip, head, Long.valueOf(threadId), postService, locale);
+                     createNewPost(body, user, domen, ip, head, Long.valueOf(threadId), postService, locale, webapp);
                      break;
                   case UPDATE_POST:
                      String postId = request.getParameter("IDB");
@@ -133,6 +133,9 @@ public class Write{
       buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
       // Стили
       buffer.append(loadCSS("/css/style.css"));
+      buffer.append("<script language='javascript' type='text/javascript'>\n");
+      buffer.append("var webapp='").append(webapp.isEmpty() ? "" : "/" + webapp).append("';\n");
+      buffer.append("</script>\n");
       // Скрипты (смайлики)
       buffer.append(loadJavaScript("/js/smile_.js"));
       // Скрипты (автовставка тегов)
@@ -156,7 +159,7 @@ public class Write{
       /*"Закладка" номера поста для ссылки из поиска, возврата после обработки игнора*/
       /*Тема*/
       buffer.append("<div class=nik>");
-      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)), false)+ "</b>");
+      buffer.append("<b>&nbsp;&nbsp;" + fd_smiles(HtmlChars.convertHtmlSymbols(removeSlashes(head)), false, webapp)+ "</b>");
       buffer.append("</div>");
       buffer.append("</td>");
       buffer.append("</tr>");
@@ -167,7 +170,11 @@ public class Write{
       buffer.append(HtmlChars.convertHtmlSymbols(removeSlashes(user.getNick())));
       buffer.append("</span>&nbsp;•&nbsp;");
       /*Дата*/
-      buffer.append("<img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/icon_minipost.gif'>&nbsp;");
+      buffer.append("<img border='0' src='/");
+      if(!webapp.isEmpty()){
+         buffer.append(webapp).append("/");
+      }
+      buffer.append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/icon_minipost.gif'>&nbsp;");
       buffer.append("<span class='posthead'>" + lptime+ "</span>");
       buffer.append("</td>");
       buffer.append("</tr>");
@@ -185,11 +192,19 @@ public class Write{
          if (user.getAvatar().startsWith("http://")){
             avatarURL.append(user.getAvatar());
          }else{
-            avatarURL.append("/").append(FJUrl.STATIC).append("/").append(user.getAvatar()).append("?seed=").append(System.currentTimeMillis());
+            avatarURL.append("/");
+            if(!webapp.isEmpty()){
+               avatarURL.append(webapp).append("/");
+            }
+            avatarURL.append(FJUrl.STATIC).append("/").append(user.getAvatar()).append("?seed=").append(System.currentTimeMillis());
          }
          buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='").append(avatarURL).append("'></a>");
       }else{
-         buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/no_avatar.gif'></a>");
+         buffer.append("<a href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=9' rel='nofollow'><img border='0' src='/");
+         if(!webapp.isEmpty()){
+            buffer.append(webapp).append("/");
+         }
+         buffer.append(FJUrl.STATIC).append("/").append(FJUrl.SMILES).append("/no_avatar.gif'></a>");
       }
       buffer.append("</div>");
       buffer.append("<span class='posthead'><u>" + locale.getString("mess111") + "</u></span><br>");
@@ -210,7 +225,7 @@ public class Write{
       buffer.append("<tr>");
       buffer.append("<td>");
       /* Выводим текст*/
-      buffer.append("<p class='post'>" + fd_body(HtmlChars.convertHtmlSymbols(removeSlashes(body))) + "</p>");
+      buffer.append("<p class='post'>" + fd_body(HtmlChars.convertHtmlSymbols(removeSlashes(body)), webapp) + "</p>");
       buffer.append("</td>");
       buffer.append("</tr>");
       buffer.append("</table>");
@@ -218,7 +233,7 @@ public class Write{
       buffer.append("</tr>");
       buffer.append("<tr><td class='matras' colspan=2></td></tr>");
       buffer.append("<tr><td class='matras'></td><td>");
-      buffer.append("<p class=post>" + fd_body(HtmlChars.convertHtmlSymbols(removeSlashes(user.getFooter()))) + "</p>");
+      buffer.append("<p class=post>" + fd_body(HtmlChars.convertHtmlSymbols(removeSlashes(user.getFooter())), webapp) + "</p>");
       buffer.append("</td></tr>");
       buffer.append("</table>");
       buffer.append("</div>");
@@ -255,11 +270,11 @@ public class Write{
       buffer.append("<tr>");
       buffer.append("<td valign='TOP' width='100%' height='100%'>");
       /*Смайлики*/
-      buffer.append(smiles_add(locale.getString("mess11")));
+      buffer.append(smiles_add(locale.getString("mess11"), webapp));
       buffer.append("</td>");
       buffer.append("<td width='500' align='CENTER' valign='top'>");
       /*Автотеги*/
-      buffer.append(autotags_add());
+      buffer.append(autotags_add(webapp));
       /* текстарий*/
       buffer.append("<p>");
       buffer.append("<textarea class='mnuforumSm' rows='20' id='ed1' name='A2' cols='55'>" + HTMLEntities.htmlentities(removeSlashes(body)) + "</textarea>");
@@ -314,7 +329,7 @@ public class Write{
       return buffer;
    }
    
-   private void createNewPost(String body, IUser user, String domen, String ip, String head, Long threadId, PostService postService, LocaleString locale) throws DBException, ConfigurationException, IOException, SQLException, AddressException, InvalidKeyException, MessagingException{
+   private void createNewPost(String body, IUser user, String domen, String ip, String head, Long threadId, PostService postService, LocaleString locale, String webapp) throws DBException, ConfigurationException, IOException, SQLException, AddressException, InvalidKeyException, MessagingException{
       IFJPost post = postService.getPostObject();
       post.setState(1);
       post.setThreadId(threadId);
@@ -328,7 +343,7 @@ public class Write{
       post.setThreadId(threadId);
       post.setCreateTime(new Date().getTime());
       postService.create(post);
-      FJEMail.sendSuscribedPost(post, user);
+      FJEMail.sendSuscribedPost(post, user, webapp);
    }
    private void write_edit(String body, IUser user, String domen, String ip, String head, Long threadId, Long postId, PostService postService) throws DBException, ConfigurationException, IOException, SQLException{
       IFJPost post = postService.read(postId);

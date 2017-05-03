@@ -155,7 +155,7 @@ public class Dispatcher extends HttpServlet {
                         case FJUrl.AVATARS:
                         case FJUrl.PHOTO: // backward compatibility
                             loginFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, (req, resp, webapp, uri) -> {
-                                imagesController.doGet(req, resp);
+                                imagesController.doGet(req, resp, webapp);
                             });
                             break;
                         case FJUrl.NEW_THREAD:

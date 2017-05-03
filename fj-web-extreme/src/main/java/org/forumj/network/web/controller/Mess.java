@@ -54,6 +54,9 @@ public class Mess{
          buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
          /*Стили*/
          buffer.append(loadCSS("/css/style.css"));
+         buffer.append("<script language='javascript' type='text/javascript'>\n");
+         buffer.append("var webapp='").append(webapp.isEmpty() ? "" : "/" + webapp).append("';\n");
+         buffer.append("</script>\n");
          // Скрипты (смайлики)
          buffer.append(loadJavaScript("/js/smile_.js"));
          // Скрипты (автовставка тегов)
@@ -114,11 +117,11 @@ public class Mess{
          buffer.append("<tr>");
          buffer.append("<td valign='TOP'>");
          /*Смайлики*/
-         buffer.append(smiles_add(locale.getString("mess11")));
+         buffer.append(smiles_add(locale.getString("mess11"), webapp));
          buffer.append("</td>");
          buffer.append("<td align='CENTER' valign='top'>");
          /*Автотеги*/
-         buffer.append(autotags_add());
+         buffer.append(autotags_add(webapp));
          /*текстарий*/
          buffer.append("<p>");
          buffer.append("<textarea class='mnuforumSm' rows='30' id='ed1' name='A2' cols='55'></textarea>");
@@ -147,11 +150,19 @@ public class Mess{
          for (int thumbIndex = 0; thumbIndex < imageThumbs.size(); thumbIndex += 2){ //just for start
             Image thumb = imageThumbs.get(thumbIndex);
             buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
-            buffer.append("<img border='0' src='photo/");
+            buffer.append("<img border='0' src='/");
+            if(!webapp.isEmpty()){
+               buffer.append(webapp).append("/");
+            }
+            buffer.append(FJUrl.STATIC).append("/").append(FJUrl.PHOTO).append("/");
             buffer.append(thumb.getId());
             buffer.append("?id=");
             buffer.append(thumb.getId());
-            buffer.append("' onclick=\"InsertTags('[img]photo/");
+            buffer.append("' onclick=\"InsertTags('[img]/");
+            if(!webapp.isEmpty()){
+               buffer.append(webapp).append("/");
+            }
+            buffer.append(FJUrl.STATIC).append("/").append(FJUrl.PHOTO).append("/");
             buffer.append(thumb.getParentId());
             buffer.append("?id=");
             buffer.append(thumb.getParentId());
@@ -163,11 +174,19 @@ public class Mess{
          for (int thumbIndex = 1; thumbIndex < imageThumbs.size(); thumbIndex += 2){ //just for start
             Image thumb = imageThumbs.get(thumbIndex);
             buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
-            buffer.append("<img border='0' src='photo/");
+            buffer.append("<img border='0' src='/");
+            if(!webapp.isEmpty()){
+               buffer.append(webapp).append("/");
+            }
+            buffer.append(FJUrl.STATIC).append("/").append(FJUrl.PHOTO).append("/");
             buffer.append(thumb.getId());
             buffer.append("?id=");
             buffer.append(thumb.getId());
-            buffer.append("' onclick=\"InsertTags('[img]photo/");
+            buffer.append("' onclick=\"InsertTags('[img]/");
+            if(!webapp.isEmpty()){
+               buffer.append(webapp).append("/");
+            }
+            buffer.append(FJUrl.STATIC).append("/").append(FJUrl.PHOTO).append("/");
             buffer.append(thumb.getParentId());
             buffer.append("?id=");
             buffer.append(thumb.getParentId());

@@ -75,6 +75,9 @@ public class Control{
          buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
          // Стили
          buffer.append(loadCSS("/css/style.css"));
+         buffer.append("<script language='javascript' type='text/javascript'>\n");
+         buffer.append("var webapp='").append(webapp.isEmpty() ? "" : "/" + webapp).append("';\n");
+         buffer.append("</script>\n");
          // Скрипты (смайлики)
          buffer.append(loadJavaScript("/js/smile_.js"));
          // Скрипты (счечик текстария)
@@ -254,19 +257,19 @@ public class Control{
             break;
          case 2:
             // Inbox
-            buffer.append(caseInbox(locale, user, msg, mailService, userURI));
+            buffer.append(caseInbox(locale, user, msg, mailService, userURI, webapp));
             break;
          case 3:
             // Отправлено, но не доставлено
-            buffer.append(caseSent(locale, user, msg, mailService, userURI));
+            buffer.append(caseSent(locale, user, msg, mailService, userURI, webapp));
             break;
          case 4:
             // Отправлено, и доставлено
-            buffer.append(caseOutbox(locale, user, msg, mailService, userURI));
+            buffer.append(caseOutbox(locale, user, msg, mailService, userURI, webapp));
             break;
          case 5:
             //  Черновики
-            buffer.append(casePostponed(locale, user, msg, mailService, userURI));
+            buffer.append(casePostponed(locale, user, msg, mailService, userURI, webapp));
             break;
          case 6:
             // Интерфейсы
@@ -278,11 +281,11 @@ public class Control{
             break;
          case 8:
             // Подписка
-            buffer.append(caseSubscribe(locale, user, subscribeService, userURI));
+            buffer.append(caseSubscribe(locale, user, subscribeService, userURI, webapp));
             break;
          case 9:
             // Аватара
-            buffer.append(caseAvatar(locale, user, errors, userURI));
+            buffer.append(caseAvatar(locale, user, errors, userURI, webapp));
             break;
          case 10:
             // Местонахождение
@@ -302,15 +305,15 @@ public class Control{
             break;
          case 14:
             // All Users
-            buffer.append(caseAllUsers(locale, user, userService, userURI));
+            buffer.append(caseAllUsers(locale, user, userService, userURI, webapp));
             break;
          case 15:
             // Unapproved Users
-            buffer.append(caseUnapprovedUsers(locale, user, userService, userURI));
+            buffer.append(caseUnapprovedUsers(locale, user, userService, userURI, webapp));
             break;
          case 16:
             // PhotoAlbum
-            buffer.append(casePhotoalbum(locale, user, imageService, errors, userURI));
+            buffer.append(casePhotoalbum(locale, user, imageService, errors, userURI, webapp));
             break;
          }
          buffer.append("</td>");
@@ -413,11 +416,11 @@ public class Control{
             buffer.append("<tr>");
             buffer.append("<td valign='TOP' width='100%' height='100%'>");
             /*Смайлики*/
-            buffer.append(smiles_add(locale.getString("mess11")));
+            buffer.append(smiles_add(locale.getString("mess11"), webapp));
             buffer.append("</td>");
             buffer.append("<td width='500' align='CENTER' valign='top'>");
             /*Автотеги*/
-            buffer.append(autotags_add());
+            buffer.append(autotags_add(webapp));
             /*текстарий*/
             buffer.append("<p>");
             String textareaValue = "";
@@ -601,7 +604,7 @@ public class Control{
       return buffer;
    }
 
-   private StringBuffer caseInbox(LocaleString locale, IUser user, Long msg, MailService mailService, String userURI) throws ConfigurationException, SQLException, IOException, InvalidKeyException{
+   private StringBuffer caseInbox(LocaleString locale, IUser user, Long msg, MailService mailService, String userURI, String webapp) throws ConfigurationException, SQLException, IOException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       IFJMail mail = null;
       if (msg != null){
@@ -637,12 +640,12 @@ public class Control{
             // Тема письма
             if (gridMail.getReadDate() == null){
                buffer.append("<td class='internal'><div class='tbtextnread'>");
-               buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=2&msg=" + gridMail.getId() + "'>" + fd_head(gridMail.getSubject()) + "</a>");
+               buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=2&msg=" + gridMail.getId() + "'>" + fd_head(gridMail.getSubject(), webapp) + "</a>");
                buffer.append("</div></td>");
             }
             else {
                buffer.append("<td class='internal'><div class='tbtext'>");
-               buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=2&msg=" + gridMail.getId() + "'>" + fd_head(gridMail.getSubject()) + "</a>");
+               buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=2&msg=" + gridMail.getId() + "'>" + fd_head(gridMail.getSubject(), webapp) + "</a>");
                buffer.append("</div></td>");
             }
             // Когда пришло.
@@ -685,8 +688,8 @@ public class Control{
             buffer.append("</td></tr>");
             // Тело.
             buffer.append("<tr><td colspan=5 class='internal'>");
-            buffer.append("<div class=nik>" + fd_head(mail.getSubject()) + "</div>");
-            buffer.append("<div class=post>" + fd_body(mail.getBody()) + "</div>");
+            buffer.append("<div class=nik>" + fd_head(mail.getSubject(), webapp) + "</div>");
+            buffer.append("<div class=post>" + fd_body(mail.getBody(), webapp) + "</div>");
             buffer.append("</td></tr>");
          }
       }
@@ -695,7 +698,7 @@ public class Control{
       return buffer;
    }
 
-   private StringBuffer caseSent(LocaleString locale, IUser user, Long msg, MailService mailService, String userURI) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
+   private StringBuffer caseSent(LocaleString locale, IUser user, Long msg, MailService mailService, String userURI, String webapp) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess15") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
@@ -717,7 +720,7 @@ public class Control{
             buffer.append("</div></td>");
             // Тема письма
             buffer.append("<td class='internal'><div class=tbtext>");
-            buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=3&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
+            buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=3&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject(), webapp) + "</a>");
             buffer.append("</div></td>");
             // Когда отправлено
             buffer.append("<td class='internal' width='120'><div class=tbtext>");
@@ -740,8 +743,8 @@ public class Control{
             buffer.append("</td></tr>");
             // Тело.
             buffer.append("<tr><td colspan=3 class=internal>");
-            buffer.append("<div class=nik>" + fd_head(mail.getSubject()) + "</div>");
-            buffer.append("<div class=post>" + fd_body(mail.getBody()) + "</div>");
+            buffer.append("<div class=nik>" + fd_head(mail.getSubject(), webapp) + "</div>");
+            buffer.append("<div class=post>" + fd_body(mail.getBody(), webapp) + "</div>");
             buffer.append("</td></tr>");
          }
       }
@@ -750,7 +753,7 @@ public class Control{
       return buffer;
    }
 
-   private StringBuffer caseOutbox(LocaleString locale, IUser user, Long msg, MailService mailService, String userURI) throws ConfigurationException, IOException, SQLException, InvalidKeyException{
+   private StringBuffer caseOutbox(LocaleString locale, IUser user, Long msg, MailService mailService, String userURI, String webapp) throws ConfigurationException, IOException, SQLException, InvalidKeyException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess16") + "</b></div>");
       buffer.append("<form method='post' class='content' action='").append("/").append(userURI).append("/").append(FJUrl.DELETE_MAIL + "?id=4'>");
@@ -779,7 +782,7 @@ public class Control{
             buffer.append("</div></td>");
             // Тема письма
             buffer.append("<td class='internal'><div class=tbtext>");
-            buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=4&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
+            buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=4&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject(), webapp) + "</a>");
             buffer.append("</div></td>");
             // Когда отправлено.
             buffer.append("<td class='internal' width='120'><div class=tbtext>");
@@ -822,8 +825,8 @@ public class Control{
             buffer.append("</td></tr>");
             // Тело.
             buffer.append("<tr><td colspan=4 class=internal>");
-            buffer.append("<div class=nik>" + fd_head(mail.getSubject()) + "</div>");
-            buffer.append("<div class=post>" + fd_body(mail.getBody()) + "</div>");
+            buffer.append("<div class=nik>" + fd_head(mail.getSubject(), webapp) + "</div>");
+            buffer.append("<div class=post>" + fd_body(mail.getBody(), webapp) + "</div>");
             buffer.append("</td></tr>");
          }
       }
@@ -832,7 +835,7 @@ public class Control{
       return buffer;
    }
 
-   private StringBuffer casePostponed(LocaleString locale, IUser user, Long msg, MailService mailService, String userURI) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
+   private StringBuffer casePostponed(LocaleString locale, IUser user, Long msg, MailService mailService, String userURI, String webapp) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("mess62") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
@@ -857,7 +860,7 @@ public class Control{
             buffer.append("</div></td>");
             // Тема письма
             buffer.append("<td class='internal'><div class=tbtext>");
-            buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=5&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject()) + "</a>");
+            buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=5&msg=" + mail.getId() + "'>" + fd_head(mail.getSubject(), webapp) + "</a>");
             buffer.append("</div></td>");
             // Когда создано.
             buffer.append("<td class='internal' width='120'><div class=tbtext>");
@@ -880,8 +883,8 @@ public class Control{
             buffer.append("</td></tr>");
             // Тело.
             buffer.append("<tr><td colspan=3 class=internal>");
-            buffer.append("<div class=nik>" + fd_head(mail.getSubject()) + "</div>");
-            buffer.append("<div class=post>" + fd_body(mail.getBody()) + "</div>");
+            buffer.append("<div class=nik>" + fd_head(mail.getSubject(), webapp) + "</div>");
+            buffer.append("<div class=post>" + fd_body(mail.getBody(), webapp) + "</div>");
             buffer.append("</td></tr>");
          }
       }
@@ -1125,7 +1128,7 @@ public class Control{
       return buffer;
    }
 
-   private StringBuffer caseSubscribe(LocaleString locale, IUser user, SubscribeService subscribeService, String userURI) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
+   private StringBuffer caseSubscribe(LocaleString locale, IUser user, SubscribeService subscribeService, String userURI, String webapp) throws InvalidKeyException, ConfigurationException, SQLException, IOException{
       StringBuffer buffer = new StringBuffer();
       // Выбираем список подписаных веток
       List<IFJSubscribe> subscribes = subscribeService.findAllSubscribes(user, new Integer(1));
@@ -1144,7 +1147,7 @@ public class Control{
          // Ветка
          buffer.append("<tr>");
          buffer.append("<td class='internal'><div class=tbtext>");
-         buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD + "?id=" + subscribe.getTitleId() + "&end=1#end'>" + Diletant.fd_head(HtmlChars.convertHtmlSymbols(removeSlashes(subscribe.getHead()))) + "</a>");
+         buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD + "?id=" + subscribe.getTitleId() + "&end=1#end'>" + Diletant.fd_head(HtmlChars.convertHtmlSymbols(removeSlashes(subscribe.getHead())), webapp) + "</a>");
          buffer.append("</div></td>");
          // Флажок.
          buffer.append("<td class='internal'>");
@@ -1171,7 +1174,7 @@ public class Control{
       return buffer;
    }
 
-   private StringBuffer caseAvatar(LocaleString locale, IUser user, List<ErrorCode> errors, String userURI) throws InvalidKeyException {
+   private StringBuffer caseAvatar(LocaleString locale, IUser user, List<ErrorCode> errors, String userURI, String webapp) throws InvalidKeyException {
       StringBuffer buffer = new StringBuffer();
       if (user.getAvatar() != null && user.getAvatarApproved()) {
          buffer.append("<div class='mnuprof' align='CENTER'>");
@@ -1184,7 +1187,12 @@ public class Control{
          if (user.getAvatar().startsWith("http://")){
             avatarURL.append(user.getAvatar());
          }else{
-            avatarURL.append("/").append(FJUrl.STATIC).append("/").append(user.getAvatar()).append("?seed=").append(System.currentTimeMillis());
+            avatarURL.append("/");
+            if(!webapp.isEmpty()){
+               avatarURL.append(webapp).append("/");
+            }
+            avatarURL.append(FJUrl.STATIC).append("/").append(user.getAvatar()).append("?seed=").append(System.currentTimeMillis());
+
          }
          buffer.append("<img border='0' src='").append(avatarURL).append("'>");
          buffer.append("</div>");
@@ -1332,7 +1340,7 @@ public class Control{
       return buffer;
    }
 
-   private StringBuffer caseAllUsers(LocaleString locale, IUser currentUser, UserService userService, String userURI) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
+   private StringBuffer caseAllUsers(LocaleString locale, IUser currentUser, UserService userService, String userURI, String webapp) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("MSG_USERS") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
@@ -1360,7 +1368,7 @@ public class Control{
                buffer.append("</div></td>");
                // Nick
                buffer.append("<td class='internal'><div class=tbtext>");
-               buffer.append(fd_head(user.getNick()) + "</a>");
+               buffer.append(fd_head(user.getNick(), webapp) + "</a>");
                buffer.append("</div></td>");
                // E-mail
                buffer.append("<td class='internal'><div class=tbtext>");
@@ -1388,7 +1396,7 @@ public class Control{
    }
 
 
-   private StringBuffer caseUnapprovedUsers(LocaleString locale, IUser currentUser, UserService userService, String userURI) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
+   private StringBuffer caseUnapprovedUsers(LocaleString locale, IUser currentUser, UserService userService, String userURI, String webapp) throws InvalidKeyException, ConfigurationException, IOException, SQLException{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'><b>" + locale.getString("MSG_UNAPPROVED_USERS") + "</b></div>");
       buffer.append("<table class='control'><tr class=heads>");
@@ -1416,7 +1424,7 @@ public class Control{
                buffer.append("</div></td>");
                // Nick && approve link
                buffer.append("<td class='internal'><div class=tbtext>");
-               buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.APPROVE_USER + "?id=" + user.getId() + "'>" + fd_head(user.getNick()) + "</a>");
+               buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.APPROVE_USER + "?id=" + user.getId() + "'>" + fd_head(user.getNick(), webapp) + "</a>");
                buffer.append("</div></td>");
                // E-mail
                buffer.append("<td class='internal'><div class=tbtext>");
@@ -1441,7 +1449,7 @@ public class Control{
       return buffer;
    }
 
-   private StringBuffer casePhotoalbum(LocaleString locale, IUser user, ImageService imageService, List<ErrorCode> errors, String userURI) throws Exception{
+   private StringBuffer casePhotoalbum(LocaleString locale, IUser user, ImageService imageService, List<ErrorCode> errors, String userURI, String webapp) throws Exception{
       StringBuffer buffer = new StringBuffer();
       buffer.append("<div class='mnuprof' align='CENTER'>");
       buffer.append("<b>");
@@ -1473,33 +1481,33 @@ public class Control{
       buffer.append("<div style='float: left;width: 940px;overflow-y: auto;overflow-x: hidden;height:600px;'>");
       buffer.append("<div style='float: left;width: 620px;'>");
       buffer.append("<div style='float: left;width: 310px;'>");
-      buffer.append(writeImages(imageThumbs, 0));
+      buffer.append(writeImages(imageThumbs, 0, webapp));
       buffer.append("</div>");
       buffer.append("<div style='margin-left: 310px;width: 310px;'>");
-      buffer.append(writeImages(imageThumbs, 1));
+      buffer.append(writeImages(imageThumbs, 1, webapp));
       buffer.append("</div>");
       buffer.append("</div>");
       buffer.append("<div style='margin-left: 620px;width: 310px;'>");
-      buffer.append(writeImages(imageThumbs, 2));
+      buffer.append(writeImages(imageThumbs, 2, webapp));
       buffer.append("</div>");
       buffer.append("</div>");
       return buffer;
    }
 
-   private StringBuffer writeImages(List<Image> imageThumbs, int thumbIndexStart){
+   private StringBuffer writeImages(List<Image> imageThumbs, int thumbIndexStart, String webapp){
       StringBuffer buffer = new StringBuffer();
       for (int thumbIndex = thumbIndexStart; thumbIndex < imageThumbs.size(); thumbIndex += 3){
          Image thumb = imageThumbs.get(thumbIndex);
          buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
-         buffer.append("<img border='0' src='").append("/").append(FJUrl.STATIC).append("/").append(FJUrl.PHOTO).append("/");
+         buffer.append("<img border='0' src='/");
+         if(!webapp.isEmpty()){
+            buffer.append(webapp).append("/");
+         }
+         buffer.append(FJUrl.STATIC).append("/").append(FJUrl.PHOTO).append("/");
          buffer.append(thumb.getId());
          buffer.append("?id=");
          buffer.append(thumb.getId());
-         buffer.append("' onclick=\"InsertTags('[img]photo/");
-         buffer.append(thumb.getParentId());
-         buffer.append("?id=");
-         buffer.append(thumb.getParentId());
-         buffer.append("','[/img]')\" alt='Вставить картинку'>");
+         buffer.append("'>");
          buffer.append("</div>");
       }
       return buffer;

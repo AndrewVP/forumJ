@@ -77,7 +77,7 @@ public class FJServletTools {
       StringBuffer result = new StringBuffer();
       result.append("<style type='text/css'>");
       result.append(loadResource(path));
-      result.append("</style>");
+      result.append("</style>\n");
       return result;
    }
    
