@@ -11,7 +11,6 @@ package org.forumj.network.web.controller;
 
 import static org.forumj.tool.Diletant.errorOut;
 import static org.forumj.tool.FJServletTools.*;
-import static org.forumj.web.servlet.tool.FJServletTools.loadCSS;
 
 import java.io.*;
 
@@ -20,6 +19,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.network.web.resources.ResourcesBuilder;
 import org.forumj.tool.LocaleString;
 
 public class Auth{
@@ -38,7 +38,7 @@ public class Auth{
          buffer.append("<head>");
          buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
          // Стили
-         buffer.append(loadCSS("/css/style.css"));
+         buffer.append(ResourcesBuilder.getStyleCSS(webapp));
          buffer.append("<title>");
          buffer.append("Авторизация");
          buffer.append("</title>");

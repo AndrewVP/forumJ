@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /forum/
+Allow: /forum/index
+Allow: /forum/tema
+Disallow /forum/tema*&msg*
+Crawl-delay: 1

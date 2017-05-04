@@ -1,6 +1,5 @@
 package org.forumj.network.web.servlet;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.forumj.common.FJServletName;
@@ -11,7 +10,6 @@ import org.forumj.network.web.controller.*;
 import org.forumj.network.web.controller.post.*;
 import org.forumj.network.web.filter.*;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -20,6 +18,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import static org.forumj.common.FJUrl.DEFAULT_USER;
 import static org.forumj.tool.Diletant.errorOut;
 
 /**
@@ -117,7 +116,7 @@ public class Dispatcher extends HttpServlet {
                     String controllerName = url.getController();
                     switch (controllerName){
                         case FJUrl.ROOT :
-                            rootController.doGet(request, response, webappName);
+                            rootController.doGet(request, response, webappName, url.getUserURI());
                             break;
                         case FJUrl.INDEX :
                             exitFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, false, (req, resp, webapp, uri) -> {
@@ -254,11 +253,12 @@ public class Dispatcher extends HttpServlet {
                             break;
                         case FJUrl.PIN_THREAD:
                             loginFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, (req, resp, webapp, uri) -> {
-                                restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
-                                    pinThreadController.doGet(req3, resp3, uri3);
-                                });
+                                    restrictUnloginedUsersFilter.doFilter(req, resp, webapp, uri, FJUrl.LOGIN, (req3, resp3, webapp3, uri3) -> {
+                                            pinThreadController.doGet(req3, resp3, uri3);
+                                    });
                             });
                             break;
+                        case FJUrl.PAGE_404:
                         default:
                             System.out.println("wrong url: " + url);
                             page404.doGet(request, response, webappName);
@@ -526,6 +526,6 @@ public class Dispatcher extends HttpServlet {
 
     private boolean isCorrectUserURI(URL url){
         //TODO it is temporary stub!!
-        return url.isStaticResource() || url.isRootResource() || url.getUserName().equals("forum");
+        return url.isStaticResource() || url.isRootResource() || url.getUserName().equals(FJUrl.DEFAULT_USER);
     }
 }

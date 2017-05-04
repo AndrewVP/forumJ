@@ -23,6 +23,7 @@ import org.forumj.common.*;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
+import org.forumj.network.web.resources.ResourcesBuilder;
 import org.forumj.tool.LocaleString;
 
 /**
@@ -86,7 +87,7 @@ public class Send{
       buffer.append("<head>");
       buffer.append("<meta http-equiv='content-type' content='text/html; charset=windows-1251'>");
       // Стили
-      buffer.append(loadCSS("/css/style.css"));
+      buffer.append(ResourcesBuilder.getStyleCSS(webapp));
       // Скрипты (флажки)
       buffer.append(loadJavaScript("/js/jsmain_chek.js"));
       // Скрипты (автовставка тегов)

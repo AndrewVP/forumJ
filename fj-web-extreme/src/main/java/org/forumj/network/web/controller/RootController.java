@@ -15,16 +15,16 @@
  */
 package org.forumj.network.web.controller;
 
+import org.forumj.common.FJUrl;
+import org.forumj.network.web.resources.ResourcesBuilder;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.io.PrintWriter;
-
-import static org.forumj.tool.Diletant.errorOut;
-import static org.forumj.tool.FJServletTools.cache;
-import static org.forumj.tool.FJServletTools.logo;
-import static org.forumj.web.servlet.tool.FJServletTools.loadCSS;
+import java.util.List;
 
 /**
  * 
@@ -32,14 +32,32 @@ import static org.forumj.web.servlet.tool.FJServletTools.loadCSS;
  */
 public class RootController {
 
-    public static String[] rootResources = {"robots.txt", "favicon.ico"};
+    private static String ROBOTS_TXT = "robots.txt";
+    private static String FAVICON_ICO = "favicon.ico";
+    private static String INDEX_HTML = "index.html";
+    public static String[] rootResources = {ROBOTS_TXT, FAVICON_ICO, INDEX_HTML};
 
-   public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp) throws ServletException, IOException {
-      try{
-          String resource = request.getRequestURI();
-          int xx = 0;
-      } catch (Throwable e) {
-      }
-   }
+    public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp, String userUri) throws ServletException, IOException {
+        String resource = request.getRequestURI();
+        if (resource.endsWith(ROBOTS_TXT)){
+            response.setContentType("text/plain; charset=UTF-8");
+            StringBuilder robots = ResourcesBuilder.getRobotsTXT();
+            PrintWriter writer = response.getWriter();
+            String out = robots.toString();
+            writer.write(out);
+        }else if (resource.endsWith(FAVICON_ICO)){
+            List<byte[]> icon = ResourcesBuilder.getFaviconICO();
+            response.setContentType("image/vnd.microsoft.icon");
+            OutputStream outputStream = response.getOutputStream();
+            for (byte[] potion : icon) {
+                outputStream.write(potion);
+            }
+        }else if (resource.endsWith(INDEX_HTML) || resource.endsWith("/")){
+            //TODO - empty user, empty root. Now is stub to forum
+            response.sendRedirect(new StringBuilder("/").append(webapp).append("/").append(FJUrl.DEFAULT_USER).toString());
+        }else{
+            response.sendRedirect(new StringBuilder("/").append(webapp).append("/").append(FJUrl.DEFAULT_USER).append("/").append(FJUrl.PAGE_404).toString());
+        }
+    }
 
 }

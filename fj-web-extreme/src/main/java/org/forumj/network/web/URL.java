@@ -205,6 +205,8 @@ public class URL{
         for (String rootResource: RootController.rootResources){
             result |= rootResource.equalsIgnoreCase(url);
         }
+        // real root ))
+        result |= url.isEmpty();
         if (result) controller = FJUrl.ROOT;
         return result;
     }

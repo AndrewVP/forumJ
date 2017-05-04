@@ -25,6 +25,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
 import org.forumj.common.db.entity.IUser;
+import org.forumj.network.web.resources.ResourcesBuilder;
 import org.forumj.tool.LocaleString;
 
 /**
@@ -61,7 +62,7 @@ public class Message{
          buffer.append("<head>");
          buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
          /*Стили*/
-         buffer.append(loadCSS("/css/style.css"));
+         buffer.append(ResourcesBuilder.getStyleCSS(webapp));
          buffer.append("<title>");
          buffer.append(locale.getString("MSG"));
          buffer.append("</title>");

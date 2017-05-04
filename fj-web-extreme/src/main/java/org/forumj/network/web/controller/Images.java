@@ -127,9 +127,8 @@ public class Images{
             }
          }
          OutputStream out = resp.getOutputStream();
-         for (int i = 0; i < resource.size(); i++) {
-            byte[] potion = resource.get(i);
-            out.write(potion, 0, potion.length);
+         for (byte[] potion : resource) {
+            out.write(potion);
          }
       }catch (Exception e){
          logger.error(e.getMessage(), e);
@@ -137,7 +136,7 @@ public class Images{
    }
 
    protected List<byte[]> getFileAsArray(String fileName) throws IOException {
-      List<byte[]> result = new ArrayList<>();
+      List<byte[]> result = new LinkedList<>();
       File file = new File(fileName);
       if (file.exists()){
          try (InputStream in = new FileInputStream(file);) {

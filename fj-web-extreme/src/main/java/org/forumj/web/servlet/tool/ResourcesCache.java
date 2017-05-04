@@ -17,9 +17,7 @@ public class ResourcesCache{
     private Map<String, List<byte[]>> cache = new ConcurrentHashMap<>();
     private Map<String, StringBuffer> txtCache = new ConcurrentHashMap<>();
 
-    private ResourcesCache(){
-        super();
-    }
+    private ResourcesCache(){}
     
     public static ResourcesCache getInstance(){
         return instance;

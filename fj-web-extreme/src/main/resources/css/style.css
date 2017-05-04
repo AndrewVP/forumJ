@@ -309,7 +309,7 @@
       border-style: none;
       border-width:0px;
       border-collapse: collapse;
-      background-image: url('/00/picts/tbl/left_top.gif');
+      background-image: url('@@WEBAPP@@/00/picts/tbl/left_top.gif');
    }
    .leftBtm
    {
@@ -320,7 +320,7 @@
       border-style: none;
       border-width:0px;
       border-collapse: collapse;
-      background-image: url('/00/picts/tbl/left_btm.gif');
+      background-image: url('@@WEBAPP@@/00/picts/tbl/left_btm.gif');
    }
    .rightBtm
    {
@@ -331,7 +331,7 @@
       border-style: none;
       border-width:0px;
       border-collapse: collapse;
-      background-image: url('/00/picts/tbl/right_btm.gif');
+      background-image: url('@@WEBAPP@@/00/picts/tbl/right_btm.gif');
    }
    .rightTop
    {
@@ -342,7 +342,7 @@
       border-style: none;
       border-width:0px;
       border-collapse: collapse;
-      background-image: url('/00/picts/tbl/right_top.gif');
+      background-image: url('@@WEBAPP@@/00/picts/tbl/right_top.gif');
    }
    .left
    {
@@ -352,7 +352,7 @@
       border-style: none;
       border-width:0px;
       border-collapse: collapse;
-      background-image: url('/00/picts/tbl/left.gif');
+      background-image: url('@@WEBAPP@@/00/picts/tbl/left.gif');
    }
    .right
    {
@@ -362,7 +362,7 @@
       border-style: none;
       border-width:0px;
       border-collapse: collapse;
-      background-image: url('/00/picts/tbl/right.gif');
+      background-image: url('@@WEBAPP@@/00/picts/tbl/right.gif');
    }
    .top
    {
@@ -372,7 +372,7 @@
       border-style: none;
       border-width:0px;
       border-collapse: collapse;
-      background-image: url('/00/picts/tbl/top1.gif');
+      background-image: url('@@WEBAPP@@/00/picts/tbl/top1.gif');
    }
    .btm
    {
@@ -382,7 +382,7 @@
       border-style: none;
       border-width:0px;
       border-collapse: collapse;
-      background-image: url('/00/picts/tbl/btm.gif');
+      background-image: url('@@WEBAPP@@/00/picts/tbl/btm.gif');
    }
    .bg
    {
@@ -392,7 +392,7 @@
       border-style: none;
       border-width:0px;
       border-collapse: collapse;
-      background-image: url('/00/picts/tbl/bg.gif');
+      background-image: url('@@WEBAPP@@/00/picts/tbl/bg.gif');
    }
    .bg2
    {
@@ -402,7 +402,7 @@
       border-style: none;
       border-width:0px;
       border-collapse: collapse;
-      background-image: url('/00/picts/tbl/bg2.gif');
+      background-image: url('@@WEBAPP@@/00/picts/tbl/bg2.gif');
    }
    .bttn1
    {
@@ -418,34 +418,34 @@
       padding:0px;
       width:4px;
       height:4px;
-      background-image: url('/00/skin/standart/button1/left_top1.gif');
+      background-image: url('@@WEBAPP@@/00/skin/standart/button1/left_top1.gif');
    }
    .bttn1LeftBtm
    {
       padding:0px;
       width:4px;
       height:4px;
-      background-image: url('/00/skin/standart/button1/left_btm1.gif');
+      background-image: url('@@WEBAPP@@/00/skin/standart/button1/left_btm1.gif');
    }
    .bttn1RightTop
    {
       padding:0px;
       width:4px;
       height:4px;
-      background-image: url('/00/skin/standart/button1/right_top1.gif');
+      background-image: url('@@WEBAPP@@/00/skin/standart/button1/right_top1.gif');
    }
    .bttn1RightBtm
    {
       padding:0px;
       width:4px;
       height:4px;
-      background-image: url('/00/skin/standart/button1/right_btm1.gif');
+      background-image: url('@@WEBAPP@@/00/skin/standart/button1/right_btm1.gif');
    }
    .bttn1Bg
    {
       padding:0px;
       height:13px;
-      background-image: url('/00/skin/standart/button1/bg1.gif');
+      background-image: url('@@WEBAPP@@/00/skin/standart/button1/bg1.gif');
       font-weight: bold;
       font-family: Verdana;
       font-size: 8pt;
@@ -457,26 +457,26 @@
       padding:0px;
       height:11px;
       width:4px;
-      background-image: url('/00/skin/standart/button1/left1.gif');
+      background-image: url('@@WEBAPP@@/00/skin/standart/button1/left1.gif');
    }
    .bttn1Right
    {
       padding:0px;
       height:11px;
       width:4px;
-      background-image: url('/00/skin/standart/button1/right1.gif');
+      background-image: url('@@WEBAPP@@/00/skin/standart/button1/right1.gif');
    }
    .bttn1Top
    {
       padding:0px;
       height:4px;
-      background-image: url('/00/skin/standart/button1/top1.gif');
+      background-image: url('@@WEBAPP@@/00/skin/standart/button1/top1.gif');
    }
    .bttn1Btm
    {
       padding:0px;
       height:4px;
-      background-image: url('/00/skin/standart/button1/btm1.gif');
+      background-image: url('@@WEBAPP@@/00/skin/standart/button1/btm1.gif');
    }
    select.mnuforumSm
    {
@@ -526,7 +526,7 @@
       color: #000000;
       text-decoration: none;
       border-width: 0px;
-      background-image: url('/00/skin/standart/input/bg.gif');
+      background-image: url('@@WEBAPP@@/00/skin/standart/input/bg.gif');
       margin: 0px;
    }
 	.input1
@@ -542,52 +542,52 @@
       padding:0px;
       width:3px;
       height:3px;
-      background-image: url('/00/skin/standart/input/left_top.gif');
+      background-image: url('@@WEBAPP@@/00/skin/standart/input/left_top.gif');
    }
    .input1LeftBtm
    {
       padding:0px;
       width:3px;
       height:3px;
-      background-image: url('/00/skin/standart/input/left_btm.gif');
+      background-image: url('@@WEBAPP@@/00/skin/standart/input/left_btm.gif');
    }
    .input1RightTop
    {
       padding:0px;
       width:3px;
       height:3px;
-      background-image: url('/00/skin/standart/input/right_top.gif');
+      background-image: url('@@WEBAPP@@/00/skin/standart/input/right_top.gif');
    }
    .input1RightBtm
    {
       padding:0px;
       width:3px;
       height:3px;
-      background-image: url('/00/skin/standart/input/right_btm.gif');
+      background-image: url('@@WEBAPP@@/00/skin/standart/input/right_btm.gif');
    }
    .input1Left
    {
       padding:0px;
       width:3px;
-      background-image: url('/00/skin/standart/input/left.gif');
+      background-image: url('@@WEBAPP@@/00/skin/standart/input/left.gif');
    }
    .input1Right
    {
       padding:0px;
       width:3px;
-      background-image: url('/00/skin/standart/input/right.gif');
+      background-image: url('@@WEBAPP@@/00/skin/standart/input/right.gif');
    }
    .input1Top
    {
       padding:0px;
       height:3px;
-      background-image: url('/00/skin/standart/input/top.gif');
+      background-image: url('@@WEBAPP@@/00/skin/standart/input/top.gif');
    }
    .input1Btm
    {
       padding:0px;
       height:3px;
-      background-image: url('/00/skin/standart/input/btm.gif');
+      background-image: url('@@WEBAPP@@/00/skin/standart/input/btm.gif');
    }
    .input1Bg
    {

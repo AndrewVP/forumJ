@@ -20,6 +20,7 @@ import org.forumj.common.config.FJConfiguration;
 public interface FJUrl {
 
    public static final String ROOT = "/";
+   public static final String DEFAULT_USER = "forum";
    public static final String INDEX = "index";
    public static final String VIEW_THREAD = "tema";
    public static final String VIEW_THREAD_OLD = "tema.php";
@@ -67,6 +68,7 @@ public interface FJUrl {
    public static final String ADD_SUBSCRIBE = "addsubs";
    public static final String PING = "ping";
    public static final String BAN = "ban";
+   public static final String PAGE_404 = "404";
    public static final String CSS = "css";
 
    // a lot of pictures paths

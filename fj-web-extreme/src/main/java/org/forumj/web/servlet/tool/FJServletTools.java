@@ -73,14 +73,6 @@ public class FJServletTools {
       return result;
    }
 
-   public static StringBuffer loadCSS(String path) throws IOException{
-      StringBuffer result = new StringBuffer();
-      result.append("<style type='text/css'>");
-      result.append(loadResource(path));
-      result.append("</style>\n");
-      return result;
-   }
-   
    public static StringBuffer quest_submit(LocaleString locale) throws IOException, InvalidKeyException{
       StringBuffer result = new StringBuffer();
       result.append("<script type='text/javascript'>");

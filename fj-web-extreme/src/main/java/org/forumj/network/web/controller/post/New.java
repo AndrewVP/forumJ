@@ -20,7 +20,7 @@ import static org.forumj.network.web.Command.PREVIEW_NEW_THREAD;
 import static org.forumj.tool.Diletant.*;
 import static org.forumj.tool.FJServletTools.menu;
 import static org.forumj.web.servlet.tool.FJServletTools.*;
-
+import org.forumj.network.web.resources.ResourcesBuilder;
 import java.io.*;
 import java.util.Date;
 
@@ -123,7 +123,7 @@ public class New{
       buffer.append("<head>");
       buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
       /* Стили*/
-      buffer.append(loadCSS("/css/style.css"));
+      buffer.append(ResourcesBuilder.getStyleCSS(webapp));
       buffer.append("<script language='javascript' type='text/javascript'>\n");
       buffer.append("var webapp='").append(webapp.isEmpty() ? "" : "/" + webapp).append("';\n");
       buffer.append("</script>\n");

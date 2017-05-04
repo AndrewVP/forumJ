@@ -28,6 +28,7 @@ import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.common.tool.*;
 import org.forumj.common.web.ThreadType;
+import org.forumj.network.web.resources.ResourcesBuilder;
 import org.forumj.tool.LocaleString;
 
 import com.tecnick.htmlutils.htmlentities.HTMLEntities;
@@ -98,7 +99,7 @@ public class Tema{
          buffer.append("<head>");
          buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
          // Стили
-         buffer.append(loadCSS("/css/style.css"));
+         buffer.append(ResourcesBuilder.getStyleCSS(webapp));
          IndexService indexService = FJServiceHolder.getIndexService();
          Long m_xb = indexService.getLastPostId(threadId);
          buffer.append("<script language='javascript' type='text/javascript'>\n");

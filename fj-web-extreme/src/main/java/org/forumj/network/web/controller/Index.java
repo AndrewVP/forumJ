@@ -32,6 +32,7 @@ import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.common.tool.*;
+import org.forumj.network.web.resources.ResourcesBuilder;
 import org.forumj.tool.*;
 
 
@@ -64,7 +65,7 @@ public class Index{
          buffer.append("<head>");
          buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
          // Стили
-         buffer.append(loadCSS("/css/style.css"));
+         buffer.append(ResourcesBuilder.getStyleCSS(webapp));
          // Скрипты (флажки)
          buffer.append(loadJavaScript("/js/jsmain_chek.js"));
          Long m_xb = indexService.getLastPostId();

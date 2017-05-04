@@ -15,6 +15,9 @@
  */
 package org.forumj.network.web.controller;
 
+import org.forumj.common.FJUrl;
+import org.forumj.network.web.resources.ResourcesBuilder;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -23,7 +26,6 @@ import java.io.PrintWriter;
 
 import static org.forumj.tool.Diletant.errorOut;
 import static org.forumj.tool.FJServletTools.*;
-import static org.forumj.web.servlet.tool.FJServletTools.loadCSS;
 
 /**
  * 
@@ -40,7 +42,7 @@ public class Page404{
          buffer.append("<head>");
          buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
          /*Стили*/
-         buffer.append(loadCSS("/css/style.css"));
+         buffer.append(ResourcesBuilder.getStyleCSS(webapp));
          buffer.append("<title>");
          buffer.append(404);
          buffer.append("</title>");
@@ -58,8 +60,8 @@ public class Page404{
          buffer.append("<br/><br/>");
          buffer.append("<b><a href='/");
          buffer.append(webapp);
-         buffer.append(webapp.isEmpty() ? "" : "/");
-         buffer.append("forum/'>Вам сюда</a></b>");
+         buffer.append(webapp.isEmpty() ? "" : "/").append(FJUrl.DEFAULT_USER);
+         buffer.append("/'>Вам сюда</a></b>");
          buffer.append("</div></td>");
          buffer.append("</tr>");
          buffer.append("</body>");
