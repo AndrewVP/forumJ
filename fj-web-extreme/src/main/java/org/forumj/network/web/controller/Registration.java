@@ -9,19 +9,16 @@
  */
 package org.forumj.network.web.controller;
 
-import static org.forumj.tool.Diletant.*;
-import static org.forumj.tool.FJServletTools.*;
-import static org.forumj.web.servlet.tool.FJServletTools.*;
-
 import java.io.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.network.web.FJUrl;
 import org.forumj.network.web.resources.ResourcesBuilder;
-import org.forumj.tool.LocaleString;
+import org.forumj.network.web.resources.LocaleString;
+import org.forumj.network.web.FJServletTools;
 
 /**
  *
@@ -32,7 +29,7 @@ public class Registration{
       public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try {
-         cache(response);
+         FJServletTools.cache(response);
          HttpSession session = request.getSession();
          String idParameter = request.getParameter("id");
          idParameter = (idParameter == null || "".equalsIgnoreCase(idParameter.trim())) ? "1" : idParameter;
@@ -57,9 +54,9 @@ public class Registration{
             // Главная таблица
             buffer.append("<table border='0' style='{border-collapse: collapse;}' width='100%'>");
             // Таблица с лого и верхним баннером
-            buffer.append(logo(webapp));
+            buffer.append(FJServletTools.logo(webapp));
             // Главные ссылки
-            buffer.append(menu(request, user, locale, false, webapp, userURI));
+            buffer.append(FJServletTools.menu(request, user, locale, false, webapp, userURI));
             // Форма регистрации
             buffer.append("<tr>");
             buffer.append("<td width='100%'>");
@@ -178,14 +175,14 @@ public class Registration{
             buffer.append("</tr>");
             // Форма закончилась
             // Главные ссылки
-            buffer.append(menu(request, user, locale, false, webapp, userURI));
-            buffer.append(footer(webapp));
+            buffer.append(FJServletTools.menu(request, user, locale, false, webapp, userURI));
+            buffer.append(FJServletTools.footer(webapp));
             buffer.append("</body>");
             buffer.append("</html>");
          }
       } catch (Throwable e) {
          buffer = new StringBuffer();
-         buffer.append(errorOut(e));
+         buffer.append(FJServletTools.errorOut(e));
          e.printStackTrace();
       }
       response.setContentType("text/html; charset=UTF-8");

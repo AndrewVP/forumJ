@@ -9,16 +9,15 @@
  */
 package org.forumj.network.web.controller;
 
-import static org.forumj.tool.Diletant.*;
-
 import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
+import org.forumj.network.web.FJServletTools;
+import org.forumj.network.web.FJUrl;
 
 public class AddIgnor{
 
@@ -45,7 +44,7 @@ public class AddIgnor{
                String url = new StringBuilder("/").append(userURI).append("/")
                        .append(FJUrl.VIEW_THREAD).append("?id=").append(threadIdParameter).append(add)
                        .append("#").append(postIdParameter).toString();
-               buffer.append(successPostOut("0", url));
+               buffer.append(FJServletTools.successPostOut("0", url));
             }
          }else{
             // Вошли незарегистрировавшись
@@ -54,7 +53,7 @@ public class AddIgnor{
          }
       } catch (Throwable e) {
          buffer = new StringBuffer();
-         buffer.append(errorOut(e));
+         buffer.append(FJServletTools.errorOut(e));
          e.printStackTrace();
       }
          response.setContentType("text/html; charset=UTF-8");

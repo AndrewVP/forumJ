@@ -15,7 +15,7 @@
  */
 package org.forumj.network.web.controller;
 
-import org.forumj.common.FJUrl;
+import org.forumj.network.web.FJUrl;
 import org.forumj.network.web.resources.ResourcesBuilder;
 
 import javax.servlet.ServletException;

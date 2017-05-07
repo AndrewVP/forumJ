@@ -9,25 +9,25 @@
  */
 package org.forumj.network.web.controller;
 
-import static org.forumj.tool.Diletant.errorOut;
-import static org.forumj.tool.FJServletTools.*;
+import static org.forumj.network.web.FJServletTools.errorOut;
 
 import java.io.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.network.web.FJUrl;
 import org.forumj.network.web.resources.ResourcesBuilder;
-import org.forumj.tool.LocaleString;
+import org.forumj.network.web.resources.LocaleString;
+import org.forumj.network.web.FJServletTools;
 
 public class Auth{
 
    public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try {
-         cache(response);
+         FJServletTools.cache(response);
          HttpSession session = request.getSession();
          String gid = request.getParameter("id");
          gid = (gid == null || "".equalsIgnoreCase(gid.trim())) ? "1" : gid;
@@ -48,9 +48,9 @@ public class Auth{
          // Главная таблица
          buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          // Таблица с лого и верхним баннером
-         buffer.append(logo(webapp));
+         buffer.append(FJServletTools.logo(webapp));
          // Главные ссылки
-         buffer.append(menu(request, user, locale, false, webapp, userURI));
+         buffer.append(FJServletTools.menu(request, user, locale, false, webapp, userURI));
          // Форма авторизации
          buffer.append("<tr><td width='100%' align='center'><table width='100%'><tr><td>");
          buffer.append("<form  action='").append("/").append(userURI).append("/").append(FJUrl.DO_LOGIN).append("' method='post'>");
@@ -112,8 +112,8 @@ public class Auth{
          buffer.append("</td></tr></table></td></tr></table></form></td></tr></table></td></tr>");
          // Форма закончилась
          // Главные ссылки
-         buffer.append(menu(request, user, locale, false, webapp, userURI));
-         buffer.append(footer(webapp));
+         buffer.append(FJServletTools.menu(request, user, locale, false, webapp, userURI));
+         buffer.append(FJServletTools.footer(webapp));
          buffer.append("</body>");
          buffer.append("</html>");
       } catch (Throwable e) {

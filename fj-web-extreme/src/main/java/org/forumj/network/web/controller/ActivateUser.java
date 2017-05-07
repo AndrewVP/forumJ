@@ -15,19 +15,19 @@
  */
 package org.forumj.network.web.controller;
 
-import static org.forumj.tool.Diletant.*;
-
 import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
 import org.forumj.common.web.Locale;
-import org.forumj.email.FJEMail;
-import org.forumj.tool.LocaleString;
+import org.forumj.network.web.FJEMail;
+import org.forumj.network.web.FJUrl;
+import org.forumj.network.web.HttpParameters;
+import org.forumj.network.web.resources.LocaleString;
+import org.forumj.network.web.FJServletTools;
 
 public class ActivateUser{
 
@@ -58,7 +58,7 @@ public class ActivateUser{
          }
       } catch (Throwable e) {
          buffer = new StringBuffer();
-         buffer.append(errorOut(e));
+         buffer.append(FJServletTools.errorOut(e));
          e.printStackTrace();
       }
       response.setContentType("text/html; charset=UTF-8");

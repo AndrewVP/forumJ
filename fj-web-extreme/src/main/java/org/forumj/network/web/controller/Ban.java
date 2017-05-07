@@ -15,8 +15,8 @@
  */
 package org.forumj.network.web.controller;
 
-import org.forumj.common.FJUrl;
-import org.forumj.common.HttpParameters;
+import org.forumj.network.web.FJUrl;
+import org.forumj.network.web.HttpParameters;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.FJServiceHolder;
 import org.forumj.common.db.service.UserService;
@@ -27,7 +27,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 
-import static org.forumj.tool.Diletant.errorOut;
+import static org.forumj.network.web.FJServletTools.errorOut;
 
 public class Ban{
 

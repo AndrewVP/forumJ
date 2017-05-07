@@ -9,8 +9,6 @@
  */
 package org.forumj.network.web.controller.post;
 
-import static org.forumj.tool.Diletant.*;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -22,14 +20,17 @@ import javax.servlet.http.*;
 import org.apache.commons.configuration.ConfigurationException;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
-import org.forumj.common.*;
 import org.forumj.common.config.FJConfiguration;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
 import org.forumj.image.ImageSize;
 import org.forumj.image.ImageTools;
-import org.forumj.web.servlet.tool.ResourcesCache;
-import org.forumj.web.tool.*;
+import org.forumj.network.web.FJUrl;
+import org.forumj.network.web.HttpParameters;
+import org.forumj.network.web.controller.validator.ErrorCode;
+import org.forumj.network.web.controller.validator.ValidationErrors;
+import org.forumj.network.web.resources.ResourcesCache;
+import org.forumj.network.web.FJServletTools;
 
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
@@ -97,7 +98,7 @@ public class SetAvatar{
 		} catch (Throwable e) {
 			e.printStackTrace();
 			StringBuffer buffer = new StringBuffer();
-			buffer.append(errorOut(e));
+			buffer.append(FJServletTools.errorOut(e));
 			response.setContentType("text/html; charset=UTF-8");
 			response.getWriter().write(buffer.toString());
 		}

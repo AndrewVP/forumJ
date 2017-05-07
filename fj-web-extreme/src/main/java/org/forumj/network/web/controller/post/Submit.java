@@ -9,17 +9,17 @@
  */
 package org.forumj.network.web.controller.post;
 
-import static org.forumj.tool.Diletant.errorOut;
-import static org.forumj.web.servlet.tool.FJServletTools.setcookie;
+import static org.forumj.network.web.FJServletTools.errorOut;
+import static org.forumj.network.web.FJServletTools.setcookie;
 
 import java.io.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
+import org.forumj.network.web.FJUrl;
 
 /**
  *

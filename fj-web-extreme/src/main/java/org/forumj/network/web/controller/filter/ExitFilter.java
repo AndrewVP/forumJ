@@ -13,9 +13,9 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.forumj.network.web.filter;
+package org.forumj.network.web.controller.filter;
 
-import static org.forumj.web.servlet.tool.FJServletTools.setcookie;
+import static org.forumj.network.web.FJServletTools.setcookie;
 
 import java.util.Map;
 import java.util.stream.Collectors;

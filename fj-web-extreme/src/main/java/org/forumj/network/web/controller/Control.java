@@ -15,9 +15,7 @@
  */
 package org.forumj.network.web.controller;
 
-import static org.forumj.tool.Diletant.*;
-import static org.forumj.tool.FJServletTools.*;
-import static org.forumj.web.servlet.tool.FJServletTools.*;
+import static org.forumj.network.web.FJServletTools.*;
 
 import java.io.*;
 import java.sql.SQLException;
@@ -27,16 +25,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.network.web.FJUrl;
+import org.forumj.network.web.HttpParameters;
+import org.forumj.network.web.resources.LocaleString;
 import org.forumj.network.web.resources.ResourcesBuilder;
-import org.forumj.common.*;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.common.tool.HtmlChars;
 import org.forumj.network.web.Command;
 import org.forumj.common.web.Locale;
-import org.forumj.tool.*;
-import org.forumj.web.tool.ErrorCode;
+import org.forumj.network.web.controller.validator.ErrorCode;
 
 import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 
@@ -1148,7 +1147,7 @@ public class Control{
          // Ветка
          buffer.append("<tr>");
          buffer.append("<td class='internal'><div class=tbtext>");
-         buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD + "?id=" + subscribe.getTitleId() + "&end=1#end'>" + Diletant.fd_head(HtmlChars.convertHtmlSymbols(removeSlashes(subscribe.getHead())), webapp) + "</a>");
+         buffer.append("<a href='").append("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD + "?id=" + subscribe.getTitleId() + "&end=1#end'>" + fd_head(HtmlChars.convertHtmlSymbols(removeSlashes(subscribe.getHead())), webapp) + "</a>");
          buffer.append("</div></td>");
          // Флажок.
          buffer.append("<td class='internal'>");

@@ -17,9 +17,10 @@ package org.forumj.network.web.controller.post;
 
 import static org.forumj.network.web.Command.CREATE_THREAD;
 import static org.forumj.network.web.Command.PREVIEW_NEW_THREAD;
-import static org.forumj.tool.Diletant.*;
-import static org.forumj.tool.FJServletTools.menu;
-import static org.forumj.web.servlet.tool.FJServletTools.*;
+import static org.forumj.network.web.FJServletTools.menu;
+import static org.forumj.network.web.FJServletTools.*;
+
+import org.forumj.network.web.FJUrl;
 import org.forumj.network.web.resources.ResourcesBuilder;
 import java.io.*;
 import java.util.Date;
@@ -27,14 +28,13 @@ import java.util.Date;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import org.forumj.common.*;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.common.tool.*;
 import org.forumj.common.web.Pin;
 import org.forumj.network.web.Command;
-import org.forumj.tool.LocaleString;
+import org.forumj.network.web.resources.LocaleString;
 
 import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 

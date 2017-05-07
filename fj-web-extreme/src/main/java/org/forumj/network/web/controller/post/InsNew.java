@@ -9,7 +9,7 @@
  */
 package org.forumj.network.web.controller.post;
 
-import static org.forumj.tool.Diletant.errorOut;
+import static org.forumj.network.web.FJServletTools.errorOut;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -20,12 +20,12 @@ import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.checkip.CheckIp;
-import org.forumj.common.*;
 import org.forumj.common.config.FJConfiguration;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
-import org.forumj.email.FJEMail;
-import org.forumj.tool.LocaleString;
+import org.forumj.network.web.FJEMail;
+import org.forumj.network.web.FJUrl;
+import org.forumj.network.web.resources.LocaleString;
 
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>

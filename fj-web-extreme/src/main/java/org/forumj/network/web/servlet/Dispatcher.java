@@ -2,13 +2,13 @@ package org.forumj.network.web.servlet;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.forumj.common.FJServletName;
-import org.forumj.common.FJUrl;
+import org.forumj.network.web.FJUrl;
 import org.forumj.common.config.FJConfiguration;
 import org.forumj.network.web.URL;
 import org.forumj.network.web.controller.*;
+import org.forumj.network.web.controller.filter.*;
 import org.forumj.network.web.controller.post.*;
-import org.forumj.network.web.filter.*;
+import org.forumj.network.web.controller.validator.ThreadParametersValidator;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -18,13 +18,12 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static org.forumj.common.FJUrl.DEFAULT_USER;
-import static org.forumj.tool.Diletant.errorOut;
+import static org.forumj.network.web.FJServletTools.errorOut;
 
 /**
  * Created by Andrew on 16/03/2017.
  */
-@WebServlet(urlPatterns = {"/"}, name = FJServletName.INDEX)
+@WebServlet(urlPatterns = {"/"})
 public class Dispatcher extends HttpServlet {
 
     private Logger logger = LogManager.getLogger("org.forumj.web.filter");
@@ -91,6 +90,8 @@ public class Dispatcher extends HttpServlet {
     private LocaleResolver localeResolver = new LocaleResolver();
     private RestrictUnloginedUsersFilter restrictUnloginedUsersFilter = new RestrictUnloginedUsersFilter();
 
+    //Validators
+    private ThreadParametersValidator threadParametersValidator = new ThreadParametersValidator();
 
     @Override
     public void init() throws ServletException {
@@ -128,19 +129,13 @@ public class Dispatcher extends HttpServlet {
                             });
                             break;
                         case FJUrl.VIEW_THREAD:
-                            exitFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, false, (req, resp, webapp, uri) -> {
-                                loginFilter.doFilter(req, resp, webapp, uri, controllerName, (req1, resp1, webapp1, uri1) -> {
-                                    localeResolver.doFilter(req1, resp1, webapp1, uri1, (req2, resp2, webapp2, uri2) -> {
-                                        pageGroupThread.doGet(req2, resp2, webapp2, uri2);
-                                    });
-                                });
-                            });
-                            break;
-                        case FJUrl.VIEW_THREAD_OLD:
+                        case FJUrl.VIEW_THREAD_OLD: // for old external links
                             exitFilter.doFilter(request, response, webappName, url.getUserURI(), FJUrl.VIEW_THREAD, false, (req, resp, webapp, uri) -> {
                                 loginFilter.doFilter(req, resp, webapp, uri, FJUrl.VIEW_THREAD, (req1, resp1, webapp1, uri1) -> {
                                     localeResolver.doFilter(req1, resp1, webapp1, uri1, (req2, resp2, webapp2, uri2) -> {
-                                        pageGroupThread.doGet(req2, resp2, webapp2, uri2);
+                                        threadParametersValidator.doFilter(req2, resp2, webapp2, uri2, (req3, resp3, webapp3, uri3) ->{
+                                            pageGroupThread.doGet(req3, resp3, webapp3, uri3);
+                                        });
                                     });
                                 });
                             });
@@ -153,6 +148,7 @@ public class Dispatcher extends HttpServlet {
                         case FJUrl.SKIN:
                         case FJUrl.AVATARS:
                         case FJUrl.PHOTO: // backward compatibility
+//                            imagesController.doGet(request, response, webappName);
                             loginFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, (req, resp, webapp, uri) -> {
                                 imagesController.doGet(req, resp, webapp);
                             });

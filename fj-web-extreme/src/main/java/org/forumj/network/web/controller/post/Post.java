@@ -9,19 +9,18 @@
  */
 package org.forumj.network.web.controller.post;
 
-import static org.forumj.tool.Diletant.*;
-
 import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
 import org.forumj.common.web.*;
 import org.forumj.network.web.Command;
-import org.forumj.tool.LocaleString;
+import org.forumj.network.web.FJUrl;
+import org.forumj.network.web.resources.LocaleString;
+import org.forumj.network.web.FJServletTools;
 
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
@@ -71,7 +70,7 @@ public class Post{
       } catch (Throwable e) {
          e.printStackTrace();
          StringBuffer buffer = new StringBuffer();
-         buffer.append(errorOut(e));
+         buffer.append(FJServletTools.errorOut(e));
          response.setContentType("text/html; charset=UTF-8");
          response.getWriter().write(buffer.toString());
       }

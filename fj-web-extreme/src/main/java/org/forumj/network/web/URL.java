@@ -4,10 +4,7 @@ package org.forumj.network.web;
  * Created by Andrew on 19/04/2017.
  */
 
-import org.forumj.common.FJUrl;
 import org.forumj.network.web.controller.RootController;
-
-import javax.annotation.PostConstruct;
 
 /**
  * /

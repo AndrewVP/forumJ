@@ -1,16 +1,12 @@
 /**
  * 
  */
-package org.forumj.network.web.filter;
-
-import static org.forumj.common.FJServletName.*;
-import static org.forumj.tool.Diletant.errorOut;
+package org.forumj.network.web.controller.filter;
 
 import java.io.*;
 import java.util.*;
 
 import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.*;
 
 import net.sf.jmimemagic.Magic;
@@ -20,8 +16,9 @@ import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
 import org.apache.commons.fileupload.disk.*;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.forumj.common.config.FJConfiguration;
-import org.forumj.web.request.RequestWrapper;
-import org.forumj.web.tool.*;
+import org.forumj.network.web.RequestWrapper;
+import org.forumj.network.web.controller.validator.ErrorCode;
+import org.forumj.network.web.controller.validator.ValidationErrors;
 
 /**
  * @author Andrew V. Pogrebnyak

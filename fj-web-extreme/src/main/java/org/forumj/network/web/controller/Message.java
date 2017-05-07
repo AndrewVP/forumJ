@@ -15,10 +15,6 @@
  */
 package org.forumj.network.web.controller;
 
-import static org.forumj.tool.Diletant.*;
-import static org.forumj.tool.FJServletTools.*;
-import static org.forumj.web.servlet.tool.FJServletTools.*;
-
 import java.io.*;
 
 import javax.servlet.ServletException;
@@ -26,7 +22,8 @@ import javax.servlet.http.*;
 
 import org.forumj.common.db.entity.IUser;
 import org.forumj.network.web.resources.ResourcesBuilder;
-import org.forumj.tool.LocaleString;
+import org.forumj.network.web.resources.LocaleString;
+import org.forumj.network.web.FJServletTools;
 
 /**
  * 
@@ -56,7 +53,7 @@ public class Message{
                message = "404";
                is404 = true;
          }
-         cache(response);
+         FJServletTools.cache(response);
          buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
          buffer.append("<html>");
          buffer.append("<head>");
@@ -72,11 +69,11 @@ public class Message{
          /*Главная таблица*/
          buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          /*Таблица с лого и верхним баннером*/
-         buffer.append(logo(webapp));
+         buffer.append(FJServletTools.logo(webapp));
          if (!is404){
             // Главные ссылки
             // Главное "меню"
-            buffer.append(menu(request, user, locale, false, webapp, userURI));
+            buffer.append(FJServletTools.menu(request, user, locale, false, webapp, userURI));
          }
          // Сообщение
          buffer.append("<tr>");
@@ -86,15 +83,15 @@ public class Message{
          buffer.append("</tr>");
          if (!is404) {
             // Главное "меню"
-            buffer.append(menu(request, user, locale, false, webapp, userURI));
+            buffer.append(FJServletTools.menu(request, user, locale, false, webapp, userURI));
             // Баннер внизу, счетчики и копирайт.
-            buffer.append(footer(webapp));
+            buffer.append(FJServletTools.footer(webapp));
          }
          buffer.append("</body>");
          buffer.append("</html>");
       } catch (Throwable e) {
          buffer = new StringBuffer();
-         buffer.append(errorOut(e));
+         buffer.append(FJServletTools.errorOut(e));
          e.printStackTrace();
       }
       response.setContentType("text/html; charset=UTF-8");

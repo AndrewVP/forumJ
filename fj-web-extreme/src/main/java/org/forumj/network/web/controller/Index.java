@@ -16,9 +16,7 @@
 package org.forumj.network.web.controller;
 
 import static org.forumj.common.web.Pin.*;
-import static org.forumj.tool.Diletant.*;
-import static org.forumj.tool.FJServletTools.*;
-import static org.forumj.web.servlet.tool.FJServletTools.*;
+import static org.forumj.network.web.FJServletTools.*;
 
 import java.io.*;
 import java.text.DecimalFormat;
@@ -27,13 +25,13 @@ import java.util.*;
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import org.forumj.common.*;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.InvalidKeyException;
 import org.forumj.common.tool.*;
+import org.forumj.network.web.FJUrl;
+import org.forumj.network.web.resources.LocaleString;
 import org.forumj.network.web.resources.ResourcesBuilder;
-import org.forumj.tool.*;
 
 
 /**
@@ -517,7 +515,7 @@ public class Index{
       buffer.append("<td><p>");
       String str_head = HtmlChars.convertHtmlSymbols(removeSlashes(thread.getHead()));
       // Добавляем смайлики
-      str_head = Diletant.fd_head(str_head, webapp);
+      str_head = fd_head(str_head, webapp);
       // Опрос? Добавляем "метку"
       if (thread.isQuest()){
          str_head="<b>" +locale.getString("mess9")+ "</b> " +str_head;

@@ -1,4 +1,4 @@
-package org.forumj.web.filter;
+package org.forumj.network.web.filter;
 
 import java.io.IOException;
 

@@ -15,16 +15,16 @@
  */
 package org.forumj.network.web.controller;
 
-import static org.forumj.tool.Diletant.*;
-
 import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import org.forumj.common.*;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
+import org.forumj.network.web.FJServletTools;
+import org.forumj.network.web.FJUrl;
+import org.forumj.network.web.HttpParameters;
 
 public class CloseThread{
 
@@ -63,7 +63,7 @@ public class CloseThread{
          }
       } catch (Throwable e) {
          buffer = new StringBuffer();
-         buffer.append(errorOut(e));
+         buffer.append(FJServletTools.errorOut(e));
          e.printStackTrace();
       }
       response.setContentType("text/html; charset=UTF-8");

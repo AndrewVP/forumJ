@@ -9,9 +9,7 @@
  */
 package org.forumj.network.web.controller.post;
 
-import static org.forumj.tool.Diletant.*;
-import static org.forumj.tool.FJServletTools.*;
-import static org.forumj.web.servlet.tool.FJServletTools.*;
+import static org.forumj.network.web.FJServletTools.*;
 
 import java.io.*;
 import java.sql.SQLException;
@@ -23,14 +21,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.*;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
 import org.forumj.common.exception.*;
 import org.forumj.common.tool.*;
-import org.forumj.email.FJEMail;
+import org.forumj.network.web.FJEMail;
 import org.forumj.network.web.Command;
-import org.forumj.tool.LocaleString;
+import org.forumj.network.web.FJUrl;
+import org.forumj.network.web.resources.LocaleString;
 
 import org.forumj.network.web.resources.ResourcesBuilder;
 

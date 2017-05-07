@@ -11,14 +11,15 @@ package org.forumj.network.web.controller.post;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItem;
-import org.forumj.common.FJUrl;
-import org.forumj.common.HttpParameters;
+import org.forumj.network.web.FJUrl;
+import org.forumj.network.web.HttpParameters;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.entity.ImageType;
 import org.forumj.common.db.service.FJServiceHolder;
 import org.forumj.common.db.service.ImageService;
-import org.forumj.web.tool.ErrorCode;
-import org.forumj.web.tool.ValidationErrors;
+import org.forumj.network.web.controller.validator.ErrorCode;
+import org.forumj.network.web.controller.validator.ValidationErrors;
+import org.forumj.network.web.FJServletTools;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -26,8 +27,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
 import java.util.List;
-
-import static org.forumj.tool.Diletant.*;
 
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
@@ -74,7 +73,7 @@ public class PostImage{
 		} catch (Throwable e) {
 			e.printStackTrace();
 			StringBuffer buffer = new StringBuffer();
-			buffer.append(errorOut(e));
+			buffer.append(FJServletTools.errorOut(e));
 			response.setContentType("text/html; charset=UTF-8");
 			response.getWriter().write(buffer.toString());
 		}

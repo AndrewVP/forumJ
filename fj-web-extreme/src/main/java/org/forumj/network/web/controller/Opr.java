@@ -9,19 +9,17 @@
  */
 package org.forumj.network.web.controller;
 
-import static org.forumj.tool.Diletant.*;
-import static org.forumj.tool.FJServletTools.*;
-import static org.forumj.web.servlet.tool.FJServletTools.*;
+import static org.forumj.network.web.FJServletTools.*;
 
 import java.io.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
+import org.forumj.network.web.FJUrl;
 import org.forumj.network.web.resources.ResourcesBuilder;
-import org.forumj.tool.LocaleString;
+import org.forumj.network.web.resources.LocaleString;
 
 /**
  *

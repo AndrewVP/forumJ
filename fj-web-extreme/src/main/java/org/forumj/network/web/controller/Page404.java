@@ -15,8 +15,9 @@
  */
 package org.forumj.network.web.controller;
 
-import org.forumj.common.FJUrl;
+import org.forumj.network.web.FJUrl;
 import org.forumj.network.web.resources.ResourcesBuilder;
+import org.forumj.network.web.FJServletTools;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -24,8 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static org.forumj.tool.Diletant.errorOut;
-import static org.forumj.tool.FJServletTools.*;
+import static org.forumj.network.web.FJServletTools.errorOut;
 
 /**
  * 
@@ -36,7 +36,7 @@ public class Page404{
    public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp) throws ServletException, IOException {
       StringBuffer buffer = new StringBuffer();
       try{
-         cache(response);
+         FJServletTools.cache(response);
          buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
          buffer.append("<html>");
          buffer.append("<head>");
@@ -52,7 +52,7 @@ public class Page404{
          /*Главная таблица*/
          buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
          /*Таблица с лого и верхним баннером*/
-         buffer.append(logo(webapp));
+         buffer.append(FJServletTools.logo(webapp));
          // Сообщение
          buffer.append("<tr>");
          buffer.append("<td><div class='messageDiv'>");

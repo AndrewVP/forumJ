@@ -9,16 +9,15 @@
  */
 package org.forumj.network.web.controller.post;
 
-import static org.forumj.tool.Diletant.*;
-
 import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
-import org.forumj.common.*;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.*;
+import org.forumj.network.web.FJServletTools;
+import org.forumj.network.web.FJUrl;
 
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
@@ -45,7 +44,7 @@ public class SetFooter{
       } catch (Throwable e) {
          e.printStackTrace();
          StringBuffer buffer = new StringBuffer();
-         buffer.append(errorOut(e));
+         buffer.append(FJServletTools.errorOut(e));
          response.setContentType("text/html; charset=UTF-8");
          response.getWriter().write(buffer.toString());
       }

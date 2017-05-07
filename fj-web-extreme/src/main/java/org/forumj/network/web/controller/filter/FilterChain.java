@@ -1,4 +1,4 @@
-package org.forumj.network.web.filter;
+package org.forumj.network.web.controller.filter;
 
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;

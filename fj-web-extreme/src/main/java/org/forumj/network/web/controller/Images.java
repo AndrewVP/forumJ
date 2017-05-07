@@ -19,20 +19,17 @@ import java.io.*;
 import java.util.*;
 
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.forumj.common.FJUrl;
+import org.forumj.network.web.FJUrl;
 import org.forumj.common.config.FJConfiguration;
 import org.forumj.common.db.entity.Image;
 import org.forumj.common.db.service.FJServiceHolder;
 import org.forumj.common.db.service.ImageService;
 import org.forumj.image.ImageTools;
-import org.forumj.web.servlet.tool.ResourcesCache;
-
-import static org.forumj.common.FJServletName.IMAGES;
+import org.forumj.network.web.resources.ResourcesCache;
 
 /**
  * 
