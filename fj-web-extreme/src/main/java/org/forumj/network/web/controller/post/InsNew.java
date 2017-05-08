@@ -9,13 +9,10 @@
  */
 package org.forumj.network.web.controller.post;
 
-import static org.forumj.network.web.FJServletTools.errorOut;
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.*;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
 import org.apache.commons.configuration.ConfigurationException;

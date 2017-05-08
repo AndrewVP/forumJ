@@ -9,11 +9,8 @@
  */
 package org.forumj.network.web.controller;
 
-import static org.forumj.network.web.FJServletTools.errorOut;
-
 import java.io.*;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.*;
 
 import org.forumj.common.db.entity.IUser;

@@ -19,13 +19,9 @@ import org.forumj.network.web.FJUrl;
 import org.forumj.network.web.resources.ResourcesBuilder;
 import org.forumj.network.web.FJServletTools;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.io.PrintWriter;
-
-import static org.forumj.network.web.FJServletTools.errorOut;
 
 /**
  * 

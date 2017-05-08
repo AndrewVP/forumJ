@@ -15,10 +15,6 @@
  */
 package org.forumj.network.web.controller.filter;
 
-import static org.forumj.network.web.FJServletTools.errorOut;
-
-import java.io.*;
-
 import javax.servlet.*;
 import javax.servlet.http.*;
 

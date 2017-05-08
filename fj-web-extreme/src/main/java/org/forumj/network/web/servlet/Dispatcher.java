@@ -16,9 +16,6 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
-
-import static org.forumj.network.web.FJServletTools.errorOut;
 
 /**
  * Created by Andrew on 16/03/2017.
@@ -109,7 +106,7 @@ public class Dispatcher extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException{
         try {
             String path = request.getRequestURI();
             URL url = URL.create(path, webappName);

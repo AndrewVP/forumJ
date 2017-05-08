@@ -15,10 +15,7 @@
  */
 package org.forumj.network.web.controller.filter;
 
-import static org.forumj.network.web.FJServletTools.errorOut;
 import static org.forumj.network.web.FJServletTools.*;
-
-import java.io.*;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -38,82 +35,72 @@ public class LoginFilter{
       boolean ok = true;
       HttpServletRequest request = (HttpServletRequest) req;
       HttpServletResponse response = (HttpServletResponse) resp;
-      try {
-         IUser user = (IUser) request.getSession(true).getAttribute("user");
-         UserService userService = FJServiceHolder.getUserService();
-         if (user == null || !user.isLogined()){
-            QuotedPrintableCodec codec = new QuotedPrintableCodec();
-            Cookie[] cookies = request.getCookies();
-            String path = webapp.isEmpty() ? "/" : new StringBuilder("/").append(webapp).append("/").toString();
-            Cookie iduCookie = getCookie(cookies, "idu", path);
-            Cookie pass2Cookie = getCookie(cookies, "pass2", path);
-            if (pass2Cookie != null) {
-               String pass2 = pass2Cookie.getValue();
-               if (pass2 != null){
-                  pass2 = codec.decode(pass2);
-                  user = userService.read(Long.valueOf(iduCookie.getValue()), pass2, false);
-                  if (user == null){
-                     ok = false;
-                  }else{
-                     if (!user.getIsActive() || !user.isApproved()){
-                        user = null;
-                     }else{
-                        request.getSession().setAttribute("user", user);               
-                     }
-                  }
-               }else{
-                  ok = false;
-               }
-            }
-         }
-         if (user == null){
-            String iduParameter = request.getParameter("IDU");
-            String pass1Parameter = request.getParameter("PS1");
-            String pass2Parameter = request.getParameter("PS2");
-            if (iduParameter != null && (pass1Parameter != null || pass2Parameter != null)){
-               boolean firstPassword = pass1Parameter != null;
-               user = userService.read(Long.valueOf(iduParameter), firstPassword ? pass1Parameter : pass2Parameter, firstPassword);
+      IUser user = (IUser) request.getSession(true).getAttribute("user");
+      UserService userService = FJServiceHolder.getUserService();
+      if (user == null || !user.isLogined()){
+         QuotedPrintableCodec codec = new QuotedPrintableCodec();
+         Cookie[] cookies = request.getCookies();
+         String path = webapp.isEmpty() ? "/" : new StringBuilder("/").append(webapp).append("/").toString();
+         Cookie iduCookie = getCookie(cookies, "idu", path);
+         Cookie pass2Cookie = getCookie(cookies, "pass2", path);
+         if (pass2Cookie != null) {
+            String pass2 = pass2Cookie.getValue();
+            if (pass2 != null){
+               pass2 = codec.decode(pass2);
+               user = userService.read(Long.valueOf(iduCookie.getValue()), pass2, false);
                if (user == null){
                   ok = false;
                }else{
                   if (!user.getIsActive() || !user.isApproved()){
                      user = null;
                   }else{
-                     request.getSession().setAttribute("user", user);               
+                     request.getSession().setAttribute("user", user);
                   }
                }
+            }else{
+               ok = false;
             }
          }
-         if (user == null){
-            user = userService.readUser(0l);
-            request.getSession().setAttribute("user", user);
-         }
-         if (ok){
-            if (user != null && user.isLogined()){
-               String ip = request.getRemoteAddr();
-               if (ip != null && CheckIp.isSpammerIp(ip)){
-                  String path = webapp.isEmpty() ? "/" : new StringBuilder("/").append(webapp).append("/").toString();
-                  setcookie(response, "idu", "", 0, path, request.getServerName());
-                  setcookie(response, "pass2", "", 0, path, request.getServerName());
-                  user = userService.readUser(0l);
+      }
+      if (user == null){
+         String iduParameter = request.getParameter("IDU");
+         String pass1Parameter = request.getParameter("PS1");
+         String pass2Parameter = request.getParameter("PS2");
+         if (iduParameter != null && (pass1Parameter != null || pass2Parameter != null)){
+            boolean firstPassword = pass1Parameter != null;
+            user = userService.read(Long.valueOf(iduParameter), firstPassword ? pass1Parameter : pass2Parameter, firstPassword);
+            if (user == null){
+               ok = false;
+            }else{
+               if (!user.getIsActive() || !user.isApproved()){
+                  user = null;
+               }else{
                   request.getSession().setAttribute("user", user);
                }
             }
-            chain.doFilter(request, response, webapp, userURI);
-         }else{
-            String path = webapp.isEmpty() ? "/" : new StringBuilder("/").append(webapp).append("/").toString();
-            setcookie(response, "idu", "", 0, path, request.getServerName());
-            setcookie(response, "pass2", "", 0, path, request.getServerName());
-            response.sendRedirect(new StringBuilder("/").append(userURI).append("/").append( exitControllerName).toString());
          }
-      } catch (Throwable e) {
-         e.printStackTrace();
-         StringBuffer buffer = new StringBuffer();
-         buffer.append(errorOut(e));
-         response.setContentType("text/html; charset=UTF-8");
-         PrintWriter writer = response.getWriter();
-         String out = buffer.toString();
-         writer.write(out);
+      }
+      if (user == null){
+         user = userService.readUser(0l);
+         request.getSession().setAttribute("user", user);
+      }
+      if (ok){
+         if (user != null && user.isLogined()){
+            String ip = request.getRemoteAddr();
+            if (ip != null && CheckIp.isSpammerIp(ip)){
+               String path = webapp.isEmpty() ? "/" : new StringBuilder("/").append(webapp).append("/").toString();
+               setcookie(response, "idu", "", 0, path, request.getServerName());
+               setcookie(response, "pass2", "", 0, path, request.getServerName());
+               user = userService.readUser(0l);
+               request.getSession().setAttribute("user", user);
+            }
+         }
+         chain.doFilter(request, response, webapp, userURI);
+      }else{
+         String path = webapp.isEmpty() ? "/" : new StringBuilder("/").append(webapp).append("/").toString();
+         setcookie(response, "idu", "", 0, path, request.getServerName());
+         setcookie(response, "pass2", "", 0, path, request.getServerName());
+         response.sendRedirect(new StringBuilder("/").append(userURI).append("/").append( exitControllerName).toString());
       }
    }
 

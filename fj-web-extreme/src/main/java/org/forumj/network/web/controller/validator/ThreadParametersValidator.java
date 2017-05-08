@@ -31,73 +31,63 @@ import org.forumj.network.web.FJServletTools;
  */
 public class ThreadParametersValidator {
 
-   public void doFilter(ServletRequest request, ServletResponse response, String webapp, String userURI, FilterChain chain) throws IOException, ServletException {
+   public void doFilter(ServletRequest request, ServletResponse response, String webapp, String userURI, FilterChain chain) throws Exception {
       boolean isOk = true;
-      try {
-         ThreadService threadService = FJServiceHolder.getThreadService();
-         PostService postService = FJServiceHolder.getPostService();
-         RequestWrapper req = new RequestWrapper((HttpServletRequest) request);
-         String page = request.getParameter("page");
-         if (page == null){
+      ThreadService threadService = FJServiceHolder.getThreadService();
+      PostService postService = FJServiceHolder.getPostService();
+      RequestWrapper req = new RequestWrapper((HttpServletRequest) request);
+      String page = request.getParameter("page");
+      if (page == null){
+         req.addOrReplaceParameter("page", "1");
+      }else{
+         try {
+            Integer.valueOf(page);
+         } catch (NumberFormatException e) {
             req.addOrReplaceParameter("page", "1");
-         }else{
-            try {
-               Integer.valueOf(page);
-            } catch (NumberFormatException e) {
-               req.addOrReplaceParameter("page", "1");
-            }
          }
-         String id = request.getParameter("id");
-         if (id == null){
+      }
+      String id = request.getParameter("id");
+      if (id == null){
+         isOk = false;
+      }else{
+         Long threadId = null;
+         try {
+            threadId = Long.valueOf(id);
+         } catch (NumberFormatException e) {
             isOk = false;
-         }else{
-            Long threadId = null;
-            try {
-               threadId = Long.valueOf(id);
-            } catch (NumberFormatException e) {
-               isOk = false;
-            }
-            if (threadId != null){
-               isOk = isOk && threadService.checkThreadExist(threadId);
-            }
          }
-         String reply = request.getParameter("reply");
-         if (reply != null){
-            Long postId = null;
-            try {
-               postId = Long.valueOf(reply);
-            } catch (NumberFormatException e) {
-               req.addOrReplaceParameter("reply", RequestWrapper.FAKE_NULL);
-            }
-            if(postId != null && !postService.checkPostExist(postId)){
-               req.addOrReplaceParameter("reply", RequestWrapper.FAKE_NULL);
-            }
+         if (threadId != null){
+            isOk = isOk && threadService.checkThreadExist(threadId);
          }
-         String msg = request.getParameter("msg");
-         if (msg != null){
-            Long postId = null;
-            try {
-               postId = Long.valueOf(msg);
-            } catch (NumberFormatException e) {
-               req.addOrReplaceParameter("msg", RequestWrapper.FAKE_NULL);
-            }
-            if(postId != null && !postService.checkPostExist(postId)){
-               req.addOrReplaceParameter("msg", RequestWrapper.FAKE_NULL);
-            }
+      }
+      String reply = request.getParameter("reply");
+      if (reply != null){
+         Long postId = null;
+         try {
+            postId = Long.valueOf(reply);
+         } catch (NumberFormatException e) {
+            req.addOrReplaceParameter("reply", RequestWrapper.FAKE_NULL);
          }
-         if (isOk){
-            chain.doFilter(req, (HttpServletResponse) response, webapp, userURI);
-         }else{
-            ((HttpServletResponse) response).sendRedirect("/");
+         if(postId != null && !postService.checkPostExist(postId)){
+            req.addOrReplaceParameter("reply", RequestWrapper.FAKE_NULL);
          }
-      } catch (Throwable e) {
-         e.printStackTrace();
-         StringBuffer buffer = new StringBuffer();
-         buffer.append(FJServletTools.errorOut(e));
-         response.setContentType("text/html; charset=UTF-8");
-         PrintWriter writer = response.getWriter();
-         String out = buffer.toString();
-         writer.write(out);
+      }
+      String msg = request.getParameter("msg");
+      if (msg != null){
+         Long postId = null;
+         try {
+            postId = Long.valueOf(msg);
+         } catch (NumberFormatException e) {
+            req.addOrReplaceParameter("msg", RequestWrapper.FAKE_NULL);
+         }
+         if(postId != null && !postService.checkPostExist(postId)){
+            req.addOrReplaceParameter("msg", RequestWrapper.FAKE_NULL);
+         }
+      }
+      if (isOk){
+         chain.doFilter(req, (HttpServletResponse) response, webapp, userURI);
+      }else{
+         ((HttpServletResponse) response).sendRedirect("/");
       }
    }
 

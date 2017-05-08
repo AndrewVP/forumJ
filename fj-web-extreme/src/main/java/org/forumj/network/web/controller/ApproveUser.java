@@ -23,13 +23,9 @@ import org.forumj.common.db.service.UserService;
 import org.forumj.network.web.FJEMail;
 import org.forumj.network.web.resources.LocaleString;
 
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
-
-import static org.forumj.network.web.FJServletTools.errorOut;
 
 public class ApproveUser{
 
