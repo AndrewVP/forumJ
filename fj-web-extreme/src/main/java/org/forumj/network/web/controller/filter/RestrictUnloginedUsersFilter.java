@@ -33,22 +33,12 @@ public class RestrictUnloginedUsersFilter{
    public void doFilter(ServletRequest req, ServletResponse resp, String webapp, String userURI, String exitControllerName, FilterChain chain) throws Exception{
       HttpServletRequest request = (HttpServletRequest) req;
       HttpServletResponse response = (HttpServletResponse) resp;
-      try {
-         HttpSession session = request.getSession(true);
-         IUser user = (IUser) session.getAttribute("user");
-         if (user == null || !user.isLogined()){
-            response.sendRedirect("/" + userURI + "/" + exitControllerName);
-         }else{
-            chain.doFilter(request, response, webapp, userURI);
-         }
-      } catch (Throwable e) {
-         e.printStackTrace();
-         StringBuffer buffer = new StringBuffer();
-         buffer.append(errorOut(e));
-         response.setContentType("text/html; charset=UTF-8");
-         PrintWriter writer = response.getWriter();
-         String out = buffer.toString();
-         writer.write(out);
+      HttpSession session = request.getSession(true);
+      IUser user = (IUser) session.getAttribute("user");
+      if (user == null || !user.isLogined()){
+         response.sendRedirect("/" + userURI + "/" + exitControllerName);
+      }else{
+         chain.doFilter(request, response, webapp, userURI);
       }
    }
 }

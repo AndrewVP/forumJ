@@ -26,39 +26,31 @@ public class UserVoice{
    
    //TODO Нет валидации параметра answerParameter - в случае пустого ничего не происходит
 
-   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
-      try {
-         HttpSession session = request.getSession();
-         String threadIdParameter = request.getParameter("IDT2");
-         String anonymouslyParameter = request.getParameter("HD");
-         String answerParameter = request.getParameter("P");
-         IUser user = (IUser) session.getAttribute("user");
-         if (user != null && !user.isBanned() && user.isLogined()){
-            if (threadIdParameter != null && !"".equals(threadIdParameter)){
-               if (answerParameter != null && !"".equals(answerParameter)){
-                  QuestService questService = FJServiceHolder.getQuestService();
-                  VoiceService voiceService = FJServiceHolder.getVoiceService();
-                  Long threadId = Long.valueOf(threadIdParameter);
-                  // TODO Magic integer!
-                  int answerType = anonymouslyParameter == null ? 1 : 2; 
-                  if (!voiceService.isUserVoted(threadId, user.getId())){
-                     questService.addCustomAnswer(threadId, answerParameter, answerType, user);
-                  }
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception{
+      HttpSession session = request.getSession();
+      String threadIdParameter = request.getParameter("IDT2");
+      String anonymouslyParameter = request.getParameter("HD");
+      String answerParameter = request.getParameter("P");
+      IUser user = (IUser) session.getAttribute("user");
+      if (user != null && !user.isBanned() && user.isLogined()){
+         if (threadIdParameter != null && !"".equals(threadIdParameter)){
+            if (answerParameter != null && !"".equals(answerParameter)){
+               QuestService questService = FJServiceHolder.getQuestService();
+               VoiceService voiceService = FJServiceHolder.getVoiceService();
+               Long threadId = Long.valueOf(threadIdParameter);
+               // TODO Magic integer!
+               int answerType = anonymouslyParameter == null ? 1 : 2;
+               if (!voiceService.isUserVoted(threadId, user.getId())){
+                  questService.addCustomAnswer(threadId, answerParameter, answerType, user);
                }
-               StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD).append("?id=").append(threadIdParameter);
-               response.sendRedirect(url.toString());
             }
-         }else{
-            // Session expired
-            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
-            response.sendRedirect(exit.toString());
+            StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD).append("?id=").append(threadIdParameter);
+            response.sendRedirect(url.toString());
          }
-      } catch (Throwable e) {
-         e.printStackTrace();
-         StringBuffer buffer = new StringBuffer();
-         buffer.append(FJServletTools.errorOut(e));
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
+      }else{
+         // Session expired
+         StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+         response.sendRedirect(exit.toString());
       }
    }
 

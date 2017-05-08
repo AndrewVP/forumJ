@@ -56,51 +56,43 @@ public class SetAvatar{
 		}
 	}
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception{
 		HttpSession session = request.getSession();
-		try {
-			ValidationErrors validationErrors = (ValidationErrors) request.getAttribute(ValidationErrors.class.getName());
-			if (validationErrors.isHasErrors()){
-				List<ErrorCode> errors = validationErrors.getErrors();
-				StringBuffer errCodes = new StringBuffer();
-				for (ErrorCode errorCode : errors) {
-					if (errCodes.length() == 0){
-						errCodes.append("&");
-						errCodes.append(HttpParameters.ERROR_CODE);
-						errCodes.append("=");
-					}else{
-						errCodes.append(",");
-					}
-					errCodes.append(errorCode.getErrorCode());
+		ValidationErrors validationErrors = (ValidationErrors) request.getAttribute(ValidationErrors.class.getName());
+		if (validationErrors.isHasErrors()){
+			List<ErrorCode> errors = validationErrors.getErrors();
+			StringBuffer errCodes = new StringBuffer();
+			for (ErrorCode errorCode : errors) {
+				if (errCodes.length() == 0){
+					errCodes.append("&");
+					errCodes.append(HttpParameters.ERROR_CODE);
+					errCodes.append("=");
+				}else{
+					errCodes.append(",");
 				}
+				errCodes.append(errorCode.getErrorCode());
+			}
+			//TODO Magic integer!
+			StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=9").append(errCodes);
+			response.sendRedirect(url.toString());
+		}else{
+			FileItem avatar = (FileItem) request.getAttribute("avatar");
+			IUser user = (IUser) session.getAttribute("user");
+			if (user != null && !user.isBanned() && user.isLogined()){
+				String avatarUrl = createAvatar(user.getId(), avatar);
+				user.setAvatar(avatarUrl);
+				user.setAvatarApproved(true);
+				UserService userService = FJServiceHolder.getUserService();
+				userService.update(user);
+				cache.remove("/" + avatarUrl);
 				//TODO Magic integer!
-				StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=9").append(errCodes);
+				StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=9");
 				response.sendRedirect(url.toString());
 			}else{
-				FileItem avatar = (FileItem) request.getAttribute("avatar");
-				IUser user = (IUser) session.getAttribute("user");
-				if (user != null && !user.isBanned() && user.isLogined()){
-					String avatarUrl = createAvatar(user.getId(), avatar);
-					user.setAvatar(avatarUrl);
-					user.setAvatarApproved(true);
-					UserService userService = FJServiceHolder.getUserService();
-					userService.update(user);
-					cache.remove("/" + avatarUrl);
-					//TODO Magic integer!
-					StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=9");
-					response.sendRedirect(url.toString());
-				}else{
-					// Session expired
-					StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
-					response.sendRedirect(exit.toString());
-				}
+				// Session expired
+				StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+				response.sendRedirect(exit.toString());
 			}
-		} catch (Throwable e) {
-			e.printStackTrace();
-			StringBuffer buffer = new StringBuffer();
-			buffer.append(FJServletTools.errorOut(e));
-			response.setContentType("text/html; charset=UTF-8");
-			response.getWriter().write(buffer.toString());
 		}
 	}
 

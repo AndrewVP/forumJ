@@ -33,457 +33,451 @@ import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 
 public class Tema{
 
-   public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception {
       long startTime = new Date().getTime();
       ImageService imageService = FJServiceHolder.getImageService();
       StringBuffer buffer = new StringBuffer();
-      try {
-         HttpSession session = request.getSession();
-         cache(response);
-         // Какой это номер страницы? если без номера, то первый
-         Integer pageNumber = request.getParameter("page") == null ? 1 : Integer.valueOf(request.getParameter("page"));
-         // id Темы
-         Long threadId = request.getParameter("id") == null ? 1 : Long.valueOf(request.getParameter("id"));
-         // Номер поста, на который отвечаем
-         String replyPostParameter = request.getParameter("reply");
-         String end = request.getParameter("end");
-         // Зашли с поиска?
-         String msg = request.getParameter("msg");
-         VoiceService voiceService = FJServiceHolder.getVoiceService();
-         PostService postService = FJServiceHolder.getPostService();
-         SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
-         ThreadService treadService = FJServiceHolder.getThreadService();
-         IFJThread thread = treadService.readThread(threadId);
-         boolean isAnswer = replyPostParameter != null && !"".equals(replyPostParameter.trim());
-         LocaleString locale = (LocaleString) session.getAttribute("locale");
-         IUser user = (IUser) session.getAttribute("user");
-         IgnorService ignorService = FJServiceHolder.getIgnorService();
-         List<IIgnor> ignorList = ignorService.readUserIgnor(user.getId());
-         // Сколько страниц?
-         Integer count = thread.getPostsAmount();
-         Integer couP = (int) (Math.floor((double)count/user.getPostsOnPage())+2);
-         // Если цитирование или последний пост, то нам на последнюю
-         boolean lastPost = false;
-         if (isAnswer || end != null){
-            pageNumber = couP-1;
-            lastPost = true;
+      HttpSession session = request.getSession();
+      cache(response);
+      // Какой это номер страницы? если без номера, то первый
+      Integer pageNumber = request.getParameter("page") == null ? 1 : Integer.valueOf(request.getParameter("page"));
+      // id Темы
+      Long threadId = request.getParameter("id") == null ? 1 : Long.valueOf(request.getParameter("id"));
+      // Номер поста, на который отвечаем
+      String replyPostParameter = request.getParameter("reply");
+      String end = request.getParameter("end");
+      // Зашли с поиска?
+      String msg = request.getParameter("msg");
+      VoiceService voiceService = FJServiceHolder.getVoiceService();
+      PostService postService = FJServiceHolder.getPostService();
+      SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
+      ThreadService treadService = FJServiceHolder.getThreadService();
+      IFJThread thread = treadService.readThread(threadId);
+      boolean isAnswer = replyPostParameter != null && !"".equals(replyPostParameter.trim());
+      LocaleString locale = (LocaleString) session.getAttribute("locale");
+      IUser user = (IUser) session.getAttribute("user");
+      IgnorService ignorService = FJServiceHolder.getIgnorService();
+      List<IIgnor> ignorList = ignorService.readUserIgnor(user.getId());
+      // Сколько страниц?
+      Integer count = thread.getPostsAmount();
+      Integer couP = (int) (Math.floor((double)count/user.getPostsOnPage())+2);
+      // Если цитирование или последний пост, то нам на последнюю
+      boolean lastPost = false;
+      if (isAnswer || end != null){
+         pageNumber = couP-1;
+         lastPost = true;
+      }
+      int nfirstpost = (pageNumber-1)*user.getPostsOnPage();
+      List<IFJPost> posts = postService.readPosts(user, threadId, nfirstpost, user.getPostsOnPage(), pageNumber, lastPost);
+      int postsAmount = posts.size();
+      // Получаем массив постов
+      session.setAttribute("page", pageNumber);
+      session.setAttribute("id", threadId);
+      session.setAttribute("where", request.getContextPath() + "?id=" + threadId + "&amp;page=" + pageNumber);
+      int countPosts = 0;
+      if (msg != null && !"".equals(msg.trim())){
+         try {
+            Long msgId = new Long(msg);
+            countPosts = postService.getPostsCountInThread(threadId, msgId);
+         } catch (NumberFormatException e) {
+            e.printStackTrace();
+            msg = null;
          }
-         int nfirstpost = (pageNumber-1)*user.getPostsOnPage();
-         List<IFJPost> posts = postService.readPosts(user, threadId, nfirstpost, user.getPostsOnPage(), pageNumber, lastPost);
-         int postsAmount = posts.size();
-         // Получаем массив постов
-         session.setAttribute("page", pageNumber);
-         session.setAttribute("id", threadId);
-         session.setAttribute("where", request.getContextPath() + "?id=" + threadId + "&amp;page=" + pageNumber);
-         int countPosts = 0;
-         if (msg != null && !"".equals(msg.trim())){
-            try {
-               Long msgId = new Long(msg);
-               countPosts = postService.getPostsCountInThread(threadId, msgId);
-            } catch (NumberFormatException e) {
-               e.printStackTrace();
-               msg = null;
+         pageNumber=(int) (Math.floor(countPosts/user.getPostsOnPage()) + 1);
+      }
+      // Записываем счетчики
+      // Робот?
+      if (!isRobot(request)){
+         // Нет
+         treadService.setSeen(user, threadId);
+      }
+      buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
+      buffer.append("<html>");
+      buffer.append("<head>");
+      buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
+      // Стили
+      buffer.append(ResourcesBuilder.getStyleCSS(webapp));
+      IndexService indexService = FJServiceHolder.getIndexService();
+      Long m_xb = indexService.getLastPostId(threadId);
+      buffer.append("<script language='javascript' type='text/javascript'>\n");
+      buffer.append("var m_xb=" + m_xb + ";\n");
+      buffer.append("var pingURL='").append("/").append(userURI).append("/").append(FJUrl.PING).append("/?id=").append(threadId).append("';\n");
+      buffer.append("</script>\n");
+      buffer.append("<script language='javascript' type='text/javascript'>\n");
+      buffer.append("var HEADER_IS_EMPTY='").append(locale.getString("mess128")).append("';\n");
+      buffer.append("var POST_IS_EMPTY='").append(locale.getString("mess129")).append("';\n");
+      buffer.append("var webapp='").append(webapp.isEmpty() ? "" : "/" + webapp).append("';\n");
+      buffer.append("</script>\n");
+      buffer.append(loadJavaScript("/js/indicatorForThread.js"));
+      // Скрипты (смайлики)
+      buffer.append(loadJavaScript("/js/smile_.js"));
+      // Скрипты (игнор)
+      buffer.append(loadJavaScript("/js/jsignor.js"));
+      // Скрипты (подписка)
+      buffer.append(loadJavaScript("/js/jssubscribe.js"));
+      // Скрипты (submit поста)
+      buffer.append(loadJavaScript("/js/postSubmit.js"));
+      // Скрипты (автовставка тегов)
+      buffer.append(loadJavaScript("/js/jstags.js"));
+      buffer.append("<link rel='icon' href='/favicon.ico' type='image/x-icon'>");
+      buffer.append("<link rel='shortcut icon' href='/favicon.ico' type='image/x-icon'>");
+      buffer.append("<title>");
+      buffer.append("форум Дилетантов :: " + thread.getHead());
+      buffer.append("</title>");
+      buffer.append("</head>");
+      // Цвет фона страницы
+      buffer.append("<body class='mainBodyBG'>");
+      // Главная таблица
+      buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
+      // Таблица с лого и верхним баннером
+      buffer.append(logo(webapp));
+      // Таблица главных ссылок
+      buffer.append("<tr>");
+      buffer.append("<td width='100%'>");
+      buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
+      // Главное "меню"
+      buffer.append(menu(request, user, locale, false, webapp, userURI));
+      // Ссылки на другие страницы  Тут надо убрать colspan!
+      buffer.append("<tr><td width=100%>");
+      buffer.append("<table width=100%>");
+      buffer.append("<tr>");
+      buffer.append("<td>");
+      buffer.append("<table>");
+      buffer.append("<tr>");
+      buffer.append("<td class='page'>");
+      buffer.append("<font class=mnuforum><b>" + locale.getString("mess22") + "&nbsp;</b></font>");
+      buffer.append("</td>");
+      int i2=0;
+      for (int i1=1; i1<couP; i1++){
+         i2=i2+1;
+         if ((i1>(pageNumber-5) && i1<(pageNumber+5))||i2==10||i1==1||i1==(couP-1)){
+            if (i2==10) i2=0;
+            if (i1==pageNumber){
+               buffer.append("<td class='pagecurrent'>");
+               buffer.append("<span class=mnuforum><b>");
+               buffer.append(i1);
+               buffer.append("</b></span>");
+               buffer.append("</td>");
+            }else {
+               buffer.append("<td class='page'>");
+               buffer.append("<a class='mnuforum' href='");
+               buffer.append("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD);
+               buffer.append("?id=");
+               buffer.append(threadId);
+               buffer.append("&amp;page=");
+               buffer.append(i1);
+               buffer.append("'>");
+               buffer.append(i1);
+               buffer.append("</a>");
+               buffer.append("</td>");
             }
-            pageNumber=(int) (Math.floor(countPosts/user.getPostsOnPage()) + 1);
          }
-         // Записываем счетчики
-         // Робот?
-         if (!isRobot(request)){
-            // Нет
-            treadService.setSeen(user, threadId);
+      }
+      buffer.append("</tr>");
+      buffer.append("</table>");
+
+      buffer.append("</td>");
+
+      buffer.append("<td align=right>");
+      // Сторінка сформована :)
+      buffer.append("<span class=posthead>"+ locale.getString("mess91") + "</span>");
+      buffer.append("<br/>");
+      buffer.append("<span class=posthead >" + locale.getString("mess165") + ":&nbsp;</span>");
+      buffer.append("<span class=posthead id='indicatort' style='color:red'>&nbsp;</span>");
+
+      buffer.append("</td>");
+      buffer.append("</tr></table>");
+      buffer.append("</td>");
+      buffer.append("</tr></table></td></tr>");
+      // Таблица главных ссылок кончилась
+      //Строка с таблицей форума
+      buffer.append("<tr><td height='400' valign='top'>");
+      // Таблица форума
+      buffer.append("<table border='0' cellpadding='2' cellspacing='0' width='100%'>");
+      // Определяем кол-во строк таблицы
+      if (postsAmount>count) {
+         postsAmount=count-(pageNumber-1)*user.getPostsOnPage();
+      }else{
+         postsAmount=user.getPostsOnPage();
+      }
+      // Тема
+      // Выводим строки
+      for (int postIndex = 0; postIndex < posts.size(); postIndex++) {
+         IFJPost post = posts.get(postIndex);
+         buffer.append(writePost(post, ignorList, user, pageNumber, locale, thread, voiceService, userURI, webapp));
+      }
+      // /Таблица форума
+      buffer.append("</table>");
+      // "Граница" внизу
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      // Таблица главных ссылок
+      // Ссылки на страницы
+      buffer.append("<tr>");
+      buffer.append("<td width='100%'>");
+      buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
+      buffer.append("<tr>");
+      buffer.append("<td colspan='5'>");
+      buffer.append("<table>");
+      buffer.append("<tr>");
+      buffer.append("<td class='page'>");
+      buffer.append("<font class=mnuforum><b>" + locale.getString("mess22") + "&nbsp;</b></font>");
+      buffer.append("</td>");
+      i2=0;
+      for (int i1=1; i1<couP; i1++){
+         i2=i2+1;
+         if ((i1>(pageNumber-5) && i1<(pageNumber+5))||i2==10||i1==1||i1==(couP-1)){
+            if (i2==10) i2=0;
+            if (i1==pageNumber){
+               buffer.append("<td class='pagecurrent'>");
+               buffer.append("<span class=mnuforum><b>");
+               buffer.append(i1);
+               buffer.append("</b></span>");
+               buffer.append("</td>");
+            }else {
+               buffer.append("<td class='page'>");
+               buffer.append("<a class='mnuforum' href='");
+               buffer.append("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD);
+               buffer.append("?id=");
+               buffer.append(threadId);
+               buffer.append("&amp;page=");
+               buffer.append(i1);
+               buffer.append("'>");
+               buffer.append(i1);
+               buffer.append("</a>");
+               buffer.append("</td>");
+            }
          }
-         buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
-         buffer.append("<html>");
-         buffer.append("<head>");
-         buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
-         // Стили
-         buffer.append(ResourcesBuilder.getStyleCSS(webapp));
-         IndexService indexService = FJServiceHolder.getIndexService();
-         Long m_xb = indexService.getLastPostId(threadId);
-         buffer.append("<script language='javascript' type='text/javascript'>\n");
-         buffer.append("var m_xb=" + m_xb + ";\n");
-         buffer.append("var pingURL='").append("/").append(userURI).append("/").append(FJUrl.PING).append("/?id=").append(threadId).append("';\n");
-         buffer.append("</script>\n");
-         buffer.append("<script language='javascript' type='text/javascript'>\n");
-         buffer.append("var HEADER_IS_EMPTY='").append(locale.getString("mess128")).append("';\n");
-         buffer.append("var POST_IS_EMPTY='").append(locale.getString("mess129")).append("';\n");
-         buffer.append("var webapp='").append(webapp.isEmpty() ? "" : "/" + webapp).append("';\n");
-         buffer.append("</script>\n");
-         buffer.append(loadJavaScript("/js/indicatorForThread.js"));
-         // Скрипты (смайлики)
-         buffer.append(loadJavaScript("/js/smile_.js"));
-         // Скрипты (игнор)
-         buffer.append(loadJavaScript("/js/jsignor.js"));
-         // Скрипты (подписка)
-         buffer.append(loadJavaScript("/js/jssubscribe.js"));
-         // Скрипты (submit поста)
-         buffer.append(loadJavaScript("/js/postSubmit.js"));
-         // Скрипты (автовставка тегов)
-         buffer.append(loadJavaScript("/js/jstags.js"));
-         buffer.append("<link rel='icon' href='/favicon.ico' type='image/x-icon'>");
-         buffer.append("<link rel='shortcut icon' href='/favicon.ico' type='image/x-icon'>");
-         buffer.append("<title>");
-         buffer.append("форум Дилетантов :: " + thread.getHead());
-         buffer.append("</title>");
-         buffer.append("</head>");
-         // Цвет фона страницы
-         buffer.append("<body class='mainBodyBG'>");
-         // Главная таблица
-         buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
-         // Таблица с лого и верхним баннером
-         buffer.append(logo(webapp));
-         // Таблица главных ссылок
+      }
+      buffer.append("</tr>");
+      buffer.append("</table>");
+      buffer.append("<script type='text/javascript'>");
+      buffer.append("if (request){");
+      buffer.append("getIndicatorInfo();");
+      buffer.append("}");
+      buffer.append("</script>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      // Главное "меню"
+      buffer.append(menu(request, user, locale, false, webapp, userURI));
+      buffer.append("</table></td></tr>");
+      if (user.isLogined() && !user.isBanned() && !thread.isClosed()){
+         //Форма подписки/отписки  на ветку
+         //Мы уже подписаны?
+         String action = "/" + userURI + "/";
+         String mess = "";
+         if (subscribeService.isUserSubscribed(threadId, user.getId())){
+            //Подписка есть, предлагаем отказаться
+            action += FJUrl.DELETE_SUBSCRIBE + "?pg=" + pageNumber;
+            mess = locale.getString("mess90");
+         }else{
+            //Подписки нет - тогда предлагаем подписаться
+            action += FJUrl.ADD_SUBSCRIBE + "?pg="+pageNumber;
+            mess=locale.getString("mess89");
+         }
          buffer.append("<tr>");
-         buffer.append("<td width='100%'>");
-         buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
-         // Главное "меню"
-         buffer.append(menu(request, user, locale, false, webapp, userURI));
-         // Ссылки на другие страницы  Тут надо убрать colspan!
-         buffer.append("<tr><td width=100%>");
-         buffer.append("<table width=100%>");
+         buffer.append("<td align=right>");
+         buffer.append("<form id='subs' action='" + action + "' method='post'>");
+         buffer.append("<table>");
          buffer.append("<tr>");
          buffer.append("<td>");
-         buffer.append("<table>");
-         buffer.append("<tr>");
-         buffer.append("<td class='page'>");
-         buffer.append("<font class=mnuforum><b>" + locale.getString("mess22") + "&nbsp;</b></font>");
+         buffer.append(fd_button(mess,"subscribe();","btn_subs", "1"));
+         //Прередаем нужные пераметры...
+         buffer.append("<input type=hidden name='IDT' value='" + threadId + "'>");
+         buffer.append(fd_form_add(user));
          buffer.append("</td>");
-         int i2=0;
-         for (int i1=1; i1<couP; i1++){
-            i2=i2+1;
-            if ((i1>(pageNumber-5) && i1<(pageNumber+5))||i2==10||i1==1||i1==(couP-1)){
-               if (i2==10) i2=0;
-               if (i1==pageNumber){
-                  buffer.append("<td class='pagecurrent'>");
-                  buffer.append("<span class=mnuforum><b>");
-                  buffer.append(i1);
-                  buffer.append("</b></span>");
-                  buffer.append("</td>");
-               }else {
-                  buffer.append("<td class='page'>");
-                  buffer.append("<a class='mnuforum' href='");
-                  buffer.append("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD);
-                  buffer.append("?id=");
-                  buffer.append(threadId);
-                  buffer.append("&amp;page=");
-                  buffer.append(i1);
-                  buffer.append("'>");
-                  buffer.append(i1);
-                  buffer.append("</a>");
-                  buffer.append("</td>");
-               }
-            }
-         }
          buffer.append("</tr>");
          buffer.append("</table>");
-
+         buffer.append("</form>");
          buffer.append("</td>");
-
-         buffer.append("<td align=right>");
-         // Сторінка сформована :)
-         buffer.append("<span class=posthead>"+ locale.getString("mess91") + "</span>");
-         buffer.append("<br/>");
-         buffer.append("<span class=posthead >" + locale.getString("mess165") + ":&nbsp;</span>");
-         buffer.append("<span class=posthead id='indicatort' style='color:red'>&nbsp;</span>");
-
+         buffer.append("</tr>");
+         String re="";
+         String head = thread.getHead();
+         IFJPost replyPost = null;
+         // Если цитируем/редактируем
+         if (isAnswer) {
+            replyPost = postService.read(Long.valueOf(replyPostParameter));
+            head = removeSlashes(replyPost.getTitle());
+         }
+         // Новое мнение
+         // Форма нового поста
+         buffer.append("<tr>");
+         buffer.append("<td>");
+         buffer.append("<a name='edit'>&nbsp;");
+         buffer.append("</a>");
+         buffer.append("<table>");
+         buffer.append("<tr>");
+         buffer.append("<td>");
+         buffer.append("<form name='post' id='postForm' action='" + "/" + userURI + "/" + FJUrl.ADD_POST + "' method='post'>");
+         buffer.append("<table width='100%'>");
+         //Тема
+         buffer.append("<tr>");
+         buffer.append("<td colspan='2' align='CENTER'>");
+         buffer.append("<table>");
+         buffer.append("<tr>");
+         buffer.append("<td>");
+         buffer.append(locale.getString("mess59") + ":&nbsp;");
          buffer.append("</td>");
-         buffer.append("</tr></table>");
+         buffer.append("<td>");
+         buffer.append(fd_input("NHEAD", re + HtmlChars.convertHtmlSymbols(head), "70", "1"));
          buffer.append("</td>");
-         buffer.append("</tr></table></td></tr>");
-         // Таблица главных ссылок кончилась
-         //Строка с таблицей форума
-         buffer.append("<tr><td height='400' valign='top'>");
-         // Таблица форума
-         buffer.append("<table border='0' cellpadding='2' cellspacing='0' width='100%'>");
-         // Определяем кол-во строк таблицы
-         if (postsAmount>count) {
-            postsAmount=count-(pageNumber-1)*user.getPostsOnPage();
+         buffer.append("</tr>");
+         buffer.append("</table>");
+         buffer.append("</td>");
+         buffer.append("</tr>");
+         buffer.append("<tr>");
+         //Смайлики заголовок
+         buffer.append("<td width='400' align='CENTER'>");
+         buffer.append("<p>");
+         buffer.append(locale.getString("mess21") + ":");
+         buffer.append("</p>");
+         buffer.append("</td>");
+         //Приглашение
+         buffer.append("<td align='CENTER'>");
+         buffer.append("<p>");
+         buffer.append(locale.getString("mess12"));
+         buffer.append("</p>");
+         buffer.append("</td>");
+         /*Photoalbum header*/
+         buffer.append("<td align=left>");
+         buffer.append("<p>");
+         buffer.append(locale.getString("MSG_PHOTOALBUM") + ":");
+         buffer.append("</p>");
+         buffer.append("</td>");
+         buffer.append("</tr>");
+         //Пост
+         buffer.append("<tr>");
+         buffer.append("<td valign='TOP' width='100%' height='100%'>");
+         //Смайлики
+         buffer.append(smiles_add(locale.getString("mess11"), webapp));
+         buffer.append("</td>");
+         buffer.append("<td width='500' align='CENTER' valign='top'>");
+         //Автотеги
+         buffer.append(autotags_add(webapp));
+         // текстарий
+         String textarea="";
+         if (isAnswer) {
+            String ans = request.getParameter("ans");
+            if (replyPost.getAuth().equals(user.getId())){
+               textarea += HtmlChars.convertHtmlSymbols(removeSlashes(replyPost.getBody()));
+            }else if (ans == null){
+               textarea += "[quote][b]" + HtmlChars.convertHtmlSymbols(removeSlashes(replyPost.getAuthor().getNick())) + "[/b] ";
+               textarea += locale.getString("mess14")+String.valueOf((char) 13);
+               textarea += HtmlChars.convertHtmlSymbols(removeSlashes(replyPost.getBody())) + "[/quote]";
+            }else{
+               textarea += "[b]" + removeSlashes(replyPost.getAuthor().getNick()) + "[/b]";
+               textarea += ", ";
+            }
+         }
+         buffer.append("<textarea rows='20' class='mnuforumSm' id='ed1' name='A2' cols='55'>" + textarea + "</textarea>");
+         buffer.append("<br>");
+         buffer.append("<input type='checkbox' name='no_exit' value='1'>");
+         buffer.append(locale.getString("mess123"));
+         //Кнопки
+         buffer.append("<table>");
+         buffer.append("<tr>");
+         buffer.append("<td>");
+         if (isAnswer && (replyPost.getAuth().equals(user.getId()))){
+            buffer.append(fd_button(locale.getString("mess13"),"post_submit(\"write_edit\");","B1", "1"));
          }else{
-            postsAmount=user.getPostsOnPage();
+            buffer.append(fd_button(locale.getString("mess13"),"post_submit(\"write_new\");","B1", "1"));
          }
-         // Тема
-         // Выводим строки
-         for (int postIndex = 0; postIndex < posts.size(); postIndex++) {
-            IFJPost post = posts.get(postIndex);
-            buffer.append(writePost(post, ignorList, user, pageNumber, locale, thread, voiceService, userURI, webapp));
+         buffer.append("</td>");
+         buffer.append("<td>");
+         if (isAnswer && (replyPost.getAuth().equals(user.getId()))){
+            buffer.append(fd_button(locale.getString("mess63"),"post_submit(\"view_edit\");","B1", "1"));
+         }else{
+            buffer.append(fd_button(locale.getString("mess63"),"post_submit(\"view_new\");","B3", "1"));
          }
-         // /Таблица форума
-         buffer.append("</table>");
-         // "Граница" внизу
          buffer.append("</td>");
          buffer.append("</tr>");
-         // Таблица главных ссылок
-         // Ссылки на страницы
-         buffer.append("<tr>");
-         buffer.append("<td width='100%'>");
-         buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
-         buffer.append("<tr>");
-         buffer.append("<td colspan='5'>");
-         buffer.append("<table>");
-         buffer.append("<tr>");
-         buffer.append("<td class='page'>");
-         buffer.append("<font class=mnuforum><b>" + locale.getString("mess22") + "&nbsp;</b></font>");
-         buffer.append("</td>");
-         i2=0;
-         for (int i1=1; i1<couP; i1++){
-            i2=i2+1;
-            if ((i1>(pageNumber-5) && i1<(pageNumber+5))||i2==10||i1==1||i1==(couP-1)){
-               if (i2==10) i2=0;
-               if (i1==pageNumber){
-                  buffer.append("<td class='pagecurrent'>");
-                  buffer.append("<span class=mnuforum><b>");
-                  buffer.append(i1);
-                  buffer.append("</b></span>");
-                  buffer.append("</td>");
-               }else {
-                  buffer.append("<td class='page'>");
-                  buffer.append("<a class='mnuforum' href='");
-                  buffer.append("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD);
-                  buffer.append("?id=");
-                  buffer.append(threadId);
-                  buffer.append("&amp;page=");
-                  buffer.append(i1);
-                  buffer.append("'>");
-                  buffer.append(i1);
-                  buffer.append("</a>");
-                  buffer.append("</td>");
-               }
-            }
+         buffer.append("</table>");
+         //Если редактируем
+         if (isAnswer && (replyPost.getAuth().equals(user.getId()))){
+            buffer.append("<input type=hidden name='IDB' size='20' value='" + replyPostParameter + "'>");
+            buffer.append("<input type=hidden name='IDTbl' size='20' value='" + replyPost.getTablePost() + "'>");
+            buffer.append("<input type=hidden name='IDPst' size='20' value='" + replyPost.getId().toString() + "'>");
+            buffer.append("<input type=hidden name='IDTblHead' size='20' value='" + replyPost.getTableHead() + "'>");
+            buffer.append("<input type=hidden name='IDHead' size='20' value='" + replyPost.getId().toString() + "'>");
          }
+         //id темы
+         buffer.append("<input type=hidden name='IDT' size='20' value='" + threadId + "'>");
+         if (thread.isQuest()){
+            buffer.append("<input type=hidden name='ISQUEST' size='20' value='true'>");
+         }
+         buffer.append(fd_form_add(user));
+         buffer.append("</td>");
+         //Photoalbum
+         buffer.append("<td align='LEFT' valign='top'>");
+
+         List<Image> imageThumbs = imageService.getImages(user.getId(), 0, ImageType.POST_THUMBNAIL);
+         buffer.append("<div style='float: left;width: 330px;overflow-y: auto;overflow-x: hidden;height:400px;'>");
+         buffer.append("<div style='float: left;width: 160px;'>");
+
+         for (int thumbIndex = 0; thumbIndex < imageThumbs.size(); thumbIndex += 2){
+            Image thumb = imageThumbs.get(thumbIndex);
+            buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
+            buffer.append("<img border='0' src='/");
+            if(!webapp.isEmpty()){
+               buffer.append(webapp).append("/");
+            }
+            buffer.append(FJUrl.STATIC).append("/").append(FJUrl.PHOTO).append("/");
+            buffer.append(thumb.getId());
+            buffer.append("?id=");
+            buffer.append(thumb.getId());
+            buffer.append("' onclick=\"InsertTags('[img]/");
+            if(!webapp.isEmpty()){
+               buffer.append(webapp).append("/");
+            }
+            buffer.append(FJUrl.STATIC).append("/").append(FJUrl.PHOTO).append("/");
+            buffer.append(thumb.getParentId());
+            buffer.append("?id=");
+            buffer.append(thumb.getParentId());
+            buffer.append("','[/img]')\" alt='Вставить картинку'>");
+            buffer.append("</div>");
+         }
+         buffer.append("</div>");
+         buffer.append("<div style='margin-left: 160px;width: 160px;'>");
+         for (int thumbIndex = 1; thumbIndex < imageThumbs.size(); thumbIndex += 2){
+            Image thumb = imageThumbs.get(thumbIndex);
+            buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
+            buffer.append("<img border='0' src='/");
+            if(!webapp.isEmpty()){
+               buffer.append(webapp).append("/");
+            }
+            buffer.append(FJUrl.STATIC).append("/").append(FJUrl.PHOTO).append("/");
+            buffer.append(thumb.getId());
+            buffer.append("?id=");
+            buffer.append(thumb.getId());
+            buffer.append("' onclick=\"InsertTags('[img]/");
+            if(!webapp.isEmpty()){
+               buffer.append(webapp).append("/");
+            }
+            buffer.append(FJUrl.STATIC).append("/").append(FJUrl.PHOTO).append("/");
+            buffer.append(thumb.getParentId());
+            buffer.append("?id=");
+            buffer.append(thumb.getParentId());
+            buffer.append("','[/img]')\" alt='Вставить картинку'>");
+            buffer.append("</div>");
+         }
+         buffer.append("</div>");
+         buffer.append("</div>");
+
+         buffer.append("</td>");
          buffer.append("</tr>");
          buffer.append("</table>");
-         buffer.append("<script type='text/javascript'>");
-         buffer.append("if (request){");
-         buffer.append("getIndicatorInfo();");
-         buffer.append("}");
-         buffer.append("</script>");
+         buffer.append("</form>");
          buffer.append("</td>");
          buffer.append("</tr>");
-         // Главное "меню"
-         buffer.append(menu(request, user, locale, false, webapp, userURI));
-         buffer.append("</table></td></tr>");
-         if (user.isLogined() && !user.isBanned() && !thread.isClosed()){
-            //Форма подписки/отписки  на ветку
-            //Мы уже подписаны?
-            String action = "/" + userURI + "/";
-            String mess = "";
-            if (subscribeService.isUserSubscribed(threadId, user.getId())){
-               //Подписка есть, предлагаем отказаться
-               action += FJUrl.DELETE_SUBSCRIBE + "?pg=" + pageNumber;
-               mess = locale.getString("mess90");
-            }else{
-               //Подписки нет - тогда предлагаем подписаться
-               action += FJUrl.ADD_SUBSCRIBE + "?pg="+pageNumber;
-               mess=locale.getString("mess89");   
-            }
-            buffer.append("<tr>");
-            buffer.append("<td align=right>");
-            buffer.append("<form id='subs' action='" + action + "' method='post'>");
-            buffer.append("<table>");
-            buffer.append("<tr>");
-            buffer.append("<td>");
-            buffer.append(fd_button(mess,"subscribe();","btn_subs", "1"));
-            //Прередаем нужные пераметры...
-            buffer.append("<input type=hidden name='IDT' value='" + threadId + "'>");
-            buffer.append(fd_form_add(user));
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            buffer.append("</table>");
-            buffer.append("</form>");
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            String re="";
-            String head = thread.getHead();
-            IFJPost replyPost = null;
-            // Если цитируем/редактируем
-            if (isAnswer) {
-               replyPost = postService.read(Long.valueOf(replyPostParameter));
-               head = removeSlashes(replyPost.getTitle());
-            }
-            // Новое мнение
-            // Форма нового поста
-            buffer.append("<tr>");
-            buffer.append("<td>");
-            buffer.append("<a name='edit'>&nbsp;");
-            buffer.append("</a>");
-            buffer.append("<table>");
-            buffer.append("<tr>");
-            buffer.append("<td>");
-            buffer.append("<form name='post' id='postForm' action='" + "/" + userURI + "/" + FJUrl.ADD_POST + "' method='post'>");
-            buffer.append("<table width='100%'>");
-            //Тема
-            buffer.append("<tr>");
-            buffer.append("<td colspan='2' align='CENTER'>");
-            buffer.append("<table>");
-            buffer.append("<tr>");
-            buffer.append("<td>");
-            buffer.append(locale.getString("mess59") + ":&nbsp;");
-            buffer.append("</td>");
-            buffer.append("<td>");
-            buffer.append(fd_input("NHEAD", re + HtmlChars.convertHtmlSymbols(head), "70", "1"));
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            buffer.append("</table>");
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            buffer.append("<tr>");
-            //Смайлики заголовок
-            buffer.append("<td width='400' align='CENTER'>");
-            buffer.append("<p>");
-            buffer.append(locale.getString("mess21") + ":");
-            buffer.append("</p>");
-            buffer.append("</td>");
-            //Приглашение
-            buffer.append("<td align='CENTER'>");
-            buffer.append("<p>");
-            buffer.append(locale.getString("mess12"));
-            buffer.append("</p>");
-            buffer.append("</td>");
-            /*Photoalbum header*/
-            buffer.append("<td align=left>");
-            buffer.append("<p>");
-            buffer.append(locale.getString("MSG_PHOTOALBUM") + ":");
-            buffer.append("</p>");
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            //Пост
-            buffer.append("<tr>");
-            buffer.append("<td valign='TOP' width='100%' height='100%'>");
-            //Смайлики
-            buffer.append(smiles_add(locale.getString("mess11"), webapp));
-            buffer.append("</td>");
-            buffer.append("<td width='500' align='CENTER' valign='top'>");
-            //Автотеги
-            buffer.append(autotags_add(webapp));
-            // текстарий
-            String textarea="";
-            if (isAnswer) {
-               String ans = request.getParameter("ans");
-               if (replyPost.getAuth().equals(user.getId())){
-                  textarea += HtmlChars.convertHtmlSymbols(removeSlashes(replyPost.getBody()));
-               }else if (ans == null){
-                  textarea += "[quote][b]" + HtmlChars.convertHtmlSymbols(removeSlashes(replyPost.getAuthor().getNick())) + "[/b] ";
-                  textarea += locale.getString("mess14")+String.valueOf((char) 13);
-                  textarea += HtmlChars.convertHtmlSymbols(removeSlashes(replyPost.getBody())) + "[/quote]";
-               }else{
-                  textarea += "[b]" + removeSlashes(replyPost.getAuthor().getNick()) + "[/b]";
-                  textarea += ", ";
-               }
-            }
-            buffer.append("<textarea rows='20' class='mnuforumSm' id='ed1' name='A2' cols='55'>" + textarea + "</textarea>");
-            buffer.append("<br>");
-            buffer.append("<input type='checkbox' name='no_exit' value='1'>");
-            buffer.append(locale.getString("mess123"));
-            //Кнопки
-            buffer.append("<table>");
-            buffer.append("<tr>");
-            buffer.append("<td>");
-            if (isAnswer && (replyPost.getAuth().equals(user.getId()))){
-               buffer.append(fd_button(locale.getString("mess13"),"post_submit(\"write_edit\");","B1", "1"));
-            }else{
-               buffer.append(fd_button(locale.getString("mess13"),"post_submit(\"write_new\");","B1", "1"));
-            }
-            buffer.append("</td>");
-            buffer.append("<td>");
-            if (isAnswer && (replyPost.getAuth().equals(user.getId()))){
-               buffer.append(fd_button(locale.getString("mess63"),"post_submit(\"view_edit\");","B1", "1"));
-            }else{
-               buffer.append(fd_button(locale.getString("mess63"),"post_submit(\"view_new\");","B3", "1"));
-            }
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            buffer.append("</table>");
-            //Если редактируем
-            if (isAnswer && (replyPost.getAuth().equals(user.getId()))){
-               buffer.append("<input type=hidden name='IDB' size='20' value='" + replyPostParameter + "'>");
-               buffer.append("<input type=hidden name='IDTbl' size='20' value='" + replyPost.getTablePost() + "'>");
-               buffer.append("<input type=hidden name='IDPst' size='20' value='" + replyPost.getId().toString() + "'>");
-               buffer.append("<input type=hidden name='IDTblHead' size='20' value='" + replyPost.getTableHead() + "'>");
-               buffer.append("<input type=hidden name='IDHead' size='20' value='" + replyPost.getId().toString() + "'>");
-            }
-            //id темы
-            buffer.append("<input type=hidden name='IDT' size='20' value='" + threadId + "'>");
-            if (thread.isQuest()){
-               buffer.append("<input type=hidden name='ISQUEST' size='20' value='true'>");
-            }
-            buffer.append(fd_form_add(user));
-            buffer.append("</td>");
-            //Photoalbum
-            buffer.append("<td align='LEFT' valign='top'>");
-
-            List<Image> imageThumbs = imageService.getImages(user.getId(), 0, ImageType.POST_THUMBNAIL);
-            buffer.append("<div style='float: left;width: 330px;overflow-y: auto;overflow-x: hidden;height:400px;'>");
-            buffer.append("<div style='float: left;width: 160px;'>");
-
-            for (int thumbIndex = 0; thumbIndex < imageThumbs.size(); thumbIndex += 2){
-               Image thumb = imageThumbs.get(thumbIndex);
-               buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
-               buffer.append("<img border='0' src='/");
-               if(!webapp.isEmpty()){
-                  buffer.append(webapp).append("/");
-               }
-               buffer.append(FJUrl.STATIC).append("/").append(FJUrl.PHOTO).append("/");
-               buffer.append(thumb.getId());
-               buffer.append("?id=");
-               buffer.append(thumb.getId());
-               buffer.append("' onclick=\"InsertTags('[img]/");
-               if(!webapp.isEmpty()){
-                  buffer.append(webapp).append("/");
-               }
-               buffer.append(FJUrl.STATIC).append("/").append(FJUrl.PHOTO).append("/");
-               buffer.append(thumb.getParentId());
-               buffer.append("?id=");
-               buffer.append(thumb.getParentId());
-               buffer.append("','[/img]')\" alt='Вставить картинку'>");
-               buffer.append("</div>");
-            }
-            buffer.append("</div>");
-            buffer.append("<div style='margin-left: 160px;width: 160px;'>");
-            for (int thumbIndex = 1; thumbIndex < imageThumbs.size(); thumbIndex += 2){
-               Image thumb = imageThumbs.get(thumbIndex);
-               buffer.append("<div style='width: 150px;margin-bottom:10px;'>");
-               buffer.append("<img border='0' src='/");
-               if(!webapp.isEmpty()){
-                  buffer.append(webapp).append("/");
-               }
-               buffer.append(FJUrl.STATIC).append("/").append(FJUrl.PHOTO).append("/");
-               buffer.append(thumb.getId());
-               buffer.append("?id=");
-               buffer.append(thumb.getId());
-               buffer.append("' onclick=\"InsertTags('[img]/");
-               if(!webapp.isEmpty()){
-                  buffer.append(webapp).append("/");
-               }
-               buffer.append(FJUrl.STATIC).append("/").append(FJUrl.PHOTO).append("/");
-               buffer.append(thumb.getParentId());
-               buffer.append("?id=");
-               buffer.append(thumb.getParentId());
-               buffer.append("','[/img]')\" alt='Вставить картинку'>");
-               buffer.append("</div>");
-            }
-            buffer.append("</div>");
-            buffer.append("</div>");
-
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            buffer.append("</table>");
-            buffer.append("</form>");
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            buffer.append("</table>");
-            buffer.append("</td>");
-            buffer.append("</tr>");
-         }
-         // Баннер внизу, счетчики и копирайт.
-         buffer.append(footer(webapp));
          buffer.append("</table>");
-         buffer.append("</body>");
-         buffer.append("</html>");
-      } catch (Throwable e) {
-         buffer = new StringBuffer();
-         buffer.append(errorOut(e));
-         e.printStackTrace();
+         buffer.append("</td>");
+         buffer.append("</tr>");
       }
+      // Баннер внизу, счетчики и копирайт.
+      buffer.append(footer(webapp));
+      buffer.append("</table>");
+      buffer.append("</body>");
+      buffer.append("</html>");
       Double allTime = (double) ((new Date().getTime() - startTime));
       DecimalFormat format = new DecimalFormat("##0.###");
       response.setContentType("text/html; charset=UTF-8");

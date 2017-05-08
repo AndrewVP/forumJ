@@ -15,41 +15,31 @@
  */
 package org.forumj.network.web.controller;
 
-import java.io.*;
+import org.forumj.common.exception.InvalidKeyException;
+import org.forumj.network.web.FJServletTools;
+import org.forumj.network.web.FJUrl;
+import org.forumj.network.web.resources.LocaleString;
+import org.forumj.network.web.resources.ResourcesBuilder;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.*;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 
-import org.forumj.common.db.entity.IUser;
-import org.forumj.network.web.resources.ResourcesBuilder;
-import org.forumj.network.web.resources.LocaleString;
-import org.forumj.network.web.FJServletTools;
+import static org.forumj.network.web.FJServletTools.errorOut;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class Message{
+public class Page500 {
 
-   public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception {
+   public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp, Throwable exception) throws IOException {
       StringBuffer buffer = new StringBuffer();
       HttpSession session = request.getSession();
-      String msgIdParameter = request.getParameter("id");
-      IUser user = (IUser) session.getAttribute("user");
       LocaleString locale = (LocaleString) session.getAttribute("locale");
-      String message = "";
-      msgIdParameter = msgIdParameter == null || msgIdParameter.isEmpty() ? "0" : msgIdParameter;
-      switch (msgIdParameter){
-         case "1":
-            message = locale.getString("MSG_ACTIVATE_MAIL_SENT");
-            break;
-         case "2":
-            message = locale.getString("MSG_WILL_BE_APPROVED");
-            break;
-         case "0":
-         default:
-            throw new Exception("Message not found");
-      }
       FJServletTools.cache(response);
       buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
       buffer.append("<html>");
@@ -58,7 +48,11 @@ public class Message{
       /*Стили*/
       buffer.append(ResourcesBuilder.getStyleCSS(webapp));
       buffer.append("<title>");
-      buffer.append(locale.getString("MSG"));
+      try {
+         buffer.append(locale.getString("MSG_ERROR_PAGE_TITLE"));
+      } catch (InvalidKeyException e) {
+         buffer.append("Error");
+      }
       buffer.append("</title>");
       buffer.append("</head>");
       /*Цвет фона страницы*/
@@ -67,19 +61,33 @@ public class Message{
       buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
       /*Таблица с лого и верхним баннером*/
       buffer.append(FJServletTools.logo(webapp));
-      buffer.append(FJServletTools.menu(request, user, locale, false, webapp, userURI));
-      // Сообщение
+      // Error
       buffer.append("<tr>");
       buffer.append("<td><div class='messageDiv'>");
-      buffer.append(message);
+      buffer.append("<b>").append(exception.getMessage()).append("</b><br />");
+      StackTraceElement[] elements = exception.getStackTrace();
+      for (int i = 0; i < elements.length; i++) {
+         StackTraceElement element = elements[i];
+         buffer.append(element.toString()).append("<br />");
+      }
+      Throwable causedBy = exception.getCause();
+      while (causedBy != null && causedBy != exception){
+         buffer.append("<br /><br />");
+         buffer.append("<b>caused by</b><br />");
+         buffer.append("<b>").append(causedBy.getMessage()).append("</b><br />");
+         elements = causedBy.getStackTrace();
+         for (int i = 0; i < elements.length; i++) {
+            StackTraceElement element = elements[i];
+            buffer.append(element.toString()).append("<br />");
+         }
+         exception = causedBy;
+         causedBy = exception.getCause();
+      }
       buffer.append("</div></td>");
       buffer.append("</tr>");
-      // Главное "меню"
-      buffer.append(FJServletTools.menu(request, user, locale, false, webapp, userURI));
-      // Баннер внизу, счетчики и копирайт.
-      buffer.append(FJServletTools.footer(webapp));
       buffer.append("</body>");
       buffer.append("</html>");
+      response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
       response.setContentType("text/html; charset=UTF-8");
       PrintWriter writer = response.getWriter();
       String out = buffer.toString();

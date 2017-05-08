@@ -31,35 +31,29 @@ import org.forumj.network.web.FJServletTools;
 
 public class ActivateUser{
 
-   public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI) throws Exception {
       StringBuffer buffer = new StringBuffer();
-      try {
-         HttpSession session = request.getSession();
-         UserService userService = FJServiceHolder.getUserService();
-         String userIdParameter = request.getParameter(HttpParameters.USER_ID);
-         String codeParameter = request.getParameter(HttpParameters.ACTIVATE_EMAIL_CODE);
-         if (userIdParameter != null && codeParameter != null){
-            int activateCode = Integer.valueOf(codeParameter);
-            if (activateCode != 0){
-               IUser user = userService.read(Long.valueOf(userIdParameter), activateCode);
-               if (user != null){
-                  user.setIsActive(Boolean.TRUE);
-                  user.setActivateCode(0);
-                  userService.update(user);
-                  FJEMail.sendApproveMail(user, new LocaleString(Locale.UA, "messages", Locale.UA));
-                  //TODO Magic integers!
-                  String url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.MESSAGE).append("?id=2").toString();
-                  response.sendRedirect(url);
-               }
+      HttpSession session = request.getSession();
+      UserService userService = FJServiceHolder.getUserService();
+      String userIdParameter = request.getParameter(HttpParameters.USER_ID);
+      String codeParameter = request.getParameter(HttpParameters.ACTIVATE_EMAIL_CODE);
+      if (userIdParameter != null && codeParameter != null){
+         int activateCode = Integer.valueOf(codeParameter);
+         if (activateCode != 0){
+            IUser user = userService.read(Long.valueOf(userIdParameter), activateCode);
+            if (user != null){
+               user.setIsActive(Boolean.TRUE);
+               user.setActivateCode(0);
+               userService.update(user);
+               FJEMail.sendApproveMail(user, new LocaleString(Locale.UA, "messages", Locale.UA));
+               //TODO Magic integers!
+               String url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.MESSAGE).append("?id=2").toString();
+               response.sendRedirect(url);
             }
-         }else{
-            String url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX).toString();
-            response.sendRedirect(url);
          }
-      } catch (Throwable e) {
-         buffer = new StringBuffer();
-         buffer.append(FJServletTools.errorOut(e));
-         e.printStackTrace();
+      }else{
+         String url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX).toString();
+         response.sendRedirect(url);
       }
       response.setContentType("text/html; charset=UTF-8");
       response.getWriter().write(buffer.toString());

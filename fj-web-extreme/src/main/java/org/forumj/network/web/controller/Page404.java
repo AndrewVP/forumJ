@@ -33,44 +33,38 @@ import static org.forumj.network.web.FJServletTools.errorOut;
  */
 public class Page404{
 
-   public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp) throws Exception {
       StringBuffer buffer = new StringBuffer();
-      try{
-         FJServletTools.cache(response);
-         buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
-         buffer.append("<html>");
-         buffer.append("<head>");
-         buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
-         /*Стили*/
-         buffer.append(ResourcesBuilder.getStyleCSS(webapp));
-         buffer.append("<title>");
-         buffer.append(404);
-         buffer.append("</title>");
-         buffer.append("</head>");
-         /*Цвет фона страницы*/
-         buffer.append("<body bgcolor=#EFEFEF>");
-         /*Главная таблица*/
-         buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
-         /*Таблица с лого и верхним баннером*/
-         buffer.append(FJServletTools.logo(webapp));
-         // Сообщение
-         buffer.append("<tr>");
-         buffer.append("<td><div class='messageDiv'>");
-         buffer.append(404);
-         buffer.append("<br/><br/>");
-         buffer.append("<b><a href='/");
-         buffer.append(webapp);
-         buffer.append(webapp.isEmpty() ? "" : "/").append(FJUrl.DEFAULT_USER);
-         buffer.append("/'>Вам сюда</a></b>");
-         buffer.append("</div></td>");
-         buffer.append("</tr>");
-         buffer.append("</body>");
-         buffer.append("</html>");
-      } catch (Throwable e) {
-         buffer = new StringBuffer();
-         buffer.append(errorOut(e));
-         e.printStackTrace();
-      }
+      FJServletTools.cache(response);
+      buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
+      buffer.append("<html>");
+      buffer.append("<head>");
+      buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
+      /*Стили*/
+      buffer.append(ResourcesBuilder.getStyleCSS(webapp));
+      buffer.append("<title>");
+      buffer.append(404);
+      buffer.append("</title>");
+      buffer.append("</head>");
+      /*Цвет фона страницы*/
+      buffer.append("<body bgcolor=#EFEFEF>");
+      /*Главная таблица*/
+      buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
+      /*Таблица с лого и верхним баннером*/
+      buffer.append(FJServletTools.logo(webapp));
+      // Сообщение
+      buffer.append("<tr>");
+      buffer.append("<td><div class='messageDiv'>");
+      buffer.append(404);
+      buffer.append("<br/><br/>");
+      buffer.append("<b><a href='/");
+      buffer.append(webapp);
+      buffer.append(webapp.isEmpty() ? "" : "/").append(FJUrl.DEFAULT_USER);
+      buffer.append("/'>Вам сюда</a></b>");
+      buffer.append("</div></td>");
+      buffer.append("</tr>");
+      buffer.append("</body>");
+      buffer.append("</html>");
       response.setStatus(HttpServletResponse.SC_NOT_FOUND);
       response.setContentType("text/html; charset=UTF-8");
       PrintWriter writer = response.getWriter();

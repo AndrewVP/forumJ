@@ -32,39 +32,33 @@ import org.forumj.network.web.HttpParameters;
  */
 public class DelOne{
 
-   public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI) throws Exception {
       StringBuffer buffer = new StringBuffer();
-      try {
-         HttpSession session = request.getSession();
-         String idThreadParameter = request.getParameter(HttpParameters.ID);
-         String pageParameter = request.getParameter(HttpParameters.PAGE);
-         String usrParameter = request.getParameter("usr");
-         IUser user = (IUser) session.getAttribute(HttpParameters.USER);
-         FolderService service = FJServiceHolder.getFolderService();
-         if (user != null && !user.isBanned() && user.isLogined()){
-            if (idThreadParameter != null && !"".equals(idThreadParameter)){
-               Long idThread = Long.valueOf(idThreadParameter);
-               if (user.isModerator() && usrParameter != null && usrParameter.equals("0")){
-                  UserService userService = FJServiceHolder.getUserService();
-                  user = userService.readUser(0l);
-                  service.moveToRecyclebin(idThread, user);
-               }else{
-                  service.moveToRecyclebin(idThread, user);
-               }
+      HttpSession session = request.getSession();
+      String idThreadParameter = request.getParameter(HttpParameters.ID);
+      String pageParameter = request.getParameter(HttpParameters.PAGE);
+      String usrParameter = request.getParameter("usr");
+      IUser user = (IUser) session.getAttribute(HttpParameters.USER);
+      FolderService service = FJServiceHolder.getFolderService();
+      if (user != null && !user.isBanned() && user.isLogined()){
+         if (idThreadParameter != null && !"".equals(idThreadParameter)){
+            Long idThread = Long.valueOf(idThreadParameter);
+            if (user.isModerator() && usrParameter != null && usrParameter.equals("0")){
+               UserService userService = FJServiceHolder.getUserService();
+               user = userService.readUser(0l);
+               service.moveToRecyclebin(idThread, user);
+            }else{
+               service.moveToRecyclebin(idThread, user);
             }
-            StringBuffer buffer1 = new StringBuffer("/").append(userURI).append("/").append(FJUrl.INDEX);
-            if (pageParameter != null && !pageParameter.isEmpty()){
-               buffer1.append("?").append(HttpParameters.PAGE).append("=").append(pageParameter);
-            }
-            response.sendRedirect(buffer1.toString());
-         }else{
-            // unlogined
-            response.sendRedirect(new StringBuffer("/").append(userURI).append("/").append(FJUrl.INDEX).toString());
          }
-      } catch (Throwable e) {
-         buffer = new StringBuffer();
-         buffer.append(FJServletTools.errorOut(e));
-         e.printStackTrace();
+         StringBuffer buffer1 = new StringBuffer("/").append(userURI).append("/").append(FJUrl.INDEX);
+         if (pageParameter != null && !pageParameter.isEmpty()){
+            buffer1.append("?").append(HttpParameters.PAGE).append("=").append(pageParameter);
+         }
+         response.sendRedirect(buffer1.toString());
+      }else{
+         // unlogined
+         response.sendRedirect(new StringBuffer("/").append(userURI).append("/").append(FJUrl.INDEX).toString());
       }
       response.setContentType("text/html; charset=UTF-8");
       response.getWriter().write(buffer.toString());

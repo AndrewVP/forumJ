@@ -30,51 +30,43 @@ import org.forumj.network.web.resources.LocaleString;
  */
 public class Send{
 
-   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
-      try {
-         HttpSession session = request.getSession();
-         IUser user = (IUser) session.getAttribute("user");
-         LocaleString locale = (LocaleString) session.getAttribute("locale");
-         String comandParameter = request.getParameter("comand");
-         // TODO parameter must be added!
-         String idParameter = request.getParameter("id");
-         String headParameter = request.getParameter("NHEAD");
-         String bodyParameter = request.getParameter("A2");
-         String receiverNickParameter = request.getParameter("RCVR");
-         Date currentDate = new Date();
-         MailService mailService = FJServiceHolder.getMailService();
-         IFJMail mail = mailService.getMailObject();
-         UserService userService = FJServiceHolder.getUserService();
-         IUser receiver = userService.read(receiverNickParameter);
-         mail.setSender(user);
-         mail.setReceiver(receiver);
-         mail.setBody(bodyParameter);
-         mail.setSubject(headParameter);
-         mail.setCreateDate(currentDate);
-         mail.setSentDate(currentDate);
-         if (user != null && !user.isBanned() && user.isLogined()){
-            if (!isEmptyParameter(comandParameter) && comandParameter.equals("view")){
-               StringBuffer buffer = new StringBuffer();
-               buffer.append(view(mail, locale, request, webapp, userURI));
-               response.setContentType("text/html; charset=UTF-8");
-               response.getWriter().write(buffer.toString());
-            }else{
-               mailService.create(mail);
-               //TODO Magic integer!
-               StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=").append(idParameter);
-               response.sendRedirect(url.toString());
-            }
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception{
+      HttpSession session = request.getSession();
+      IUser user = (IUser) session.getAttribute("user");
+      LocaleString locale = (LocaleString) session.getAttribute("locale");
+      String comandParameter = request.getParameter("comand");
+      // TODO parameter must be added!
+      String idParameter = request.getParameter("id");
+      String headParameter = request.getParameter("NHEAD");
+      String bodyParameter = request.getParameter("A2");
+      String receiverNickParameter = request.getParameter("RCVR");
+      Date currentDate = new Date();
+      MailService mailService = FJServiceHolder.getMailService();
+      IFJMail mail = mailService.getMailObject();
+      UserService userService = FJServiceHolder.getUserService();
+      IUser receiver = userService.read(receiverNickParameter);
+      mail.setSender(user);
+      mail.setReceiver(receiver);
+      mail.setBody(bodyParameter);
+      mail.setSubject(headParameter);
+      mail.setCreateDate(currentDate);
+      mail.setSentDate(currentDate);
+      if (user != null && !user.isBanned() && user.isLogined()){
+         if (!isEmptyParameter(comandParameter) && comandParameter.equals("view")){
+            StringBuffer buffer = new StringBuffer();
+            buffer.append(view(mail, locale, request, webapp, userURI));
+            response.setContentType("text/html; charset=UTF-8");
+            response.getWriter().write(buffer.toString());
          }else{
-            // Session expired
-            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
-            response.sendRedirect(exit.toString());
+            mailService.create(mail);
+            //TODO Magic integer!
+            StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=").append(idParameter);
+            response.sendRedirect(url.toString());
          }
-      } catch (Throwable e) {
-         e.printStackTrace();
-         StringBuffer buffer = new StringBuffer();
-         buffer.append(errorOut(e));
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
+      }else{
+         // Session expired
+         StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+         response.sendRedirect(exit.toString());
       }
    }
 

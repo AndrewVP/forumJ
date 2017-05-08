@@ -31,36 +31,30 @@ import static org.forumj.network.web.FJServletTools.errorOut;
 
 public class Ban{
 
-   public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI) throws Exception {
       StringBuffer buffer = new StringBuffer();
-      try {
-         HttpSession session = request.getSession();
-         IUser currentUser = (IUser) session.getAttribute("user");
-         if (currentUser != null && currentUser.isModerator()){
-         UserService userService = FJServiceHolder.getUserService();
-            String userIdParameter = request.getParameter(HttpParameters.USER_ID);
-            if (userIdParameter != null){
-               IUser user = userService.readUser(Long.valueOf(userIdParameter));
-               if (user != null){
-                  if (user.isBanned()){
-                     user.setBan(0);
-                  }else {
-                     user.setBan(1);
-                  }
-                  userService.update(user);
-                  StringBuffer buffer1 = new StringBuffer("/").append(userURI).append("/").append(FJUrl.SETTINGS);
-                  //TODO Magic integer!!
-                  buffer1.append("?").append(HttpParameters.ID).append("=").append(14);
-                  response.sendRedirect(buffer1.toString());
+      HttpSession session = request.getSession();
+      IUser currentUser = (IUser) session.getAttribute("user");
+      if (currentUser != null && currentUser.isModerator()){
+      UserService userService = FJServiceHolder.getUserService();
+         String userIdParameter = request.getParameter(HttpParameters.USER_ID);
+         if (userIdParameter != null){
+            IUser user = userService.readUser(Long.valueOf(userIdParameter));
+            if (user != null){
+               if (user.isBanned()){
+                  user.setBan(0);
+               }else {
+                  user.setBan(1);
                }
+               userService.update(user);
+               StringBuffer buffer1 = new StringBuffer("/").append(userURI).append("/").append(FJUrl.SETTINGS);
+               //TODO Magic integer!!
+               buffer1.append("?").append(HttpParameters.ID).append("=").append(14);
+               response.sendRedirect(buffer1.toString());
             }
-         }else {
-            response.sendRedirect(new StringBuffer("/").append(userURI).append("/").append(FJUrl.INDEX).toString());
          }
-      } catch (Throwable e) {
-         buffer = new StringBuffer();
-         buffer.append(errorOut(e));
-         e.printStackTrace();
+      }else {
+         response.sendRedirect(new StringBuffer("/").append(userURI).append("/").append(FJUrl.INDEX).toString());
       }
       response.setContentType("text/html; charset=UTF-8");
       response.getWriter().write(buffer.toString());

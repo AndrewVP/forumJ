@@ -23,22 +23,14 @@ import org.forumj.network.web.FJUrl;
  */
 public class DelOneSubsByMail{
 
-   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
-      try {
-         String keyParameter = request.getParameter("id");
-         if (keyParameter != null && !"".equals(keyParameter)){
-            SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
-            Long key = Long.valueOf(keyParameter);
-            subscribeService.deleteSubscribeByKey(key);
-            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
-            response.sendRedirect(exit.toString());
-         }
-      } catch (Throwable e) {
-         e.printStackTrace();
-         StringBuffer buffer = new StringBuffer();
-         buffer.append(FJServletTools.errorOut(e));
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception {
+      String keyParameter = request.getParameter("id");
+      if (keyParameter != null && !"".equals(keyParameter)){
+         SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
+         Long key = Long.valueOf(keyParameter);
+         subscribeService.deleteSubscribeByKey(key);
+         StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+         response.sendRedirect(exit.toString());
       }
    }
 }

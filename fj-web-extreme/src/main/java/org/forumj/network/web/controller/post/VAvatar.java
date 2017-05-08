@@ -24,31 +24,23 @@ import org.forumj.network.web.FJUrl;
  */
 public class VAvatar{
 
-   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
-      try {
-         boolean vAvatar = request.getParameter("v_avatar") != null;
-         boolean sAvatar = vAvatar && request.getParameter("s_avatar") != null;
-         HttpSession session = request.getSession();
-         IUser user = (IUser) session.getAttribute("user");
-         if (user != null && !user.isBanned() && user.isLogined()){
-            user.setWantSeeAvatars(vAvatar);
-            user.setShowAvatar(sAvatar);
-            UserService userService = FJServiceHolder.getUserService();
-            userService.update(user);
-            //TODO Magic integer!
-            StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=9");
-            response.sendRedirect(url.toString());
-         }else{
-            // Session expired
-            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
-            response.sendRedirect(exit.toString());
-         }
-      } catch (Throwable e) {
-         e.printStackTrace();
-         StringBuffer buffer = new StringBuffer();
-         buffer.append(FJServletTools.errorOut(e));
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception, IOException {
+      boolean vAvatar = request.getParameter("v_avatar") != null;
+      boolean sAvatar = vAvatar && request.getParameter("s_avatar") != null;
+      HttpSession session = request.getSession();
+      IUser user = (IUser) session.getAttribute("user");
+      if (user != null && !user.isBanned() && user.isLogined()){
+         user.setWantSeeAvatars(vAvatar);
+         user.setShowAvatar(sAvatar);
+         UserService userService = FJServiceHolder.getUserService();
+         userService.update(user);
+         //TODO Magic integer!
+         StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=9");
+         response.sendRedirect(url.toString());
+      }else{
+         // Session expired
+         StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+         response.sendRedirect(exit.toString());
       }
    }
 

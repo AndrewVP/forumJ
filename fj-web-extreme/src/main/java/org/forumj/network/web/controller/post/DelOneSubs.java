@@ -24,35 +24,27 @@ import org.forumj.network.web.FJUrl;
  */
 public class DelOneSubs{
 
-   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
-      try {
-         HttpSession session = request.getSession();
-         String threadIdParameter = request.getParameter("IDT");
-         String pageParameter = request.getParameter("pg");
-         IUser user = (IUser) session.getAttribute("user");
-         if (user != null && !user.isBanned() && user.isLogined()){
-            if (threadIdParameter != null && !"".equals(threadIdParameter)){
-               SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
-               Long subscribeId = Long.valueOf(threadIdParameter);
-               subscribeService.deleteSubscribeByTitleId(subscribeId, user);
-               String urlQuery = "?id=" + threadIdParameter;
-               if (pageParameter != null && !"".equals(pageParameter)){
-                  urlQuery += "&page=" + pageParameter;
-               }
-               StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD).append(urlQuery);
-               response.sendRedirect(url.toString());
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception {
+      HttpSession session = request.getSession();
+      String threadIdParameter = request.getParameter("IDT");
+      String pageParameter = request.getParameter("pg");
+      IUser user = (IUser) session.getAttribute("user");
+      if (user != null && !user.isBanned() && user.isLogined()){
+         if (threadIdParameter != null && !"".equals(threadIdParameter)){
+            SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
+            Long subscribeId = Long.valueOf(threadIdParameter);
+            subscribeService.deleteSubscribeByTitleId(subscribeId, user);
+            String urlQuery = "?id=" + threadIdParameter;
+            if (pageParameter != null && !"".equals(pageParameter)){
+               urlQuery += "&page=" + pageParameter;
             }
-         }else{
-            // Session expired
-            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
-            response.sendRedirect(exit.toString());
+            StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD).append(urlQuery);
+            response.sendRedirect(url.toString());
          }
-      } catch (Throwable e) {
-         e.printStackTrace();
-         StringBuffer buffer = new StringBuffer();
-         buffer.append(FJServletTools.errorOut(e));
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
+      }else{
+         // Session expired
+         StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+         response.sendRedirect(exit.toString());
       }
    }
 }

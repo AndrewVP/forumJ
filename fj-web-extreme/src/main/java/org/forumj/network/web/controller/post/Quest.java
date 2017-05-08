@@ -36,90 +36,84 @@ import com.tecnick.htmlutils.htmlentities.HTMLEntities;
  */
 public class Quest{
 
-   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
-      StringBuffer buffer = new StringBuffer();
-      try {
-         HttpSession session = request.getSession();
-         LocaleString locale = (LocaleString) session.getAttribute("locale");
-         IUser user = (IUser) session.getAttribute("user");
-         if (user != null && !user.isBanned() && user.isLogined()){
-            String body = request.getParameter("A2");
-            String head = request.getParameter("T");
-            String question = request.getParameter("Q");
-            if (body != null && !"".equalsIgnoreCase(body.trim()) 
-                  && head != null && !"".equalsIgnoreCase(head.trim())
-                  && question != null && !"".equalsIgnoreCase(question.trim())){
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception {
+   StringBuffer buffer = new StringBuffer();
+      HttpSession session = request.getSession();
+      LocaleString locale = (LocaleString) session.getAttribute("locale");
+      IUser user = (IUser) session.getAttribute("user");
+      if (user != null && !user.isBanned() && user.isLogined()){
+         String body = request.getParameter("A2");
+         String head = request.getParameter("T");
+         String question = request.getParameter("Q");
+         if (body != null && !"".equalsIgnoreCase(body.trim())
+               && head != null && !"".equalsIgnoreCase(head.trim())
+               && question != null && !"".equalsIgnoreCase(question.trim())){
 
-               String answer1 = request.getParameter("P1");
-               String answer2 = request.getParameter("P2");
-               if (answer1 != null && !"".equalsIgnoreCase(answer1.trim()) 
-                     && answer2 != null && !"".equalsIgnoreCase(answer2.trim())){
-                  String command = request.getParameter("comand");
-                  String ip = request.getRemoteAddr();
-                  //TODO need to be implemented
-                  String domen = ip;
-                  boolean usersCanAddAnswers = request.getParameter("US") != null; 
-                  Time threadTime = new Time(new Date().getTime());
-                  ArrayList<IQuestNode> answers = new ArrayList<>();
-                  QuestService questService = FJServiceHolder.getQuestService();
-                  answers.add(questService.getQuestNodeObject(1, answer1, user.getId()));
-                  answers.add(questService.getQuestNodeObject(2, answer2, user.getId()));
-                  for (int answerIndex = 3;; answerIndex++){
-                     String answer = request.getParameter("P" + answerIndex);
-                     if (answer != null && !"".equalsIgnoreCase(answer.trim())){
-                        answers.add(questService.getQuestNodeObject(answerIndex, answer, user.getId()));
-                     }else{
-                        break;
-                     }
-                  }
-                  if (command != null && "view".equalsIgnoreCase(command)){
-                     buffer.append(view(locale, head, question, user, threadTime.toString("dd.MM.yyyy HH:mm"), ip, domen, answers, usersCanAddAnswers, body, request, webapp, userURI));
+            String answer1 = request.getParameter("P1");
+            String answer2 = request.getParameter("P2");
+            if (answer1 != null && !"".equalsIgnoreCase(answer1.trim())
+                  && answer2 != null && !"".equalsIgnoreCase(answer2.trim())){
+               String command = request.getParameter("comand");
+               String ip = request.getRemoteAddr();
+               //TODO need to be implemented
+               String domen = ip;
+               boolean usersCanAddAnswers = request.getParameter("US") != null;
+               Time threadTime = new Time(new Date().getTime());
+               ArrayList<IQuestNode> answers = new ArrayList<>();
+               QuestService questService = FJServiceHolder.getQuestService();
+               answers.add(questService.getQuestNodeObject(1, answer1, user.getId()));
+               answers.add(questService.getQuestNodeObject(2, answer2, user.getId()));
+               for (int answerIndex = 3;; answerIndex++){
+                  String answer = request.getParameter("P" + answerIndex);
+                  if (answer != null && !"".equalsIgnoreCase(answer.trim())){
+                     answers.add(questService.getQuestNodeObject(answerIndex, answer, user.getId()));
                   }else{
-                     PostService postService = FJServiceHolder.getPostService();
-                     IFJPost post = postService.getPostObject();
-                     post.setState(1);
-                     post.setBody(body);
-                     post.setAuth(user.getId());
-                     post.setDomen(domen);
-                     post.setIp(ip);
-                     post.setNred(0);
-                     post.setTitle(head);
-                     post.setAuthor(user);
-                     ThreadService treadService = FJServiceHolder.getThreadService();
-                     IFJQuestionThread thread = treadService.getQuestionThreadObject();
-                     thread.setAuthId(user.getId());
-                     thread.setHead(head);
-                     thread.setNick(user.getNick());
-                     thread.setSnall(0);
-                     thread.setSnid(0);
-                     thread.setFolderId((long) 1);
-                     thread.setPostsAmount(1);
-                     thread.setType(ThreadType.valueOfInteger(usersCanAddAnswers ? 2 :1));
-                     thread.setAnswers(answers);
-                     thread.setQuestion(question);
-                     treadService.create(thread, post);
-                     StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
-                     response.sendRedirect(exit.toString());
+                     break;
                   }
+               }
+               if (command != null && "view".equalsIgnoreCase(command)){
+                  buffer.append(view(locale, head, question, user, threadTime.toString("dd.MM.yyyy HH:mm"), ip, domen, answers, usersCanAddAnswers, body, request, webapp, userURI));
                }else{
-                  // TODO validation - hve to be two answers
-                  StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.NEW_THREAD);
+                  PostService postService = FJServiceHolder.getPostService();
+                  IFJPost post = postService.getPostObject();
+                  post.setState(1);
+                  post.setBody(body);
+                  post.setAuth(user.getId());
+                  post.setDomen(domen);
+                  post.setIp(ip);
+                  post.setNred(0);
+                  post.setTitle(head);
+                  post.setAuthor(user);
+                  ThreadService treadService = FJServiceHolder.getThreadService();
+                  IFJQuestionThread thread = treadService.getQuestionThreadObject();
+                  thread.setAuthId(user.getId());
+                  thread.setHead(head);
+                  thread.setNick(user.getNick());
+                  thread.setSnall(0);
+                  thread.setSnid(0);
+                  thread.setFolderId((long) 1);
+                  thread.setPostsAmount(1);
+                  thread.setType(ThreadType.valueOfInteger(usersCanAddAnswers ? 2 :1));
+                  thread.setAnswers(answers);
+                  thread.setQuestion(question);
+                  treadService.create(thread, post);
+                  StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
                   response.sendRedirect(exit.toString());
                }
             }else{
-               // TODO validation - empty body or head
-               StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.NEW_QUESTION);
+               // TODO validation - hve to be two answers
+               StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.NEW_THREAD);
                response.sendRedirect(exit.toString());
             }
          }else{
-            // session expired
-            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+            // TODO validation - empty body or head
+            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.NEW_QUESTION);
             response.sendRedirect(exit.toString());
          }
-      } catch (Throwable e) {
-         buffer = new StringBuffer();
-         buffer.append(errorOut(e));
-         e.printStackTrace();
+      }else{
+         // session expired
+         StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+         response.sendRedirect(exit.toString());
       }
       response.setContentType("text/html; charset=UTF-8");
       PrintWriter writer = response.getWriter();

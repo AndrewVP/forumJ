@@ -22,22 +22,14 @@ import org.forumj.network.web.FJUrl;
  */
 public class SlctView{
 
-   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
-      try {
-         String viewParameter = request.getParameter("VIEW");
-         HttpSession session = request.getSession();
-         if (!isEmptyParameter(viewParameter)){
-            session.setAttribute("view", Long.valueOf(viewParameter));
-         }
-         StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
-         response.sendRedirect(url.toString());
-      } catch (Throwable e) {
-         e.printStackTrace();
-         StringBuffer buffer = new StringBuffer();
-         buffer.append(FJServletTools.errorOut(e));
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception {
+      String viewParameter = request.getParameter("VIEW");
+      HttpSession session = request.getSession();
+      if (!isEmptyParameter(viewParameter)){
+         session.setAttribute("view", Long.valueOf(viewParameter));
       }
+      StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+      response.sendRedirect(url.toString());
    }
    private boolean isEmptyParameter(String parameter){
       return (parameter == null || "".equals(parameter));

@@ -31,40 +31,32 @@ import org.forumj.network.web.FJUrl;
  */
 public class DelView{
 
-   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
-      try {
-         HttpSession session = request.getSession();
-         String actionParameter = request.getParameter("ACT");
-         IUser user = (IUser) session.getAttribute("user");
-         InterfaceService interfaceService = FJServiceHolder.getInterfaceService();
-         if (user != null && !user.isBanned() && user.isLogined()){
-            if (actionParameter != null && !"".equals(actionParameter)){
-               String nrwParameter = request.getParameter("NRW");
-               Integer nrw = Integer.valueOf(nrwParameter);
-               if ("del".equalsIgnoreCase(actionParameter)){
-                  for (int nrwIndex = 0; nrwIndex < nrw; nrwIndex++) {
-                     String folderIdParameter = request.getParameter(String.valueOf(nrwIndex));
-                     if (folderIdParameter != null){
-                        Long folderId = Long.valueOf(folderIdParameter);
-                        interfaceService.deleteInterface(folderId, user);
-                     }
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception{
+      HttpSession session = request.getSession();
+      String actionParameter = request.getParameter("ACT");
+      IUser user = (IUser) session.getAttribute("user");
+      InterfaceService interfaceService = FJServiceHolder.getInterfaceService();
+      if (user != null && !user.isBanned() && user.isLogined()){
+         if (actionParameter != null && !"".equals(actionParameter)){
+            String nrwParameter = request.getParameter("NRW");
+            Integer nrw = Integer.valueOf(nrwParameter);
+            if ("del".equalsIgnoreCase(actionParameter)){
+               for (int nrwIndex = 0; nrwIndex < nrw; nrwIndex++) {
+                  String folderIdParameter = request.getParameter(String.valueOf(nrwIndex));
+                  if (folderIdParameter != null){
+                     Long folderId = Long.valueOf(folderIdParameter);
+                     interfaceService.deleteInterface(folderId, user);
                   }
                }
             }
-            //TODO Magic integer!
-            StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=6");
-            response.sendRedirect(url.toString());
-         }else{
-            // Session expired
-            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
-            response.sendRedirect(exit.toString());
          }
-      } catch (Throwable e) {
-         e.printStackTrace();
-         StringBuffer buffer = new StringBuffer();
-         buffer.append(FJServletTools.errorOut(e));
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
+         //TODO Magic integer!
+         StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=6");
+         response.sendRedirect(url.toString());
+      }else{
+         // Session expired
+         StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+         response.sendRedirect(exit.toString());
       }
    }
 }

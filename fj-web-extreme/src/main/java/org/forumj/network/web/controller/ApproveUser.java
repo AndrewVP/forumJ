@@ -33,33 +33,27 @@ import static org.forumj.network.web.FJServletTools.errorOut;
 
 public class ApproveUser{
 
-   public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI) throws Exception {
       StringBuffer buffer = new StringBuffer();
-      try {
-         HttpSession session = request.getSession();
-         IUser currentUser = (IUser) session.getAttribute("user");
-         if (currentUser != null && currentUser.isModerator()){
-            UserService userService = FJServiceHolder.getUserService();
-            String userIdParameter = request.getParameter(HttpParameters.USER_ID);
-            if (userIdParameter != null){
-               IUser user = userService.readUser(Long.valueOf(userIdParameter));
-               if (user != null){
-                  user.setApproved(true);
-                  userService.update(user);
-                  FJEMail.sendApprovedMail(user, (LocaleString) session.getAttribute("locale"));
-               }
+      HttpSession session = request.getSession();
+      IUser currentUser = (IUser) session.getAttribute("user");
+      if (currentUser != null && currentUser.isModerator()){
+         UserService userService = FJServiceHolder.getUserService();
+         String userIdParameter = request.getParameter(HttpParameters.USER_ID);
+         if (userIdParameter != null){
+            IUser user = userService.readUser(Long.valueOf(userIdParameter));
+            if (user != null){
+               user.setApproved(true);
+               userService.update(user);
+               FJEMail.sendApprovedMail(user, (LocaleString) session.getAttribute("locale"));
             }
-            StringBuffer buffer1 = new StringBuffer("/").append(userURI).append("/").append(FJUrl.SETTINGS);
-            //TODO Magic integer!!
-            buffer1.append("?").append(HttpParameters.ID).append("=").append(15);
-            response.sendRedirect(buffer1.toString());
-         }else{
-            response.sendRedirect(new StringBuffer("/").append(userURI).append("/").append(FJUrl.INDEX).toString());
          }
-      } catch (Throwable e) {
-         buffer = new StringBuffer();
-         buffer.append(errorOut(e));
-         e.printStackTrace();
+         StringBuffer buffer1 = new StringBuffer("/").append(userURI).append("/").append(FJUrl.SETTINGS);
+         //TODO Magic integer!!
+         buffer1.append("?").append(HttpParameters.ID).append("=").append(15);
+         response.sendRedirect(buffer1.toString());
+      }else{
+         response.sendRedirect(new StringBuffer("/").append(userURI).append("/").append(FJUrl.INDEX).toString());
       }
       response.setContentType("text/html; charset=UTF-8");
       response.getWriter().write(buffer.toString());

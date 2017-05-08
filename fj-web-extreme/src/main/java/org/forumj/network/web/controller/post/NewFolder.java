@@ -31,40 +31,32 @@ import org.forumj.network.web.FJUrl;
  */
 public class NewFolder{
 
-   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
-      try {
-         HttpSession session = request.getSession();
-         String idParameter = request.getParameter("id");
-         String viewIdParameter = request.getParameter("view");
-         String folderNameParameter = request.getParameter("FOLD");
-         IUser user = (IUser) session.getAttribute("user");
-         if (user != null && !user.isBanned() && user.isLogined()){
-            if (!isEmptyParameter(folderNameParameter)){
-               FolderService folderService = FJServiceHolder.getFolderService();
-               if (!folderService.isExist(folderNameParameter, user)){
-                  folderService.create(folderNameParameter, user);
-               }
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception {
+      HttpSession session = request.getSession();
+      String idParameter = request.getParameter("id");
+      String viewIdParameter = request.getParameter("view");
+      String folderNameParameter = request.getParameter("FOLD");
+      IUser user = (IUser) session.getAttribute("user");
+      if (user != null && !user.isBanned() && user.isLogined()){
+         if (!isEmptyParameter(folderNameParameter)){
+            FolderService folderService = FJServiceHolder.getFolderService();
+            if (!folderService.isExist(folderNameParameter, user)){
+               folderService.create(folderNameParameter, user);
             }
-            String urlQuery = "";
-            if (idParameter != null && !"".equals(idParameter)){
-               urlQuery = "?id=" + idParameter;
-            }
-            if (viewIdParameter != null && !"".equals(viewIdParameter)){
-               urlQuery += "&view=" + viewIdParameter;
-            }
-            StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append(urlQuery);
-            response.sendRedirect(url.toString());
-         }else{
-            // Session expired
-            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
-            response.sendRedirect(exit.toString());
          }
-      } catch (Throwable e) {
-         e.printStackTrace();
-         StringBuffer buffer = new StringBuffer();
-         buffer.append(FJServletTools.errorOut(e));
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
+         String urlQuery = "";
+         if (idParameter != null && !"".equals(idParameter)){
+            urlQuery = "?id=" + idParameter;
+         }
+         if (viewIdParameter != null && !"".equals(viewIdParameter)){
+            urlQuery += "&view=" + viewIdParameter;
+         }
+         StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append(urlQuery);
+         response.sendRedirect(url.toString());
+      }else{
+         // Session expired
+         StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+         response.sendRedirect(exit.toString());
       }
    }
 

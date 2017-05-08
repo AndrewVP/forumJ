@@ -44,75 +44,67 @@ import com.tecnick.htmlutils.htmlentities.HTMLEntities;
  */
 public class New{
 
-   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception {
       StringBuffer buffer = new StringBuffer();
       PrintWriter writer = response.getWriter();
       response.setContentType("text/html; charset=UTF-8");
-      try {
-         HttpSession session = request.getSession();
-         LocaleString locale = (LocaleString) session.getAttribute("locale");
-         IUser user = (IUser) session.getAttribute("user");
-         if (user != null && !user.isBanned() && user.isLogined()){
-            // Все нормально
-            String head = request.getParameter("NHEAD");
-            String body = request.getParameter("A2");
-            String strCommand = request.getParameter("comand");
-            Command command = Command.valueOfString(strCommand);
-            // Может пустая??
-            if (!("".equals(head.trim()) || "".equals(body.trim()))) {
-               // Не пустая
-               /*Просмотр?*/
-               Time threadTime = new Time(new Date().getTime());
-               String rgTime = threadTime.toString("dd.MM.yyyy HH:mm");
-               String ip = request.getRemoteAddr();
-               //TODO need to be implemented
-               String domen = ip;
-               if (command == PREVIEW_NEW_THREAD){
-                  buffer.append(new_view(locale, head, user, rgTime, ip, domen, body, request, webapp, userURI));
-                  writer.write(buffer.toString());
-               }else if (command == CREATE_THREAD){
-                  PostService postService = FJServiceHolder.getPostService();
-                  IFJPost post = postService.getPostObject();
-                  post.setState(1);
-                  post.setBody(body);
-                  post.setAuth(user.getId());
-                  post.setAuthor(user);
-                  post.setDomen(domen);
-                  post.setIp(ip);
-                  post.setNred(0);
-                  post.setTitle(head);
-                  ThreadService treadService = FJServiceHolder.getThreadService();
-                  IFJThread thread = treadService.getThreadObject();
-                  thread.setAuthId(user.getId());
-                  thread.setHead(head);
-                  thread.setNick(user.getNick());
-                  thread.setSnall(0);
-                  thread.setSnid(0);
-                  thread.setFolderId((long) 1);
-                  thread.setPostsAmount(1);
-                  thread.setDock(Pin.COMMON);
-                  treadService.create(thread, post);
-                  // Отправляем в форум
-                  StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
-                  response.sendRedirect(exit.toString());
-               }
-            }else{
-               // Пустая
-               // TODO validation - empty body or head
-               StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.NEW_THREAD);
+      HttpSession session = request.getSession();
+      LocaleString locale = (LocaleString) session.getAttribute("locale");
+      IUser user = (IUser) session.getAttribute("user");
+      if (user != null && !user.isBanned() && user.isLogined()){
+         // Все нормально
+         String head = request.getParameter("NHEAD");
+         String body = request.getParameter("A2");
+         String strCommand = request.getParameter("comand");
+         Command command = Command.valueOfString(strCommand);
+         // Может пустая??
+         if (!("".equals(head.trim()) || "".equals(body.trim()))) {
+            // Не пустая
+            /*Просмотр?*/
+            Time threadTime = new Time(new Date().getTime());
+            String rgTime = threadTime.toString("dd.MM.yyyy HH:mm");
+            String ip = request.getRemoteAddr();
+            //TODO need to be implemented
+            String domen = ip;
+            if (command == PREVIEW_NEW_THREAD){
+               buffer.append(new_view(locale, head, user, rgTime, ip, domen, body, request, webapp, userURI));
+               writer.write(buffer.toString());
+            }else if (command == CREATE_THREAD){
+               PostService postService = FJServiceHolder.getPostService();
+               IFJPost post = postService.getPostObject();
+               post.setState(1);
+               post.setBody(body);
+               post.setAuth(user.getId());
+               post.setAuthor(user);
+               post.setDomen(domen);
+               post.setIp(ip);
+               post.setNred(0);
+               post.setTitle(head);
+               ThreadService treadService = FJServiceHolder.getThreadService();
+               IFJThread thread = treadService.getThreadObject();
+               thread.setAuthId(user.getId());
+               thread.setHead(head);
+               thread.setNick(user.getNick());
+               thread.setSnall(0);
+               thread.setSnid(0);
+               thread.setFolderId((long) 1);
+               thread.setPostsAmount(1);
+               thread.setDock(Pin.COMMON);
+               treadService.create(thread, post);
+               // Отправляем в форум
+               StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
                response.sendRedirect(exit.toString());
             }
          }else{
-            // session expired
-            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+            // Пустая
+            // TODO validation - empty body or head
+            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.NEW_THREAD);
             response.sendRedirect(exit.toString());
-         }   
-      } catch (Throwable e) {
-         buffer = new StringBuffer();
-         buffer.append(errorOut(e));
-         e.printStackTrace();
-         response.setContentType("text/html; charset=UTF-8");
-         writer.write(buffer.toString());
+         }
+      }else{
+         // session expired
+         StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+         response.sendRedirect(exit.toString());
       }
    }
 

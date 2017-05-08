@@ -40,67 +40,56 @@ import com.tecnick.htmlutils.htmlentities.HTMLEntities;
  */
 public class Write{
 
-   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception {
       StringBuffer buffer = new StringBuffer();
-      try {
-         HttpSession session = request.getSession();
-         LocaleString locale = (LocaleString) session.getAttribute("locale");
-         IUser user = (IUser) session.getAttribute("user");
-         if (user != null && !user.isBanned() && user.isLogined()){
-            String head = request.getParameter("NHEAD");
-            String body = request.getParameter("A2");
-            String strCommand = request.getParameter("comand");
-            /* Все нормально*/
-            /* Может пустое??*/
-            String threadId = request.getParameter("IDT");
-            if (head != null && body!= null && head.trim().length() > 0 && body.trim().length() > 0) {
-               /* Не пустое*/
-               /* Автор кто?*/
-               Time threadTime = new Time(new Date().getTime());
-               String rgTime = threadTime.toString("dd.MM.yyyy HH:mm");
-               String ip = request.getRemoteAddr();
-               String domen = ip;
-               /*Просмотр или запись?*/
-               Command command = Command.valueOfString(strCommand);
-               PostService postService = FJServiceHolder.getPostService();
-               switch (command){
-                  case PREVIEW_NEW_POST:
-                  case PREVIEW_EDITED_POST:
-                     buffer.append(view(locale, request, user, head, ip, domen, threadId, rgTime, body, command, webapp, userURI));
-                     break;
-                  case CREATE_POST:
-                     createNewPost(body, user, domen, ip, head, Long.valueOf(threadId), postService, locale, webapp);
-                     break;
-                  case UPDATE_POST:
-                     String postId = request.getParameter("IDB");
-                     write_edit(body, user, domen, ip, head, Long.valueOf(threadId), Long.valueOf(postId), postService);
-                     break;
-               }
-               if(command ==  Command.CREATE_POST || command ==  Command.UPDATE_POST){
-                  StringBuilder exit = new StringBuilder("/").append(userURI).append("/");
-                  if (request.getParameter("no_exit") != null){
-                     exit.append(FJUrl.VIEW_THREAD).append("?id=").append(threadId).append("&end=1#end");
-                  }else{
-                     exit.append(FJUrl.INDEX);
-                  }
-                  response.sendRedirect(exit.toString());
-               }else if (command ==  Command.PREVIEW_NEW_POST || command ==  Command.PREVIEW_EDITED_POST){
-                  response.setContentType("text/html; charset=UTF-8");
-                  PrintWriter writer = response.getWriter();
-                  String out = buffer.toString();
-                  writer.write(out);
+      HttpSession session = request.getSession();
+      LocaleString locale = (LocaleString) session.getAttribute("locale");
+      IUser user = (IUser) session.getAttribute("user");
+      if (user != null && !user.isBanned() && user.isLogined()){
+         String head = request.getParameter("NHEAD");
+         String body = request.getParameter("A2");
+         String strCommand = request.getParameter("comand");
+         /* Все нормально*/
+         /* Может пустое??*/
+         String threadId = request.getParameter("IDT");
+         if (head != null && body!= null && head.trim().length() > 0 && body.trim().length() > 0) {
+            /* Не пустое*/
+            /* Автор кто?*/
+            Time threadTime = new Time(new Date().getTime());
+            String rgTime = threadTime.toString("dd.MM.yyyy HH:mm");
+            String ip = request.getRemoteAddr();
+            String domen = ip;
+            /*Просмотр или запись?*/
+            Command command = Command.valueOfString(strCommand);
+            PostService postService = FJServiceHolder.getPostService();
+            switch (command){
+               case PREVIEW_NEW_POST:
+               case PREVIEW_EDITED_POST:
+                  buffer.append(view(locale, request, user, head, ip, domen, threadId, rgTime, body, command, webapp, userURI));
+                  break;
+               case CREATE_POST:
+                  createNewPost(body, user, domen, ip, head, Long.valueOf(threadId), postService, locale, webapp);
+                  break;
+               case UPDATE_POST:
+                  String postId = request.getParameter("IDB");
+                  write_edit(body, user, domen, ip, head, Long.valueOf(threadId), Long.valueOf(postId), postService);
+                  break;
+            }
+            if(command ==  Command.CREATE_POST || command ==  Command.UPDATE_POST){
+               StringBuilder exit = new StringBuilder("/").append(userURI).append("/");
+               if (request.getParameter("no_exit") != null){
+                  exit.append(FJUrl.VIEW_THREAD).append("?id=").append(threadId).append("&end=1#end");
                }else{
-                  // command had not sent
-                  StringBuilder exit = new StringBuilder("/").append(userURI).append("/");
-                  if (request.getParameter("no_exit") != null){
-                     exit.append(FJUrl.VIEW_THREAD).append("?id=").append(threadId).append("&end=1#end");
-                  }else{
-                     exit.append(FJUrl.INDEX);
-                  }
-                  response.sendRedirect(exit.toString());
+                  exit.append(FJUrl.INDEX);
                }
+               response.sendRedirect(exit.toString());
+            }else if (command ==  Command.PREVIEW_NEW_POST || command ==  Command.PREVIEW_EDITED_POST){
+               response.setContentType("text/html; charset=UTF-8");
+               PrintWriter writer = response.getWriter();
+               String out = buffer.toString();
+               writer.write(out);
             }else{
-               // TODO validation - empty body or head or threadId
+               // command had not sent
                StringBuilder exit = new StringBuilder("/").append(userURI).append("/");
                if (request.getParameter("no_exit") != null){
                   exit.append(FJUrl.VIEW_THREAD).append("?id=").append(threadId).append("&end=1#end");
@@ -110,18 +99,19 @@ public class Write{
                response.sendRedirect(exit.toString());
             }
          }else{
-            // Session expired
-            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+            // TODO validation - empty body or head or threadId
+            StringBuilder exit = new StringBuilder("/").append(userURI).append("/");
+            if (request.getParameter("no_exit") != null){
+               exit.append(FJUrl.VIEW_THREAD).append("?id=").append(threadId).append("&end=1#end");
+            }else{
+               exit.append(FJUrl.INDEX);
+            }
             response.sendRedirect(exit.toString());
          }
-      } catch (Throwable e) {
-         e.printStackTrace();
-         buffer = new StringBuffer();
-         buffer.append(errorOut(e));
-         response.setContentType("text/html; charset=UTF-8");
-         PrintWriter writer = response.getWriter();
-         String out = buffer.toString();
-         writer.write(out);
+      }else{
+         // Session expired
+         StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+         response.sendRedirect(exit.toString());
       }
    }
 

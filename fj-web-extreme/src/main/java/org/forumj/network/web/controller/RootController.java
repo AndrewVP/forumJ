@@ -37,7 +37,7 @@ public class RootController {
     private static String INDEX_HTML = "index.html";
     public static String[] rootResources = {ROBOTS_TXT, FAVICON_ICO, INDEX_HTML};
 
-    public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp, String userUri) throws ServletException, IOException {
+    public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp, String userUri) throws Exception {
         String resource = request.getRequestURI();
         if (resource.endsWith(ROBOTS_TXT)){
             response.setContentType("text/plain; charset=UTF-8");

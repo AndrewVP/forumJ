@@ -61,74 +61,70 @@ public class Images{
       }
    }
 
-   public void doGet(HttpServletRequest req, HttpServletResponse resp, String webappName) throws ServletException, IOException {
-      try{
-         String uri = req.getRequestURI();
-         while (uri.startsWith("/")){
-            uri = uri.substring(1);
+   public void doGet(HttpServletRequest req, HttpServletResponse resp, String webappName) throws Exception {
+      String uri = req.getRequestURI();
+      while (uri.startsWith("/")){
+         uri = uri.substring(1);
+      }
+      if (webappName != null && !webappName.isEmpty()){
+         if (uri.startsWith(webappName)){
+            uri = uri.substring(webappName.length());
          }
-         if (webappName != null && !webappName.isEmpty()){
-            if (uri.startsWith(webappName)){
-               uri = uri.substring(webappName.length());
-            }
-         }
+      }
 
-         String photoExt = null;
-         // TODO remake it
-         if (uri != null){
-            String[] split = uri.split("\\.");
-            if (split.length > 1){
-               photoExt = split[1];
-            }
+      String photoExt = null;
+      // TODO remake it
+      if (uri != null){
+         String[] split = uri.split("\\.");
+         if (split.length > 1){
+            photoExt = split[1];
          }
-         resp.setDateHeader("Last-Modified", dateHeader.getTime());
-         resp.setDateHeader("Expires", dateHeader.getTime() + 600000000);
-         resp.setHeader("max-age", "600000");
-         resp.setHeader("Cache-Control", "private");
-         String fileKey = uri.substring(uri.split("/")[1].length() + 1);
-         String filePath = null;
-         Long imageId = null;
-         Image image = null;
-         ImageService imageService = FJServiceHolder.getImageService();
-         if (fileKey.startsWith("/" + avatarsContextDir)){
-            filePath = fjHomeDir + File.separator + fileKey;
-         }else if (fileKey.startsWith("/" + FJUrl.PHOTO)){
-            //TODO make Constant
-            String idParameter = req.getParameter("id");
-            imageId = Long.valueOf(idParameter);
-            image = imageService.getImage(imageId);
-            filePath = image.getPath();
-            photoExt = image.getExtension();
-         }else{
-            filePath = realPath + "img" + fileKey;
-         }
-         String mimeType = "image/" + photoExt.toLowerCase();
-         resp.setContentType(mimeType);
-         List<byte[]> resource = cache.get(fileKey);
-         if (resource == null){
+      }
+      resp.setDateHeader("Last-Modified", dateHeader.getTime());
+      resp.setDateHeader("Expires", dateHeader.getTime() + 600000000);
+      resp.setHeader("max-age", "600000");
+      resp.setHeader("Cache-Control", "private");
+      String fileKey = uri.substring(uri.split("/")[1].length() + 1);
+      String filePath = null;
+      Long imageId = null;
+      Image image = null;
+      ImageService imageService = FJServiceHolder.getImageService();
+      if (fileKey.startsWith("/" + avatarsContextDir)){
+         filePath = fjHomeDir + File.separator + fileKey;
+      }else if (fileKey.startsWith("/" + FJUrl.PHOTO)){
+         //TODO make Constant
+         String idParameter = req.getParameter("id");
+         imageId = Long.valueOf(idParameter);
+         image = imageService.getImage(imageId);
+         filePath = image.getPath();
+         photoExt = image.getExtension();
+      }else{
+         filePath = realPath + "img" + fileKey;
+      }
+      String mimeType = "image/" + photoExt.toLowerCase();
+      resp.setContentType(mimeType);
+      List<byte[]> resource = cache.get(fileKey);
+      if (resource == null){
+         resource = getFileAsArray(filePath);
+         if (resource.size() != 0){
+            cache.put(fileKey, resource);
+         }else if (fileKey.startsWith("/photo")){
+            // probably home dir was moved
+            String pathToImage = ImageTools.makePath(imageId, fjHomeDir + File.separator + imagesContextDir);
+            filePath = ImageTools.makeImageName(imageId, pathToImage, photoExt);
             resource = getFileAsArray(filePath);
             if (resource.size() != 0){
                cache.put(fileKey, resource);
-            }else if (fileKey.startsWith("/photo")){
-               // probably home dir was moved
-               String pathToImage = ImageTools.makePath(imageId, fjHomeDir + File.separator + imagesContextDir);
-               filePath = ImageTools.makeImageName(imageId, pathToImage, photoExt);
-               resource = getFileAsArray(filePath);
-               if (resource.size() != 0){
-                  cache.put(fileKey, resource);
-                  image.setPath(filePath);
-                  imageService.update(image);
-               }else{
-                  //TODO Make "missed image"
-               }
+               image.setPath(filePath);
+               imageService.update(image);
+            }else{
+               //TODO Make "missed image"
             }
          }
-         OutputStream out = resp.getOutputStream();
-         for (byte[] potion : resource) {
-            out.write(potion);
-         }
-      }catch (Exception e){
-         logger.error(e.getMessage(), e);
+      }
+      OutputStream out = resp.getOutputStream();
+      for (byte[] potion : resource) {
+         out.write(potion);
       }
    }
 

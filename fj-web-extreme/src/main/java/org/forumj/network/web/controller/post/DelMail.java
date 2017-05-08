@@ -31,48 +31,40 @@ import org.forumj.network.web.FJUrl;
  */
 public class DelMail{
 
-   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
-      try {
-         HttpSession session = request.getSession();
-         String idParameter = request.getParameter("id");
-         String actionParameter = request.getParameter("ACT");
-         IUser user = (IUser) session.getAttribute("user");
-         MailService mailService = FJServiceHolder.getMailService();
-         if (user != null && !user.isBanned() && user.isLogined()){
-            if (actionParameter != null && !"".equals(actionParameter)){
-               String nrwParameter = request.getParameter("NRW");
-               Integer nrw = Integer.valueOf(nrwParameter);
-               if ("del".equalsIgnoreCase(actionParameter)){
-                  Integer id = Integer.valueOf(idParameter);
-                  for (int nrwIndex = 0; nrwIndex < nrw; nrwIndex++) {
-                     String mailIdParameter = request.getParameter(String.valueOf(nrwIndex));
-                     if (mailIdParameter != null){
-                        Long mailId = Long.valueOf(mailIdParameter);
-                        switch(id) {
-                        case 2:
-                           mailService.deleteMailFromInbox(mailId, user);
-                           break;
-                        case 4:
-                           mailService.deleteMailFromOutbox(mailId, user);
-                           break;
-                        }      
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception {
+      HttpSession session = request.getSession();
+      String idParameter = request.getParameter("id");
+      String actionParameter = request.getParameter("ACT");
+      IUser user = (IUser) session.getAttribute("user");
+      MailService mailService = FJServiceHolder.getMailService();
+      if (user != null && !user.isBanned() && user.isLogined()){
+         if (actionParameter != null && !"".equals(actionParameter)){
+            String nrwParameter = request.getParameter("NRW");
+            Integer nrw = Integer.valueOf(nrwParameter);
+            if ("del".equalsIgnoreCase(actionParameter)){
+               Integer id = Integer.valueOf(idParameter);
+               for (int nrwIndex = 0; nrwIndex < nrw; nrwIndex++) {
+                  String mailIdParameter = request.getParameter(String.valueOf(nrwIndex));
+                  if (mailIdParameter != null){
+                     Long mailId = Long.valueOf(mailIdParameter);
+                     switch(id) {
+                     case 2:
+                        mailService.deleteMailFromInbox(mailId, user);
+                        break;
+                     case 4:
+                        mailService.deleteMailFromOutbox(mailId, user);
+                        break;
                      }
                   }
                }
             }
-            StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=").append(idParameter);
-            response.sendRedirect(url.toString());
-         }else{
-            // Session expired
-            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
-            response.sendRedirect(exit.toString());
          }
-      } catch (Throwable e) {
-         e.printStackTrace();
-         StringBuffer buffer = new StringBuffer();
-         buffer.append(FJServletTools.errorOut(e));
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
+         StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=").append(idParameter);
+         response.sendRedirect(url.toString());
+      }else{
+         // Session expired
+         StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+         response.sendRedirect(exit.toString());
       }
    }
 }

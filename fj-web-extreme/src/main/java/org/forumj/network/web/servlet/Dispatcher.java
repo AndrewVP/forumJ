@@ -26,7 +26,7 @@ import static org.forumj.network.web.FJServletTools.errorOut;
 @WebServlet(urlPatterns = {"/"})
 public class Dispatcher extends HttpServlet {
 
-    private Logger logger = LogManager.getLogger("org.forumj.web.filter");
+    private Logger logger = LogManager.getLogger(getClass().getCanonicalName());
 
     private String webappName;
     private String realPath = null;
@@ -34,6 +34,7 @@ public class Dispatcher extends HttpServlet {
     // GET controllers
     private RootController rootController = new RootController();
     private Page404 page404 = new Page404();
+    private Page500 page500 = new Page500();
     private Index pageGroupIndex = new Index();
     private Tema pageGroupThread = new Tema();
     private Images imagesController = new Images();
@@ -148,7 +149,6 @@ public class Dispatcher extends HttpServlet {
                         case FJUrl.SKIN:
                         case FJUrl.AVATARS:
                         case FJUrl.PHOTO: // backward compatibility
-//                            imagesController.doGet(request, response, webappName);
                             loginFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, (req, resp, webapp, uri) -> {
                                 imagesController.doGet(req, resp, webapp);
                             });
@@ -267,14 +267,8 @@ public class Dispatcher extends HttpServlet {
                 page404.doGet(request, response, webappName);
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            StringBuffer buffer = new StringBuffer();
-            buffer = new StringBuffer();
-            buffer.append(errorOut(e));
-            response.setContentType("text/html; charset=UTF-8");
-            PrintWriter writer = response.getWriter();
-            String out = buffer.toString();
-            writer.write(out);
+            logger.error(e);
+            page500.doGet(request, response, webappName, e);
         }
     }
 
@@ -509,14 +503,8 @@ public class Dispatcher extends HttpServlet {
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
-            StringBuffer buffer = new StringBuffer();
-            buffer = new StringBuffer();
-            buffer.append(errorOut(e));
-            response.setContentType("text/html; charset=UTF-8");
-            PrintWriter writer = response.getWriter();
-            String out = buffer.toString();
-            writer.write(out);
+            logger.error(e);
+            page500.doGet(request, response, webappName, e);
         }
     }
 

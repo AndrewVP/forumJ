@@ -24,35 +24,27 @@ import org.forumj.network.web.FJUrl;
  */
 public class Voice{
 
-   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
-      try {
-         HttpSession session = request.getSession();
-         String threadIdParameter = request.getParameter("IDT1");
-         String answerIdParameter = request.getParameter("ANSWER");
-         IUser user = (IUser) session.getAttribute("user");
-         if (user != null && !user.isBanned() && user.isLogined()){
-            if (threadIdParameter != null && !"".equals(threadIdParameter)){
-               VoiceService voiceService = FJServiceHolder.getVoiceService();
-               Long threadId = Long.valueOf(threadIdParameter);
-               if (!voiceService.isUserVoted(threadId, user.getId())){
-                  Long answerId = Long.valueOf(answerIdParameter);
-                  QuestService questService = FJServiceHolder.getQuestService();
-                  questService.addVote(threadId, answerId, user);
-               }
-               StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD).append("?id=").append(threadIdParameter);
-               response.sendRedirect(url.toString());
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception{
+      HttpSession session = request.getSession();
+      String threadIdParameter = request.getParameter("IDT1");
+      String answerIdParameter = request.getParameter("ANSWER");
+      IUser user = (IUser) session.getAttribute("user");
+      if (user != null && !user.isBanned() && user.isLogined()){
+         if (threadIdParameter != null && !"".equals(threadIdParameter)){
+            VoiceService voiceService = FJServiceHolder.getVoiceService();
+            Long threadId = Long.valueOf(threadIdParameter);
+            if (!voiceService.isUserVoted(threadId, user.getId())){
+               Long answerId = Long.valueOf(answerIdParameter);
+               QuestService questService = FJServiceHolder.getQuestService();
+               questService.addVote(threadId, answerId, user);
             }
-         }else{
-            // Session expired
-            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
-            response.sendRedirect(exit.toString());
+            StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD).append("?id=").append(threadIdParameter);
+            response.sendRedirect(url.toString());
          }
-      } catch (Throwable e) {
-         e.printStackTrace();
-         StringBuffer buffer = new StringBuffer();
-         buffer.append(FJServletTools.errorOut(e));
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
+      }else{
+         // Session expired
+         StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+         response.sendRedirect(exit.toString());
       }
    }
 

@@ -33,49 +33,41 @@ import java.util.List;
  */
 public class PostImage{
 
-	public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
+	public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception{
 		HttpSession session = request.getSession();
-		try {
-			ValidationErrors validationErrors = (ValidationErrors) request.getAttribute(ValidationErrors.class.getName());
-			if (validationErrors.isHasErrors()){
-				List<ErrorCode> errors = validationErrors.getErrors();
-				StringBuffer errCodes = new StringBuffer();
-				for (ErrorCode errorCode : errors) {
-					if (errCodes.length() == 0){
-						errCodes.append("&amp;");
-						errCodes.append(HttpParameters.ERROR_CODE);
-						errCodes.append("=");
-					}else{
-						errCodes.append(",");
-					}
-					errCodes.append(errorCode.getErrorCode());
+		ValidationErrors validationErrors = (ValidationErrors) request.getAttribute(ValidationErrors.class.getName());
+		if (validationErrors.isHasErrors()){
+			List<ErrorCode> errors = validationErrors.getErrors();
+			StringBuffer errCodes = new StringBuffer();
+			for (ErrorCode errorCode : errors) {
+				if (errCodes.length() == 0){
+					errCodes.append("&amp;");
+					errCodes.append(HttpParameters.ERROR_CODE);
+					errCodes.append("=");
+				}else{
+					errCodes.append(",");
 				}
+				errCodes.append(errorCode.getErrorCode());
+			}
+			//TODO Magic integer!
+			StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=16").append(errCodes);
+			response.sendRedirect(url.toString());
+		}else{
+			IUser user = (IUser) session.getAttribute(HttpParameters.USER);
+			if (user != null && !user.isBanned() && user.isLogined()){
+				FileItem imageFile = (FileItem) request.getAttribute(HttpParameters.AVATAR);
+				String album = request.getParameter(HttpParameters.ALBUM);
+				ImageService imageService = FJServiceHolder.getImageService();
+				Long albumId = album == null ? 0 : Long.valueOf(album);
+				imageService.create((DiskFileItem) imageFile, user, albumId, ImageType.ORIGINAL);
 				//TODO Magic integer!
-				StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=16").append(errCodes);
+				StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=16");
 				response.sendRedirect(url.toString());
 			}else{
-				IUser user = (IUser) session.getAttribute(HttpParameters.USER);
-				if (user != null && !user.isBanned() && user.isLogined()){
-					FileItem imageFile = (FileItem) request.getAttribute(HttpParameters.AVATAR);
-					String album = request.getParameter(HttpParameters.ALBUM);
-					ImageService imageService = FJServiceHolder.getImageService();
-					Long albumId = album == null ? 0 : Long.valueOf(album);
-					imageService.create((DiskFileItem) imageFile, user, albumId, ImageType.ORIGINAL);
-					//TODO Magic integer!
-					StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=16");
-					response.sendRedirect(url.toString());
-				}else{
-					// Session expired
-					StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
-					response.sendRedirect(exit.toString());
-				}
+				// Session expired
+				StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+				response.sendRedirect(exit.toString());
 			}
-		} catch (Throwable e) {
-			e.printStackTrace();
-			StringBuffer buffer = new StringBuffer();
-			buffer.append(FJServletTools.errorOut(e));
-			response.setContentType("text/html; charset=UTF-8");
-			response.getWriter().write(buffer.toString());
 		}
 	}
 

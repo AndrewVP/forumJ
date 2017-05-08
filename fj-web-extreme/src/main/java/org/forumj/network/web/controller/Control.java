@@ -41,430 +41,424 @@ import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 
 public class Control{
 
-   public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception {
       StringBuffer buffer = new StringBuffer();
-      try {
-         HttpSession session = request.getSession();
-         //Предотвращаем кеширование
-         cache(response);
-         // Функции   
-         Integer id = request.getParameter(HttpParameters.ID) == null ? 1 : Integer.valueOf(request.getParameter("id"));
-         Long msg = request.getParameter("msg") == null ? null : Long.valueOf(request.getParameter("msg"));
-         Long view = request.getParameter("view") == null ? null : Long.valueOf(request.getParameter("view"));
-         String errorCodes = request.getParameter(HttpParameters.ERROR_CODE);
-         List<ErrorCode> errors = new ArrayList<ErrorCode>();
-         if (errorCodes != null && !errorCodes.trim().isEmpty()){
-        	 String[] errCodes = errorCodes.split(",");
-        	 for (String errorCode : errCodes) {
-				errors.add(ErrorCode.fromErrorCode(Integer.valueOf(errorCode)));
-			}
+      HttpSession session = request.getSession();
+      //Предотвращаем кеширование
+      cache(response);
+      // Функции
+      Integer id = request.getParameter(HttpParameters.ID) == null ? 1 : Integer.valueOf(request.getParameter("id"));
+      Long msg = request.getParameter("msg") == null ? null : Long.valueOf(request.getParameter("msg"));
+      Long view = request.getParameter("view") == null ? null : Long.valueOf(request.getParameter("view"));
+      String errorCodes = request.getParameter(HttpParameters.ERROR_CODE);
+      List<ErrorCode> errors = new ArrayList<ErrorCode>();
+      if (errorCodes != null && !errorCodes.trim().isEmpty()){
+          String[] errCodes = errorCodes.split(",");
+          for (String errorCode : errCodes) {
+             errors.add(ErrorCode.fromErrorCode(Integer.valueOf(errorCode)));
          }
-         // Загружаем локализацию
-         LocaleString locale = (LocaleString) session.getAttribute("locale");
-         IUser user = (IUser) session.getAttribute("user");
-         IgnorService ignorService = FJServiceHolder.getIgnorService();
-         UserService userService = FJServiceHolder.getUserService();
-         FolderService folderService = FJServiceHolder.getFolderService();
-         MailService mailService = FJServiceHolder.getMailService();
-         SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
-         InterfaceService interfaceService = FJServiceHolder.getInterfaceService();
-         ImageService imageService = FJServiceHolder.getImageService();
-         buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
-         buffer.append("<html>");
-         buffer.append("<head>");
-         buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
-         // Стили
-         buffer.append(ResourcesBuilder.getStyleCSS(webapp));
-         buffer.append("<script language='javascript' type='text/javascript'>\n");
-         buffer.append("var webapp='").append(webapp.isEmpty() ? "" : "/" + webapp).append("';\n");
-         buffer.append("</script>\n");
-         // Скрипты (смайлики)
-         buffer.append(loadJavaScript("/js/smile_.js"));
-         // Скрипты (счечик текстария)
-         buffer.append(loadJavaScript("/js/checklength.js"));
-         // Скрипты (автовставка тегов)
-         buffer.append(loadJavaScript("/js/jstags.js"));
-         // Скрипты (submit поста)
-         buffer.append(send_submit(locale));
-         buffer.append("<link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\">");
-         buffer.append("<link rel=\"shortcut icon\" href=\"/favicon.ico\" type=\"image/x-icon\">");
-         buffer.append("<title>");
-         buffer.append(locale.getString("mess127"));
-         buffer.append("</title>");
-         buffer.append("</head>");
-         // Цвет фона страницы
-         buffer.append("<body class='mainBodyBG'>");
-         // Главная таблица
-         buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
-         // Таблица с лого и верхним баннером
-         buffer.append(logo(webapp));
-         // Таблица главных ссылок
-         buffer.append("<tr>");
-         buffer.append("<td width='100%'>");
-         buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
-         // Главное "меню"
-         buffer.append(menu(request, user, locale, false, webapp, userURI));
-         buffer.append("</table></td></tr>");
-         //
-         buffer.append("<tr><td>");
-         // Таблица форума
-         buffer.append("<table class='content'><tr><td>");
-         // Таблица контента
-         buffer.append("<table class='content'><tr>");
-         // Ссылки на сервисы
-         // Игнор-лист.
-         buffer.append("<td height='300' valign='TOP' width='150'>");
-         buffer.append("<table class='control'><tr class='heads'>");
-         buffer.append("<th class='internal'>");
-         buffer.append("<div class='mnuprof'>" + locale.getString("mess24") + "</div>");
-         buffer.append("</th>");
-         buffer.append("</tr><tr>");
-         buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=1'>").append(locale.getString("mess24")).append("</a><br>");
-         buffer.append("</td>");
-         buffer.append("</tr></table>");
-         /*e-mail*/
-         buffer.append("<table class='control'><tr class='heads'>");
-         buffer.append("<th class='internal'>");
-         buffer.append("<div class='mnuprof'>" + locale.getString("MSG_EMAIL") + "</div>");
-         buffer.append("</th>");
-         buffer.append("</tr><tr>");
-         buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=13'>" + locale.getString("MSG_EMAIL") + "</a><br>");
-         buffer.append("</td>");
-         buffer.append("</tr></table>");
-         // Личная переписка
-         buffer.append("<table class='control'><tr class='heads'>");
-         buffer.append("<th class='internal'>");
-         buffer.append("<div class='mnuprof'>" + locale.getString("mess23") + "</div>");
-         buffer.append("</th>");
-         buffer.append("</tr><tr>");
-         buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=2'>" + locale.getString("mess54") + "</a><br>");
-         buffer.append("</td>");
-         buffer.append("</tr><tr>");
-         buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=3'>" + locale.getString("mess57") + "</a><br>");
-         buffer.append("</td>");
-         buffer.append("</tr><tr>");
-         buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=4'>" + locale.getString("mess55") + "</a><br>");
-         buffer.append("</td>");
-         buffer.append("</tr><tr>");
-         buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=5'>" + locale.getString("mess56") + "</a><br>");
-         buffer.append("</td>");
-         buffer.append("</tr></table>");
-         // Интерфейсы
-         buffer.append("<table class='control'><tr class='heads'>");
-         buffer.append("<th class='internal'>");
-         buffer.append("<div class='mnuprof'>" + locale.getString("mess71") + "</div>");
-         buffer.append("</th>");
-         buffer.append("</tr><tr>");
-         buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=6'>" + locale.getString("mess71") + "</a><br>");
-         buffer.append("</td>");
-         buffer.append("</tr><tr>");
-         buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=7'>" + locale.getString("mess72") + "</a><br>");
-         buffer.append("</td>");
-         buffer.append("</tr></table>");
-         // Подписка
-         buffer.append("<table class='control'><tr class='heads'>");
-         buffer.append("<th class='internal'>");
-         buffer.append("<div class='mnuprof'>" + locale.getString("mess86") + "</div>");
-         buffer.append("</th>");
-         buffer.append("</tr><tr>");
-         buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=8'>" + locale.getString("mess86") + "</a><br>");
-         buffer.append("</td>");
-         buffer.append("</tr></table>");
-         // Аватара
-         buffer.append("<table class='control'><tr class='heads'>");
-         buffer.append("<th class='internal'>");
-         buffer.append("<div class='mnuprof'>" + locale.getString("mess93") + "</div>");
-         buffer.append("</th>");
-         buffer.append("</tr><tr>");
-         buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=9'>" + locale.getString("mess93") + "</a><br>");
-         buffer.append("</td>");
-         buffer.append("</tr></table>");
-         // Местонахождение
-         buffer.append("<table class='control'><tr class='heads'>");
-         buffer.append("<th class='internal'>");
-         buffer.append("<div class='mnuprof'>" + locale.getString("mess104") + "</div>");
-         buffer.append("</th>");
-         buffer.append("</tr><tr>");
-         buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=10'>" + locale.getString("mess104") + "</a><br>");
-         buffer.append("</td>");
-         /*Locale*/
-         buffer.append("</tr><tr>");
-         buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=12'>" + locale.getString("MSG_INTERF_LOCALE") + "</a><br>");
-         buffer.append("</td>");
-         buffer.append("</tr></table>");
-         /*Подпись*/
-         buffer.append("<table class='control'><tr class='heads'>");
-         buffer.append("<th class='internal'>");
-         buffer.append("<div class='mnuprof'>" + locale.getString("mess138") + "</div>");
-         buffer.append("</th>");
-         buffer.append("</tr><tr>");
-         buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=11'>" + locale.getString("mess138") + "</a><br>");
-         buffer.append("</td>");
-         buffer.append("</tr></table>");
-         if (user.isModerator()){
-         /*Users*/
-            buffer.append("<table class='control'><tr class='heads'>");
-            buffer.append("<th class='internal'>");
-            buffer.append("<div class='mnuprof'>" + locale.getString("MSG_USERS") + "</div>");
-            buffer.append("</th>");
-         /* all Users*/
-            buffer.append("</tr><tr>");
-            buffer.append("<td class='internal'>");
-            buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=14'>" + locale.getString("MSG_USERS") + "</a><br>");
-            buffer.append("</td>");
-         /* unapproved Users*/
-            buffer.append("</tr><tr>");
-            buffer.append("<td class='internal'>");
-            buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=15'>" + locale.getString("MSG_UNAPPROVED_USERS") + "</a><br>");
-            buffer.append("</td>");
-            buffer.append("</tr></table>");
-         }
-         /*PhotoAlbum*/
-         buffer.append("<table class='control'><tr class='heads'>");
-         buffer.append("<th class='internal'>");
-         buffer.append("<div class='mnuprof'>" + locale.getString("MSG_PHOTOALBUM") + "</div>");
-         buffer.append("</th>");
-         /* all Users*/
-         buffer.append("</tr><tr>");
-         buffer.append("<td class='internal'>");
-         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=16'>" + locale.getString("MSG_PHOTOALBUM") + "</a><br>");
-         buffer.append("</td>");
-         buffer.append("</tr></table>");
-
-         buffer.append("</td>");
-         buffer.append("<td valign='TOP' style='padding-left:5px;'>");
-         //TODO Magic integers!!
-         switch(id) {
-         case 0:
-            // Зашли "по умолчанию"
-            break;
-         case 1:
-            // Игнор-лист
-            buffer.append(caseIgnor(user, locale, ignorService, userURI));
-            break;
-         case 2:
-            // Inbox
-            buffer.append(caseInbox(locale, user, msg, mailService, userURI, webapp));
-            break;
-         case 3:
-            // Отправлено, но не доставлено
-            buffer.append(caseSent(locale, user, msg, mailService, userURI, webapp));
-            break;
-         case 4:
-            // Отправлено, и доставлено
-            buffer.append(caseOutbox(locale, user, msg, mailService, userURI, webapp));
-            break;
-         case 5:
-            //  Черновики
-            buffer.append(casePostponed(locale, user, msg, mailService, userURI, webapp));
-            break;
-         case 6:
-            // Интерфейсы
-            buffer.append(caseViews(locale, user, view, interfaceService, folderService, userURI));
-            break;
-         case 7:
-            // Папки
-            buffer.append(caseFolders(locale, user, folderService, userURI));
-            break;
-         case 8:
-            // Подписка
-            buffer.append(caseSubscribe(locale, user, subscribeService, userURI, webapp));
-            break;
-         case 9:
-            // Аватара
-            buffer.append(caseAvatar(locale, user, errors, userURI, webapp));
-            break;
-         case 10:
-            // Местонахождение
-            buffer.append(caseGeo(locale, user, userURI));
-            break;
-         case 11:
-            // Подпись
-            buffer.append(cseSign(locale, user, userURI));
-            break;
-         case 12:
-            // Язык интерфейса
-            buffer.append(caseLanguage(locale, user, userURI));
-            break;
-         case 13:
-            // E-mail
-            buffer.append(caseEMail(locale, user, userURI));
-            break;
-         case 14:
-            // All Users
-            buffer.append(caseAllUsers(locale, user, userService, userURI, webapp));
-            break;
-         case 15:
-            // Unapproved Users
-            buffer.append(caseUnapprovedUsers(locale, user, userService, userURI, webapp));
-            break;
-         case 16:
-            // PhotoAlbum
-            buffer.append(casePhotoalbum(locale, user, imageService, errors, userURI, webapp));
-            break;
-         }
-         buffer.append("</td>");
-         buffer.append("</tr>");
-         buffer.append("</table>");
-         buffer.append("</td>");
-         buffer.append("</tr>");
-         buffer.append("</table>");
-         buffer.append("</td>");
-         buffer.append("</tr>");
-         // Главное "меню"
-         buffer.append("<tr>");
-         buffer.append("<td width='100%'>");
-         buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
-         buffer.append(menu(request, user, locale, false, webapp, userURI));
-         buffer.append("</table></td></tr>");
-         // Форма отправки письма личной переписки   
-         if (id>1 && id<6){
-            /*Форма нового мейла*/
-            buffer.append("<tr>");
-            buffer.append("<td>");
-            buffer.append("<table>");
-            buffer.append("<tr>");
-            buffer.append("<td>");
-            buffer.append("<form name='post' action='").append("/").append(userURI).append("/").append(FJUrl.SEND_PIVATE_MESSAGE + "?id=" + id + "' method='post'>");
-            buffer.append("<table width='100%'>");
-            buffer.append("<tr>");
-            buffer.append("<td width='100%'>");
-            buffer.append("<table width='100%'>");
-            /*От*/
-            buffer.append("<tr>");
-            buffer.append("<td align='LEFT'>");
-            buffer.append("<div class='mnuprof'>");
-            buffer.append(locale.getString("mess58") + "&nbsp;");
-            buffer.append("</div>");
-            buffer.append("</td>");
-            buffer.append("<td>");
-            buffer.append("<div class='mnuprof'>");
-            buffer.append(user.getNick());
-            buffer.append("</div>");
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            /*Кому*/
-            buffer.append("<tr>");
-            buffer.append("<td align='LEFT'>");
-            buffer.append("<div class='mnuprof'>");
-            buffer.append(locale.getString("mess28") + "&nbsp;");
-            buffer.append("</div>");
-            buffer.append("</td>");
-            buffer.append("<td colspan='2'>");
-            Integer error = (Integer) session.getAttribute("error");
-            if (error != null){
-               buffer.append("<input type='text' class='mnuforumSm' value='" + session.getAttribute("rcvr") + "' name='RCVR' size='30'>");
-               if (error == 1){
-                  buffer.append("<span class=hdforum>");
-                  buffer.append("<font color='red'>");
-                  buffer.append(locale.getString("mess65"));
-                  buffer.append("</font>");
-                  buffer.append("</span>");
-               }
-            }else{
-               buffer.append("<input type=text class='mnuforumSm' name='RCVR' size='30'>");
-            }
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            /*Тема*/
-            buffer.append("<tr>");
-            buffer.append("<td align='LEFT'>");
-            buffer.append("<div class='mnuprof'>");
-            buffer.append(locale.getString("mess59") + "&nbsp;");
-            buffer.append("</div>");
-            buffer.append("</td>");
-            buffer.append("<td>");
-            if (error != null){
-               buffer.append("<input type=text class='mnuforumSm' name='NHEAD' value='" + session.getAttribute("head") + "' size='100'>");
-            }else{
-               buffer.append("<input type=text class='mnuforumSm' name='NHEAD' size='100'>");
-            }
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            buffer.append("</table>");
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            buffer.append("<tr>");
-            buffer.append("<td>");
-            buffer.append("<table>");
-            buffer.append("<tr>");
-            /*Смайлики заголовок*/
-            buffer.append("<td width='400' align='CENTER'>");
-            buffer.append("<p>");
-            buffer.append(locale.getString("mess21") + ":");
-            buffer.append("</p>");
-            buffer.append("</td>");
-            /*Приглашение*/
-            buffer.append("<td align='CENTER'>");
-            buffer.append("<p>" + locale.getString("mess12") + "</p>");
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            /*Пост*/
-            buffer.append("<tr>");
-            buffer.append("<td valign='TOP' width='100%' height='100%'>");
-            /*Смайлики*/
-            buffer.append(smiles_add(locale.getString("mess11"), webapp));
-            buffer.append("</td>");
-            buffer.append("<td width='500' align='CENTER' valign='top'>");
-            /*Автотеги*/
-            buffer.append(autotags_add(webapp));
-            /*текстарий*/
-            buffer.append("<p>");
-            String textareaValue = "";
-            if (error != null) {
-               textareaValue = (String) session.getAttribute("body");
-            }
-            buffer.append("<textarea class='mnuforumSm' rows='20' id='ed1' name='A2' cols='55'>" + textareaValue + "</textarea>");
-            buffer.append("</p>");
-            /*Кнопки*/
-            buffer.append("<table>");
-            buffer.append("<tr>");
-            buffer.append("<td>");
-            buffer.append(fd_button(locale.getString("mess13"),"send_submit(\"write\");","B1", "1"));
-            buffer.append("</td>");
-            buffer.append("<td>");
-            buffer.append(fd_button(locale.getString("mess63"),"send_submit(\"view\");","B3", "1"));
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            buffer.append("</table>");
-            /*Прередаем нужные пераметры...*/
-            buffer.append(fd_form_add(user));
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            buffer.append("</table>");
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            buffer.append("</table>");
-            buffer.append("</form>");
-            buffer.append("</td>");
-            buffer.append("</tr>");
-            buffer.append("</table>");
-            buffer.append("</td>");
-            buffer.append("</tr>");
-         }
-         // Баннер внизу, счетчики и копирайт.
-         buffer.append(footer(webapp));
-         buffer.append("</table>");
-         buffer.append("</body>");
-         buffer.append("</html>");
-      } catch (Throwable e) {
-         buffer = new StringBuffer();
-         buffer.append(errorOut(e));
-         e.printStackTrace();
       }
+      // Загружаем локализацию
+      LocaleString locale = (LocaleString) session.getAttribute("locale");
+      IUser user = (IUser) session.getAttribute("user");
+      IgnorService ignorService = FJServiceHolder.getIgnorService();
+      UserService userService = FJServiceHolder.getUserService();
+      FolderService folderService = FJServiceHolder.getFolderService();
+      MailService mailService = FJServiceHolder.getMailService();
+      SubscribeService subscribeService = FJServiceHolder.getSubscribeService();
+      InterfaceService interfaceService = FJServiceHolder.getInterfaceService();
+      ImageService imageService = FJServiceHolder.getImageService();
+      buffer.append("<!doctype html public \"-//W3C//DTD HTML 4.01 Transitional//EN\">");
+      buffer.append("<html>");
+      buffer.append("<head>");
+      buffer.append("<meta http-equiv='content-type' content='text/html; charset=UTF-8'>");
+      // Стили
+      buffer.append(ResourcesBuilder.getStyleCSS(webapp));
+      buffer.append("<script language='javascript' type='text/javascript'>\n");
+      buffer.append("var webapp='").append(webapp.isEmpty() ? "" : "/" + webapp).append("';\n");
+      buffer.append("</script>\n");
+      // Скрипты (смайлики)
+      buffer.append(loadJavaScript("/js/smile_.js"));
+      // Скрипты (счечик текстария)
+      buffer.append(loadJavaScript("/js/checklength.js"));
+      // Скрипты (автовставка тегов)
+      buffer.append(loadJavaScript("/js/jstags.js"));
+      // Скрипты (submit поста)
+      buffer.append(send_submit(locale));
+      buffer.append("<link rel=\"icon\" href=\"/favicon.ico\" type=\"image/x-icon\">");
+      buffer.append("<link rel=\"shortcut icon\" href=\"/favicon.ico\" type=\"image/x-icon\">");
+      buffer.append("<title>");
+      buffer.append(locale.getString("mess127"));
+      buffer.append("</title>");
+      buffer.append("</head>");
+      // Цвет фона страницы
+      buffer.append("<body class='mainBodyBG'>");
+      // Главная таблица
+      buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
+      // Таблица с лого и верхним баннером
+      buffer.append(logo(webapp));
+      // Таблица главных ссылок
+      buffer.append("<tr>");
+      buffer.append("<td width='100%'>");
+      buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
+      // Главное "меню"
+      buffer.append(menu(request, user, locale, false, webapp, userURI));
+      buffer.append("</table></td></tr>");
+      //
+      buffer.append("<tr><td>");
+      // Таблица форума
+      buffer.append("<table class='content'><tr><td>");
+      // Таблица контента
+      buffer.append("<table class='content'><tr>");
+      // Ссылки на сервисы
+      // Игнор-лист.
+      buffer.append("<td height='300' valign='TOP' width='150'>");
+      buffer.append("<table class='control'><tr class='heads'>");
+      buffer.append("<th class='internal'>");
+      buffer.append("<div class='mnuprof'>" + locale.getString("mess24") + "</div>");
+      buffer.append("</th>");
+      buffer.append("</tr><tr>");
+      buffer.append("<td class='internal'>");
+      buffer.append("<a class='mnuprof' href='/").append(userURI).append("/").append(FJUrl.SETTINGS).append("?id=1'>").append(locale.getString("mess24")).append("</a><br>");
+      buffer.append("</td>");
+      buffer.append("</tr></table>");
+      /*e-mail*/
+      buffer.append("<table class='control'><tr class='heads'>");
+      buffer.append("<th class='internal'>");
+      buffer.append("<div class='mnuprof'>" + locale.getString("MSG_EMAIL") + "</div>");
+      buffer.append("</th>");
+      buffer.append("</tr><tr>");
+      buffer.append("<td class='internal'>");
+      buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=13'>" + locale.getString("MSG_EMAIL") + "</a><br>");
+      buffer.append("</td>");
+      buffer.append("</tr></table>");
+      // Личная переписка
+      buffer.append("<table class='control'><tr class='heads'>");
+      buffer.append("<th class='internal'>");
+      buffer.append("<div class='mnuprof'>" + locale.getString("mess23") + "</div>");
+      buffer.append("</th>");
+      buffer.append("</tr><tr>");
+      buffer.append("<td class='internal'>");
+      buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=2'>" + locale.getString("mess54") + "</a><br>");
+      buffer.append("</td>");
+      buffer.append("</tr><tr>");
+      buffer.append("<td class='internal'>");
+      buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=3'>" + locale.getString("mess57") + "</a><br>");
+      buffer.append("</td>");
+      buffer.append("</tr><tr>");
+      buffer.append("<td class='internal'>");
+      buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=4'>" + locale.getString("mess55") + "</a><br>");
+      buffer.append("</td>");
+      buffer.append("</tr><tr>");
+      buffer.append("<td class='internal'>");
+      buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=5'>" + locale.getString("mess56") + "</a><br>");
+      buffer.append("</td>");
+      buffer.append("</tr></table>");
+      // Интерфейсы
+      buffer.append("<table class='control'><tr class='heads'>");
+      buffer.append("<th class='internal'>");
+      buffer.append("<div class='mnuprof'>" + locale.getString("mess71") + "</div>");
+      buffer.append("</th>");
+      buffer.append("</tr><tr>");
+      buffer.append("<td class='internal'>");
+      buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=6'>" + locale.getString("mess71") + "</a><br>");
+      buffer.append("</td>");
+      buffer.append("</tr><tr>");
+      buffer.append("<td class='internal'>");
+      buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=7'>" + locale.getString("mess72") + "</a><br>");
+      buffer.append("</td>");
+      buffer.append("</tr></table>");
+      // Подписка
+      buffer.append("<table class='control'><tr class='heads'>");
+      buffer.append("<th class='internal'>");
+      buffer.append("<div class='mnuprof'>" + locale.getString("mess86") + "</div>");
+      buffer.append("</th>");
+      buffer.append("</tr><tr>");
+      buffer.append("<td class='internal'>");
+      buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=8'>" + locale.getString("mess86") + "</a><br>");
+      buffer.append("</td>");
+      buffer.append("</tr></table>");
+      // Аватара
+      buffer.append("<table class='control'><tr class='heads'>");
+      buffer.append("<th class='internal'>");
+      buffer.append("<div class='mnuprof'>" + locale.getString("mess93") + "</div>");
+      buffer.append("</th>");
+      buffer.append("</tr><tr>");
+      buffer.append("<td class='internal'>");
+      buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=9'>" + locale.getString("mess93") + "</a><br>");
+      buffer.append("</td>");
+      buffer.append("</tr></table>");
+      // Местонахождение
+      buffer.append("<table class='control'><tr class='heads'>");
+      buffer.append("<th class='internal'>");
+      buffer.append("<div class='mnuprof'>" + locale.getString("mess104") + "</div>");
+      buffer.append("</th>");
+      buffer.append("</tr><tr>");
+      buffer.append("<td class='internal'>");
+      buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=10'>" + locale.getString("mess104") + "</a><br>");
+      buffer.append("</td>");
+      /*Locale*/
+      buffer.append("</tr><tr>");
+      buffer.append("<td class='internal'>");
+      buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=12'>" + locale.getString("MSG_INTERF_LOCALE") + "</a><br>");
+      buffer.append("</td>");
+      buffer.append("</tr></table>");
+      /*Подпись*/
+      buffer.append("<table class='control'><tr class='heads'>");
+      buffer.append("<th class='internal'>");
+      buffer.append("<div class='mnuprof'>" + locale.getString("mess138") + "</div>");
+      buffer.append("</th>");
+      buffer.append("</tr><tr>");
+      buffer.append("<td class='internal'>");
+      buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=11'>" + locale.getString("mess138") + "</a><br>");
+      buffer.append("</td>");
+      buffer.append("</tr></table>");
+      if (user.isModerator()){
+      /*Users*/
+         buffer.append("<table class='control'><tr class='heads'>");
+         buffer.append("<th class='internal'>");
+         buffer.append("<div class='mnuprof'>" + locale.getString("MSG_USERS") + "</div>");
+         buffer.append("</th>");
+      /* all Users*/
+         buffer.append("</tr><tr>");
+         buffer.append("<td class='internal'>");
+         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=14'>" + locale.getString("MSG_USERS") + "</a><br>");
+         buffer.append("</td>");
+      /* unapproved Users*/
+         buffer.append("</tr><tr>");
+         buffer.append("<td class='internal'>");
+         buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=15'>" + locale.getString("MSG_UNAPPROVED_USERS") + "</a><br>");
+         buffer.append("</td>");
+         buffer.append("</tr></table>");
+      }
+      /*PhotoAlbum*/
+      buffer.append("<table class='control'><tr class='heads'>");
+      buffer.append("<th class='internal'>");
+      buffer.append("<div class='mnuprof'>" + locale.getString("MSG_PHOTOALBUM") + "</div>");
+      buffer.append("</th>");
+      /* all Users*/
+      buffer.append("</tr><tr>");
+      buffer.append("<td class='internal'>");
+      buffer.append("<a class='mnuprof' href='").append("/").append(userURI).append("/").append(FJUrl.SETTINGS + "?id=16'>" + locale.getString("MSG_PHOTOALBUM") + "</a><br>");
+      buffer.append("</td>");
+      buffer.append("</tr></table>");
+
+      buffer.append("</td>");
+      buffer.append("<td valign='TOP' style='padding-left:5px;'>");
+      //TODO Magic integers!!
+      switch(id) {
+      case 0:
+         // Зашли "по умолчанию"
+         break;
+      case 1:
+         // Игнор-лист
+         buffer.append(caseIgnor(user, locale, ignorService, userURI));
+         break;
+      case 2:
+         // Inbox
+         buffer.append(caseInbox(locale, user, msg, mailService, userURI, webapp));
+         break;
+      case 3:
+         // Отправлено, но не доставлено
+         buffer.append(caseSent(locale, user, msg, mailService, userURI, webapp));
+         break;
+      case 4:
+         // Отправлено, и доставлено
+         buffer.append(caseOutbox(locale, user, msg, mailService, userURI, webapp));
+         break;
+      case 5:
+         //  Черновики
+         buffer.append(casePostponed(locale, user, msg, mailService, userURI, webapp));
+         break;
+      case 6:
+         // Интерфейсы
+         buffer.append(caseViews(locale, user, view, interfaceService, folderService, userURI));
+         break;
+      case 7:
+         // Папки
+         buffer.append(caseFolders(locale, user, folderService, userURI));
+         break;
+      case 8:
+         // Подписка
+         buffer.append(caseSubscribe(locale, user, subscribeService, userURI, webapp));
+         break;
+      case 9:
+         // Аватара
+         buffer.append(caseAvatar(locale, user, errors, userURI, webapp));
+         break;
+      case 10:
+         // Местонахождение
+         buffer.append(caseGeo(locale, user, userURI));
+         break;
+      case 11:
+         // Подпись
+         buffer.append(cseSign(locale, user, userURI));
+         break;
+      case 12:
+         // Язык интерфейса
+         buffer.append(caseLanguage(locale, user, userURI));
+         break;
+      case 13:
+         // E-mail
+         buffer.append(caseEMail(locale, user, userURI));
+         break;
+      case 14:
+         // All Users
+         buffer.append(caseAllUsers(locale, user, userService, userURI, webapp));
+         break;
+      case 15:
+         // Unapproved Users
+         buffer.append(caseUnapprovedUsers(locale, user, userService, userURI, webapp));
+         break;
+      case 16:
+         // PhotoAlbum
+         buffer.append(casePhotoalbum(locale, user, imageService, errors, userURI, webapp));
+         break;
+      }
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("</table>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      buffer.append("</table>");
+      buffer.append("</td>");
+      buffer.append("</tr>");
+      // Главное "меню"
+      buffer.append("<tr>");
+      buffer.append("<td width='100%'>");
+      buffer.append("<table border='0' style='border-collapse: collapse' width='100%'>");
+      buffer.append(menu(request, user, locale, false, webapp, userURI));
+      buffer.append("</table></td></tr>");
+      // Форма отправки письма личной переписки
+      if (id>1 && id<6){
+         /*Форма нового мейла*/
+         buffer.append("<tr>");
+         buffer.append("<td>");
+         buffer.append("<table>");
+         buffer.append("<tr>");
+         buffer.append("<td>");
+         buffer.append("<form name='post' action='").append("/").append(userURI).append("/").append(FJUrl.SEND_PIVATE_MESSAGE + "?id=" + id + "' method='post'>");
+         buffer.append("<table width='100%'>");
+         buffer.append("<tr>");
+         buffer.append("<td width='100%'>");
+         buffer.append("<table width='100%'>");
+         /*От*/
+         buffer.append("<tr>");
+         buffer.append("<td align='LEFT'>");
+         buffer.append("<div class='mnuprof'>");
+         buffer.append(locale.getString("mess58") + "&nbsp;");
+         buffer.append("</div>");
+         buffer.append("</td>");
+         buffer.append("<td>");
+         buffer.append("<div class='mnuprof'>");
+         buffer.append(user.getNick());
+         buffer.append("</div>");
+         buffer.append("</td>");
+         buffer.append("</tr>");
+         /*Кому*/
+         buffer.append("<tr>");
+         buffer.append("<td align='LEFT'>");
+         buffer.append("<div class='mnuprof'>");
+         buffer.append(locale.getString("mess28") + "&nbsp;");
+         buffer.append("</div>");
+         buffer.append("</td>");
+         buffer.append("<td colspan='2'>");
+         Integer error = (Integer) session.getAttribute("error");
+         if (error != null){
+            buffer.append("<input type='text' class='mnuforumSm' value='" + session.getAttribute("rcvr") + "' name='RCVR' size='30'>");
+            if (error == 1){
+               buffer.append("<span class=hdforum>");
+               buffer.append("<font color='red'>");
+               buffer.append(locale.getString("mess65"));
+               buffer.append("</font>");
+               buffer.append("</span>");
+            }
+         }else{
+            buffer.append("<input type=text class='mnuforumSm' name='RCVR' size='30'>");
+         }
+         buffer.append("</td>");
+         buffer.append("</tr>");
+         /*Тема*/
+         buffer.append("<tr>");
+         buffer.append("<td align='LEFT'>");
+         buffer.append("<div class='mnuprof'>");
+         buffer.append(locale.getString("mess59") + "&nbsp;");
+         buffer.append("</div>");
+         buffer.append("</td>");
+         buffer.append("<td>");
+         if (error != null){
+            buffer.append("<input type=text class='mnuforumSm' name='NHEAD' value='" + session.getAttribute("head") + "' size='100'>");
+         }else{
+            buffer.append("<input type=text class='mnuforumSm' name='NHEAD' size='100'>");
+         }
+         buffer.append("</td>");
+         buffer.append("</tr>");
+         buffer.append("</table>");
+         buffer.append("</td>");
+         buffer.append("</tr>");
+         buffer.append("<tr>");
+         buffer.append("<td>");
+         buffer.append("<table>");
+         buffer.append("<tr>");
+         /*Смайлики заголовок*/
+         buffer.append("<td width='400' align='CENTER'>");
+         buffer.append("<p>");
+         buffer.append(locale.getString("mess21") + ":");
+         buffer.append("</p>");
+         buffer.append("</td>");
+         /*Приглашение*/
+         buffer.append("<td align='CENTER'>");
+         buffer.append("<p>" + locale.getString("mess12") + "</p>");
+         buffer.append("</td>");
+         buffer.append("</tr>");
+         /*Пост*/
+         buffer.append("<tr>");
+         buffer.append("<td valign='TOP' width='100%' height='100%'>");
+         /*Смайлики*/
+         buffer.append(smiles_add(locale.getString("mess11"), webapp));
+         buffer.append("</td>");
+         buffer.append("<td width='500' align='CENTER' valign='top'>");
+         /*Автотеги*/
+         buffer.append(autotags_add(webapp));
+         /*текстарий*/
+         buffer.append("<p>");
+         String textareaValue = "";
+         if (error != null) {
+            textareaValue = (String) session.getAttribute("body");
+         }
+         buffer.append("<textarea class='mnuforumSm' rows='20' id='ed1' name='A2' cols='55'>" + textareaValue + "</textarea>");
+         buffer.append("</p>");
+         /*Кнопки*/
+         buffer.append("<table>");
+         buffer.append("<tr>");
+         buffer.append("<td>");
+         buffer.append(fd_button(locale.getString("mess13"),"send_submit(\"write\");","B1", "1"));
+         buffer.append("</td>");
+         buffer.append("<td>");
+         buffer.append(fd_button(locale.getString("mess63"),"send_submit(\"view\");","B3", "1"));
+         buffer.append("</td>");
+         buffer.append("</tr>");
+         buffer.append("</table>");
+         /*Прередаем нужные пераметры...*/
+         buffer.append(fd_form_add(user));
+         buffer.append("</td>");
+         buffer.append("</tr>");
+         buffer.append("</table>");
+         buffer.append("</td>");
+         buffer.append("</tr>");
+         buffer.append("</table>");
+         buffer.append("</form>");
+         buffer.append("</td>");
+         buffer.append("</tr>");
+         buffer.append("</table>");
+         buffer.append("</td>");
+         buffer.append("</tr>");
+      }
+      // Баннер внизу, счетчики и копирайт.
+      buffer.append(footer(webapp));
+      buffer.append("</table>");
+      buffer.append("</body>");
+      buffer.append("</html>");
       response.setContentType("text/html; charset=UTF-8");
       PrintWriter writer = response.getWriter();
       String out = buffer.toString();

@@ -28,30 +28,24 @@ import org.forumj.network.web.HttpParameters;
 
 public class Pin{
 
-   public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI) throws ServletException, IOException {
+   public void doGet(HttpServletRequest request, HttpServletResponse response, String userURI) throws Exception {
       StringBuffer buffer = new StringBuffer();
-      try {
-         HttpSession session = request.getSession();
-         String idThreadParameter = request.getParameter(HttpParameters.ID);
-         String pinParameter = request.getParameter(HttpParameters.PIN);
-         ThreadService service = FJServiceHolder.getThreadService();
-         IUser user = (IUser) session.getAttribute("user");
-         if (user != null && !user.isBanned() && user.isLogined() && user.isModerator()){
-            if (idThreadParameter != null && !"".equals(idThreadParameter) && pinParameter != null && !"".equals(pinParameter)){
-               Long idThread = Long.valueOf(idThreadParameter);
-               Integer pinCode = Integer.valueOf(pinParameter);
-               service.pin(idThread, org.forumj.common.web.Pin.valueOfInteger(pinCode));
-            }
-            StringBuffer buffer1 = new StringBuffer("/").append(userURI).append("/").append(FJUrl.INDEX);
-            response.sendRedirect(buffer1.toString());
-         }else{
-            // unlogined
-            response.sendRedirect(new StringBuffer("/").append(userURI).append("/").append(FJUrl.INDEX).toString());
+      HttpSession session = request.getSession();
+      String idThreadParameter = request.getParameter(HttpParameters.ID);
+      String pinParameter = request.getParameter(HttpParameters.PIN);
+      ThreadService service = FJServiceHolder.getThreadService();
+      IUser user = (IUser) session.getAttribute("user");
+      if (user != null && !user.isBanned() && user.isLogined() && user.isModerator()){
+         if (idThreadParameter != null && !"".equals(idThreadParameter) && pinParameter != null && !"".equals(pinParameter)){
+            Long idThread = Long.valueOf(idThreadParameter);
+            Integer pinCode = Integer.valueOf(pinParameter);
+            service.pin(idThread, org.forumj.common.web.Pin.valueOfInteger(pinCode));
          }
-      } catch (Throwable e) {
-         buffer = new StringBuffer();
-         buffer.append(FJServletTools.errorOut(e));
-         e.printStackTrace();
+         StringBuffer buffer1 = new StringBuffer("/").append(userURI).append("/").append(FJUrl.INDEX);
+         response.sendRedirect(buffer1.toString());
+      }else{
+         // unlogined
+         response.sendRedirect(new StringBuffer("/").append(userURI).append("/").append(FJUrl.INDEX).toString());
       }
       response.setContentType("text/html; charset=UTF-8");
       response.getWriter().write(buffer.toString());

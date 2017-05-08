@@ -31,30 +31,22 @@ import org.forumj.network.web.FJUrl;
  */
 public class DelVoice{
 
-   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
-      try {
-         HttpSession session = request.getSession();
-         String threadIdParameter = request.getParameter("IDT");
-         IUser user = (IUser) session.getAttribute("user");
-         if (user != null && !user.isBanned() && user.isLogined()){
-            if (threadIdParameter != null && !"".equals(threadIdParameter)){
-               QuestService questService = FJServiceHolder.getQuestService();
-               Long threadId = Long.valueOf(threadIdParameter);
-               questService.repealVote(threadId, user);
-               StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD).append("?id=").append(threadIdParameter);
-               response.sendRedirect(url.toString());
-            }
-         }else{
-            // Session expired
-            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
-            response.sendRedirect(exit.toString());
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception{
+      HttpSession session = request.getSession();
+      String threadIdParameter = request.getParameter("IDT");
+      IUser user = (IUser) session.getAttribute("user");
+      if (user != null && !user.isBanned() && user.isLogined()){
+         if (threadIdParameter != null && !"".equals(threadIdParameter)){
+            QuestService questService = FJServiceHolder.getQuestService();
+            Long threadId = Long.valueOf(threadIdParameter);
+            questService.repealVote(threadId, user);
+            StringBuilder url = new StringBuilder("/").append(userURI).append("/").append(FJUrl.VIEW_THREAD).append("?id=").append(threadIdParameter);
+            response.sendRedirect(url.toString());
          }
-      } catch (Throwable e) {
-         e.printStackTrace();
-         StringBuffer buffer = new StringBuffer();
-         buffer.append(FJServletTools.errorOut(e));
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
+      }else{
+         // Session expired
+         StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+         response.sendRedirect(exit.toString());
       }
    }
 }

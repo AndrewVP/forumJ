@@ -27,52 +27,44 @@ import org.forumj.network.web.FJServletTools;
  */
 public class Post{
 
-   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws ServletException, IOException {
-      try {
-         String commandParameter = request.getParameter("command");
-         HttpSession session = request.getSession();
-         IUser user = (IUser) session.getAttribute("user");
-         if (user != null && !user.isBanned() && user.isLogined()){
-            if (commandParameter != null && commandParameter.trim().length() > 0){
-               StringBuilder url = new StringBuilder("/").append(userURI).append("/");
-               switch (Command.valueOfString(commandParameter)) {
-               case SET_LOCALE:
-                  String localeParameter = request.getParameter("locale");
-                  if (localeParameter != null && !localeParameter.trim().isEmpty()){
-                     Locale localeName = Locale.valueOfInteger(Integer.valueOf(localeParameter));
-                     user.setLanguge(localeName);
-                     FJServiceHolder.getUserService().update(user);
-                     session.setAttribute("locale", new LocaleString(localeName, "messages", localeName));
-                  }
-                  //TODO Magic integer!
-                  url.append(FJUrl.SETTINGS).append("?id=12");
-                  response.sendRedirect(url.toString());
-                  break;
-               case SET_EMAIL:
-                  String emailParameter = request.getParameter("mail");
-                  if (emailParameter != null && !emailParameter.trim().isEmpty()){
-                     user.setEmail(emailParameter);
-                     FJServiceHolder.getUserService().update(user);
-                  }
-                  //TODO Magic integer!
-                  url.append(FJUrl.SETTINGS).append("?id=13");
-                  response.sendRedirect(url.toString());
-                  break;
-               default:
-                  break;
+   public void doPost(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception{
+      String commandParameter = request.getParameter("command");
+      HttpSession session = request.getSession();
+      IUser user = (IUser) session.getAttribute("user");
+      if (user != null && !user.isBanned() && user.isLogined()){
+         if (commandParameter != null && commandParameter.trim().length() > 0){
+            StringBuilder url = new StringBuilder("/").append(userURI).append("/");
+            switch (Command.valueOfString(commandParameter)) {
+            case SET_LOCALE:
+               String localeParameter = request.getParameter("locale");
+               if (localeParameter != null && !localeParameter.trim().isEmpty()){
+                  Locale localeName = Locale.valueOfInteger(Integer.valueOf(localeParameter));
+                  user.setLanguge(localeName);
+                  FJServiceHolder.getUserService().update(user);
+                  session.setAttribute("locale", new LocaleString(localeName, "messages", localeName));
                }
+               //TODO Magic integer!
+               url.append(FJUrl.SETTINGS).append("?id=12");
+               response.sendRedirect(url.toString());
+               break;
+            case SET_EMAIL:
+               String emailParameter = request.getParameter("mail");
+               if (emailParameter != null && !emailParameter.trim().isEmpty()){
+                  user.setEmail(emailParameter);
+                  FJServiceHolder.getUserService().update(user);
+               }
+               //TODO Magic integer!
+               url.append(FJUrl.SETTINGS).append("?id=13");
+               response.sendRedirect(url.toString());
+               break;
+            default:
+               break;
             }
-         }else{
-            // Session expired
-            StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
-            response.sendRedirect(exit.toString());
          }
-      } catch (Throwable e) {
-         e.printStackTrace();
-         StringBuffer buffer = new StringBuffer();
-         buffer.append(FJServletTools.errorOut(e));
-         response.setContentType("text/html; charset=UTF-8");
-         response.getWriter().write(buffer.toString());
+      }else{
+         // Session expired
+         StringBuilder exit = new StringBuilder("/").append(userURI).append("/").append(FJUrl.INDEX);
+         response.sendRedirect(exit.toString());
       }
    }
 
