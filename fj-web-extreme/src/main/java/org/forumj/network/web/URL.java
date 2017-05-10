@@ -123,7 +123,7 @@ public class URL{
     }
 
     private String extractQuery(String url){
-        String[] result = url.split("\\?");
+        String[] result = url.split("\\?", 2);
         if (result.length > 1){
             this.query = result[1];
         }
@@ -136,6 +136,7 @@ public class URL{
         }
         return url;
     }
+
     private String cutEndSlashes(String url){
         while (url.endsWith("/")){
             url = url.substring(0, url.length() - 1);
