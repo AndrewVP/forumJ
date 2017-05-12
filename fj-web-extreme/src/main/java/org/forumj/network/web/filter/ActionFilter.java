@@ -12,6 +12,7 @@ import javax.servlet.http.*;
 
 import org.forumj.common.db.entity.*;
 import org.forumj.common.db.service.*;
+import org.forumj.common.web.HttpMethod;
 import org.forumj.network.web.FJServletTools;
 /**
  * Filter for logging
@@ -27,39 +28,61 @@ public class ActionFilter implements Filter{
     * {@inheritDoc}
     */
    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
-      HttpServletRequest request = (HttpServletRequest) req;
-      HttpServletResponse response = (HttpServletResponse)resp;
+      HttpServletRequest httpServletRequest = (HttpServletRequest) req;
+      HttpServletResponse httpServletResponse = (HttpServletResponse)resp;
+      IUser user = (IUser) httpServletRequest.getSession(true).getAttribute("user");
+      RequestService requestService = FJServiceHolder.getRequestService();
+      IpAddressService ipAddressService = FJServiceHolder.getIpAddressService();
+      IpAddress ipAddress = ipAddressService.getObject();
+      ipAddress.setIp(httpServletRequest.getRemoteAddr());
+      Request request = requestService.getObject();
+      request.setTime(System.currentTimeMillis());
+      String method = httpServletRequest.getMethod();
+      request.setMethod(HttpMethod.valueOf(method));
+      request.setIp(ipAddress);
+      if (user != null){
+         request.setUserId(user.getId());
+      }else{
+         request.setUserId(-1l);
+      }
+      request.setUrl(httpServletRequest.getRequestURI());
       try {
-         String uaString = request.getHeader("user-agent");
+         requestService.create(request);
+      } catch (Exception e) {
+         logger.error(e);
+      }
+
+
+      try {
+         String uaString = httpServletRequest.getHeader("user-agent");
          uaString += " " + Arrays.toString(uaString.getBytes());
          logger.debug(uaString);
-         if (!FJServletTools.isRobot(request)){
-            IUser user = (IUser) request.getSession(true).getAttribute("user");
+         if (!FJServletTools.isRobot(httpServletRequest)){
             ActionService service = FJServiceHolder.getActionService();
             IFJAction action = service.getObject();
-            action.setIp(request.getRemoteAddr());
-            String ref = request.getHeader("referer");
+            action.setIp(httpServletRequest.getRemoteAddr());
+            String ref = httpServletRequest.getHeader("referer");
             if (ref != null){
                action.setRefer(ref.substring(0, ref.length() > 200 ? 199 : ref.length()));
             }
-            String url = request.getRequestURI();
+            String url = httpServletRequest.getRequestURI();
             if (url != null){
                action.setServletName(url.substring(0, url.length() > 200 ? 199 : url.length()));
             }
 //action.setSubnet(subnet);
-            action.setUas(request.getHeader("User-Agent"));
+            action.setUas(httpServletRequest.getHeader("User-Agent"));
             if (user != null){
                action.setUserId(user.getId());
             }
             service.create(action);
          }
-         chain.doFilter(request, resp);
+         chain.doFilter(httpServletRequest, resp);
       } catch (Throwable e) {
          e.printStackTrace();
          StringBuffer buffer = new StringBuffer();
          buffer.append(FJServletTools.errorOut(e));
-         response.setContentType("text/html; charset=UTF-8");
-         PrintWriter writer = response.getWriter();
+         httpServletResponse.setContentType("text/html; charset=UTF-8");
+         PrintWriter writer = httpServletResponse.getWriter();
          String out = buffer.toString();
          writer.write(out);
       }

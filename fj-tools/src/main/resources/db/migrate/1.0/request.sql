@@ -1,0 +1,45 @@
+CREATE TABLE `request` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `methodId` TINYINT NOT NULL,
+  `userId` BIGINT NOT NULL DEFAULT -1,
+  `ipId` BIGINT NOT NULL,
+  `url` VARCHAR(200) NOT NULL,
+  `time` BIGINT NOT NULL,
+  PRIMARY KEY (`id`));
+
+CREATE TABLE `http_header_name` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(200) NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `name_UNIQUE` (`name` ASC));
+
+CREATE TABLE `http_cookie_name` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `name` VARCHAR(200) NOT NULL,
+  PRIMARY KEY (`id`));
+
+CREATE TABLE `http_header` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `requestId` BIGINT NOT NULL,
+  `nameId` BIGINT NOT NULL,
+  `value` VARCHAR(300) NOT NULL,
+  PRIMARY KEY (`id`));
+
+CREATE TABLE `http_cookie` (
+  `id` BIGINT NOT NULL AUTO_INCREMENT,
+  `requestId` BIGINT NOT NULL,
+  `nameId` BIGINT NOT NULL,
+  `value` VARCHAR(300) NOT NULL DEFAULT '',
+  `domain` VARCHAR(200) NOT NULL DEFAULT '',
+  `path` VARCHAR(200) NOT NULL DEFAULT '',
+  `maxAge` INT NOT NULL DEFAULT 0,
+  `secure` TINYINT NOT NULL DEFAULT 0,
+  `version` INT NOT NULL DEFAULT 1,
+  `httpOnly` TINYINT NULL,
+  PRIMARY KEY (`id`));
+
+ALTER TABLE `ip_address`
+  CHANGE COLUMN `id` `id` BIGINT NOT NULL AUTO_INCREMENT ,
+  CHANGE COLUMN `spammer` `spammer` TINYINT(1) NOT NULL DEFAULT 0 ,
+  CHANGE COLUMN `source` `source` VARCHAR(100) NULL DEFAULT '' ,
+  CHANGE COLUMN `last_check` `last_check` TIMESTAMP NULL;

@@ -11,7 +11,7 @@ import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.checkip.connector.*;
 import org.forumj.checkip.connector.blacklistmyipms.BlacklistMyipMsConnector;
 import org.forumj.checkip.connector.stopforumspamcom.StopforumspamComConnector;
-import org.forumj.common.db.entity.IFJIpAddress;
+import org.forumj.common.db.entity.IpAddress;
 import org.forumj.common.db.service.FJServiceHolder;
 
 /**
@@ -71,7 +71,7 @@ public class CheckIp {
    }
    
    private static void addIp(String ip, String sourceName, boolean spammer) throws ConfigurationException, SQLException, IOException{
-      IFJIpAddress ipAddress = FJServiceHolder.getIpAddressService().getIpAddressObject();
+      IpAddress ipAddress = FJServiceHolder.getIpAddressService().getObject();
       ipAddress.setIp(ip);
       ipAddress.setLastCheck(new Date());
       ipAddress.setSource(sourceName);

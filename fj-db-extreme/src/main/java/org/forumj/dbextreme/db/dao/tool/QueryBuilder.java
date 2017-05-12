@@ -63,6 +63,8 @@ public class QueryBuilder {
    
    private static String checkSpammerQuery = null;
    
+   private static String checkIpExistsQuery = null;
+
    private static String createIgnorQuery = null;
    
    private static String createAnswerQuery = null;
@@ -74,6 +76,8 @@ public class QueryBuilder {
    private static String updateImageQuery = null;
 
    private static String createImageQuery = null;
+
+   private static String createRequestQuery = null;
 
    private static String loadImageThumbsQuery = null;
 
@@ -510,14 +514,21 @@ public class QueryBuilder {
       }
       return createIpAddressQuery;
    }
-   
+
    public static String getCheckSpammerQuery() throws IOException{
       if (checkSpammerQuery == null){
          checkSpammerQuery = loadQuery("sql/check_spammer.sql");
       }
       return checkSpammerQuery;
    }
-   
+
+   public static String getCheckIpExistsQuery() throws IOException{
+      if (checkIpExistsQuery == null){
+         checkIpExistsQuery = loadQuery("sql/check_ip_exists.sql");
+      }
+      return checkIpExistsQuery;
+   }
+
    public static String getCreateIgnorQuery() throws IOException{
       if (createIgnorQuery == null){
          createIgnorQuery = loadQuery("sql/create_ignor.sql");
@@ -551,6 +562,13 @@ public class QueryBuilder {
          createImageQuery = loadQuery("sql/create_image.sql");
       }
       return createImageQuery;
+   }
+
+   public static String getCreateRequestQuery() throws IOException{
+      if (createRequestQuery == null){
+         createRequestQuery = loadQuery("sql/create_request.sql");
+      }
+      return createRequestQuery;
    }
 
    public static String getLoadImageThumbsQuery() throws IOException{

@@ -59,7 +59,7 @@ public class ImageDao extends FJDao {
       try{
          conn = getConnection();
          conn.setAutoCommit(false);
-         st = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+         st = conn.prepareStatement(query);
          int parameterIndex = prepareStatmentForUpdate(image, st);
          st.setLong(++parameterIndex, image.getId());
          int updatedRows = st.executeUpdate();

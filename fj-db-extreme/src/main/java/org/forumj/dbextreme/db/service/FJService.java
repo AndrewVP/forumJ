@@ -15,7 +15,6 @@
  */
 package org.forumj.dbextreme.db.service;
 
-import org.forumj.common.db.entity.Image;
 import org.forumj.dbextreme.db.dao.*;
 
 /**
@@ -48,9 +47,11 @@ public class FJService {
 
    private static final FJQuestNodeDao questNodeDao = new FJQuestNodeDao();
    
-   private static final FJIpAddressDao ipAddressDao = new FJIpAddressDao();
+   private static final IpAddressDaoImpl ipAddressDao = new IpAddressDaoImpl();
 
    private static final ImageDao imageDao = new ImageDao();
+
+   private static final RequestDaoImpl requestDao = new RequestDaoImpl();
 
    /**
     * @return the questnodedao
@@ -136,11 +137,15 @@ public class FJService {
       return forumDao;
    }
 
-   public static FJIpAddressDao getIpaddressDao() {
+   public static IpAddressDaoImpl getIpaddressDao() {
       return ipAddressDao;
    }
 
    public static ImageDao getImageDao() {
       return imageDao;
+   }
+
+   public static RequestDaoImpl getRequestDao() {
+      return requestDao;
    }
 }

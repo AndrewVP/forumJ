@@ -40,7 +40,7 @@ public interface IFJAction {
    public long getUserId();
 
    /**
-    * @param iserId the iserId to set
+    * @param userId the iserId to set
     */
    public void setUserId(long userId);
 

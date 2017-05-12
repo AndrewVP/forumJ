@@ -3,11 +3,9 @@
  */
 package org.forumj.common.db.service;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.forumj.common.config.FJConfiguration;
-import org.forumj.common.db.entity.Image;
 
 /**
  * @author andrew
@@ -43,9 +41,11 @@ public class FJServiceHolder {
 
    private static ActionService actionService = null;
    
-   private static FJIpAddressService ipAddressService = null;
+   private static IpAddressService ipAddressService = null;
 
    private static ImageService imageService = null;
+
+   private static RequestService requestService = null;
 
    static{
       try {
@@ -62,8 +62,9 @@ public class FJServiceHolder {
          voiceService = (VoiceService) Class.forName(FJConfiguration.getConfig().getString("service.voiceService.class")).newInstance();
          postService = (PostService) Class.forName(FJConfiguration.getConfig().getString("service.postService.class")).newInstance();
          actionService = (ActionService) Class.forName(FJConfiguration.getConfig().getString("service.actionService.class")).newInstance();
-         ipAddressService = (FJIpAddressService) Class.forName(FJConfiguration.getConfig().getString("service.ipAddressService.class")).newInstance();
+         ipAddressService = (IpAddressService) Class.forName(FJConfiguration.getConfig().getString("service.ipAddressService.class")).newInstance();
          imageService = (ImageService) Class.forName(FJConfiguration.getConfig().getString("service.imageService.class")).newInstance();
+         requestService = (RequestService) Class.forName(FJConfiguration.getConfig().getString("service.requestService.class")).newInstance();
       } catch (Exception e) {
          logger.error(e.getMessage(), e);
       }
@@ -121,11 +122,15 @@ public class FJServiceHolder {
       return actionService;
    }
 
-   public static FJIpAddressService getIpAddressService() {
+   public static IpAddressService getIpAddressService() {
       return ipAddressService;
    }
 
    public static ImageService getImageService() {
       return imageService;
+   }
+
+   public static RequestService getRequestService() {
+      return requestService;
    }
 }
