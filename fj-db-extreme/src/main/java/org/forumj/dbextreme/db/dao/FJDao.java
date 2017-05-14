@@ -15,15 +15,21 @@
  */
 package org.forumj.dbextreme.db.dao;
 
+import java.io.IOException;
 import java.sql.*;
 
 import javax.sql.DataSource;
 
 import org.apache.commons.configuration.*;
 import org.apache.commons.dbcp.*;
+import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.pool.ObjectPool;
 import org.apache.commons.pool.impl.GenericObjectPool;
 import org.forumj.common.config.FJConfiguration;
+import org.forumj.common.db.entity.Entity;
+import org.forumj.common.db.entity.Request;
+
+import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.getCreateRequestQuery;
 
 
 /**
@@ -33,6 +39,38 @@ import org.forumj.common.config.FJConfiguration;
 public class FJDao {
 
    public static DataSource dataSource = null;
+
+
+   public void create(Entity request) throws Exception {
+      String query = getCreateQuery();
+      PreparedStatement st = null;
+      Connection conn = null;
+      boolean error = true;
+      try{
+         conn = getConnection();
+         conn.setAutoCommit(false);
+         st = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+         prepareStatmentForUpdate(request, st);
+         int insertedRows = st.executeUpdate();
+         if (insertedRows == 1){
+            ResultSet rs = st.getGeneratedKeys();
+            if (rs.next()){
+               request.setId(rs.getLong(1));
+               error = false;
+            }
+         }
+      }finally{
+         writeFinally(conn, st, error);
+      }
+   }
+
+   protected String getCreateQuery() throws IOException {
+      throw new NotImplementedException();
+   }
+
+   protected int prepareStatmentForUpdate(Entity ebtity, PreparedStatement st) throws SQLException {
+      return 0;
+   }
 
    public static Connection getConnection() throws SQLException, ConfigurationException{
       if (dataSource == null){

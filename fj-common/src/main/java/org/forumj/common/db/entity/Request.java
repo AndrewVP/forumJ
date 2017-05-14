@@ -7,10 +7,7 @@ import java.util.List;
 /**
  * Created by Andrew on 12/05/2017.
  */
-public interface Request {
-    Long getId();
-
-    void setId(Long id);
+public interface Request extends Entity{
 
     HttpMethod getMethod();
 
