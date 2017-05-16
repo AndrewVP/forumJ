@@ -1,12 +1,16 @@
 package org.forumj.common.db.entity;
 
+import javax.servlet.http.Cookie;
+
 /**
  * Created by Andrew on 12/05/2017.
  */
-public interface HttpCookie {
-    Long getId();
+public interface HttpCookie extends Entity{
+    HttpCookie withCookie(Cookie cookie);
 
-    void setId(Long id);
+    Long getRequestId();
+
+    void setRequestId(Long requestId);
 
     HttpCookieName getName();
 

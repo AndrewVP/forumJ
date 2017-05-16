@@ -2,7 +2,9 @@ package org.forumj.dbextreme.db.dao;
 
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.Entity;
+import org.forumj.common.db.entity.HttpCookieName;
 import org.forumj.common.db.entity.HttpHeaderName;
+import org.forumj.dbextreme.db.entity.HttpCookieNameImpl;
 import org.forumj.dbextreme.db.entity.HttpHeaderNameImpl;
 
 import java.io.IOException;
@@ -11,30 +13,32 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.*;
+import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.getCheckCookieNameExistsQuery;
+import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.getCreateHttpCookieNameQuery;
+import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.getCreateHttpHeaderNameQuery;
 
 /**
  * Created by Andrew on 13/05/2017.
  */
-public class HttpHeaderNameDao extends FJDao {
+public class HttpCookieNameDao extends FJDao {
 
-    public HttpHeaderName getObject(){
-        return new HttpHeaderNameImpl();
+    public HttpCookieName getObject(){
+        return new HttpCookieNameImpl();
     }
 
     @Override
     protected int prepareStatmentForUpdate(Entity entity, PreparedStatement st) throws SQLException {
         int parameterIndex = 0;
-        if (entity instanceof HttpHeaderName){
-            HttpHeaderName httpHeaderName = (HttpHeaderName) entity;
-            st.setString(++parameterIndex, httpHeaderName.getName());
+        if (entity instanceof HttpCookieName){
+            HttpCookieName httpCookieName = (HttpCookieName) entity;
+            st.setString(++parameterIndex, httpCookieName.getName());
         }
         return parameterIndex;
     }
 
     public Long find(String name) throws IOException, SQLException, ConfigurationException {
         Long result = null;
-        String query = getCheckHeaderNameExistsQuery();
+        String query = getCheckCookieNameExistsQuery();
         Connection conn = null;
         PreparedStatement st = null;
         try {
@@ -53,6 +57,6 @@ public class HttpHeaderNameDao extends FJDao {
 
     @Override
     protected String getCreateQuery() throws IOException {
-        return getCreateHttpHeaderNameQuery();
+        return getCreateHttpCookieNameQuery();
     }
 }

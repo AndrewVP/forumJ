@@ -36,4 +36,8 @@ public interface Request extends Entity{
     List<HttpCookie> getCookies();
 
     void setCookies(List<HttpCookie> cookies);
+
+    void addCookie(HttpCookie httpCookie);
+
+    void addHeader(HttpHeader httpHeader);
 }

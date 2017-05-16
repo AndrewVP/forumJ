@@ -28,55 +28,41 @@ public class ActionFilter implements Filter{
     * {@inheritDoc}
     */
    public void doFilter(ServletRequest req, ServletResponse resp, FilterChain chain) throws IOException, ServletException {
-      HttpServletRequest httpServletRequest = (HttpServletRequest) req;
+      HttpServletRequest request = (HttpServletRequest) req;
       HttpServletResponse httpServletResponse = (HttpServletResponse)resp;
-      IUser user = (IUser) httpServletRequest.getSession(true).getAttribute("user");
+      IUser user = (IUser) request.getSession(true).getAttribute("user");
       RequestService requestService = FJServiceHolder.getRequestService();
-      IpAddressService ipAddressService = FJServiceHolder.getIpAddressService();
-      IpAddress ipAddress = ipAddressService.getObject();
-      ipAddress.setIp(httpServletRequest.getRemoteAddr());
-      Request request = requestService.getObject();
-      request.setTime(System.currentTimeMillis());
-      String method = httpServletRequest.getMethod();
-      request.setMethod(HttpMethod.valueOf(method));
-      request.setIp(ipAddress);
-      if (user != null){
-         request.setUserId(user.getId());
-      }else{
-         request.setUserId(-1l);
-      }
-      request.setUrl(httpServletRequest.getRequestURI());
       try {
-         requestService.create(request);
+         requestService.create(request, user);
       } catch (Exception e) {
          logger.error(e);
       }
 
 
       try {
-         String uaString = httpServletRequest.getHeader("user-agent");
+         String uaString = request.getHeader("user-agent");
          uaString += " " + Arrays.toString(uaString.getBytes());
          logger.debug(uaString);
-         if (!FJServletTools.isRobot(httpServletRequest)){
+         if (!FJServletTools.isRobot(request)){
             ActionService service = FJServiceHolder.getActionService();
             IFJAction action = service.getObject();
-            action.setIp(httpServletRequest.getRemoteAddr());
-            String ref = httpServletRequest.getHeader("referer");
+            action.setIp(request.getRemoteAddr());
+            String ref = request.getHeader("referer");
             if (ref != null){
                action.setRefer(ref.substring(0, ref.length() > 200 ? 199 : ref.length()));
             }
-            String url = httpServletRequest.getRequestURI();
+            String url = request.getRequestURI();
             if (url != null){
                action.setServletName(url.substring(0, url.length() > 200 ? 199 : url.length()));
             }
 //action.setSubnet(subnet);
-            action.setUas(httpServletRequest.getHeader("User-Agent"));
+            action.setUas(request.getHeader("User-Agent"));
             if (user != null){
                action.setUserId(user.getId());
             }
             service.create(action);
          }
-         chain.doFilter(httpServletRequest, resp);
+         chain.doFilter(request, resp);
       } catch (Throwable e) {
          e.printStackTrace();
          StringBuffer buffer = new StringBuffer();

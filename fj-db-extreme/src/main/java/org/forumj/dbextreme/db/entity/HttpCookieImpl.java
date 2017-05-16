@@ -11,6 +11,7 @@ import javax.servlet.http.Cookie;
 public class HttpCookieImpl implements HttpCookie {
 
     private Long id;
+    private Long requestId;
     private HttpCookieName name; // NAME= ... "$Name" style is reserved
     private String value; // value of NAME
     private String comment; // ;Comment=VALUE ... describes cookie's use
@@ -23,7 +24,8 @@ public class HttpCookieImpl implements HttpCookie {
 
     public HttpCookieImpl() {}
 
-    public HttpCookieImpl(Cookie cookie) {
+    @Override
+    public HttpCookie withCookie(Cookie cookie) {
         this.name = new HttpCookieNameImpl(cookie.getName());
         this.value = cookie.getValue();
         this.comment = cookie.getComment();
@@ -33,6 +35,7 @@ public class HttpCookieImpl implements HttpCookie {
         this.secure = cookie.getSecure();
         this.version = cookie.getVersion();
         this.httpOnly = cookie.isHttpOnly();
+        return this;
     }
 
     @Override
@@ -43,6 +46,16 @@ public class HttpCookieImpl implements HttpCookie {
     @Override
     public void setId(Long id) {
         this.id = id;
+    }
+
+    @Override
+    public Long getRequestId() {
+        return requestId;
+    }
+
+    @Override
+    public void setRequestId(Long requestId) {
+        this.requestId = requestId;
     }
 
     @Override

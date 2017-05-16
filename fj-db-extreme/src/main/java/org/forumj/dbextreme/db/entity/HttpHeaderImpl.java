@@ -14,6 +14,8 @@ public class HttpHeaderImpl implements HttpHeader {
 
     private String value;
 
+    private Long requestId;
+
     @Override
     public Long getId() {
         return id;
@@ -35,6 +37,11 @@ public class HttpHeaderImpl implements HttpHeader {
     }
 
     @Override
+    public void setName(String name) {
+        this.name = new HttpHeaderNameImpl(name);
+    }
+
+    @Override
     public String getValue() {
         return value;
     }
@@ -42,5 +49,15 @@ public class HttpHeaderImpl implements HttpHeader {
     @Override
     public void setValue(String value) {
         this.value = value;
+    }
+
+    @Override
+    public Long getRequestId() {
+        return requestId;
+    }
+
+    @Override
+    public void setRequestId(Long requestId) {
+        this.requestId = requestId;
     }
 }

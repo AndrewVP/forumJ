@@ -61,9 +61,21 @@ public class QueryBuilder {
    
    private static String createIpAddressQuery = null;
    
+   private static String createHttpHeaderNameQuery = null;
+
+   private static String createHttpCookieNameQuery = null;
+
+   private static String createHttpCookieQuery = null;
+
+   private static String createHttpHeaderQuery = null;
+
    private static String checkSpammerQuery = null;
    
    private static String checkIpExistsQuery = null;
+
+   private static String checkCookieNameExistsQuery = null;
+
+   private static String checkHeaderNameExistsQuery = null;
 
    private static String createIgnorQuery = null;
    
@@ -515,6 +527,34 @@ public class QueryBuilder {
       return createIpAddressQuery;
    }
 
+   public static String getCreateHttpHeaderNameQuery() throws IOException{
+      if (createHttpHeaderNameQuery == null){
+         createHttpHeaderNameQuery = loadQuery("sql/create_http_header_name_query.sql");
+      }
+      return createHttpHeaderNameQuery;
+   }
+
+   public static String getCreateHttpCookieNameQuery() throws IOException{
+      if (createHttpCookieNameQuery == null){
+         createHttpCookieNameQuery = loadQuery("sql/create_http_cookie_name_query.sql");
+      }
+      return createHttpCookieNameQuery;
+   }
+
+   public static String getCreateHttpCookieQuery() throws IOException{
+      if (createHttpCookieQuery == null){
+         createHttpCookieQuery = loadQuery("sql/create_http_cookie_query.sql");
+      }
+      return createHttpCookieQuery;
+   }
+
+   public static String getCreateHttpHeaderQuery() throws IOException{
+      if (createHttpHeaderQuery == null){
+         createHttpHeaderQuery = loadQuery("sql/create_http_header_query.sql");
+      }
+      return createHttpHeaderQuery;
+   }
+
    public static String getCheckSpammerQuery() throws IOException{
       if (checkSpammerQuery == null){
          checkSpammerQuery = loadQuery("sql/check_spammer.sql");
@@ -527,6 +567,20 @@ public class QueryBuilder {
          checkIpExistsQuery = loadQuery("sql/check_ip_exists.sql");
       }
       return checkIpExistsQuery;
+   }
+
+   public static String getCheckCookieNameExistsQuery() throws IOException{
+      if (checkCookieNameExistsQuery == null){
+         checkCookieNameExistsQuery = loadQuery("sql/check_cookie_name_exists.sql");
+      }
+      return checkCookieNameExistsQuery;
+   }
+
+   public static String getCheckHeaderNameExistsQuery() throws IOException{
+      if (checkHeaderNameExistsQuery == null){
+         checkHeaderNameExistsQuery = loadQuery("sql/check_header_name_exists.sql");
+      }
+      return checkHeaderNameExistsQuery;
    }
 
    public static String getCreateIgnorQuery() throws IOException{

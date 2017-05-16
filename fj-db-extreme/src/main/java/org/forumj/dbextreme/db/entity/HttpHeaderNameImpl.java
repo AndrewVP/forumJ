@@ -11,6 +11,12 @@ public class HttpHeaderNameImpl implements HttpHeaderName {
 
     private String name;
 
+    public HttpHeaderNameImpl(String name) {
+        this.name = name;
+    }
+
+    public HttpHeaderNameImpl() {}
+
     @Override
     public Long getId() {
         return id;

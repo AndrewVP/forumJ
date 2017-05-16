@@ -41,7 +41,7 @@ public class FJDao {
    public static DataSource dataSource = null;
 
 
-   public void create(Entity request) throws Exception {
+   public void create(Entity entity) throws Exception {
       String query = getCreateQuery();
       PreparedStatement st = null;
       Connection conn = null;
@@ -50,12 +50,12 @@ public class FJDao {
          conn = getConnection();
          conn.setAutoCommit(false);
          st = conn.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-         prepareStatmentForUpdate(request, st);
+         prepareStatmentForUpdate(entity, st);
          int insertedRows = st.executeUpdate();
          if (insertedRows == 1){
             ResultSet rs = st.getGeneratedKeys();
             if (rs.next()){
-               request.setId(rs.getLong(1));
+               entity.setId(rs.getLong(1));
                error = false;
             }
          }
@@ -68,7 +68,7 @@ public class FJDao {
       throw new NotImplementedException();
    }
 
-   protected int prepareStatmentForUpdate(Entity ebtity, PreparedStatement st) throws SQLException {
+   protected int prepareStatmentForUpdate(Entity entity, PreparedStatement st) throws SQLException {
       return 0;
    }
 

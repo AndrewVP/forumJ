@@ -3,6 +3,7 @@ package org.forumj.dbextreme.db.entity;
 import org.forumj.common.db.entity.*;
 import org.forumj.common.web.HttpMethod;
 
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -22,9 +23,9 @@ public class RequestImpl implements Request {
 
     private Long time;
 
-    private List<HttpHeader> headers;
+    private List<HttpHeader> headers = new LinkedList<>();
 
-    private List<HttpCookie> cookies;
+    private List<HttpCookie> cookies = new LinkedList<>();
 
     @Override
     public Long getId() {
@@ -104,5 +105,15 @@ public class RequestImpl implements Request {
     @Override
     public void setCookies(List<HttpCookie> cookies) {
         this.cookies = cookies;
+    }
+
+    @Override
+    public void addCookie(HttpCookie httpCookie){
+        cookies.add(httpCookie);
+    }
+
+    @Override
+    public void addHeader(HttpHeader httpHeader){
+        headers.add(httpHeader);
     }
 }

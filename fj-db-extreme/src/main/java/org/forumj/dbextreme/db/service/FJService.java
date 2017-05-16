@@ -53,6 +53,34 @@ public class FJService {
 
    private static final RequestDaoImpl requestDao = new RequestDaoImpl();
 
+   private static final HttpHeaderNameDao httpHeaderNameDao = new HttpHeaderNameDao();
+
+   private static final HttpHeaderDao httpHeaderDao = new HttpHeaderDao();
+
+   private static final HttpCookieNameDao httpCookieNameDao = new HttpCookieNameDao();
+
+   private static final HttpCookieDao httpCookieDao = new HttpCookieDao();
+
+   public static IpAddressDaoImpl getIpAddressDao() {
+      return ipAddressDao;
+   }
+
+   public static HttpHeaderNameDao getHttpHeaderNameDao() {
+      return httpHeaderNameDao;
+   }
+
+   public static HttpHeaderDao getHttpHeaderDao() {
+      return httpHeaderDao;
+   }
+
+   public static HttpCookieNameDao getHttpCookieNameDao() {
+      return httpCookieNameDao;
+   }
+
+   public static HttpCookieDao getHttpCookieDao() {
+      return httpCookieDao;
+   }
+
    /**
     * @return the questnodedao
     */
@@ -135,10 +163,6 @@ public class FJService {
     */
    public static FJForumDao getForumDao() {
       return forumDao;
-   }
-
-   public static IpAddressDaoImpl getIpaddressDao() {
-      return ipAddressDao;
    }
 
    public static ImageDao getImageDao() {
