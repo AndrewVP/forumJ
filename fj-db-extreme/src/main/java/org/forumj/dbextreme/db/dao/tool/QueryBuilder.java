@@ -844,14 +844,14 @@ public class QueryBuilder {
    
    public static String getConnectedUsersQuery() throws IOException{
       if (connectedUsersQuery == null){
-         connectedUsersQuery = loadQuery("sql/connected_users.sql");
+         connectedUsersQuery = loadQuery("sql/connected_users2.sql");
       }
       return connectedUsersQuery;
    }
    
    public static String getConnectedGuestsAmountQuery() throws IOException{
       if (connectedGuestsAmountQuery == null){
-         connectedGuestsAmountQuery = loadQuery("sql/connected_guests_amount.sql");
+         connectedGuestsAmountQuery = loadQuery("sql/connected_guests_amount2.sql");
       }
       return connectedGuestsAmountQuery;
    }
