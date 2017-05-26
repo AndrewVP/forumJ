@@ -39,10 +39,10 @@
 <div class="container-fluid" style="height: 2000px; padding-top: 20px;">
     <img src="/forum/00/banner/narodny.gif">
     <nav class="navbar navbar-default" data-spy="affix" data-offset-top="130">
+        <div class="navbar-header">
+            <img class="navbar-brand" src="/forum/00/images/diletant.png">
+        </div>
         <div class="container">
-            <div class="navbar-header">
-                <img class="navbar-brand" src="../images/diletant.png">
-            </div>
             <div class="container">
                 <ul class="nav navbar-nav">
                     <li><a href="#">Нова тема</a></li>
@@ -54,6 +54,51 @@
             </div>
         </div>
     </nav>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <table class="table table-condensed table-striped">
+            <thead>
+            <tr>
+                <th colspan='2'>Тема</th>
+                <th>Відп.</th>
+                <th>Перегл.</th>
+                <th>Запропонована</th>
+                <th>Останнє</th>
+                <th>Тека</th>
+                <th><input type='checkbox' id='main_ch' onclick='m_chek()'></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tr class='matras'>
+                <td><img src='../images/icon1.gif'></td>
+                <td><div><a href='tema?id=52174'>FullHD WAR</a></div>
+                    <!--
+                    <div class="super-small"><a href='pin?id=52174&pin=10'>прикріпити</a>&nbsp;<a href='pin?id=52174&pin=3'>дн</a>&nbsp;<a href='pin?id=52174&;pin=5'>об'ява</a>&nbsp;<a href='delone?id=52174&usr=0&page=1'>видалити</a>&nbsp;<a href='close?id=52174&close=1&page=1'>закрити</a></div></td>
+                    -->
+                <td class="small">5</td>
+                <td><div class="small">22</div><div class="small">102</div></td>
+                <td><div>Дилетант</div></td>
+                <td><div>Дилетант</div><div class="small"><a href='tema?id=52174&end=1#end' rel='nofollow'>22.05.17 15:39</a></div></td>
+                <td><div>Не забыть</div></td>
+                <td><input type='checkbox' id='ch0' name='0' value='52174'></td>
+                <td><a href='delone?id=52174&usr=3&page=0'><img src='../images/del1.gif'></a></td>
+            </tr>
+            <tr>
+                <td><img src='../images/icon1.gif'></td>
+                <td><div><a href='tema?id=52184'>Война войной, а еда по расписанию.Война войной, а еда по расписанию.Война войной, а еда по расписанию.Война войной, а еда по расписанию.Война войной, а еда по расписанию.Война войной, а еда по расписанию.Война войной, а еда по расписанию.</a></div>
+                    <div class="super-small">Стор.:&nbsp<a href='tema?page=1&id=52184'>1</a>,&nbsp;<a href='tema?page=2&id=52184'>2</a>,&nbsp;<a href='tema?page=3&id=52184'>3</a>&nbsp;<a href='pin?id=52174&pin=10'>прикріпити</a>&nbsp;<a href='pin?id=52174&pin=3'>дн</a>&nbsp;<a href='pin?id=52174&;pin=5'>об'ява</a>&nbsp;<a href='delone?id=52174&usr=0&page=1'>видалити</a>&nbsp;<a href='close?id=52174&close=1&page=1'>закрити</a></div></td>
+                <td class="small">101</td>
+                <td><div class="small">445</div><div class="small">884</div></td>
+                <td><div>Сель Ави</div></td>
+                <td><div>Вільха</div><div class="small"><a href='tema?id=52184&end=1#end' rel='nofollow'>22.05.17 02:29</a></div></td>
+                <td><div>Форум</div></td>
+                <td><input type='checkbox' id='ch1' name='1' value='52184'></td>
+                <td><a href='delone?id=52184&usr=3&page=0'><img src='../images/del1.gif'></a></td>
+            </tr>
+        </table>
+    </div>
+</div>
 </div>
 
 </body>
