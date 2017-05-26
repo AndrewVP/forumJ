@@ -63,6 +63,16 @@ public class QueryBuilder {
    
    private static String createHttpHeaderNameQuery = null;
 
+   private static String createClientOSQuery = null;
+
+   private static String createClientBrowserQuery = null;
+
+   private static String createBotVendorQuery = null;
+
+   private static String createBotQuery = null;
+
+   private static String createUserAgentHeaderQuery = null;
+
    private static String createHttpCookieNameQuery = null;
 
    private static String createHttpCookieQuery = null;
@@ -76,6 +86,16 @@ public class QueryBuilder {
    private static String checkCookieNameExistsQuery = null;
 
    private static String checkHeaderNameExistsQuery = null;
+
+   private static String checkClientOSExistsQuery = null;
+
+   private static String checkUserAgentHeaderExistsQuery = null;
+
+   private static String readUserAgentHeaderByValueQuery = null;
+
+   private static String checkClientBrowserExistsQuery = null;
+
+   private static String checkBotVendorExistsQuery = null;
 
    private static String createIgnorQuery = null;
    
@@ -534,6 +554,41 @@ public class QueryBuilder {
       return createHttpHeaderNameQuery;
    }
 
+   public static String getCreateUserAgentHeaderQuery() throws IOException{
+      if (createUserAgentHeaderQuery == null){
+         createUserAgentHeaderQuery = loadQuery("sql/create_user_agent_header_query.sql");
+      }
+      return createUserAgentHeaderQuery;
+   }
+
+   public static String getCreateBotQuery() throws IOException{
+      if (createBotQuery == null){
+         createBotQuery = loadQuery("sql/create_bot_query.sql");
+      }
+      return createBotQuery;
+   }
+
+   public static String getCreateBotVendorQuery() throws IOException{
+      if (createBotVendorQuery == null){
+         createBotVendorQuery = loadQuery("sql/create_bot_vendor_query.sql");
+      }
+      return createBotVendorQuery;
+   }
+
+   public static String getCreateClientBrowserQuery() throws IOException{
+      if (createClientBrowserQuery == null){
+         createClientBrowserQuery = loadQuery("sql/create_client_browser_query.sql");
+      }
+      return createClientBrowserQuery;
+   }
+
+   public static String getCreateClientOSQuery() throws IOException{
+      if (createClientOSQuery == null){
+         createClientOSQuery = loadQuery("sql/create_client_os_query.sql");
+      }
+      return createClientOSQuery;
+   }
+
    public static String getCreateHttpCookieNameQuery() throws IOException{
       if (createHttpCookieNameQuery == null){
          createHttpCookieNameQuery = loadQuery("sql/create_http_cookie_name_query.sql");
@@ -581,6 +636,41 @@ public class QueryBuilder {
          checkHeaderNameExistsQuery = loadQuery("sql/check_header_name_exists.sql");
       }
       return checkHeaderNameExistsQuery;
+   }
+
+   public static String getCheckUserAgentHeaderExistsQuery() throws IOException{
+      if (checkUserAgentHeaderExistsQuery == null){
+         checkUserAgentHeaderExistsQuery = loadQuery("sql/check_uas_exists.sql");
+      }
+      return checkUserAgentHeaderExistsQuery;
+   }
+
+   public static String getReadUserAgentHeaderByValueQuery() throws IOException{
+      if (readUserAgentHeaderByValueQuery == null){
+         readUserAgentHeaderByValueQuery = loadQuery("sql/read_uas_by_value.sql");
+      }
+      return readUserAgentHeaderByValueQuery;
+   }
+
+   public static String getCheckClientOSExistsQuery() throws IOException{
+      if (checkClientOSExistsQuery == null){
+         checkClientOSExistsQuery = loadQuery("sql/check_client_os_exists.sql");
+      }
+      return checkClientOSExistsQuery;
+   }
+
+   public static String getCheckClientBrowserExistsQuery() throws IOException{
+      if (checkClientBrowserExistsQuery == null){
+         checkClientBrowserExistsQuery = loadQuery("sql/check_client_browser_exists.sql");
+      }
+      return checkClientBrowserExistsQuery;
+   }
+
+   public static String getCheckBotVendorExistsQuery() throws IOException{
+      if (checkBotVendorExistsQuery == null){
+         checkBotVendorExistsQuery = loadQuery("sql/check_bot_vendor_exists.sql");
+      }
+      return checkBotVendorExistsQuery;
    }
 
    public static String getCreateIgnorQuery() throws IOException{

@@ -15,15 +15,20 @@
  */
 package org.forumj.network.web.controller.filter;
 
-import static org.forumj.network.web.FJServletTools.*;
-
-import javax.servlet.*;
-import javax.servlet.http.*;
-
 import org.apache.commons.codec.net.QuotedPrintableCodec;
 import org.forumj.checkip.CheckIp;
 import org.forumj.common.db.entity.IUser;
-import org.forumj.common.db.service.*;
+import org.forumj.common.db.service.FJServiceHolder;
+import org.forumj.common.db.service.UserService;
+
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import static org.forumj.network.web.FJServletTools.getCookie;
+import static org.forumj.network.web.FJServletTools.setcookie;
 
 /**
  * 
@@ -40,9 +45,9 @@ public class LoginFilter{
       if (user == null || !user.isLogined()){
          QuotedPrintableCodec codec = new QuotedPrintableCodec();
          Cookie[] cookies = request.getCookies();
-         String path = webapp.isEmpty() ? "/" : new StringBuilder("/").append(webapp).append("/").toString();
-         Cookie iduCookie = getCookie(cookies, "idu", path);
-         Cookie pass2Cookie = getCookie(cookies, "pass2", path);
+//         String path = webapp.isEmpty() ? "" : new StringBuilder("/").append(webapp).toString();
+         Cookie iduCookie = getCookie(cookies, "idu");
+         Cookie pass2Cookie = getCookie(cookies, "pass2");
          if (pass2Cookie != null) {
             String pass2 = pass2Cookie.getValue();
             if (pass2 != null){

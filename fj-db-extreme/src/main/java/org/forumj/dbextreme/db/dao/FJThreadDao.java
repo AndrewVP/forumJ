@@ -27,7 +27,7 @@ import org.forumj.dbextreme.db.entity.*;
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FJThreadDao extends FJDao {
+public class FJThreadDao extends BaseDao {
 
    public void create(IFJThread thread, IFJPost post) throws IOException, DBException, SQLException, ConfigurationException{
       String createThreadQuery = getCreateThreadQuery(); 

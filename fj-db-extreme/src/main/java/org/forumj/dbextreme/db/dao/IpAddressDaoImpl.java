@@ -15,19 +15,19 @@
  */
 package org.forumj.dbextreme.db.dao;
 
-import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.*;
+import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.common.db.entity.IpAddress;
 
 import java.io.IOException;
 import java.sql.*;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.IpAddress;
+import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.*;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class IpAddressDaoImpl extends FJDao {
+public class IpAddressDaoImpl extends BaseDao {
 
    public void update(IpAddress ipAddress) throws IOException, ConfigurationException, SQLException{
       String query = getUpdateIpAddressQuery();
@@ -93,23 +93,7 @@ public class IpAddressDaoImpl extends FJDao {
       return result;
    }
 
-   public Long find(String ip) throws IOException, SQLException, ConfigurationException{
-      Long result = null;
-      String query = getCheckIpExistsQuery();
-      Connection conn = null;
-      PreparedStatement st = null;
-      try {
-         conn = getConnection();
-         st = conn.prepareStatement(query);
-         st.setString(1, ip);
-         ResultSet rs = st.executeQuery();
-         if (rs.next()){
-            result = rs.getLong("id");
-         }
-      }finally{
-         readFinally(conn, st);
-      }
-      return result;
+   public Long find(String ip) throws IOException, SQLException, ConfigurationException {
+      return (Long) readValue(getCheckIpExistsQuery(), ip);
    }
-
 }

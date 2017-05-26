@@ -20,7 +20,7 @@ import org.forumj.dbextreme.db.dao.tool.QueryBuilder;
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FJForumDao extends FJDao {
+public class FJForumDao extends BaseDao {
    
    private void loadConfig() throws IOException, DBException, ConfigurationException, SQLException{
       String query = QueryBuilder.getLoadConfigQuery();

@@ -2,8 +2,8 @@ package org.forumj.network.web.servlet;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.forumj.network.web.FJUrl;
 import org.forumj.common.config.FJConfiguration;
+import org.forumj.network.web.FJUrl;
 import org.forumj.network.web.URL;
 import org.forumj.network.web.controller.*;
 import org.forumj.network.web.controller.filter.*;
@@ -29,6 +29,7 @@ public class Dispatcher extends HttpServlet {
     private String realPath = null;
 
     // GET controllers
+    private StaticResourcesController staticResourcesController = new StaticResourcesController();
     private RootController rootController = new RootController();
     private Page404 page404 = new Page404();
     private Page500 page500 = new Page500();
@@ -48,6 +49,7 @@ public class Dispatcher extends HttpServlet {
     private CloseThread closeThreadController = new CloseThread();
     private DelOne moveToRecycleController = new DelOne();
     private Pin pinThreadController = new Pin();
+    private Main mainController = new Main();
 
     //POST controllers
     private Write addPostController = new Write();
@@ -87,6 +89,7 @@ public class Dispatcher extends HttpServlet {
     private LoginFilter loginFilter = new LoginFilter();
     private LocaleResolver localeResolver = new LocaleResolver();
     private RestrictUnloginedUsersFilter restrictUnloginedUsersFilter = new RestrictUnloginedUsersFilter();
+    private RequestLogger requestLogger = new RequestLogger();
 
     //Validators
     private ThreadParametersValidator threadParametersValidator = new ThreadParametersValidator();
@@ -107,6 +110,7 @@ public class Dispatcher extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException{
+        requestLogger.log(request);
         try {
             String path = request.getRequestURI();
             URL url = URL.create(path, webappName);
@@ -117,7 +121,19 @@ public class Dispatcher extends HttpServlet {
                         case FJUrl.ROOT :
                             rootController.doGet(request, response, webappName, url.getUserURI());
                             break;
+                        case FJUrl.CSS :
+                        case FJUrl.JS :
+                            staticResourcesController.doGet(request, response, webappName, url);
+                            break;
                         case FJUrl.INDEX :
+                            exitFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, false, (req, resp, webapp, uri) -> {
+                                loginFilter.doFilter(req, resp, webapp, uri, controllerName, (req1, resp1, webapp1, uri1) -> {
+                                    localeResolver.doFilter(req1, resp1, webapp1, uri1, (req2, resp2, webapp2, uri2) -> {
+                                        mainController.doGet(req2, resp2, webapp2, uri2);
+                                    });
+                                });
+                            });
+/*
                             exitFilter.doFilter(request, response, webappName, url.getUserURI(), controllerName, false, (req, resp, webapp, uri) -> {
                                 loginFilter.doFilter(req, resp, webapp, uri, controllerName, (req1, resp1, webapp1, uri1) -> {
                                     localeResolver.doFilter(req1, resp1, webapp1, uri1, (req2, resp2, webapp2, uri2) -> {
@@ -125,6 +141,7 @@ public class Dispatcher extends HttpServlet {
                                     });
                                 });
                             });
+*/
                             break;
                         case FJUrl.VIEW_THREAD:
                         case FJUrl.VIEW_THREAD_OLD: // for old external links
@@ -271,6 +288,7 @@ public class Dispatcher extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        requestLogger.log(request);
         try {
             String path = request.getRequestURI();
             URL url = URL.create(path, webappName);
@@ -503,6 +521,36 @@ public class Dispatcher extends HttpServlet {
             logger.error(e);
             page500.doGet(request, response, webappName, e);
         }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        requestLogger.log(req);
+        super.doDelete(req, resp);
+    }
+
+    @Override
+    protected void doOptions(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        requestLogger.log(req);
+        super.doOptions(req, resp);
+    }
+
+    @Override
+    protected void doHead(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        requestLogger.log(req);
+        super.doHead(req, resp);
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        requestLogger.log(req);
+        super.doPut(req, resp);
+    }
+
+    @Override
+    protected void doTrace(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        requestLogger.log(req);
+        super.doTrace(req, resp);
     }
 
     private boolean isCorrectUserURI(URL url){

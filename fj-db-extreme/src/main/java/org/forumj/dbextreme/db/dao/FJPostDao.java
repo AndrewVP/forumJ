@@ -25,7 +25,7 @@ import org.forumj.dbextreme.db.entity.*;
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FJPostDao extends FJDao {
+public class FJPostDao extends BaseDao {
 
    public Long create(IFJPost post, Connection conn, boolean updateThread) throws IOException, DBException, SQLException, ConfigurationException{
       Long postId = null;

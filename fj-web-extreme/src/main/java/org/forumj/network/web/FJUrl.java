@@ -9,11 +9,6 @@
  */
 package org.forumj.network.web;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
-import org.forumj.common.config.FJConfiguration;
-
 /**
  * @author <a href = "mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
@@ -70,6 +65,7 @@ public interface FJUrl {
    public static final String BAN = "ban";
    public static final String PAGE_404 = "404";
    public static final String CSS = "css";
+   public static final String JS = "js";
 
    // a lot of pictures paths
     // "/images/*", "/skin/*", "/banner/*", "/smiles/*", "/avatars/*",  "/photo/*, /picts/*"

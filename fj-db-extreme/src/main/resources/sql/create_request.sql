@@ -4,9 +4,11 @@ INSERT INTO `request`
  ,`userId`
  ,`ipId`
  ,`url`
- ,`time`)
+ ,`time`
+ , `uasId`)
 VALUES
   (
+   ?,
    ?,
    ?,
    ?,

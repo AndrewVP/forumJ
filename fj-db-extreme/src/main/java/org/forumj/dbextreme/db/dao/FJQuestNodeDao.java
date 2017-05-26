@@ -9,23 +9,30 @@
  */
 package org.forumj.dbextreme.db.dao;
 
-import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.*;
+import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.common.db.entity.IFJVoice;
+import org.forumj.common.db.entity.IQuestNode;
+import org.forumj.common.db.entity.IUser;
+import org.forumj.dbextreme.db.entity.FJThread;
+import org.forumj.dbextreme.db.entity.FJVoice;
+import org.forumj.dbextreme.db.entity.QuestNode;
 
 import java.io.IOException;
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.*;
-import org.forumj.dbextreme.db.entity.*;
-import org.forumj.dbextreme.db.service.FJService;
+import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.*;
 
 /**
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FJQuestNodeDao extends FJDao {
+public class FJQuestNodeDao extends BaseDao {
 
    public List<IQuestNode> loadNodes(Long threadId) throws IOException, ConfigurationException, SQLException{
       List<IQuestNode> result = new ArrayList<IQuestNode>();
@@ -152,7 +159,7 @@ public class FJQuestNodeDao extends FJDao {
             answer.setUserId(user.getId());
             Long nodeId = create(answer, conn);
             if (nodeId != null){
-               FJVoiceDao voiceDao = FJService.getVoiceDao(); 
+               FJVoiceDao voiceDao = new FJVoiceDao();
                FJVoice voice = new FJVoice();
                voice.setThreadId(threadId);
                voice.setNodeId(nodeId);

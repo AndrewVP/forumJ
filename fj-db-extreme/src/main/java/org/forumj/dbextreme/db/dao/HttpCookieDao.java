@@ -1,16 +1,11 @@
 package org.forumj.dbextreme.db.dao;
 
-import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.Entity;
 import org.forumj.common.db.entity.HttpCookie;
-import org.forumj.common.db.entity.HttpCookieName;
 import org.forumj.dbextreme.db.entity.HttpCookieImpl;
-import org.forumj.dbextreme.db.entity.HttpCookieNameImpl;
 
 import java.io.IOException;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.*;
@@ -18,14 +13,14 @@ import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.*;
 /**
  * Created by Andrew on 13/05/2017.
  */
-public class HttpCookieDao extends FJDao {
+public class HttpCookieDao extends BaseDao {
 
     public HttpCookie getObject(){
         return new HttpCookieImpl();
     }
 
     @Override
-    protected int prepareStatmentForUpdate(Entity entity, PreparedStatement st) throws SQLException {
+    protected int prepareStatementForUpdate(Entity entity, PreparedStatement st) throws SQLException {
         int parameterIndex = 0;
         if (entity instanceof HttpCookie){
             HttpCookie httpCookie = (HttpCookie) entity;

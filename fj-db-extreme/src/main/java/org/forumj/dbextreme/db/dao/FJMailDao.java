@@ -24,7 +24,7 @@ import org.forumj.dbextreme.db.entity.*;
  *
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FJMailDao extends FJDao {
+public class FJMailDao extends BaseDao {
 
    public void receiveMail(Long userId) throws ConfigurationException, SQLException, IOException{
       String receiveMailQuery = getReceiveMailQuery();

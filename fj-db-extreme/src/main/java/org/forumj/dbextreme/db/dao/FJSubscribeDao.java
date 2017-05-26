@@ -31,7 +31,7 @@ import org.forumj.dbextreme.db.entity.*;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FJSubscribeDao extends FJDao {
+public class FJSubscribeDao extends BaseDao {
 
    public List<IFJSubscribe> findAll(IUser user, Integer active) throws SQLException, ConfigurationException, IOException{
       List<IFJSubscribe> result = new ArrayList<IFJSubscribe>();

@@ -1,27 +1,31 @@
 package org.forumj.network.web;
 
-import java.io.*;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.servlet.http.*;
-
 import com.tecnick.htmlutils.htmlentities.HTMLEntities;
 import org.apache.commons.codec.EncoderException;
 import org.apache.commons.codec.net.QuotedPrintableCodec;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.exception.InvalidKeyException;
-import org.forumj.network.web.resources.ResourcesCache;
 import org.forumj.network.web.resources.LocaleString;
+import org.forumj.network.web.resources.ResourcesCache;
+
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class FJServletTools {
 
    private static ResourcesCache cache = ResourcesCache.getInstance();
 
 
-   public static Cookie getCookie(Cookie[] cookies, String name, String path){
+   public static Cookie getCookie(Cookie[] cookies, String name){
       if(name == null || "".equals(name.trim())){
          throw new RuntimeException("Cookie name can't be empty!");
       }
@@ -31,11 +35,7 @@ public class FJServletTools {
       Cookie result = null;
       for (int i = 0; i < cookies.length; i++) {
          Cookie coockie = cookies[i];
-         if(coockie.getName() != null
-                 && coockie.getName().equals(name)
-                 && coockie.getPath() != null
-                 && coockie.getPath().equals(path)
-                 ){
+         if(coockie.getName() != null && coockie.getName().equals(name)){
             result = cookies[i];
          }
       }
@@ -446,6 +446,21 @@ public class FJServletTools {
          buffer.append("<a class='mnuforumSm' href='" + "/" + userURI + "/" + FJUrl.SETTINGS + "?id=16' rel='nofollow'>");
          buffer.append(locale.getString("MSG_PHOTOALBUM"));
          buffer.append("</a>");
+         //Administrator
+         if (user.isAdministrator()){
+            buffer.append("<img src='");
+            buffer.append("/");
+            if(!webapp.isEmpty()){
+               buffer.append(webapp).append("/");
+            }
+            buffer.append(FJUrl.STATIC).append("/");
+            buffer.append(FJUrl.PICTS);
+
+            buffer.append("/admin.png' border='0' class='menuImg'>");
+            buffer.append("<a class='mnuforumSm' href='" + "/" + userURI + "/" + FJUrl.ADMIN + "' rel='nofollow'>");
+            buffer.append(locale.getString("MSG_ADMIN"));
+            buffer.append("</a>");
+         }
          /*Выход*/
          StringBuilder exitUrl = new StringBuilder(request.getRequestURI()).append("?").append(queryString).append(!queryString.isEmpty() ? "&exit=0" : "exit=0");
          buffer.append("<img src='");

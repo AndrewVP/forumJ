@@ -19,7 +19,7 @@ import java.io.*;
 import java.sql.*;
 
 import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.dbextreme.db.dao.FJDao;
+import org.forumj.dbextreme.db.dao.BaseDao;
 
 /**
  * 
@@ -30,7 +30,7 @@ public class DbTool {
    public static boolean dbExist(){
       Connection connection = null;
       try {
-         connection = FJDao.getConnection();
+         connection = BaseDao.getConnection();
          if (connection != null){
             return true;
          }else{
@@ -75,7 +75,7 @@ public class DbTool {
       Connection connection = null;
       Statement st = null;
       try {
-         connection = FJDao.getConnection();
+         connection = BaseDao.getConnection();
          while(br.ready()){
             String line = br.readLine().trim();
             if (line.startsWith("--")){

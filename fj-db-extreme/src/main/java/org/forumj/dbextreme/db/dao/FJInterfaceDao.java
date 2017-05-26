@@ -30,7 +30,7 @@ import org.forumj.dbextreme.db.entity.FJInterface;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FJInterfaceDao extends FJDao {
+public class FJInterfaceDao extends BaseDao {
 
    public List<IFJInterface> findAll(IUser user) throws IOException, SQLException, ConfigurationException{
       List<IFJInterface> result = new ArrayList<IFJInterface>();

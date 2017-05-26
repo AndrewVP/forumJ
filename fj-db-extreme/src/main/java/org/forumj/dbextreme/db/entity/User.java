@@ -15,10 +15,11 @@
  */
 package org.forumj.dbextreme.db.entity;
 
-import java.sql.*;
-
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.web.Locale;
+
+import java.sql.Date;
+import java.sql.Timestamp;
 
 /**
  * 
@@ -588,7 +589,13 @@ public class User implements IUser {
    }
 
    public boolean isModerator() {
-      //TODO Переделать!!!!!!!!!
+      //TODO implement it!!!!!!!!!
+      return id.equals(new Long(3));
+   }
+
+   @Override
+   public boolean isAdministrator() {
+      //TODO implement it!!!!!!!!!
       return id.equals(new Long(3));
    }
 

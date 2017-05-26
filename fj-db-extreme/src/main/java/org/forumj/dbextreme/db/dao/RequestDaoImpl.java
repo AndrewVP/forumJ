@@ -12,14 +12,14 @@ import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.*;
 /**
  * Created by Andrew on 12/05/2017.
  */
-public class RequestDaoImpl extends FJDao {
+public class RequestDaoImpl extends BaseDao {
 
     public Request getObject() {
         return new RequestImpl();
     }
 
     @Override
-    protected int prepareStatmentForUpdate(Entity entity, PreparedStatement st) throws SQLException {
+    protected int prepareStatementForUpdate(Entity entity, PreparedStatement st) throws SQLException {
         int parameterIndex = 0;
         if (entity instanceof Request){
             Request request = (Request) entity;
@@ -28,6 +28,7 @@ public class RequestDaoImpl extends FJDao {
             st.setLong(++parameterIndex, request.getIp().getId());
             st.setString(++parameterIndex, request.getUrl());
             st.setLong(++parameterIndex, request.getTime());
+            st.setLong(++parameterIndex, request.getUas().getId());
         }
         return parameterIndex;
     }

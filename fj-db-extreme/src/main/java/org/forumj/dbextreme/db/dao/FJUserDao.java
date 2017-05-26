@@ -12,7 +12,7 @@ import org.forumj.common.web.Locale;
 import org.forumj.dbextreme.db.entity.User;
 
 
-public class FJUserDao extends FJDao {
+public class FJUserDao extends BaseDao {
 
    public IUser read(Long userId, String password, boolean firstPassword) throws ConfigurationException, SQLException, IOException{
       IUser result = null;

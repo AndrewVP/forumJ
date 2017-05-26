@@ -9,20 +9,22 @@
  */
 package org.forumj.dbextreme.db.dao;
 
-import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.*;
+import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.common.db.entity.IFJAction;
+import org.forumj.common.db.entity.IUser;
+import org.forumj.dbextreme.db.entity.User;
 
 import java.io.IOException;
 import java.sql.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.*;
-import org.forumj.dbextreme.db.entity.User;
+import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.*;
 
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FJActionDao extends FJDao {
+public class FJActionDao extends BaseDao {
 
    public List<IUser> getUsersArray() throws ConfigurationException, SQLException, IOException{
       List<IUser> result = new ArrayList<IUser>();

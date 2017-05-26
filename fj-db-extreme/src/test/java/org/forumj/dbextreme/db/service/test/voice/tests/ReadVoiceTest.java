@@ -15,7 +15,7 @@
  */
 package org.forumj.dbextreme.db.service.test.voice.tests;
 
-import static org.forumj.dbextreme.db.dao.FJDao.*;
+import static org.forumj.dbextreme.db.dao.BaseDao.*;
 import static org.junit.Assert.*;
 
 import java.io.IOException;

@@ -94,6 +94,9 @@ public interface IUser {
    void setReg(Timestamp reg);
    public boolean isModerator();
    boolean isApproved();
+
+   boolean isAdministrator();
+
    void setApproved(boolean approved);
 
 }

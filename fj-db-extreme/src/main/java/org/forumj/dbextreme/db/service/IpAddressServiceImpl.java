@@ -15,13 +15,13 @@
  */
 package org.forumj.dbextreme.db.service;
 
-import java.io.IOException;
-import java.sql.SQLException;
-
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.IpAddress;
 import org.forumj.common.db.service.IpAddressService;
 import org.forumj.dbextreme.db.entity.IpAddressImpl;
+
+import java.io.IOException;
+import java.sql.SQLException;
 
 /**
  * 
@@ -30,11 +30,11 @@ import org.forumj.dbextreme.db.entity.IpAddressImpl;
 public class IpAddressServiceImpl extends FJService implements IpAddressService {
 
    public void createIpAddress(IpAddress ipAddress) throws SQLException, ConfigurationException, IOException{
-      getIpaddressDao().create(ipAddress);
+      getIpAddressDao().create(ipAddress);
    }
 
    public Boolean isSpammer(String ip) throws IOException, SQLException, ConfigurationException{
-      return getIpaddressDao().isSpammer(ip);
+      return getIpAddressDao().isSpammer(ip);
    }
 
    public IpAddress getObject() {

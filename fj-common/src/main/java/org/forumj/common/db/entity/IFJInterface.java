@@ -21,18 +21,13 @@ import java.util.Date;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public interface IFJInterface {
+public interface IFJInterface extends NamedEntity{
    public static final String ID_FIELD_NAME = "id";
    public static final String DATE_CREATE_FIELD_NAME = "d_cr";
    public static final String USER_ID_FIELD_NAME = "user";
    public static final String NAME_FIELD_NAME = "name";
    public void setCreateDate(Date createDate);
    public Date getCreateDate();
-   public void setName(String name);
-   public String getName();
    public void setUser(IUser user);
    public IUser getUser();
-   public void setId(Long id);
-   public Long getId();
-
 }

@@ -21,7 +21,7 @@ import org.forumj.dbextreme.db.entity.FJVoice;
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FJVoiceDao extends FJDao {
+public class FJVoiceDao extends BaseDao {
 
    public IFJVoice read(Long threadId, Long userId) throws IOException, ConfigurationException, SQLException{
       FJVoice result = new FJVoice();

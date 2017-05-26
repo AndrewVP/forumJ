@@ -15,22 +15,28 @@
  */
 package org.forumj.dbextreme.db.dao;
 
-import static org.forumj.common.db.entity.IFJFolder.*;
-import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.*;
+import org.apache.commons.configuration.ConfigurationException;
+import org.forumj.common.db.entity.IFJFolder;
+import org.forumj.common.db.entity.IFJInterface;
+import org.forumj.common.db.entity.IUser;
+import org.forumj.dbextreme.db.entity.FJFolder;
 
 import java.io.IOException;
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.forumj.common.db.entity.*;
-import org.forumj.dbextreme.db.entity.FJFolder;
+import static org.forumj.common.db.entity.IFJFolder.*;
+import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.*;
 
 /**
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FJFolderDao extends FJDao {
+public class FJFolderDao extends BaseDao {
 
    public List<IFJFolder> findAll(IUser user, IFJInterface interf) throws SQLException, ConfigurationException, IOException{
       List<IFJFolder> result = new ArrayList<IFJFolder>();
@@ -86,7 +92,6 @@ public class FJFolderDao extends FJDao {
       }
       return result;
    }
-   
    
    public void delete(Long folderId, IUser user) throws ConfigurationException, SQLException, IOException{
       String deleteTranzitQuery = getDeleteFolderTranzitQuery();

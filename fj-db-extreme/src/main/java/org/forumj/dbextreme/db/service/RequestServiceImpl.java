@@ -6,9 +6,7 @@ import org.forumj.common.db.service.IpAddressService;
 import org.forumj.common.db.service.RequestService;
 import org.forumj.common.web.HttpMethod;
 import org.forumj.dbextreme.db.dao.HttpCookieDao;
-import org.forumj.dbextreme.db.dao.HttpCookieNameDao;
 import org.forumj.dbextreme.db.dao.HttpHeaderDao;
-import org.forumj.dbextreme.db.dao.HttpHeaderNameDao;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -34,6 +32,23 @@ public class RequestServiceImpl extends FJService implements RequestService {
                 getIpAddressDao().create(request.getIp());
             }
             request.getIp().setId(ipId);
+        }
+        if(request.getUas() != null){
+            if (request.getUas().getId() == null){
+                String uasValue = request.getUas().getValue();
+                UserAgentHeader uas = getUserAgentHeaderDao().readByValue(uasValue);
+                if (uas != null){
+                    request.setUas(uas);
+                    request.setBotId(uas.getBotId());
+                }else{
+                    request.setBotId(Bot.NOT_BOT);
+                    uas.setBotId(Bot.NOT_BOT);
+                    uas.setBrowserId(ClientBrowser.UNKNOWN_BROWSER_ID);
+                    uas.setOsId(ClientOS.UNKNOWN_OS_ID);
+                    uas.setDevice(Device.UNKNOWN_DEVICE);
+                    getUserAgentHeaderDao().create(uas);
+                }
+            }
         }
         getRequestDao().create(request);
         request.getCookies().stream().forEach(
@@ -92,10 +107,16 @@ public class RequestServiceImpl extends FJService implements RequestService {
         while (headers.hasMoreElements()){
             String headerName = headers.nextElement();
             String headerValue = httpServletRequest.getHeader(headerName);
-            HttpHeader httpHeader = httpHeaderDao.getObject();
-            httpHeader.setValue(headerValue);
-            httpHeader.setName(headerName);
-            request.addHeader(httpHeader);
+            if (headerName.equals(HttpHeaderName.UAS)){
+                UserAgentHeader userAgentHeader = getUserAgentHeaderDao().getObject();
+                userAgentHeader.setValue(headerValue);
+                request.setUas(userAgentHeader);
+            }else{
+                HttpHeader httpHeader = httpHeaderDao.getObject();
+                httpHeader.setValue(headerValue);
+                httpHeader.setName(headerName);
+                request.addHeader(httpHeader);
+            }
         }
         Cookie[] cookies = httpServletRequest.getCookies();
         if (cookies != null && cookies.length > 0){

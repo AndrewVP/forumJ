@@ -23,9 +23,33 @@ public class RequestImpl implements Request {
 
     private Long time;
 
+    private UserAgentHeader uas;
+
+    private Integer botId;
+
     private List<HttpHeader> headers = new LinkedList<>();
 
     private List<HttpCookie> cookies = new LinkedList<>();
+
+    @Override
+    public Integer getBotId() {
+        return botId;
+    }
+
+    @Override
+    public void setBotId(Integer botId) {
+        this.botId = botId;
+    }
+
+    @Override
+    public UserAgentHeader getUas() {
+        return uas;
+    }
+
+    @Override
+    public void setUas(UserAgentHeader uas) {
+        this.uas = uas;
+    }
 
     @Override
     public Long getId() {

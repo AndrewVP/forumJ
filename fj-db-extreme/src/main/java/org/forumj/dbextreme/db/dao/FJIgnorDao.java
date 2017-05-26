@@ -30,7 +30,7 @@ import org.forumj.dbextreme.db.entity.*;
  * 
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class FJIgnorDao extends FJDao {
+public class FJIgnorDao extends BaseDao {
 
    public List<IIgnor> loadAll(Long userId) throws IOException, ConfigurationException, SQLException{
       List<IIgnor> result = new ArrayList<IIgnor>();

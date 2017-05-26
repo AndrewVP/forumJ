@@ -12,10 +12,7 @@ package org.forumj.dbextreme.db.dao;
 import org.apache.commons.configuration.ConfigurationException;
 import org.forumj.common.db.entity.*;
 import org.forumj.dbextreme.db.entity.FJImage;
-import org.forumj.dbextreme.db.entity.QuestNode;
-import org.forumj.dbextreme.db.entity.User;
 
-import javax.xml.transform.Result;
 import java.io.IOException;
 import java.sql.*;
 import java.util.ArrayList;
@@ -26,7 +23,7 @@ import static org.forumj.dbextreme.db.dao.tool.QueryBuilder.*;
 /**
  * @author <a href="mailto:an.pogrebnyak@gmail.com">Andrew V. Pogrebnyak</a>
  */
-public class ImageDao extends FJDao {
+public class ImageDao extends BaseDao {
 
    public void create(Image image) throws SQLException, ConfigurationException, IOException{
       String query = getCreateImageQuery();

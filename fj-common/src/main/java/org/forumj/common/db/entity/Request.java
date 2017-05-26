@@ -9,6 +9,14 @@ import java.util.List;
  */
 public interface Request extends Entity{
 
+    Integer getBotId();
+
+    void setBotId(Integer botId);
+
+    UserAgentHeader getUas();
+
+    void setUas(UserAgentHeader uas);
+
     HttpMethod getMethod();
 
     void setMethod(HttpMethod method);

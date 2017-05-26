@@ -61,115 +61,122 @@ public class FJService {
 
    private static final HttpCookieDao httpCookieDao = new HttpCookieDao();
 
-   public static IpAddressDaoImpl getIpAddressDao() {
+   private static final UserAgentHeaderDao userAgentHeaderDao = new UserAgentHeaderDao();
+
+   static IpAddressDaoImpl getIpAddressDao() {
       return ipAddressDao;
    }
 
-   public static HttpHeaderNameDao getHttpHeaderNameDao() {
+   static HttpHeaderNameDao getHttpHeaderNameDao() {
       return httpHeaderNameDao;
    }
 
-   public static HttpHeaderDao getHttpHeaderDao() {
+   static HttpHeaderDao getHttpHeaderDao() {
       return httpHeaderDao;
    }
 
-   public static HttpCookieNameDao getHttpCookieNameDao() {
+   static HttpCookieNameDao getHttpCookieNameDao() {
       return httpCookieNameDao;
    }
 
-   public static HttpCookieDao getHttpCookieDao() {
+   static HttpCookieDao getHttpCookieDao() {
       return httpCookieDao;
    }
 
    /**
     * @return the questnodedao
     */
-   public static FJQuestNodeDao getQuestNodeDao() {
+   static FJQuestNodeDao getQuestNodeDao() {
       return questNodeDao;
    }
 
    /**
     * @return the userdao
     */
-   public static FJUserDao getUserDao() {
+   static FJUserDao getUserDao() {
       return userDao;
    }
 
    /**
     * @return the voicedao
     */
-   public static FJVoiceDao getVoiceDao() {
+   static FJVoiceDao getVoiceDao() {
       return voiceDao;
    }
 
    /**
     * @return the subscribedao
     */
-   public static FJSubscribeDao getSubscribedao() {
+   static FJSubscribeDao getSubscribedao() {
       return subscribeDao;
    }
 
    /**
     * @return the ignordao
     */
-   public static FJIgnorDao getIgnorDao() {
+   static FJIgnorDao getIgnorDao() {
       return ignorDao;
    }
 
    /**
     * @return the actiondao
     */
-   public static FJActionDao getActiondao() {
+   static FJActionDao getActiondao() {
       return actionDao;
    }
 
    /**
     * @return the folderdao
     */
-   public static FJFolderDao getFolderDao() {
+   static FJFolderDao getFolderDao() {
       return folderDao;
    }
 
    /**
     * @return the interfacedao
     */
-   public static FJInterfaceDao getInterfaceDao() {
+   static FJInterfaceDao getInterfaceDao() {
       return interfaceDao;
    }
 
    /**
     * @return the maildao
     */
-   public static FJMailDao getMailDao() {
+   static FJMailDao getMailDao() {
       return mailDao;
    }
 
    /**
     * @return the threaddao
     */
-   public static FJThreadDao getThreadDao() {
+   static FJThreadDao getThreadDao() {
       return threadDao;
    }
 
    /**
     * @return the postdao
     */
-   public static FJPostDao getPostDao() {
+   static FJPostDao getPostDao() {
       return postDao;
    }
 
    /**
     * @return the forumdao
     */
-   public static FJForumDao getForumDao() {
+   static FJForumDao getForumDao() {
       return forumDao;
    }
 
-   public static ImageDao getImageDao() {
+   static ImageDao getImageDao() {
       return imageDao;
    }
 
-   public static RequestDaoImpl getRequestDao() {
+   static RequestDaoImpl getRequestDao() {
       return requestDao;
    }
+
+   static UserAgentHeaderDao getUserAgentHeaderDao(){
+      return userAgentHeaderDao;
+   }
+
 }
