@@ -15,6 +15,7 @@
  */
 package org.forumj.network.web.controller;
 
+import org.forumj.common.db.entity.IFJThread;
 import org.forumj.common.db.entity.IUser;
 import org.forumj.common.db.service.FJServiceHolder;
 import org.forumj.common.db.service.FolderService;
@@ -25,6 +26,7 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 
 /**
@@ -41,7 +43,15 @@ public class Main {
       Integer pageNumber = request.getParameter("page") == null ? 1 : Integer.valueOf(request.getParameter("page"));
       IUser user = (IUser) session.getAttribute("user");
       Long userId = user.getId();
-
+      Long viewId = (Long) session.getAttribute("view");
+      // Default interface
+      if (viewId == null || !interfaceService.isExists(viewId, user)){
+         session.setAttribute("view", user.getView());
+         viewId = user.getView();
+      }
+      long firstPostNumber = (pageNumber - 1) * user.getThreadsOnPage();
+      List<IFJThread> threadsList = indexService.getThreads(viewId, firstPostNumber, user);
+      request.setAttribute("threads", threadsList);
 
       RequestDispatcher requestDispatcher;
       requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/index.jsp");

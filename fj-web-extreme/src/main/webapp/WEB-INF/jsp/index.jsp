@@ -1,4 +1,6 @@
+<%@ page import="org.forumj.network.web.FJUrl" %>
 <%@ page contentType="text/html; charset=UTF-8" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,8 +38,8 @@
 </head>
 <body>
 
-<div class="container-fluid" style="height: 2000px; padding-top: 20px;">
-    <img src="/forum/00/banner/narodny.gif">
+<div class="container-fluid">
+    <img src="${pageContext.request.contextPath}/<%=FJUrl.STATIC%>/banner/narodny.gif">
     <nav class="navbar navbar-default" data-spy="affix" data-offset-top="130">
         <div class="navbar-header">
             <img class="navbar-brand" src="/forum/00/images/diletant.png">
@@ -70,19 +72,22 @@
                 <th></th>
             </tr>
             </thead>
-            <tr class='matras'>
-                <td><img src='../images/icon1.gif'></td>
-                <td><div><a href='tema?id=52174'>FullHD WAR</a></div>
-                    <!--
-                    <div class="super-small"><a href='pin?id=52174&pin=10'>прикріпити</a>&nbsp;<a href='pin?id=52174&pin=3'>дн</a>&nbsp;<a href='pin?id=52174&;pin=5'>об'ява</a>&nbsp;<a href='delone?id=52174&usr=0&page=1'>видалити</a>&nbsp;<a href='close?id=52174&close=1&page=1'>закрити</a></div></td>
-                    -->
-                <td class="small">5</td>
-                <td><div class="small">22</div><div class="small">102</div></td>
-                <td><div>Дилетант</div></td>
-                <td><div>Дилетант</div><div class="small"><a href='tema?id=52174&end=1#end' rel='nofollow'>22.05.17 15:39</a></div></td>
-                <td><div>Не забыть</div></td>
-                <td><input type='checkbox' id='ch0' name='0' value='52174'></td>
-                <td><a href='delone?id=52174&usr=3&page=0'><img src='../images/del1.gif'></a></td>
+            <c:forEach items="${threads}" var="thread">
+                <tr>
+                    <td><img src='../images/icon1.gif'></td>
+                    <td><div><a href='tema?id=${thread.id}'>${thread.head}</a></div>
+                    <td class="small">${thread.postsAmount}</td>
+                    <td><div class="small">${thread.snid}</div><div class="small">${thread.snall}</div></td>
+                    <td><div>${thread.nick}</div></td>
+                    <td><div>${thread.lastPostNick}</div><div class="small"><a href='tema?id=${thread.id}&end=1#end' rel='nofollow'>${thread.lastPostTime}</a></div></td>
+                    <td><div>${thread.folder}</div></td>
+                    <td><input type='checkbox' id='ch0' name='0' value='${thread.id}'></td>
+                    <td><a href='delone?id=${thread.id}&usr=${user.id}&page=0'><img src='../images/del1.gif'></a></td>
+                </tr>
+            </c:forEach>
+            <!--
+    <tr>
+            <div class="super-small"><a href='pin?id=52174&pin=10'>прикріпити</a>&nbsp;<a href='pin?id=52174&pin=3'>дн</a>&nbsp;<a href='pin?id=52174&;pin=5'>об'ява</a>&nbsp;<a href='delone?id=52174&usr=0&page=1'>видалити</a>&nbsp;<a href='close?id=52174&close=1&page=1'>закрити</a></div></td>
             </tr>
             <tr>
                 <td><img src='../images/icon1.gif'></td>
@@ -96,6 +101,7 @@
                 <td><input type='checkbox' id='ch1' name='1' value='52184'></td>
                 <td><a href='delone?id=52184&usr=3&page=0'><img src='../images/del1.gif'></a></td>
             </tr>
+            -->
         </table>
     </div>
 </div>

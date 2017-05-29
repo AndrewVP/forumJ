@@ -41,8 +41,10 @@ public class RequestServiceImpl extends FJService implements RequestService {
                     request.setUas(uas);
                     request.setBotId(uas.getBotId());
                 }else{
+                    uas = getUserAgentHeaderDao().getObject();
                     request.setBotId(Bot.NOT_BOT);
                     uas.setBotId(Bot.NOT_BOT);
+                    uas.setValue(uasValue);
                     uas.setBrowserId(ClientBrowser.UNKNOWN_BROWSER_ID);
                     uas.setOsId(ClientOS.UNKNOWN_OS_ID);
                     uas.setDevice(Device.UNKNOWN_DEVICE);
