@@ -15,9 +15,16 @@
  */
 package org.forumj.network.web.controller;
 
+import org.forumj.common.db.entity.IUser;
+import org.forumj.common.db.service.FJServiceHolder;
+import org.forumj.common.db.service.FolderService;
+import org.forumj.common.db.service.IndexService;
+import org.forumj.common.db.service.InterfaceService;
+
 import javax.servlet.RequestDispatcher;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 
 /**
@@ -27,6 +34,15 @@ import javax.servlet.http.HttpServletResponse;
 public class Main {
 
    public void doGet(HttpServletRequest request, HttpServletResponse response, String webapp, String userURI) throws Exception {
+      InterfaceService interfaceService = FJServiceHolder.getInterfaceService();
+      IndexService indexService = FJServiceHolder.getIndexService();
+      FolderService folderService = FJServiceHolder.getFolderService();
+      HttpSession session = request.getSession();
+      Integer pageNumber = request.getParameter("page") == null ? 1 : Integer.valueOf(request.getParameter("page"));
+      IUser user = (IUser) session.getAttribute("user");
+      Long userId = user.getId();
+
+
       RequestDispatcher requestDispatcher;
       requestDispatcher = request.getRequestDispatcher("/WEB-INF/jsp/index.jsp");
       requestDispatcher.forward(request, response);
